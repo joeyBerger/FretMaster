@@ -34,13 +34,28 @@ class ScaleClass {
         "7" : 11
     ]
     
+    let scaleNameDic : [String:String] = [
+        "MinorPentatonic" : "Minor Pentatonic",
+        "MajorPentatonic" : "Major Pentatonic",
+        "Ionian" : "Ionian",
+        "Dorian" : "Dorian",
+        "Phyrgian" : "Phyrgian",
+        "Lydian" : "Lydian",
+        "Mixolydian" : "Mixolydian",
+        "Aeolian" : "Aeolian",
+        "Locrian" : "Locrian",
+        "Chromatic" : "Chromatic",
+        "MajArp" : "Major Arpeggio",
+        "MinArp" : "Minor Arpeggio",
+        "DimArp" : "Diminished Arpeggio",
+        "AugArp" : "Augmented Arpeggio",
+    ]
+    
     var startingOctave = 0
     var scaleOctaves = 2
     
-    func setupSpecifiedScale ()
+    func setupSpecifiedScale (iinput : String)
     {
-//        let dorian : [String] = ["1","2","b3","4","5","6","b7"]
-        
         let availableScales : [String:[String]] = [
             "Ionian" : ["1","2","3","4","5","6","7"],
             "Dorian" : ["1","2","b3","4","5","6","b7"],
@@ -65,25 +80,9 @@ class ScaleClass {
         var noteIndex = 0
         var notePos = 1
         
-        //TODO: get rid of this
-//        var randScale = availableScales.randomElement()!
-//        print(availableScales.randomElement()!)
-        var randScale = availableScales["MinorPentatonic"]        
-        vc!.ResultsLabel0.text = "Minor Pentatonic"
-        
-//        var chord = [String]()
-//        if (randScale.key != "Chromatic")
-//        {
-//            for (_,item) in randScale.value.enumerated()
-//            {
-//                if (item.contains("1") || item.contains("3") || item.contains("5"))
-//                {
-//                    chord.append(item)
-//                }
-//            }
-//        }
-        
-         vc!.specifiedScale.removeAll()
+        let desiredScale = availableScales[iinput]
+       
+        vc!.specifiedScale.removeAll()
         
         //find note index
         if ( vc!.specifiedScale.isEmpty)
@@ -97,9 +96,9 @@ class ScaleClass {
                 }
             }
             
-            for (i, _) in randScale!.enumerated()
+            for (i, _) in desiredScale!.enumerated()
             {
-                let note = scaleDegreeDict[randScale![i]]
+                let note = scaleDegreeDict[desiredScale![i]]
                 if ((noteIndex+note!) >= refScale.count*notePos)
                 {
                     notePos = notePos + 1
@@ -146,5 +145,9 @@ class ScaleClass {
                 i = i +  1
             }
         }
+    }
+    
+    func returnReadableScaleName (iinput: String) -> String {
+        return scaleNameDic[iinput]!
     }
 }

@@ -52,15 +52,17 @@ class ViewController: UIViewController {
     @IBOutlet weak var PeriphButton5: UIButton!
     
     @IBOutlet weak var NavBar: UINavigationBar!
+    @IBOutlet weak var NavBarFiller: UIImageView!
     @IBOutlet weak var NavBackButton: UIBarButtonItem!
     @IBOutlet weak var NavSettingsButton: UIBarButtonItem!
+    @IBOutlet weak var NavBarTitle: UINavigationItem!
     @IBOutlet weak var TempoButton: UIButton!
     @IBOutlet weak var TempoDownButton: UIButton!
     @IBOutlet weak var TempoUpButton: UIButton!
     
     @IBOutlet weak var ResultButton1: UIButton!
     
-        
+
     lazy var dotDict: [String:UIImageView] = [
         "G#1": Dot_GS1,
         "A1" : Dot_A1,
@@ -115,6 +117,8 @@ class ViewController: UIViewController {
     var earTrainCallArr: [String] = []
     var earTrainResponseArr: [String] = []
     
+    var defaultPeripheralIcon: [String] = []
+    var activePeripheralIcon: [String] = []
     
     let timeThreshold : [String:Double] = [
         "Easy": 0.1,
@@ -133,6 +137,8 @@ class ViewController: UIViewController {
     var met : Metronome? = nil
     var sClass : ScaleClass? = nil
     var et : EarTraining? = nil
+    
+    var tempoButtonsActive = false
     
     var buttonDict: [Int:String] = [
         0 : "G#1",
@@ -178,14 +184,24 @@ class ViewController: UIViewController {
         case EarTrainResponse
         
         case PlayingScale
-        case ScaleTestCountIn
-        case ScaleTestActive
-        case ScaleTestIdle
+        
+        case ScaleTest_NoTempo
+        case ScaleTestIdle_NoTempo
+        case ScaleTestActive_NoTempo
+        
+        case ScaleTestCountIn_Tempo
+        case ScaleTestActive_Tempo
+        case ScaleTestIdle_Tempo
+        
         case ScaleTestShowScale
 //        case ScaleTestResult
     }
     
     var currentState = State.Idle
+    var defaultState : State?
+    var currentLevel: String?
+    var currentLevelConstruct: [[String]] = [[]]
+    var currentLevelKey: String?
     let digitInput = DigitsInput()
         
     override func viewDidLoad() {
@@ -198,6 +214,7 @@ class ViewController: UIViewController {
         et = EarTraining(ivc: self)
         
         BPM_textField.text = String(Int(met!.bpm))
+        BPM_textField.isHidden = true
         
         self.digitInput.vc = self
         self.BPM_textField.delegate = self.digitInput
@@ -208,63 +225,36 @@ class ViewController: UIViewController {
         ResultsLabel0?.adjustsFontSizeToFitWidth = true
         ResultsLabel1?.adjustsFontSizeToFitWidth = true
         
+        ResultsLabel0?.textColor = defaultColor.MenuButtonTextColor
+        
         for (str, view) in dotDict {
             //view.isHidden = true
             view.alpha = 0
-            
             let note = str.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789"))
-
             let scrollView = UILabel()
             let xVal = note.count > 1 ? 7.5 : 11.5
             scrollView.frame = CGRect(x: xVal,y: -22.5,width: 80,height: 80)
             scrollView.textAlignment = NSTextAlignment.natural
             scrollView.text = note;  //"C"
             scrollView.layer.zPosition = 1;
-
             buttonNote[str] = scrollView
             dotDict[str]!.addSubview(buttonNote[str]!)
         }
         
-        
         NavBar.barTintColor = defaultColor.MenuButtonColor
-
+        NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
         NavBackButton.tintColor = defaultColor.MenuButtonTextColor
         NavSettingsButton.tintColor = defaultColor.MenuButtonTextColor
-        
-        
-        TempoButton.backgroundColor = defaultColor.MenuButtonColor
-        TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
-        TempoButton.setTitleColor(defaultColor.MenuButtonTextColor, for: .normal)
-        
-        
-        TempoDownButton.contentVerticalAlignment = .fill
-        TempoDownButton.contentHorizontalAlignment = .fill
-        TempoDownButton.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        TempoDownButton.backgroundColor = defaultColor.MenuButtonColor
-        //arrow color
-        TempoDownButton.imageView?.tintColor = defaultColor.AlternateButtonInlayColor
-        
-        TempoUpButton.contentVerticalAlignment = .fill
-        TempoUpButton.contentHorizontalAlignment = .fill
-        TempoUpButton.imageEdgeInsets = UIEdgeInsets(top: 20, left: 20, bottom: 20, right: 20)
-        TempoUpButton.backgroundColor = defaultColor.MenuButtonColor
-        //arrow color
-        TempoUpButton.imageView?.tintColor = defaultColor.AlternateButtonInlayColor
+        NavBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
         
         ResultButton1.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton1.setTitleColor(.black, for: .normal)
         ResultButton1.setTitle("", for: .normal)
         ResultButton1.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton1.titleLabel?.minimumScaleFactor = 0.5
-//        ResultButton1.titleLabel?.numberOfLines = 0
+        ResultButton1.backgroundColor = defaultColor.ResultsButtonColor
+        ResultButton1.setTitleColor(.white, for: .normal)
         
-        result1ViewStrs.append("Try Again!")
-        result1ViewStrs.append("Not Enough Notes")
-        result1ViewStrs.append("Try!")
-        result1ViewStrs.append("NOTES : INCORRECT")
-        
-        
-        print ("appending")
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
         periphButtonArr.append(PeriphButton2)
@@ -272,43 +262,65 @@ class ViewController: UIViewController {
         periphButtonArr.append(PeriphButton4)
         periphButtonArr.append(PeriphButton5)
         
-        for (_, button) in periphButtonArr.enumerated() {
-            button.titleLabel?.minimumScaleFactor = 0.5
-            button.titleLabel?.numberOfLines = 0
-            button.titleLabel?.adjustsFontSizeToFitWidth = true
-            button.setTitleColor(.black, for: .normal)
-            button.backgroundColor = defaultColor.MenuButtonColor
-        }
-
         setupToSpecificState()
     }
     
+    func setStateProperties (icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String) {
+        currentState = icurrentState
+        defaultState = currentState
+        tempoButtonsActive = itempoButtonsActive
+        currentLevel = icurrentLevel
+        currentLevelConstruct = ilevelConstruct
+        currentLevelKey = ilevelKey
+    }
+    
     func setupToSpecificState () {
-        print(currentState)
+        print("setupToSpecificState \(currentState)")
+        
         if (currentState == State.RecordingIdle)
         {
             setButtonState(ibutton : PeriphButton0,ibuttonState : false)
-            
-
         }
-        if (currentState == State.ScaleTestIdle)
+        if (currentState == State.ScaleTestIdle_NoTempo)
         {
-            setupPeripheralButtons(itextArr : ["Start Test","Show Scale","Play Scale"])
-            sClass!.setupSpecifiedScale()
+            setupCurrentTask()
+            defaultPeripheralIcon = ["play","music.note","info"]
+            activePeripheralIcon = ["pause","arrowshape.turn.up.left","arrowshape.turn.up.left"]
+            setupTempoButtons(ibuttonsActive: tempoButtonsActive)
         }
+        setupPeripheralButtons(iiconArr : defaultPeripheralIcon)
     }
     
-    func setupPeripheralButtons (itextArr : [String ]) {
+    func setupCurrentTask () {
+        let task = returnCurrentTask()
+        sClass!.setupSpecifiedScale(iinput: task)
+        ResultsLabel0.text = sClass!.returnReadableScaleName(iinput: task)
+    }
+    
+    func returnCurrentTask() -> String {
+        let level = returnConvertedLevel(iinput: currentLevel!)
+        let subLevel = returnConvertedSubLevel(iinput: currentLevel!)
+        return currentLevelConstruct[level][subLevel]
+    }
+    
+    func setupPeripheralButtons (iiconArr : [String ]) {
         
-        for (i, _) in itextArr.enumerated() {
-//            periphButtonArr[i].setTitle(itextArr[i], for: .normal)
-            periphButtonArr[i].setTitle("", for: .normal)
+        for (i, _) in iiconArr.enumerated() {
+            periphButtonArr[i].setTitle("", for: .normal)  //TODO: eventually get rid of text completely
+            
+            setButtonImage(ibutton: periphButtonArr[i], iimageStr: iiconArr[i])
+            periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
             periphButtonArr[i].layer.masksToBounds = true
             periphButtonArr[i].layer.cornerRadius = 25
+//            periphButtonArr[i].titleLabel?.minimumScaleFactor = 0.5
+//            periphButtonArr[i].titleLabel?.numberOfLines = 0
+//            periphButtonArr[i].titleLabel?.adjustsFontSizeToFitWidth = true
+            periphButtonArr[i].setTitleColor(.black, for: .normal)
+            periphButtonArr[i].backgroundColor = defaultColor.MenuButtonColor
         }
         
         for (i, button) in periphButtonArr.enumerated() {
-            if (i < itextArr.count)
+            if (i < iiconArr.count)
             {
                 button.isHidden = false
             }
@@ -319,10 +331,61 @@ class ViewController: UIViewController {
         }
     }
     
+    func setupTempoButtons (ibuttonsActive : Bool) {
+        var buttonColor : UIColor
+        var inlayColor : UIColor
+        if (ibuttonsActive) {
+            buttonColor = defaultColor.MenuButtonColor
+            inlayColor = defaultColor.InactiveInlay
+        } else {
+            buttonColor = defaultColor.InactiveButton
+            inlayColor = defaultColor.InactiveInlay
+        }
+               
+        TempoButton.backgroundColor = buttonColor
+        TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
+        TempoButton.setTitleColor(inlayColor, for: .normal)
+        TempoButton.layer.masksToBounds = true
+        TempoButton.layer.cornerRadius = 25
+        
+        let insets : CGFloat = 18
+        TempoDownButton.contentVerticalAlignment = .fill
+        TempoDownButton.contentHorizontalAlignment = .fill
+        TempoDownButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
+        TempoDownButton.backgroundColor = buttonColor
+        TempoDownButton.imageView?.tintColor = inlayColor
+        TempoDownButton.imageView?.alpha = 0.2
+        TempoDownButton.layer.masksToBounds = true
+        TempoDownButton.layer.cornerRadius = 25
+        
+        TempoUpButton.contentVerticalAlignment = .fill
+        TempoUpButton.contentHorizontalAlignment = .fill
+        TempoUpButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
+        TempoUpButton.backgroundColor = buttonColor
+        TempoUpButton.imageView?.tintColor = inlayColor
+        TempoUpButton.layer.masksToBounds = true
+        TempoUpButton.layer.cornerRadius = 25
+    }
+    
     func setButtonState (ibutton : UIButton, ibuttonState : Bool) {
         let alpha = ibuttonState ? 1.0 : 0.0
         ibutton.isEnabled = ibuttonState
         ibutton.alpha = CGFloat(alpha)
+    }
+    
+    func setButtonImage (ibutton: UIButton, iimageStr : String) {
+        if #available(iOS 13.0, *) {
+            ibutton.setImage(UIImage(systemName: iimageStr), for: .normal)
+        } else {
+            // Fallback on earlier versions
+        //            PeriphButton0.setImage(UIImage(named: "pencil"), for: UIControl.State.normal)  //i am not sure if this works
+        }
+    }
+    
+    func setPeripheralButtonsToDefault () {
+        for (i, str) in defaultPeripheralIcon.enumerated() {
+            setButtonImage(ibutton: periphButtonArr[i], iimageStr: str)
+        }
     }
     
     func recordTimeAccuracy() {
@@ -351,6 +414,15 @@ class ViewController: UIViewController {
         //sc.playSound(isoundName: "ButtonClick")
     }
     
+    func returnValidState (iinputState : State, istateArr : [State]) -> Bool {
+        for (_,item) in istateArr.enumerated() {
+            if (iinputState == item) {
+                return true
+            }
+        }
+        return false
+    }
+    
     @IBAction func NavToMainMenu(_ sender: Any) {
         var controller: MainMenuViewController
         
@@ -361,36 +433,12 @@ class ViewController: UIViewController {
     }
     
     @IBAction func scrollTempo(_ sender: UIButton) {
+        if (!tempoButtonsActive) {return}
         let dir = sender.tag == 0 ? 1.0 : -1.0
         met!.bpm = met!.bpm + dir
         TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
     }
-    
-    
-    
-    //    @IBAction func testNav2(_ sender: Any) {
-//
-//        let vc = setViewController(iviewControllerStr: "ViewController")
-//
-//        vc.currentState = ViewController.State.RecordingIdle
-//
-//        presentViewController(iviewController: vc)
-//    }
-//
-//    func setViewController(iviewControllerStr: String) -> ViewController {
-//        var controller: ViewController
-//
-//        controller = self.storyboard?.instantiateViewController(withIdentifier: iviewControllerStr) as! ViewController
-//
-//        return controller
-//    }
-//
-//    func presentViewController(iviewController: ViewController) {
-//
-//        iviewController.modalPresentationStyle = .fullScreen
-//        present(iviewController, animated: false, completion: nil)
-//    }
-    
+   
     
     @IBAction func startMetronome(_ sender: Any) {
         met?.startMetro()
@@ -399,21 +447,24 @@ class ViewController: UIViewController {
     
     //Peripheral Buttons Down
     @IBAction func PeripheralButton0OnButtonDown(_ sender: Any) {
-        
+                
         print("PeripheralButton0OnButtonDown \(currentState)")
+        let wchButton = 0
+        setPeripheralButtonsToDefault()
+               
         //Scale Test States
-        if (currentState == State.ScaleTestIdle || currentState == State.ScaleTestShowScale) {
-            PeriphButton0.setTitle("Stop Test", for: .normal)
-            currentState = State.ScaleTestActive
+        if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowScale) {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+            currentState = State.ScaleTestActive_NoTempo
             
-            currentState = State.ScaleTestCountIn
-            met?.currentClick = 0
-            scaleTestData.removeAll()
-            met?.startMetro()
+            currentState = State.ScaleTestActive_NoTempo
+//            met?.currentClick = 0
+//            scaleTestData.removeAll()
+//            met?.startMetro()
         }
-        else if (currentState == State.ScaleTestActive) {
-            PeriphButton0.setTitle("Start Test", for: .normal)
-            currentState = State.ScaleTestIdle
+        else if (currentState == State.ScaleTestActive_NoTempo) {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+            currentState = State.ScaleTestIdle_NoTempo
             
             met!.endMetronome()
             ResultButton1.setTitle("", for: .normal)
@@ -423,32 +474,43 @@ class ViewController: UIViewController {
     @IBAction func PeripheralButton1OnButtonDown(_: AnyObject) {
         
         print("PeripheralButton1OnButtonDown \(currentState)")
+        let wchButton = 1
+        
         //Scale Test States
-        if (currentState == State.ScaleTestIdle || currentState == State.ScaleTestShowScale) {
-            
-            let buttonStr = PeriphButton1.titleLabel?.text == "Show Scale" ? "Hide Scale" : "Show Scale"
-            PeriphButton1.setTitle(buttonStr, for: .normal)
-            if (buttonStr == "Hide Scale") {
-                displayMultipleFretMarkers(iinputArr: specifiedScale)
-                currentState = State.ScaleTestShowScale
-            }
-            else {
-                hideAllFretMarkers()
-                currentState = State.ScaleTestIdle
-            }
+        if (currentState == State.ScaleTestIdle_NoTempo)
+        {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+            currentState = State.PlayingScale
+            met?.startMetro()
         }
+        else if (currentState == State.PlayingScale)
+        {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+            currentState = State.ScaleTestIdle_NoTempo
+            met?.endMetronome()        }
     }
     
     @IBAction func PeripheralButton2OnButtonDown(_ sender: Any) {
         
         print("PeripheralButton2OnButtonDown \(currentState)")
-        print ("currentState \(currentState)")
+        let wchButton = 2
+        
         //Scale Test States
-        if (currentState == State.ScaleTestIdle) {
-            currentState = State.PlayingScale
-            met?.startMetro()
+        if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowScale) {
+            
+            if (currentState == State.ScaleTestIdle_NoTempo) {
+                setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+                displayMultipleFretMarkers(iinputArr: specifiedScale)
+                currentState = State.ScaleTestShowScale
+            }
+            else {
+                setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+                hideAllFretMarkers()
+                currentState = State.ScaleTestIdle_NoTempo
+            }
         }
     }
+    
     
     @IBAction func Result1ButtonDown(_ sender: Any) {
         
@@ -462,18 +524,16 @@ class ViewController: UIViewController {
     }
     
     @IBAction func onBackButtonDown(_ sender: Any) {
+               
+//        let states = [State.PlayingScale,State.ScaleTestCountIn,State.ScaleTestActive,State.ScaleTestIdle,State.ScaleTestShowScale]
+//
+//        for (_,state) in states.enumerated() {
+//            if (currentState == state) {
+//                met!.endMetronome()
+//            }
+//        }
         
-//        if ()
-        
-        let states = [State.PlayingScale,State.ScaleTestCountIn,State.ScaleTestActive,State.ScaleTestIdle,State.ScaleTestShowScale]
-        
-        for (_,state) in states.enumerated() {
-            if (currentState == state) {
-                met!.endMetronome()
-            }
-        }
-        
-        
+        met!.endMetronome()
         var controller: MainMenuViewController
         
         controller = self.storyboard?.instantiateViewController(withIdentifier: "MainMenuViewController") as! MainMenuViewController
@@ -485,12 +545,14 @@ class ViewController: UIViewController {
     @IBAction func FretPressed(_ sender: UIButton) {
         
         print("in fret pressed state \(currentState)")
-        if (currentState == State.Recording || currentState == State.Idle || currentState == State.EarTrainResponse || currentState == State.ScaleTestActive || currentState == State.ScaleTestCountIn || currentState == State.ScaleTestIdle || currentState == State.ScaleTestShowScale)
+        
+       let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowScale])
+        if (validState)
         {
             if (currentState == State.ScaleTestShowScale)
             {
                 hideAllFretMarkers()
-                currentState = State.ScaleTestIdle
+                currentState = State.ScaleTestIdle_NoTempo
                 PeriphButton1.setTitle("Show Scale", for: .normal)
             }
             
@@ -516,7 +578,7 @@ class ViewController: UIViewController {
                 }
             }
             
-            if (currentState == State.ScaleTestActive)
+            if (currentState == State.ScaleTestActive_Tempo)
             {
                 let st = InputData()
                 st.note = buttonDict[sender.tag]!
@@ -524,7 +586,89 @@ class ViewController: UIViewController {
                 scaleTestData.append(st)
                 recordTimeAccuracy()
             }
+            
+            if (currentState == State.ScaleTestActive_NoTempo)
+            {
+                let st = InputData()
+                st.note = buttonDict[sender.tag]!
+                st.time = 0
+                scaleTestData.append(st)
+                if (scaleTestData.count == specifiedScale.count) {
+                    currentState = State.ScaleTestIdle_NoTempo
+                    let scaleCorrect = analyzeScale()
+                    _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(presentTestResult), userInfo: ["ScaleCorrect":scaleCorrect], repeats: false)
+                }
+//                recordTimeAccuracy()
+            }
         }
+    }
+    
+    func analyzeScale () -> Bool {
+        for (i,item) in scaleTestData.enumerated() {
+            if (item.note != specifiedScale[i])
+            {
+                return false
+            }
+        }
+        return true
+    }
+    
+    @objc func presentTestResult (timer:Timer) {
+
+        var testPassed = false
+        let resultObj = timer.userInfo as! Dictionary<String, AnyObject>
+        if let test = resultObj["ScaleCorrect"] {
+            testPassed = test as! Bool
+        } else {
+            // abc is nil
+        }
+
+        var resultsText = ""
+        resultsText =  testPassed ? "Great!" : "Try Again!"
+        result1ViewStrs.append(resultsText)
+        ResultButton1.setTitle(result1ViewStrs[0], for: .normal)
+        
+//        analyzeNewLevel(itestPassed: testPassed)
+        analyzeNewLevel(itestPassed: true)
+    }
+    
+    func analyzeNewLevel(itestPassed: Bool) {
+        if (!itestPassed) {return}
+        
+        print("sub level passed \(userLevelData.scaleLevel)")
+        
+        var level = returnConvertedLevel(iinput: currentLevel!)
+        var subLevel = returnConvertedSubLevel(iinput: currentLevel!) + 1
+        
+        if (subLevel == currentLevelConstruct.count) {
+            //upgrade level
+            let levelConstruct = LevelConstruct()
+            if (level < levelConstruct.scale[0].count - 1) {
+                level = level + 1
+                subLevel = 0
+            }
+        }
+        
+        
+        
+                
+        currentLevel = "\(level).\(subLevel)"
+        UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
+        print("updated current level \(currentLevel ?? "")")
+        
+        setupCurrentTask()
+    }
+    
+    func returnConvertedLevel (iinput : String) -> Int {
+        
+        let numb = Int(iinput.split(separator: ".")[0])
+        return numb!
+    }
+    
+    func returnConvertedSubLevel (iinput : String) -> Int {
+        
+        let numb = Int(iinput.split(separator: ".")[1])
+        return numb!
     }
     
     @IBAction func record(_ sender: Any) {
@@ -588,7 +732,7 @@ class ViewController: UIViewController {
         if (currentState == State.Idle)
         {
             currentState = State.PlayingScale
-            sClass?.setupSpecifiedScale()
+            sClass?.setupSpecifiedScale(iinput: "MinorPentatonic")
             met?.startMetro()
         }
     }

@@ -15,6 +15,7 @@ class UserLevelData : NSObject, NSCoding {
     var et_singleNotes : String
     var et_scales : String
     var et_chords : String
+    var stringEquivs = ["scaleLevel","arpeggioLevel","et_singleNotes","et_scales","et_chords"]
     
      init(scaleLevel:String,arpeggioLevel:String,et_singleNotes:String,et_scales:String,et_chords:String) {
          
@@ -41,6 +42,8 @@ class UserLevelData : NSObject, NSCoding {
         self.et_scales = "0.0"
         self.et_chords = "0.0"
     }
+    
+ 
     
      convenience required init?(coder aDecoder: NSCoder) {
          
@@ -77,4 +80,17 @@ class UserLevelData : NSObject, NSCoding {
 //        }
 //        self.init(name: name, lastName: lastName, scaleLevel: 1.0)
 //    }
+}
+
+class LevelConstruct {
+    let scale = [
+        ["MinorPentatonic", "MajorPentatonic"],
+        ["MinorPentatonic", "MajorPentatonic", "MajorPentatonic"],
+        ["MinorPentatonic", "MajorPentatonic"],
+    ]
+    let arpeggio = [
+        ["Major", "Minor"],
+        ["MajorSeventh", "MinorSeventh"],
+        ["MinorPentatonic", "MajorPentatonic"],
+    ]   
 }

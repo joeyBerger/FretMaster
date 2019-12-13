@@ -25,58 +25,65 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var Button2: UIButton!
     @IBOutlet weak var Button3: UIButton!
     @IBOutlet weak var Button4: UIButton!
+    @IBOutlet weak var NavBar: UINavigationBar!
+    @IBOutlet weak var NavBarFiller: UIImageView!
+    @IBOutlet weak var NavSettingsButton: UIBarButtonItem!
     
+    var levelArr: [Int] = []
+    
+
     override func viewDidLoad() {
         super.viewDidLoad()
         
         view.backgroundColor = defaultColor.BackgroundColor
         
-        if (true) {
-            if (userLevelData.scaleLevel == "0.0") {
-                let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
-                if let scaleLevel = scaleLevel {
-                    print ("scaleLevel \(scaleLevel)")
-                    let arpeggioLevel = UserDefaults.standard.object(forKey: "arpeggioLevel")
-                    let et_singleNotes = UserDefaults.standard.object(forKey: "et_singleNotes")
-                    let et_scales = UserDefaults.standard.object(forKey: "et_scales")
-                    let et_chords = UserDefaults.standard.object(forKey: "et_chords")
-                    userLevelData.scaleLevel = scaleLevel as! String
-                    userLevelData.arpeggioLevel = arpeggioLevel as! String
-                    userLevelData.et_singleNotes = et_singleNotes as! String
-                    userLevelData.et_scales = et_scales as! String
-                    userLevelData.et_chords = et_chords as! String
-                }
-                else
-                {
-                    UserDefaults.standard.set("0.3", forKey: "scaleLevel")
-                    UserDefaults.standard.set("1.0", forKey: "arpeggioLevel")
-                    UserDefaults.standard.set("0.0", forKey: "et_singleNotes")
-                    UserDefaults.standard.set("1.0", forKey: "et_scales")
-                    UserDefaults.standard.set("0.0", forKey: "et_chords")
-                    userLevelData.setDefaultValues()
-                    //UserData(scaleLevel: 1.0,arpeggioLevel: 2.0,et_singleNotes: 3.0,et_scales: 4.0,et_chords: 5.0)
-                }
+        let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
+        
+        if scaleLevel != nil {
+            print ("restoring data")
+            let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
+            if let scaleLevel = scaleLevel {
+                print ("scaleLevel \(scaleLevel)")
+                let arpeggioLevel = UserDefaults.standard.object(forKey: "arpeggioLevel")
+                let et_singleNotes = UserDefaults.standard.object(forKey: "et_singleNotes")
+                let et_scales = UserDefaults.standard.object(forKey: "et_scales")
+                let et_chords = UserDefaults.standard.object(forKey: "et_chords")
+                userLevelData.scaleLevel = scaleLevel as! String
+                userLevelData.arpeggioLevel = arpeggioLevel as! String
+                userLevelData.et_singleNotes = et_singleNotes as! String
+                userLevelData.et_scales = et_scales as! String
+                userLevelData.et_chords = et_chords as! String
+            }
+        } else {
+            print ("brand new data")
+            userLevelData.setDefaultValues()
+            for (_,str) in userLevelData.stringEquivs.enumerated() {
+             UserDefaults.standard.removeObject(forKey: str)
+             UserDefaults.standard.set("0.0", forKey: str)
             }
         }
-        
-//        UserDefaults.standard.removeObject(forKey: "scaleLevel")
-//        let butt = userLevelData.scaleLevel.split(separator: ".")[0]
-//        var numb = Int(butt)
-//        numb = numb!+1
-        
+                
         var level = returnConvertedLevel(iinput: userLevelData.scaleLevel)
-        setupMainMenuButton(ibutton: Button0, ititle: "SCALES", isubtext: "LEVEL \(level)")
+        levelArr.append(level)
+        setupMainMenuButton(ibutton: Button0, ititle: "SCALES", isubtext: "LEVEL \(level+1)")
         level = returnConvertedLevel(iinput: userLevelData.arpeggioLevel)
-        setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level)")
+        levelArr.append(level)
+        setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level+1)")
         level = returnConvertedLevel(iinput: userLevelData.et_singleNotes)
-        setupMainMenuButton(ibutton: Button2, ititle: "SINGLE NOTES", isubtext: "LEVEL \(level)")
+        levelArr.append(level)
+        setupMainMenuButton(ibutton: Button2, ititle: "SINGLE NOTES", isubtext: "LEVEL \(level+1)")
         level = returnConvertedLevel(iinput: userLevelData.et_scales)
-        setupMainMenuButton(ibutton: Button3, ititle: "SCALES", isubtext: "LEVEL \(level)")
+        levelArr.append(level)
+        setupMainMenuButton(ibutton: Button3, ititle: "SCALES", isubtext: "LEVEL \(level+1)")
         level = returnConvertedLevel(iinput: userLevelData.et_chords)
-        setupMainMenuButton(ibutton: Button4, ititle: "CHORDS", isubtext: "LEVEL \(level)")
-
+        levelArr.append(level)
+        setupMainMenuButton(ibutton: Button4, ititle: "CHORDS", isubtext: "LEVEL \(level+1)")
         
-
+        NavBar.barTintColor = defaultColor.MenuButtonColor
+        NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
+        NavBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
+        NavSettingsButton.tintColor = defaultColor.MenuButtonTextColor
+        //periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
         
         print(userLevelData.scaleLevel)
     }
@@ -96,22 +103,29 @@ class MainMenuViewController: UIViewController {
         buttonSubtext.text = isubtext;
         buttonSubtext.layer.zPosition = 1;
         buttonSubtext.textColor = defaultColor.MenuButtonTextColor
-
         
         ibutton.addSubview(buttonSubtext)
     }
     
     func returnConvertedLevel (iinput : String) -> Int {
         
-        var numb = Int(iinput.split(separator: ".")[0])
-        return numb!+1
+        let numb = Int(iinput.split(separator: ".")[0])
+        return numb!
     }
     
-    @IBAction func testNav(_ sender: Any) {
+    @IBAction func MainMenuButton(_ sender: UIButton) {
                
         let vc = setViewController(iviewControllerStr: "ViewController")
+
+        let lc = LevelConstruct()
+//        let levelIndex = levelArr[sender.tag]
         
-        vc.currentState = ViewController.State.ScaleTestIdle
+        //Scale Test No Tempo
+        if (sender.tag == 0) {
+            
+            vc.setStateProperties(icurrentState: ViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel")
+            //RENAME
+        }
         
         presentViewController(iviewController: vc)
     }
@@ -137,5 +151,12 @@ class MainMenuViewController: UIViewController {
         
         iviewController.modalPresentationStyle = .fullScreen
         present(iviewController, animated: false, completion: nil)
+    }
+    
+    @IBAction func resetData(_ sender: Any) {
+        print("resetting data")
+        for (_,str) in userLevelData.stringEquivs.enumerated() {
+            UserDefaults.standard.removeObject(forKey: str)
+        }
     }
 }

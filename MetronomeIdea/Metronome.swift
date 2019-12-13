@@ -81,7 +81,7 @@ class Metronome {
                 if (currentClick == vc!.specifiedScale.count-1)
                 {
                     endMetronome()
-                    vc!.currentState = ViewController.State.ScaleTestIdle
+                    vc!.currentState = ViewController.State.ScaleTestIdle_Tempo
                 }
             }
             else if (vc!.currentState == ViewController.State.EarTrainCall)
@@ -99,9 +99,9 @@ class Metronome {
                 vc!.click.playSound(isoundName: "MenuButtonClick")
                 clickTime = CFAbsoluteTimeGetCurrent()
                 //                print ("playing something\(clickTime) diff = \(clickTime - userInputTime)")
-                if (currentClick == countInClick-1 && vc!.currentState == ViewController.State.ScaleTestCountIn)
+                if (currentClick == countInClick-1 && vc!.currentState == ViewController.State.ScaleTestCountIn_Tempo)
                 {
-                    vc!.currentState = ViewController.State.ScaleTestActive
+                    vc!.currentState = ViewController.State.ScaleTestActive_Tempo
                     vc!.ResultsLabel0.text = String(currentClick+1)
                 }
                 else if (currentClick < 3)
@@ -155,16 +155,15 @@ class Metronome {
             metroTimer?.invalidate()
             metroTimer = nil
         }
-        if (vc!.currentState == ViewController.State.ScaleTestCountIn || vc!.currentState == ViewController.State.ScaleTestActive)
+        if (vc!.currentState == ViewController.State.ScaleTestCountIn_Tempo || vc!.currentState == ViewController.State.ScaleTestActive_Tempo)
         {
-            vc!.PeriphButton0.setTitle("Start Test", for: .normal)
             vc!.ResultsLabel0.text = "Minor Pentatonic"            
         }
     }
     
     @objc func analyzeScaleTest()
     {
-        vc!.currentState = ViewController.State.ScaleTestIdle
+        vc!.currentState = ViewController.State.ScaleTestIdle_Tempo
         vc!.result1ViewStrs.removeAll()
         for item in vc!.scaleTestData {
             print(item.note)
@@ -178,24 +177,17 @@ class Metronome {
             vc!.ResultButton1.setTitle(vc!.result1ViewStrs[0], for: .normal)
             return
         }
-        var notesMatch = true
+        var notesMatch = vc!.analyzeScale()
         var timeAcurracyMet = true
+//        notesMatch = 
         for (i, items) in vc!.scaleTestData.enumerated()
         {
-            if (items.note != vc!.specifiedScale[i])
-            {
-                notesMatch = false
-            }
             if (items.timeDelta > (vc!.timeThreshold["Easy"])!)
             {
                 timeAcurracyMet = false
             }
         }
         var resultsText = ""
-        //resultsText = !notesMatch ? "Wrong notes" : "Good notes"
-//        resultsText = !notesMatch ? "N" : "Y"
-//        resultsText += ", "
-//        resultsText += !timeAcurracyMet ? "N" : "Y"
         
         resultsText = notesMatch && timeAcurracyMet ? "Great!" : "Try Again!"
         vc!.result1ViewStrs.append(resultsText)
