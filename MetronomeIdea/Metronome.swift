@@ -177,10 +177,10 @@ class Metronome {
             vc!.ResultButton1.setTitle(vc!.result1ViewStrs[0], for: .normal)
             return
         }
-        var notesMatch = vc!.analyzeScale()
+        let notesMatch = vc!.sCollection!.analyzeScale(iscaleTestData: vc!.scaleTestData)
         var timeAcurracyMet = true
 //        notesMatch = 
-        for (i, items) in vc!.scaleTestData.enumerated()
+        for (_, items) in vc!.scaleTestData.enumerated()
         {
             if (items.timeDelta > (vc!.timeThreshold["Easy"])!)
             {

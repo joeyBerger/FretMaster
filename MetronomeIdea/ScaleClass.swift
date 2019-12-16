@@ -8,7 +8,7 @@
 
 import Foundation
 
-class ScaleClass {
+class ScaleCollection {
     
     var vc : ViewController?
     
@@ -34,6 +34,9 @@ class ScaleClass {
         "7" : 11
     ]
     
+//    let distanceToScaleDegreeDict : [Int:String] = [:]
+//    let distanceToScaleDegreeDict : [Int:String] = [:]
+    
     let scaleNameDic : [String:String] = [
         "MinorPentatonic" : "Minor Pentatonic",
         "MajorPentatonic" : "Major Pentatonic",
@@ -51,31 +54,30 @@ class ScaleClass {
         "AugArp" : "Augmented Arpeggio",
     ]
     
+    let availableScales : [String:[String]] = [
+        "Ionian" : ["1","2","3","4","5","6","7"],
+        "Dorian" : ["1","2","b3","4","5","6","b7"],
+        "Phyrgian" : ["1","b2","b3","4","5","b6","b7"],
+        "Lydian" : ["1","2","3","#4","5","6","7"],
+        "Mixolydian" : ["1","2","3","4","5","6","b7"],
+        "Aeolian" : ["1","2","b3","4","5","b6","b7"],
+        "Locrian" : ["1","b2","b3","4","b5","b6","b7"],
+        "MinorPentatonic" : ["1","b3","4","5","b7"],
+        "MajorPentatonic" : ["1","2","3","5","6"],
+        
+        "MajArp" : ["1","3","5"],
+        "MinArp" : ["1","b3","5"],
+        "DimArp" : ["1","b3","b5"],
+        "AugArp" : ["1","3","#5"],
+        
+        "Chromatic" : ["1","b2","2","b3","3","4","#4","5","#5","6","b7","7"],
+    ]
+    
     var startingOctave = 0
     var scaleOctaves = 2
     
     func setupSpecifiedScale (iinput : String)
     {
-        let availableScales : [String:[String]] = [
-            "Ionian" : ["1","2","3","4","5","6","7"],
-            "Dorian" : ["1","2","b3","4","5","6","b7"],
-            "Phyrgian" : ["1","b2","b3","4","5","b6","b7"],
-            "Lydian" : ["1","2","3","#4","5","6","7"],
-            "Mixolydian" : ["1","2","3","4","5","6","b7"],
-            "Aeolian" : ["1","2","b3","4","5","b6","b7"],
-            "Locrian" : ["1","b2","b3","4","b5","b6","b7"],
-            "MinorPentatonic" : ["1","b3","4","5","b7"],
-            "MajorPentatonic" : ["1","2","3","5","6"],
-            
-            "MajArp" : ["1","3","5"],
-            "MinArp" : ["1","b3","5"],
-            "DimArp" : ["1","b3","b5"],
-            "AugArp" : ["1","3","#5"],
-            
-            "Chromatic" : ["1","b2","2","b3","3","4","#4","5","#5","6","b7","7"],
-            
-            ]
-        
         let startingNote = "A"
         var noteIndex = 0
         var notePos = 1
@@ -147,7 +149,30 @@ class ScaleClass {
         }
     }
     
+    func returnNoteDistance (iinput: String, icomparedNote: String) -> String {
+        if let inputIndex = refScale.firstIndex(of: iinput) {
+            print("poop")
+//            print(inputIndex)
+            if let comparedNoteIndex = refScale.firstIndex(of: icomparedNote) {
+//                print(comparedNoteIndex)
+                let dist = inputIndex < comparedNoteIndex ? (12 + inputIndex) - comparedNoteIndex : inputIndex - comparedNoteIndex
+                print(scaleDegreeDict.filter{$1 == dist}.map{$0.0}[0])
+                return scaleDegreeDict.filter{$1 == dist}.map{$0.0}[0]
+            }
+        }
+        return "3"
+    }
+    
     func returnReadableScaleName (iinput: String) -> String {
         return scaleNameDic[iinput]!
+    }
+    
+    func analyzeScale (iscaleTestData : [ViewController.InputData]) -> Bool {
+        for (i,item) in iscaleTestData.enumerated() {
+            if (item.note != vc!.specifiedScale[i]) {
+                return false
+            }
+        }
+        return true
     }
 }

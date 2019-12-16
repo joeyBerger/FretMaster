@@ -24,6 +24,9 @@ struct DefaultColor {
     
     let ResultsButtonColor = UIColor(red: 25/255, green: 0/255, blue: 97/255, alpha: 1.0)
     let NavBarTitleColor = UIColor.white
+    
+    let ProgressBarColor = UIColor(red:13/255, green:255/255, blue:0/255, alpha: 1.0)
+    let ProgressTrackColor = UIColor(red: 53/255, green: 0/255, blue: 211/255, alpha: 1.0)
 
     //UIColor(red: 25/255, green: 0/255, blue: 97/255, alpha: 1.0) Dark purple
 

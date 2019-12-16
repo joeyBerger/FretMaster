@@ -85,8 +85,8 @@ class UserLevelData : NSObject, NSCoding {
 class LevelConstruct {
     let scale = [
         ["MinorPentatonic", "MajorPentatonic"],
-        ["MinorPentatonic", "MajorPentatonic", "MajorPentatonic"],
-        ["MinorPentatonic", "MajorPentatonic"],
+        ["Ionian", "Aeolian"],
+        ["MinorPentatonic", "MajorPentatonic","Ionian", "Aeolian"],
     ]
     let arpeggio = [
         ["Major", "Minor"],

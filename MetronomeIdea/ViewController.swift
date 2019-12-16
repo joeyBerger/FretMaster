@@ -61,7 +61,6 @@ class ViewController: UIViewController {
     @IBOutlet weak var TempoUpButton: UIButton!
     
     @IBOutlet weak var ResultButton1: UIButton!
-    
 
     lazy var dotDict: [String:UIImageView] = [
         "G#1": Dot_GS1,
@@ -97,12 +96,9 @@ class ViewController: UIViewController {
 
     //TIMERS
     var dotFadeTime : Timer?
-        
     var userInputTime = CFAbsoluteTimeGetCurrent()
-    
     var recordStartTime: CFAbsoluteTime = 0
     var recordStopTime: CFAbsoluteTime = 0
-    
     var previousNote: String?
     
     class InputData {
@@ -120,6 +116,8 @@ class ViewController: UIViewController {
     var defaultPeripheralIcon: [String] = []
     var activePeripheralIcon: [String] = []
     
+    var developmentMode = true
+    
     let timeThreshold : [String:Double] = [
         "Easy": 0.1,
         "Medium": 0.075,
@@ -135,7 +133,7 @@ class ViewController: UIViewController {
     let sc = SoundController(isubInstances: 10)
     let click = SoundController(isubInstances: 10)
     var met : Metronome? = nil
-    var sClass : ScaleClass? = nil
+    var sCollection : ScaleCollection? = nil
     var et : EarTraining? = nil
     
     var tempoButtonsActive = false
@@ -198,6 +196,7 @@ class ViewController: UIViewController {
     }
     
     var currentState = State.Idle
+    var allMarkersDisplayed = false
     var defaultState : State?
     var currentLevel: String?
     var currentLevelConstruct: [[String]] = [[]]
@@ -210,7 +209,7 @@ class ViewController: UIViewController {
         view.backgroundColor = defaultColor.BackgroundColor
         
         met = Metronome(ivc: self)
-        sClass = ScaleClass(ivc: self)
+        sCollection = ScaleCollection(ivc: self)
         et = EarTraining(ivc: self)
         
         BPM_textField.text = String(Int(met!.bpm))
@@ -227,19 +226,7 @@ class ViewController: UIViewController {
         
         ResultsLabel0?.textColor = defaultColor.MenuButtonTextColor
         
-        for (str, view) in dotDict {
-            //view.isHidden = true
-            view.alpha = 0
-            let note = str.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789"))
-            let scrollView = UILabel()
-            let xVal = note.count > 1 ? 7.5 : 11.5
-            scrollView.frame = CGRect(x: xVal,y: -22.5,width: 80,height: 80)
-            scrollView.textAlignment = NSTextAlignment.natural
-            scrollView.text = note;  //"C"
-            scrollView.layer.zPosition = 1;
-            buttonNote[str] = scrollView
-            dotDict[str]!.addSubview(buttonNote[str]!)
-        }
+        setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
         
         NavBar.barTintColor = defaultColor.MenuButtonColor
         NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
@@ -287,20 +274,30 @@ class ViewController: UIViewController {
             defaultPeripheralIcon = ["play","music.note","info"]
             activePeripheralIcon = ["pause","arrowshape.turn.up.left","arrowshape.turn.up.left"]
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
+            displayMultipleFretMarkers(iinputArr: specifiedScale, ialphaAmount: 1.0)
+            
         }
         setupPeripheralButtons(iiconArr : defaultPeripheralIcon)
     }
     
     func setupCurrentTask () {
         let task = returnCurrentTask()
-        sClass!.setupSpecifiedScale(iinput: task)
-        ResultsLabel0.text = sClass!.returnReadableScaleName(iinput: task)
+        sCollection!.setupSpecifiedScale(iinput: task)
+//        setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
+        ResultsLabel0.text = sCollection!.returnReadableScaleName(iinput: task)
     }
     
     func returnCurrentTask() -> String {
         let level = returnConvertedLevel(iinput: currentLevel!)
         let subLevel = returnConvertedSubLevel(iinput: currentLevel!)
-        return currentLevelConstruct[level][subLevel]
+        
+        //make sure the current level/sublevel is not out of range
+        if (currentLevelConstruct[level].count > subLevel) {
+            return currentLevelConstruct[level][subLevel]
+        }
+        
+        //level/sublevel is out of range, return last task in construct
+        return currentLevelConstruct[level][subLevel-1]
     }
     
     func setupPeripheralButtons (iiconArr : [String ]) {
@@ -328,6 +325,12 @@ class ViewController: UIViewController {
             {
                 button.isHidden = true
             }
+        }
+    }
+    
+    func restorePeriphButtonsToDefault (idefaultIcons: [String]) {
+        for (i, _) in idefaultIcons.enumerated() {
+            setButtonImage(ibutton: periphButtonArr[i], iimageStr: idefaultIcons[i])
         }
     }
     
@@ -365,6 +368,38 @@ class ViewController: UIViewController {
         TempoUpButton.imageView?.tintColor = inlayColor
         TempoUpButton.layer.masksToBounds = true
         TempoUpButton.layer.cornerRadius = 25
+    }
+    
+    func setupFretMarkerText (ishowAlphabeticalNote: Bool, ishowNumericDegree: Bool, inumericDefaults: [String] = ["b5","b6"]) {
+        if (!ishowAlphabeticalNote && !ishowNumericDegree) {
+            return
+        }
+        var idx = 0
+        for (str, view) in dotDict {
+            view.alpha = 0
+            
+            var note = ""
+            if (ishowAlphabeticalNote) {
+                note = str.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789"))
+            } else {
+                note = sCollection!.returnNoteDistance(iinput: String(str.dropLast()), icomparedNote: "A")
+                if (note == "#4" && inumericDefaults[0] == "b5") {
+                    note = "b5"
+                } else if (note == "#5" && inumericDefaults[1] == "b6") {
+                    note = "b6"
+                }
+                idx += 1
+            }
+
+            let scrollView = UILabel()
+            let xVal = note.count > 1 ? 7.5 : 11.5
+            scrollView.frame = CGRect(x: xVal,y: -22.5,width: 80,height: 80)
+            scrollView.textAlignment = NSTextAlignment.natural
+            scrollView.text = note;  //"C"
+            scrollView.layer.zPosition = 1;
+            buttonNote[str] = scrollView
+            dotDict[str]!.addSubview(buttonNote[str]!)
+        }
     }
     
     func setButtonState (ibutton : UIButton, ibuttonState : Bool) {
@@ -456,8 +491,7 @@ class ViewController: UIViewController {
         if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowScale) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
             currentState = State.ScaleTestActive_NoTempo
-            
-            currentState = State.ScaleTestActive_NoTempo
+            hideAllFretMarkers()
 //            met?.currentClick = 0
 //            scaleTestData.removeAll()
 //            met?.startMetro()
@@ -477,17 +511,16 @@ class ViewController: UIViewController {
         let wchButton = 1
         
         //Scale Test States
-        if (currentState == State.ScaleTestIdle_NoTempo)
-        {
+        if (currentState == State.ScaleTestIdle_NoTempo) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
             currentState = State.PlayingScale
             met?.startMetro()
-        }
-        else if (currentState == State.PlayingScale)
-        {
+            hideAllFretMarkers()
+        } else if (currentState == State.PlayingScale) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
             currentState = State.ScaleTestIdle_NoTempo
-            met?.endMetronome()        }
+            met?.endMetronome()
+        }
     }
     
     @IBAction func PeripheralButton2OnButtonDown(_ sender: Any) {
@@ -500,7 +533,7 @@ class ViewController: UIViewController {
             
             if (currentState == State.ScaleTestIdle_NoTempo) {
                 setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-                displayMultipleFretMarkers(iinputArr: specifiedScale)
+                displayMultipleFretMarkers(iinputArr: specifiedScale, ialphaAmount: 1.0)
                 currentState = State.ScaleTestShowScale
             }
             else {
@@ -549,12 +582,13 @@ class ViewController: UIViewController {
        let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowScale])
         if (validState)
         {
-            if (currentState == State.ScaleTestShowScale)
-            {
-                hideAllFretMarkers()
+            hideAllFretMarkers()
+            if (currentState == State.ScaleTestShowScale) {
+                
                 currentState = State.ScaleTestIdle_NoTempo
-                PeriphButton1.setTitle("Show Scale", for: .normal)
+//                PeriphButton1.setTitle("Show Scale", for: .normal)
             }
+            
             
             sc.playSound(isoundName: buttonDict[sender.tag]!)
             displaySingleFretMarker(iinputStr: buttonDict[sender.tag]!)
@@ -593,9 +627,10 @@ class ViewController: UIViewController {
                 st.note = buttonDict[sender.tag]!
                 st.time = 0
                 scaleTestData.append(st)
-                if (scaleTestData.count == specifiedScale.count) {
+                if (scaleTestData.count == specifiedScale.count || developmentMode) {
                     currentState = State.ScaleTestIdle_NoTempo
-                    let scaleCorrect = analyzeScale()
+                    restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
+                    let scaleCorrect = sCollection!.analyzeScale(iscaleTestData: scaleTestData)
                     _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(presentTestResult), userInfo: ["ScaleCorrect":scaleCorrect], repeats: false)
                 }
 //                recordTimeAccuracy()
@@ -603,15 +638,15 @@ class ViewController: UIViewController {
         }
     }
     
-    func analyzeScale () -> Bool {
-        for (i,item) in scaleTestData.enumerated() {
-            if (item.note != specifiedScale[i])
-            {
-                return false
-            }
-        }
-        return true
-    }
+//    func analyzeScale () -> Bool {
+//        for (i,item) in scaleTestData.enumerated() {
+//            if (item.note != specifiedScale[i])
+//            {
+//                return false
+//            }
+//        }
+//        return true
+//    }
     
     @objc func presentTestResult (timer:Timer) {
 
@@ -633,24 +668,23 @@ class ViewController: UIViewController {
     }
     
     func analyzeNewLevel(itestPassed: Bool) {
-        if (!itestPassed) {return}
+        if (!itestPassed && !developmentMode) {return}
         
         print("sub level passed \(userLevelData.scaleLevel)")
         
         var level = returnConvertedLevel(iinput: currentLevel!)
         var subLevel = returnConvertedSubLevel(iinput: currentLevel!) + 1
         
-        if (subLevel == currentLevelConstruct.count) {
+        if (subLevel == currentLevelConstruct[level].count) {
             //upgrade level
             let levelConstruct = LevelConstruct()
-            if (level < levelConstruct.scale[0].count - 1) {
+            if (level < levelConstruct.scale.count - 1) {
                 level = level + 1
                 subLevel = 0
+            } else {
+//                subLevel = subLevel - 1
             }
         }
-        
-        
-        
                 
         currentLevel = "\(level).\(subLevel)"
         UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
@@ -659,6 +693,7 @@ class ViewController: UIViewController {
         setupCurrentTask()
     }
     
+    //these functions should exist inone place
     func returnConvertedLevel (iinput : String) -> Int {
         
         let numb = Int(iinput.split(separator: ".")[0])
@@ -702,6 +737,7 @@ class ViewController: UIViewController {
         let displayT = 1
         _ = Timer.scheduledTimer(timeInterval: TimeInterval(displayT), target: self, selector: #selector(self.beginEarTrainingHelper), userInfo: ["NoteSelection":tempScale,"AlphaVal":0.0], repeats: false)
         
+        
         displaySelectionDots(inoteSelection: tempScale, ialphaAmount: 0.5)
         dotDict[earTrainCallArr[0]]?.alpha = 1
     }
@@ -732,7 +768,7 @@ class ViewController: UIViewController {
         if (currentState == State.Idle)
         {
             currentState = State.PlayingScale
-            sClass?.setupSpecifiedScale(iinput: "MinorPentatonic")
+            sCollection?.setupSpecifiedScale(iinput: "MinorPentatonic")
             met?.startMetro()
         }
     }
@@ -745,30 +781,32 @@ class ViewController: UIViewController {
         }
     }
     
-    func displayMultipleFretMarkers(iinputArr: [String ])
+    func displayMultipleFretMarkers(iinputArr: [String], ialphaAmount: Double)
     {
         killCurrentDotFade()
-        
         for (str,_) in dotDict {
             dotDict[str]!.alpha = 0.0
            
             if (iinputArr.contains(str)) {
                 UIView.animate(withDuration: 0.1, animations: {
-                    self.dotDict[str]!.alpha = 1.0
+                    self.dotDict[str]!.alpha = CGFloat(ialphaAmount)
                 },completion: nil)
                 
                 swoopScale(iobject: self.dotDict[str]!,iscaleX: 0,iscaleY: 0,iduration: 0)
                 swoopScale(iobject: self.dotDict[str]!,iscaleX: 1,iscaleY: 1,iduration: 0.1)
             }
         }
+        allMarkersDisplayed = true
     }
     
     func hideAllFretMarkers()
     {
-        killCurrentDotFade()
-        
-        for (str,_) in dotDict {
-            dotDict[str]!.alpha = 0.0
+        if (allMarkersDisplayed) {
+            killCurrentDotFade()
+            for (str,_) in dotDict {
+                dotDict[str]!.alpha = 0.0
+            }
+            allMarkersDisplayed = false
         }
     }
     

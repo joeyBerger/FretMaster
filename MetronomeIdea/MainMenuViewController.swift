@@ -30,7 +30,6 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var NavSettingsButton: UIBarButtonItem!
     
     var levelArr: [Int] = []
-    
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -63,21 +62,27 @@ class MainMenuViewController: UIViewController {
             }
         }
                 
+        let lc = LevelConstruct()
         var level = returnConvertedLevel(iinput: userLevelData.scaleLevel)
+        var subLevel = returnConvertedSubLevel(iinput: userLevelData.scaleLevel)
+        var progress = returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.scale)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button0, ititle: "SCALES", isubtext: "LEVEL \(level+1)")
+        setupMainMenuButton(ibutton: Button0, ititle: "SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
+        
         level = returnConvertedLevel(iinput: userLevelData.arpeggioLevel)
+        subLevel = returnConvertedSubLevel(iinput: userLevelData.arpeggioLevel)
+        progress = returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.arpeggio)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level+1)")
+        setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
         level = returnConvertedLevel(iinput: userLevelData.et_singleNotes)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button2, ititle: "SINGLE NOTES", isubtext: "LEVEL \(level+1)")
+        setupMainMenuButton(ibutton: Button2, ititle: "SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
         level = returnConvertedLevel(iinput: userLevelData.et_scales)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button3, ititle: "SCALES", isubtext: "LEVEL \(level+1)")
+        setupMainMenuButton(ibutton: Button3, ititle: "SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
         level = returnConvertedLevel(iinput: userLevelData.et_chords)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button4, ititle: "CHORDS", isubtext: "LEVEL \(level+1)")
+        setupMainMenuButton(ibutton: Button4, ititle: "CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
         
         NavBar.barTintColor = defaultColor.MenuButtonColor
         NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
@@ -88,7 +93,7 @@ class MainMenuViewController: UIViewController {
         print(userLevelData.scaleLevel)
     }
     
-    func setupMainMenuButton (ibutton : UIButton, ititle: String, isubtext : String) {
+    func setupMainMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float) {
         ibutton.backgroundColor = defaultColor.MenuButtonColor
         ibutton.setTitleColor(defaultColor.MenuButtonTextColor, for: .normal)
         ibutton.setTitle(ititle, for: .normal)
@@ -97,20 +102,52 @@ class MainMenuViewController: UIViewController {
         ibutton.layer.shadowRadius = 2
         ibutton.layer.shadowOpacity = 0.6
        
+        let width = 273.0
         let buttonSubtext = UILabel()
-        buttonSubtext.frame = CGRect(x: 0,y: 15,width: 273,height: 62)
+        buttonSubtext.frame = CGRect(x: 0,y: 15,width: width,height: 62)
         buttonSubtext.textAlignment = NSTextAlignment.center
         buttonSubtext.text = isubtext;
         buttonSubtext.layer.zPosition = 1;
         buttonSubtext.textColor = defaultColor.MenuButtonTextColor
-        
         ibutton.addSubview(buttonSubtext)
+        
+        if (iprogressAmount >= 0.0) {
+            let progressSlider = UIProgressView()
+            progressSlider.frame = CGRect(x: (width-(width * 0.85))/2.0 ,y: 75,width: (width * 0.85),height: 62)
+            let progressAmount = iprogressAmount == 0.0 ? 0.05 : iprogressAmount
+            progressSlider.setProgress(progressAmount, animated: true)
+            progressSlider.progressTintColor = defaultColor.ProgressBarColor
+            progressSlider.trackTintColor = defaultColor.ProgressTrackColor
+            ibutton.addSubview(progressSlider)
+        }
     }
     
     func returnConvertedLevel (iinput : String) -> Int {
         
         let numb = Int(iinput.split(separator: ".")[0])
         return numb!
+    }
+    
+    func returnConvertedSubLevel (iinput : String) -> Int {
+        
+        let numb = Int(iinput.split(separator: ".")[1])
+        return numb!
+    }
+    
+    func returnTotalProgress (ilevel: Int, isubLevel: Int, ilevelConstruct: [[String]]) -> Float {
+        var subLevels = 0
+        var totalLevels = 0
+
+        for (i,item) in ilevelConstruct.enumerated() {
+            for (j,_) in item.enumerated() {
+                if ((ilevel >= i && isubLevel > j || ilevel > i) && (ilevel > 0 || isubLevel > 0)) {
+                    subLevels += 1
+                }
+                totalLevels += 1
+            }
+        }
+        print ("total levels \(subLevels)")
+        return Float(subLevels)/Float(totalLevels)
     }
     
     @IBAction func MainMenuButton(_ sender: UIButton) {
@@ -124,7 +161,6 @@ class MainMenuViewController: UIViewController {
         if (sender.tag == 0) {
             
             vc.setStateProperties(icurrentState: ViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel")
-            //RENAME
         }
         
         presentViewController(iviewController: vc)
