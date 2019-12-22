@@ -15,7 +15,7 @@ open override var isHighlighted: Bool {
     }
 }}
 
-var userLevelData = UserLevelData(scaleLevel: "0.0",arpeggioLevel: "0.0",et_singleNotes: "0.0",et_scales: "0.0",et_chords: "0.0")
+var userLevelData = UserLevelData(scaleLevel: "0.0",arpeggioLevel: "0.0",et_singleNotes: "0.0",et_scales: "0.0",et_chords: "0.0",tutorialComplete: "0.0")
 let defaultColor = DefaultColor()
 
 class MainMenuViewController: UIViewController {
@@ -47,18 +47,20 @@ class MainMenuViewController: UIViewController {
                 let et_singleNotes = UserDefaults.standard.object(forKey: "et_singleNotes")
                 let et_scales = UserDefaults.standard.object(forKey: "et_scales")
                 let et_chords = UserDefaults.standard.object(forKey: "et_chords")
+                let tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
                 userLevelData.scaleLevel = scaleLevel as! String
                 userLevelData.arpeggioLevel = arpeggioLevel as! String
                 userLevelData.et_singleNotes = et_singleNotes as! String
                 userLevelData.et_scales = et_scales as! String
                 userLevelData.et_chords = et_chords as! String
+                userLevelData.tutorialComplete = tutorialComplete as! String
             }
         } else {
-            print ("brand new data")
-            userLevelData.setDefaultValues()
-            for (_,str) in userLevelData.stringEquivs.enumerated() {
-             UserDefaults.standard.removeObject(forKey: str)
-             UserDefaults.standard.set("0.0", forKey: str)
+             print ("brand new data")
+             userLevelData.setDefaultValues()
+             for (_,str) in userLevelData.stringEquivs.enumerated() {
+                 UserDefaults.standard.removeObject(forKey: str)
+                 UserDefaults.standard.set("0.0", forKey: str)
             }
         }
                 
@@ -137,7 +139,6 @@ class MainMenuViewController: UIViewController {
     func returnTotalProgress (ilevel: Int, isubLevel: Int, ilevelConstruct: [[String]]) -> Float {
         var subLevels = 0
         var totalLevels = 0
-
         for (i,item) in ilevelConstruct.enumerated() {
             for (j,_) in item.enumerated() {
                 if ((ilevel >= i && isubLevel > j || ilevel > i) && (ilevel > 0 || isubLevel > 0)) {
@@ -146,7 +147,6 @@ class MainMenuViewController: UIViewController {
                 totalLevels += 1
             }
         }
-        print ("total levels \(subLevels)")
         return Float(subLevels)/Float(totalLevels)
     }
     
@@ -159,8 +159,12 @@ class MainMenuViewController: UIViewController {
         
         //Scale Test No Tempo
         if (sender.tag == 0) {
-            
-            vc.setStateProperties(icurrentState: ViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel")
+            vc.setStateProperties(icurrentState: ViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
+        }
+        
+        //Arpeggio Test No Tempo
+        if (sender.tag == 1) {
+            vc.setStateProperties(icurrentState: ViewController.State.ArpeggioTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
         }
         
         presentViewController(iviewController: vc)

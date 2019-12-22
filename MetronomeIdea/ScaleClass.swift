@@ -48,10 +48,12 @@ class ScaleCollection {
         "Aeolian" : "Aeolian",
         "Locrian" : "Locrian",
         "Chromatic" : "Chromatic",
-        "MajArp" : "Major Arpeggio",
-        "MinArp" : "Minor Arpeggio",
-        "DimArp" : "Diminished Arpeggio",
-        "AugArp" : "Augmented Arpeggio",
+        "MajorArp" : "Major Arpeggio",
+        "MinorArp" : "Minor Arpeggio",
+        "MajorSeventhArp" : "Major7th Arpeggio",
+        "MinorSeventhArp" : "Minor7th Arpeggio",
+        "DiminishedArp" : "Diminished Arpeggio",
+        "AugmentedArp" : "Augmented Arpeggio",
     ]
     
     let availableScales : [String:[String]] = [
@@ -65,10 +67,13 @@ class ScaleCollection {
         "MinorPentatonic" : ["1","b3","4","5","b7"],
         "MajorPentatonic" : ["1","2","3","5","6"],
         
-        "MajArp" : ["1","3","5"],
-        "MinArp" : ["1","b3","5"],
-        "DimArp" : ["1","b3","b5"],
-        "AugArp" : ["1","3","#5"],
+        "MajorArp" : ["1","3","5"],
+        "MinorArp" : ["1","b3","5"],
+        "DiminishedArp" : ["1","b3","b5"],
+        "AugmentedArp" : ["1","3","#5"],
+        
+        "MajorSeventhArp" : ["1","3","5","7"],
+        "MinorSeventhArp" : ["1","b3","5","b7"],
         
         "Chromatic" : ["1","b2","2","b3","3","4","#4","5","#5","6","b7","7"],
     ]
@@ -84,10 +89,10 @@ class ScaleCollection {
         
         let desiredScale = availableScales[iinput]
        
-        vc!.specifiedScale.removeAll()
+        vc!.specifiedNoteCollection.removeAll()
         
         //find note index
-        if ( vc!.specifiedScale.isEmpty)
+        if ( vc!.specifiedNoteCollection.isEmpty)
         {
             for (i, item) in refScale.enumerated()
             {
@@ -105,44 +110,44 @@ class ScaleCollection {
                 {
                     notePos = notePos + 1
                 }
-                 vc!.specifiedScale.append(refScale[(noteIndex+note!)%refScale.count] + String(notePos+startingOctave))
+                 vc!.specifiedNoteCollection.append(refScale[(noteIndex+note!)%refScale.count] + String(notePos+startingOctave))
             }
             
             if (scaleOctaves > 1)
             {
-                for item in vc!.specifiedScale
+                for item in vc!.specifiedNoteCollection
                 {
                     let noteName = item.count == 2 ? item.prefix(1) : item.prefix(2)
                     let pitch = Int(item.suffix(1))! + 1
                     let newNote = noteName + String(pitch)
-                    vc!.specifiedScale.append(String(newNote))
+                    vc!.specifiedNoteCollection.append(String(newNote))
                 }
             }
             else if (startingOctave > 0)
             {
-                let tempArr = vc!.specifiedScale
-                vc!.specifiedScale.removeAll()
+                let tempArr = vc!.specifiedNoteCollection
+                vc!.specifiedNoteCollection.removeAll()
                 for item in tempArr
                 {
                     let noteName = item.count == 2 ? item.prefix(1) : item.prefix(2)
                     let pitch = Int(item.suffix(1))! + 1
                     let newNote = noteName + String(pitch)
-                    vc!.specifiedScale.append(String(newNote))
+                    vc!.specifiedNoteCollection.append(String(newNote))
                 }
             }
             
             //add last octave
-            let noteName = vc!.specifiedScale[0].count == 2 ? vc!.specifiedScale[0].prefix(1) : vc!.specifiedScale[0].prefix(2)
-            let pitch = Int(vc!.specifiedScale[0].suffix(1))! + scaleOctaves;
+            let noteName = vc!.specifiedNoteCollection[0].count == 2 ? vc!.specifiedNoteCollection[0].prefix(1) : vc!.specifiedNoteCollection[0].prefix(2)
+            let pitch = Int(vc!.specifiedNoteCollection[0].suffix(1))! + scaleOctaves;
             let newNote = noteName + String(pitch)
-            vc!.specifiedScale.append(String(newNote))
+            vc!.specifiedNoteCollection.append(String(newNote))
             
             var i = 0
-            for (item) in vc!.specifiedScale.reversed()
+            for (item) in vc!.specifiedNoteCollection.reversed()
             {
                 if (i > 0)
                 {
-                    vc!.specifiedScale.append(item)
+                    vc!.specifiedNoteCollection.append(item)
                 }
                 i = i +  1
             }
@@ -151,16 +156,12 @@ class ScaleCollection {
     
     func returnNoteDistance (iinput: String, icomparedNote: String) -> String {
         if let inputIndex = refScale.firstIndex(of: iinput) {
-            print("poop")
-//            print(inputIndex)
             if let comparedNoteIndex = refScale.firstIndex(of: icomparedNote) {
-//                print(comparedNoteIndex)
                 let dist = inputIndex < comparedNoteIndex ? (12 + inputIndex) - comparedNoteIndex : inputIndex - comparedNoteIndex
-                print(scaleDegreeDict.filter{$1 == dist}.map{$0.0}[0])
                 return scaleDegreeDict.filter{$1 == dist}.map{$0.0}[0]
             }
         }
-        return "3"
+        return ""
     }
     
     func returnReadableScaleName (iinput: String) -> String {
@@ -169,7 +170,7 @@ class ScaleCollection {
     
     func analyzeScale (iscaleTestData : [ViewController.InputData]) -> Bool {
         for (i,item) in iscaleTestData.enumerated() {
-            if (item.note != vc!.specifiedScale[i]) {
+            if (item.note != vc!.specifiedNoteCollection[i]) {
                 return false
             }
         }

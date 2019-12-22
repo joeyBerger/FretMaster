@@ -36,6 +36,7 @@ class Metronome {
     //Metro Features
     var isOn = false
     var bpm = 120.0//60.0     //Tempo Used for beeps, calculated into time value
+
     var barNoteValue = 4        //How Many Notes Per Bar (Set To Amount Of Hits Per Pattern)
     var noteInBar = 0        //What Note You Are On In Bar
     var subdivision = 1;
@@ -74,11 +75,11 @@ class Metronome {
         let targetTime:Double = 60/bpm
         if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003)
         {
-            if (vc!.currentState == ViewController.State.PlayingScale)
+            if (vc!.currentState == ViewController.State.PlayingNoteCollection)
             {
-                vc!.sc.playSound(isoundName: vc!.specifiedScale[currentClick])
-                vc!.displaySingleFretMarker(iinputStr: vc!.specifiedScale[currentClick])
-                if (currentClick == vc!.specifiedScale.count-1)
+                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick])
+                vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick])
+                if (currentClick == vc!.specifiedNoteCollection.count-1)
                 {
                     endMetronome()
                     vc!.currentState = ViewController.State.ScaleTestIdle_Tempo
@@ -129,11 +130,11 @@ class Metronome {
                         {
                             print("early0")
                         }
-                        vc!.scaleTestData[vc!.scaleTestData.count-1].time = userInputTime
-                        vc!.scaleTestData[vc!.scaleTestData.count-1].timeDelta = timeDelta
+                        vc!.noteCollectionTestData[vc!.noteCollectionTestData.count-1].time = userInputTime
+                        vc!.noteCollectionTestData[vc!.noteCollectionTestData.count-1].timeDelta = timeDelta
                     }
                 }
-                if (currentClick == countInClick + vc!.specifiedScale.count - 1)
+                if (currentClick == countInClick + vc!.specifiedNoteCollection.count - 1)
                 {
                     endMetronome()
                     _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.analyzeScaleTest), userInfo: nil, repeats: false)
@@ -165,11 +166,11 @@ class Metronome {
     {
         vc!.currentState = ViewController.State.ScaleTestIdle_Tempo
         vc!.result1ViewStrs.removeAll()
-        for item in vc!.scaleTestData {
+        for item in vc!.noteCollectionTestData {
             print(item.note)
             print(item.time)
         }
-        if (vc!.scaleTestData.count != vc!.specifiedScale.count)
+        if (vc!.noteCollectionTestData.count != vc!.specifiedNoteCollection.count)
         {
 //            print("Not Enough Notes Inputted")
             vc!.result1ViewStrs.append("Try Again!")
@@ -177,10 +178,10 @@ class Metronome {
             vc!.ResultButton1.setTitle(vc!.result1ViewStrs[0], for: .normal)
             return
         }
-        let notesMatch = vc!.sCollection!.analyzeScale(iscaleTestData: vc!.scaleTestData)
+        let notesMatch = vc!.sCollection!.analyzeScale(iscaleTestData: vc!.noteCollectionTestData)
         var timeAcurracyMet = true
 //        notesMatch = 
-        for (_, items) in vc!.scaleTestData.enumerated()
+        for (_, items) in vc!.noteCollectionTestData.enumerated()
         {
             if (items.timeDelta > (vc!.timeThreshold["Easy"])!)
             {

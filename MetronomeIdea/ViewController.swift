@@ -8,7 +8,7 @@
 
 import UIKit
 
-class ViewController: UIViewController {
+class ViewController: UIViewController, UIPopoverPresentationControllerDelegate {
        
     //Game Objects
     @IBOutlet weak var Dot_GS1: UIImageView!
@@ -61,7 +61,19 @@ class ViewController: UIViewController {
     @IBOutlet weak var TempoUpButton: UIButton!
     
     @IBOutlet weak var ResultButton1: UIButton!
-
+    
+    @IBOutlet var mainPopover: UIView!
+    @IBOutlet weak var mainPopoverCloseButton: UIButton!
+    @IBOutlet weak var mainPopoverBodyText: UILabel!
+    @IBOutlet weak var mainPopoverTitle: UILabel!
+    @IBOutlet weak var mainPopoverButton: UIButton!
+    
+    @IBOutlet var tutorialPopover: UIView!
+    
+    
+    @IBOutlet weak var DimOverlay: UIImageView!
+    @IBOutlet weak var OverlayButton: UIButton!
+    
     lazy var dotDict: [String:UIImageView] = [
         "G#1": Dot_GS1,
         "A1" : Dot_A1,
@@ -109,7 +121,7 @@ class ViewController: UIViewController {
     
     var periphButtonArr : [UIButton] = []
     var recordData : [InputData] = []
-    var scaleTestData : [InputData] = []
+    var noteCollectionTestData : [InputData] = []
     var earTrainCallArr: [String] = []
     var earTrainResponseArr: [String] = []
     
@@ -124,7 +136,7 @@ class ViewController: UIViewController {
         "Hard": 0.05
     ]
     
-    var specifiedScale : [String] = []
+    var specifiedNoteCollection : [String] = []
     let tempScale : [String] = ["A1","C2","D2","E2","G2"]
     
     var result1ViewStrs : [String] = []
@@ -135,8 +147,10 @@ class ViewController: UIViewController {
     var met : Metronome? = nil
     var sCollection : ScaleCollection? = nil
     var et : EarTraining? = nil
+    var wt = waitThen();
     
     var tempoButtonsActive = false
+    var tutorialActive = false
     
     var buttonDict: [Int:String] = [
         0 : "G#1",
@@ -181,9 +195,9 @@ class ViewController: UIViewController {
         case EarTrainCall
         case EarTrainResponse
         
-        case PlayingScale
+        case PlayingNoteCollection
         
-        case ScaleTest_NoTempo
+
         case ScaleTestIdle_NoTempo
         case ScaleTestActive_NoTempo
         
@@ -191,7 +205,16 @@ class ViewController: UIViewController {
         case ScaleTestActive_Tempo
         case ScaleTestIdle_Tempo
         
-        case ScaleTestShowScale
+        
+        case ArpeggioTestIdle_NoTempo
+        case ArpeggioTestActive_NoTempo
+        
+        case ArpeggioTestCountIn_Tempo  //still need to do this
+        case ArpeggioTestActive_Tempo
+        case ArpeggioTestIdle_Tempo
+        
+        case ScaleTestShowNotes
+        case ArpeggioTestShowNotes
 //        case ScaleTestResult
     }
     
@@ -201,6 +224,7 @@ class ViewController: UIViewController {
     var currentLevel: String?
     var currentLevelConstruct: [[String]] = [[]]
     var currentLevelKey: String?
+    var tutorialComplete: Bool?
     let digitInput = DigitsInput()
         
     override func viewDidLoad() {
@@ -212,6 +236,10 @@ class ViewController: UIViewController {
         sCollection = ScaleCollection(ivc: self)
         et = EarTraining(ivc: self)
         
+        if (developmentMode) {
+            met?.bpm = 350.0
+        }
+            
         BPM_textField.text = String(Int(met!.bpm))
         BPM_textField.isHidden = true
         
@@ -225,6 +253,8 @@ class ViewController: UIViewController {
         ResultsLabel1?.adjustsFontSizeToFitWidth = true
         
         ResultsLabel0?.textColor = defaultColor.MenuButtonTextColor
+        
+        mainPopover.layer.cornerRadius = 10
         
         setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
         
@@ -242,6 +272,28 @@ class ViewController: UIViewController {
         ResultButton1.backgroundColor = defaultColor.ResultsButtonColor
         ResultButton1.setTitleColor(.white, for: .normal)
         
+        mainPopover.backgroundColor = defaultColor.MenuButtonColor
+        mainPopoverCloseButton.tintColor = defaultColor.MenuButtonTextColor
+        mainPopoverBodyText.textColor = defaultColor.MenuButtonTextColor
+        mainPopoverBodyText.contentMode = .scaleToFill
+        mainPopoverBodyText.numberOfLines = 0
+        
+        mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
+        mainPopoverButton.setTitleColor(.white, for: .normal)
+        mainPopoverButton.backgroundColor = UIColor.red
+//        mainPopoverButton.
+
+        
+//        mainPopoverLabel.adjustsFontSizeToFitWidth = true
+//        mainPopoverLabel.minimumScaleFactor = 0.5
+        
+//        mainPopoverLabel.minimumScaleFactor = 0.5
+//        mainPopoverLabel.numberOfLines = 6
+//        mainPopoverLabel.adjustsFontSizeToFitWidth = true
+//        mainPopoverLabel.text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standa rd dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
+        
+//        mainPopoverLabel.sizeToFit()
+        
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
         periphButtonArr.append(PeriphButton2)
@@ -249,33 +301,59 @@ class ViewController: UIViewController {
         periphButtonArr.append(PeriphButton4)
         periphButtonArr.append(PeriphButton5)
         
+        DimOverlay.alpha = 0.0
+        
+        if (!tutorialComplete!) {
+//            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            
+            
+            //temp
+            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentTutorialPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+        }
+
+        
         setupToSpecificState()
     }
     
-    func setStateProperties (icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String) {
+//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+//        print (segue)
+//
+////        var controller: ViewController
+////        controller = self.storyboard?.instantiateViewController(withIdentifier: "showPopover") as! ViewController
+////
+////        if (segue.identifier == "showPopover") {
+////            let popoverViewController = segue.destination
+////            popoverViewController.popoverPresentationController?.delegate = self
+////        }
+//    }
+    
+//    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
+//        return UIModalPresentationStyle.none
+//    }
+    
+    func setStateProperties (icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
         currentState = icurrentState
         defaultState = currentState
         tempoButtonsActive = itempoButtonsActive
         currentLevel = icurrentLevel
         currentLevelConstruct = ilevelConstruct
         currentLevelKey = ilevelKey
+        tutorialComplete = itutorialComplete == "1.0"
     }
     
     func setupToSpecificState () {
         print("setupToSpecificState \(currentState)")
         
-        if (currentState == State.RecordingIdle)
-        {
+        if (currentState == State.RecordingIdle) {
             setButtonState(ibutton : PeriphButton0,ibuttonState : false)
         }
-        if (currentState == State.ScaleTestIdle_NoTempo)
-        {
+        //Scale/Arpeggio test
+        if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ArpeggioTestIdle_NoTempo) {
             setupCurrentTask()
             defaultPeripheralIcon = ["play","music.note","info"]
             activePeripheralIcon = ["pause","arrowshape.turn.up.left","arrowshape.turn.up.left"]
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
-            displayMultipleFretMarkers(iinputArr: specifiedScale, ialphaAmount: 1.0)
-            
+            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
         }
         setupPeripheralButtons(iiconArr : defaultPeripheralIcon)
     }
@@ -297,7 +375,7 @@ class ViewController: UIViewController {
         }
         
         //level/sublevel is out of range, return last task in construct
-        return currentLevelConstruct[level][subLevel-1]
+        return currentLevelConstruct[level][currentLevelConstruct[level].count-1]
     }
     
     func setupPeripheralButtons (iiconArr : [String ]) {
@@ -442,8 +520,8 @@ class ViewController: UIViewController {
                 {
                     print ("late")
                 }
-                scaleTestData[scaleTestData.count-1].time = userInputTime
-                scaleTestData[scaleTestData.count-1].timeDelta = timeDelta
+                noteCollectionTestData[noteCollectionTestData.count-1].time = userInputTime
+                noteCollectionTestData[noteCollectionTestData.count-1].timeDelta = timeDelta
             }
         }
         //sc.playSound(isoundName: "ButtonClick")
@@ -482,30 +560,51 @@ class ViewController: UIViewController {
     
     //Peripheral Buttons Down
     @IBAction func PeripheralButton0OnButtonDown(_ sender: Any) {
-                
+        if (tutorialActive) {return;}
+        
         print("PeripheralButton0OnButtonDown \(currentState)")
         let wchButton = 0
         setPeripheralButtonsToDefault()
                
         //Scale Test States
-        if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowScale) {
+        if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
             currentState = State.ScaleTestActive_NoTempo
             hideAllFretMarkers()
 //            met?.currentClick = 0
 //            scaleTestData.removeAll()
 //            met?.startMetro()
+            return
         }
         else if (currentState == State.ScaleTestActive_NoTempo) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
             currentState = State.ScaleTestIdle_NoTempo
-            
             met!.endMetronome()
             ResultButton1.setTitle("", for: .normal)
+            return
+        }
+        
+        //Arpeggio Test States
+        if (currentState == State.ArpeggioTestIdle_NoTempo || currentState == State.ArpeggioTestShowNotes) {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+            currentState = State.ArpeggioTestActive_NoTempo
+            hideAllFretMarkers()
+    //            met?.currentClick = 0
+    //            scaleTestData.removeAll()
+    //            met?.startMetro()
+            return
+        }
+        else if (currentState == State.ArpeggioTestActive_NoTempo) {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+            currentState = State.ArpeggioTestIdle_NoTempo
+            met!.endMetronome()
+            ResultButton1.setTitle("", for: .normal)
+            return
         }
     }
     
     @IBAction func PeripheralButton1OnButtonDown(_: AnyObject) {
+        if (tutorialActive) {return;}
         
         print("PeripheralButton1OnButtonDown \(currentState)")
         let wchButton = 1
@@ -513,33 +612,67 @@ class ViewController: UIViewController {
         //Scale Test States
         if (currentState == State.ScaleTestIdle_NoTempo) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-            currentState = State.PlayingScale
+            currentState = State.PlayingNoteCollection
             met?.startMetro()
             hideAllFretMarkers()
-        } else if (currentState == State.PlayingScale) {
+            return
+        } else if (currentState == State.PlayingNoteCollection) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
             currentState = State.ScaleTestIdle_NoTempo
             met?.endMetronome()
+            return
+        }
+        
+        //Arpeggio Test States
+        if (currentState == State.ArpeggioTestIdle_NoTempo) {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+            currentState = State.PlayingNoteCollection
+            met?.startMetro()
+            hideAllFretMarkers()
+            return
+        } else if (currentState == State.PlayingNoteCollection) {
+            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+            currentState = State.ArpeggioTestIdle_NoTempo
+            met?.endMetronome()
+            return
         }
     }
     
     @IBAction func PeripheralButton2OnButtonDown(_ sender: Any) {
+        if (tutorialActive) {return;}
         
         print("PeripheralButton2OnButtonDown \(currentState)")
         let wchButton = 2
         
         //Scale Test States
-        if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowScale) {
-            
+        if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes) {
             if (currentState == State.ScaleTestIdle_NoTempo) {
                 setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-                displayMultipleFretMarkers(iinputArr: specifiedScale, ialphaAmount: 1.0)
-                currentState = State.ScaleTestShowScale
+                displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
+                currentState = State.ScaleTestShowNotes
+                return
             }
-            else {
+            else if (currentState == State.ScaleTestShowNotes) {
                 setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
                 hideAllFretMarkers()
                 currentState = State.ScaleTestIdle_NoTempo
+                return
+            }
+        }
+        
+        //Arpeggio Test States
+        if (currentState == State.ArpeggioTestIdle_NoTempo || currentState == State.ArpeggioTestShowNotes) {
+            if (currentState == State.ArpeggioTestIdle_NoTempo) {
+                setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+                displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
+                currentState = State.ArpeggioTestShowNotes
+                return
+            }
+            else if (currentState == State.ArpeggioTestShowNotes){
+                setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+                hideAllFretMarkers()
+                currentState = State.ArpeggioTestIdle_NoTempo
+                return
             }
         }
     }
@@ -579,11 +712,11 @@ class ViewController: UIViewController {
         
         print("in fret pressed state \(currentState)")
         
-       let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowScale])
+       let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowNotes, State.ArpeggioTestCountIn_Tempo, State.ArpeggioTestActive_Tempo, State.ArpeggioTestIdle_NoTempo, State.ArpeggioTestShowNotes, State.ArpeggioTestActive_NoTempo])
         if (validState)
         {
             hideAllFretMarkers()
-            if (currentState == State.ScaleTestShowScale) {
+            if (currentState == State.ScaleTestShowNotes) {
                 
                 currentState = State.ScaleTestIdle_NoTempo
 //                PeriphButton1.setTitle("Show Scale", for: .normal)
@@ -612,25 +745,23 @@ class ViewController: UIViewController {
                 }
             }
             
-            if (currentState == State.ScaleTestActive_Tempo)
-            {
+            if (currentState == State.ScaleTestActive_Tempo) {
                 let st = InputData()
                 st.note = buttonDict[sender.tag]!
                 st.time = 0
-                scaleTestData.append(st)
+                noteCollectionTestData.append(st)
                 recordTimeAccuracy()
             }
             
-            if (currentState == State.ScaleTestActive_NoTempo)
-            {
+            if (currentState == State.ScaleTestActive_NoTempo || currentState == State.ArpeggioTestActive_NoTempo) {
                 let st = InputData()
                 st.note = buttonDict[sender.tag]!
                 st.time = 0
-                scaleTestData.append(st)
-                if (scaleTestData.count == specifiedScale.count || developmentMode) {
+                noteCollectionTestData.append(st)
+                if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode) {
                     currentState = State.ScaleTestIdle_NoTempo
                     restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
-                    let scaleCorrect = sCollection!.analyzeScale(iscaleTestData: scaleTestData)
+                    let scaleCorrect = sCollection!.analyzeScale(iscaleTestData: noteCollectionTestData)
                     _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(presentTestResult), userInfo: ["ScaleCorrect":scaleCorrect], repeats: false)
                 }
 //                recordTimeAccuracy()
@@ -767,7 +898,7 @@ class ViewController: UIViewController {
     {
         if (currentState == State.Idle)
         {
-            currentState = State.PlayingScale
+            currentState = State.PlayingNoteCollection
             sCollection?.setupSpecifiedScale(iinput: "MinorPentatonic")
             met?.startMetro()
         }
@@ -781,21 +912,30 @@ class ViewController: UIViewController {
         }
     }
     
-    func displayMultipleFretMarkers(iinputArr: [String], ialphaAmount: Double)
+    func displayMultipleFretMarkers(iinputArr: [String], ialphaAmount: Float)
     {
         killCurrentDotFade()
         for (str,_) in dotDict {
             dotDict[str]!.alpha = 0.0
            
             if (iinputArr.contains(str)) {
-                UIView.animate(withDuration: 0.1, animations: {
-                    self.dotDict[str]!.alpha = CGFloat(ialphaAmount)
-                },completion: nil)
+//                UIView.animate(withDuration: 0.1, animations: {
+//                    self.dotDict[str]!.alpha = CGFloat(ialphaAmount)
+//                },completion: nil)
                 
+                swoopAlpha(iobject: self.dotDict[str]!, ialpha: Float(ialphaAmount), iduration: 0.1)
                 swoopScale(iobject: self.dotDict[str]!,iscaleX: 0,iscaleY: 0,iduration: 0)
                 swoopScale(iobject: self.dotDict[str]!,iscaleX: 1,iscaleY: 1,iduration: 0.1)
             }
         }
+        
+//        for (i,str) in defaultPeripheralIcon.enumerated() {
+//            if (str == "info") {
+//                setButtonImage(ibutton: periphButtonArr[i], iimageStr: activePeripheralIcon[i])
+//                break
+//            }
+//        }
+        
         allMarkersDisplayed = true
     }
     
@@ -815,22 +955,23 @@ class ViewController: UIViewController {
         if previousNote != nil
         {
             dotDict[previousNote!]?.alpha = 0.0
-            UIView.animate(withDuration: 0.3, animations: {
-                self.dotDict[self.previousNote!]?.alpha = 0.0
-            },completion: nil)
+//            UIView.animate(withDuration: 0.3, animations: {
+//                self.dotDict[self.previousNote!]?.alpha = 0.0
+//            },completion: nil)
             
+            swoopAlpha(iobject: dotDict[previousNote!]!, ialpha: Float(0.0), iduration: 0.3)
         }
         previousNote = iinputStr
         
         dotDict[iinputStr]!.alpha = 0.0
-        UIView.animate(withDuration: 0.1, animations: {
-            self.dotDict[iinputStr]!.alpha = 1.0
-        },completion: nil)
+//        UIView.animate(withDuration: 0.1, animations: {
+//            self.dotDict[iinputStr]!.alpha = 1.0
+//        },completion: nil)
         
+        swoopAlpha(iobject: dotDict[iinputStr]!, ialpha: Float(1.0), iduration: 0.1)
         killCurrentDotFade()
-        
-        swoopScale(iobject: self.dotDict[iinputStr]!,iscaleX: 0,iscaleY: 0,iduration: 0)
-        swoopScale(iobject: self.dotDict[iinputStr]!,iscaleX: 1,iscaleY: 1,iduration: 0.1)
+        swoopScale(iobject: dotDict[iinputStr]!,iscaleX: 0,iscaleY: 0,iduration: 0)
+        swoopScale(iobject: dotDict[iinputStr]!,iscaleX: 1,iscaleY: 1,iduration: 0.1)
         
         dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.alphaSwoopImage), userInfo: ["ImageId":iinputStr], repeats: false)
     }
@@ -839,22 +980,28 @@ class ViewController: UIViewController {
     {
         let image = timer.userInfo as! Dictionary<String, AnyObject>
         
-        UIView.animate(withDuration: 0.2, animations: {
-            self.dotDict[image["ImageId"] as! String]!.alpha = 0.0
-        },completion: { _ in
-            
-        })
+//        UIView.animate(withDuration: 0.2, animations: {
+//            self.dotDict[image["ImageId"] as! String]!.alpha = 0.0
+//        },completion: { _ in
+//
+//        })
+        
+        swoopAlpha(iobject: dotDict[image["ImageId"] as! String]!, ialpha: Float(0.0), iduration: 0.2)
     }
     
-    func swoopScale(iobject:UIView,iscaleX:Double,iscaleY:Double,iduration:Double)
-    {
+    func swoopScale(iobject:UIView,iscaleX:Double,iscaleY:Double,iduration:Double) {
         UIView.animate(withDuration: iduration, animations: {() -> Void in
             iobject.transform = CGAffineTransform(scaleX: CGFloat(iscaleX), y: CGFloat(iscaleY))
         }, completion: nil)
     }
     
-    func rand (max:Int) -> Int
-    {
+    func swoopAlpha(iobject: UIImageView, ialpha: Float, iduration: Float) {
+        UIView.animate(withDuration: TimeInterval(iduration), animations: {
+            iobject.alpha = CGFloat(ialpha)
+        },completion: nil)
+    }
+    
+    func rand (max:Int) -> Int {
         return Int.random(in: 0 ..< max)
     }
     
@@ -887,5 +1034,88 @@ class ViewController: UIViewController {
 //        ResultsLabel0.text = ""
          ResultsLabel1.text = ""
     }
+    
+    @IBAction func closeMainPopover(_ sender: Any) {
+        mainPopover.removeFromSuperview()
+        swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
+        tutorialActive = false
+    }
+    
+    
+    @IBAction func tempPopup(_ sender: Any) {
+        presentMainPopover()
+    }
+    
+    @objc func presentMainPopover() {
+        //https://www.youtube.com/watch?v=qS21yjo822Y
+        swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
+        view.addSubview(mainPopover)
+        mainPopover.center = view.center
+        mainPopover.center.y += -100
+        tutorialActive = true
+    }
+    
+    @IBAction func OverlayButtonFunc(_ sender: Any) {
+        print("i might need help")
+    }
+    
+    
+    @objc func presentTutorialPopover () {
+//        view.addSubview(tutorialPopover)
+//        tutorialPopover.center = periphButtonArr[2].center
+//        tutorialPopover.center.x += 100
+//        tutorialPopover.center.y += 50
+        
+  //      self.tutorialPopover?.presentPopoverFromRect(periphButtonArr[2].frame, inView: periphButtonArr[2].superview, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+
+        
+//        tutorialPopover.translatesAutoresizingMaskIntoConstraints = false
+//        self.periphButtonArr[2].addSubview(tutorialPopover)
+//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.periphButtonArr[2], attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0))
+//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.periphButtonArr[2], attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1.0, constant: 0))
+//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: 150))
+//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: 150))
+//
+//
+//
+//        tutorialActive = true
+    }
+    
+
+    
+    
+    //TODO: blurred functionality that you can simply parent to the dimOverlay, or like-minded object
+    /*
+    func addBlurArea(area: CGRect, style: UIBlurEffect.Style) {
+        let effect = UIBlurEffect(style: style)
+        let blurView = UIVisualEffectView(effect: effect)
+
+        let container = UIView(frame: area)
+        blurView.frame = CGRect(x: 0, y: 0, width: area.width, height: area.height)
+        container.addSubview(blurView)
+        container.alpha = 0.9
+        self.view.addSubview(container)
+    }
+
+    private func addBlurEffect() {
+        let blurEffect = UIBlurEffect(style: .dark)
+        let blurEffectView = UIVisualEffectView(effect: blurEffect)
+        blurEffectView.alpha = 0.8
+
+        blurEffectView.autoresizingMask = [.flexibleWidth, .flexibleHeight]
+
+        blurEffectView.translatesAutoresizingMaskIntoConstraints = false
+        self.view.addSubview(blurEffectView)
+
+        NSLayoutConstraint(item: blurEffectView, attribute: .centerX, relatedBy: .equal, toItem: self.view, attribute: .centerX, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: blurEffectView, attribute: .centerY, relatedBy: .equal, toItem: self.view, attribute: .centerY, multiplier: 1.0, constant: 0).isActive = true
+        NSLayoutConstraint(item: blurEffectView, attribute: .height,  relatedBy: .equal, toItem: self.view, attribute: .height,  multiplier: 1.0, constant: -500).isActive = true
+        NSLayoutConstraint(item: blurEffectView, attribute: .width,   relatedBy: .equal, toItem: self.view, attribute: .width,   multiplier: 1.0, constant: 0).isActive = true
+      }
+      */
 }
+
+    
+    
+
 

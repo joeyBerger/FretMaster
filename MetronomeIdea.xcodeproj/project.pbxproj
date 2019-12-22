@@ -10,6 +10,7 @@
 		9E07F7262396B0E600E99444 /* DefaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E07F7252396B0E600E99444 /* DefaultColor.swift */; };
 		9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E16FA142381C73600100F65 /* ScaleClass.swift */; };
 		9E5FB6EA2389F98C0078E980 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MainMenuViewController.swift */; };
+		9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E69398D23A7DDB800C57B11 /* WaitThen.swift */; };
 		9E8527D822C70D0800DFCB26 /* FretBoard2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527D722C70D0800DFCB26 /* FretBoard2.png */; };
 		9E8527DA22C7303B00DFCB26 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527D922C7303B00DFCB26 /* circle.png */; };
 		9E8527DC22C91E7400DFCB26 /* FretBoard3.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527DB22C91E7400DFCB26 /* FretBoard3.png */; };
@@ -63,6 +64,7 @@
 		9E07F7252396B0E600E99444 /* DefaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultColor.swift; sourceTree = "<group>"; };
 		9E16FA142381C73600100F65 /* ScaleClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleClass.swift; sourceTree = "<group>"; };
 		9E5FB6E92389F98C0078E980 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		9E69398D23A7DDB800C57B11 /* WaitThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitThen.swift; sourceTree = "<group>"; };
 		9E8527D722C70D0800DFCB26 /* FretBoard2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoard2.png; sourceTree = "<group>"; };
 		9E8527D922C7303B00DFCB26 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
 		9E8527DB22C91E7400DFCB26 /* FretBoard3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoard3.png; sourceTree = "<group>"; };
@@ -203,6 +205,7 @@
 				9ED9892022D1334B0076C65B /* DigitInput.swift */,
 				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
 				9E07F7252396B0E600E99444 /* DefaultColor.swift */,
+				9E69398D23A7DDB800C57B11 /* WaitThen.swift */,
 			);
 			path = MetronomeIdea;
 			sourceTree = "<group>";
@@ -322,6 +325,7 @@
 				9E07F7262396B0E600E99444 /* DefaultColor.swift in Sources */,
 				9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */,
 				9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */,
+				9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
 				B8A6186320DB9E7500AF33C5 /* Metronome.swift in Sources */,
 				9ED9892122D1334B0076C65B /* DigitInput.swift in Sources */,

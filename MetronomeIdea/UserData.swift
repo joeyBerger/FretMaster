@@ -15,15 +15,17 @@ class UserLevelData : NSObject, NSCoding {
     var et_singleNotes : String
     var et_scales : String
     var et_chords : String
-    var stringEquivs = ["scaleLevel","arpeggioLevel","et_singleNotes","et_scales","et_chords"]
+    var tutorialComplete : String
+    var stringEquivs = ["scaleLevel","arpeggioLevel","et_singleNotes","et_scales","et_chords","tutorialComplete"]
     
-     init(scaleLevel:String,arpeggioLevel:String,et_singleNotes:String,et_scales:String,et_chords:String) {
+    init(scaleLevel:String,arpeggioLevel:String,et_singleNotes:String,et_scales:String,et_chords:String,tutorialComplete:String) {
          
         self.scaleLevel = scaleLevel
         self.arpeggioLevel = arpeggioLevel
         self.et_singleNotes = et_singleNotes
         self.et_scales = et_scales
         self.et_chords = et_chords
+        self.tutorialComplete = tutorialComplete
      }
      
      func encode(with aCoder: NSCoder) {
@@ -51,11 +53,12 @@ class UserLevelData : NSObject, NSCoding {
          let arpeggioLevel = aDecoder.decodeObject(forKey: "arpeggioLevel") as? String,
          let et_singleNotes = aDecoder.decodeObject(forKey: "et_singleNotes") as? String,
          let et_scales = aDecoder.decodeObject(forKey: "et_scales") as? String,
-         let et_chords = aDecoder.decodeObject(forKey: "et_chords") as? String
+         let et_chords = aDecoder.decodeObject(forKey: "et_chords") as? String,
+         let tutorialComplete = aDecoder.decodeObject(forKey: "tutorialComplete") as? String
              else {
                  return nil
          }
-         self.init(scaleLevel: scaleLevel,arpeggioLevel: arpeggioLevel,et_singleNotes: et_singleNotes,et_scales: et_scales,et_chords: et_chords)
+        self.init(scaleLevel: scaleLevel,arpeggioLevel: arpeggioLevel,et_singleNotes: et_singleNotes,et_scales: et_scales,et_chords: et_chords,tutorialComplete: tutorialComplete)
      }
     
     
@@ -89,8 +92,9 @@ class LevelConstruct {
         ["MinorPentatonic", "MajorPentatonic","Ionian", "Aeolian"],
     ]
     let arpeggio = [
-        ["Major", "Minor"],
-        ["MajorSeventh", "MinorSeventh"],
-        ["MinorPentatonic", "MajorPentatonic"],
+        ["MajorArp", "MinorArp"],
+        ["MajorSeventhArp", "MinorSeventhArp"],
+        ["MajorArp", "MinorArp","MajorSeventhArp", "MinorSeventhArp"],
+        ["DiminishedArp", "AugmentedArp"],
     ]   
 }
