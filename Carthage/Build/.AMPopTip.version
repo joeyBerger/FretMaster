@@ -1,0 +1,19 @@
+{
+  "Mac" : [
+
+  ],
+  "watchOS" : [
+
+  ],
+  "tvOS" : [
+
+  ],
+  "commitish" : "4.4.0",
+  "iOS" : [
+    {
+      "name" : "AMPopTip",
+      "hash" : "77dab958f1ca97bc0fba332d219b934bacc65d3e1609f4e39eb33b670a21f203",
+      "swiftToolchainVersion" : "5.1.2 (swiftlang-1100.0.278 clang-1100.0.33.9)"
+    }
+  ]
+}

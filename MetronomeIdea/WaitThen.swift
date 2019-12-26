@@ -66,7 +66,6 @@ class waitThen
     {
         if self.activeWT[iindex] != nil
         {
-            print("in invalidate \(iindex)")
             self.infoStruct[iindex] = nil
             self.activeWT[iindex]!.invalidate()
             self.activeWT[iindex] = nil

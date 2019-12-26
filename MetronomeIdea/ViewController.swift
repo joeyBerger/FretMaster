@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import AMPopTip
 
 class ViewController: UIViewController, UIPopoverPresentationControllerDelegate {
        
@@ -74,6 +75,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     @IBOutlet weak var DimOverlay: UIImageView!
     @IBOutlet weak var OverlayButton: UIButton!
     
+    @IBOutlet weak var PeripheralStackView: UIStackView!
     lazy var dotDict: [String:UIImageView] = [
         "G#1": Dot_GS1,
         "A1" : Dot_A1,
@@ -128,6 +130,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var defaultPeripheralIcon: [String] = []
     var activePeripheralIcon: [String] = []
     
+    var tutorialPopupText: [String] = []
+    var currentTutorialPopup = 0
+    
     var developmentMode = true
     
     let timeThreshold : [String:Double] = [
@@ -139,6 +144,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var specifiedNoteCollection : [String] = []
     let tempScale : [String] = ["A1","C2","D2","E2","G2"]
     
+        
     var result1ViewStrs : [String] = []
     var currentResultView = 0
     
@@ -147,10 +153,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var met : Metronome? = nil
     var sCollection : ScaleCollection? = nil
     var et : EarTraining? = nil
+    var pc : PopupController? = nil
     var wt = waitThen();
     
     var tempoButtonsActive = false
     var tutorialActive = false
+    var mainPopoverVisible = false
     
     var buttonDict: [Int:String] = [
         0 : "G#1",
@@ -185,6 +193,11 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     ]
     
     var buttonNote : [String:UILabel] = [:]
+    
+    let layerArr = [
+        "Default",
+        "TutorialButton"
+    ]
     
     enum State {
         case Idle
@@ -235,6 +248,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         met = Metronome(ivc: self)
         sCollection = ScaleCollection(ivc: self)
         et = EarTraining(ivc: self)
+        pc = PopupController(ivc: self)
         
         if (developmentMode) {
             met?.bpm = 350.0
@@ -281,6 +295,16 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
         mainPopoverButton.setTitleColor(.white, for: .normal)
         mainPopoverButton.backgroundColor = UIColor.red
+        
+//        popTip.borderColor = UIColor.blue
+        
+        
+//        let butt = getLayer(ilayer: "TutorialButton")
+//        print("butt \(butt)")
+        
+        // popTip =
+        
+        
 //        mainPopoverButton.
 
         
@@ -304,14 +328,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         DimOverlay.alpha = 0.0
         
         if (!tutorialComplete!) {
-//            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
-            
-            
-            //temp
-            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentTutorialPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            setuoPopupTutorialText()
         }
-
-        
         setupToSpecificState()
     }
     
@@ -557,14 +576,33 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         met?.startMetro()
     }
     
+    func handleTutorialInput(iwchButton: Int) -> Bool {
+        if (mainPopoverVisible) {
+            return false;
+        }
+        
+        if (tutorialActive && currentTutorialPopup == iwchButton + 1) {
+            progressTutorial()
+            return false;
+        }
+        return true
+    }
+    
     
     //Peripheral Buttons Down
     @IBAction func PeripheralButton0OnButtonDown(_ sender: Any) {
-        if (tutorialActive) {return;}
-        
-        print("PeripheralButton0OnButtonDown \(currentState)")
         let wchButton = 0
+        
+        if (!handleTutorialInput(iwchButton: wchButton)) {
+            return
+        }
+
+        print("PeripheralButton0OnButtonDown \(currentState)")
+       
         setPeripheralButtonsToDefault()
+        let s = #selector(pc!.enactTestReminder) as Selector
+        wt.stopWaitThenOfType(iselector: s)
+        pc!.reminderPopup.hide()
                
         //Scale Test States
         if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes) {
@@ -604,10 +642,15 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     @IBAction func PeripheralButton1OnButtonDown(_: AnyObject) {
-        if (tutorialActive) {return;}
+        
+        let wchButton = 1
+        
+        if (!handleTutorialInput(iwchButton: wchButton)) {
+            return
+        }
         
         print("PeripheralButton1OnButtonDown \(currentState)")
-        let wchButton = 1
+        
         
         //Scale Test States
         if (currentState == State.ScaleTestIdle_NoTempo) {
@@ -639,10 +682,15 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     @IBAction func PeripheralButton2OnButtonDown(_ sender: Any) {
-        if (tutorialActive) {return;}
+        
+        let wchButton = 2
+        
+        if (!handleTutorialInput(iwchButton: wchButton)) {
+            return
+        }
         
         print("PeripheralButton2OnButtonDown \(currentState)")
-        let wchButton = 2
+        
         
         //Scale Test States
         if (currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes) {
@@ -710,6 +758,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func FretPressed(_ sender: UIButton) {
         
+        if (tutorialActive || mainPopoverVisible) {
+            return
+        }
         print("in fret pressed state \(currentState)")
         
        let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowNotes, State.ArpeggioTestCountIn_Tempo, State.ArpeggioTestActive_Tempo, State.ArpeggioTestIdle_NoTempo, State.ArpeggioTestShowNotes, State.ArpeggioTestActive_NoTempo])
@@ -1037,8 +1088,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func closeMainPopover(_ sender: Any) {
         mainPopover.removeFromSuperview()
-        swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
-        tutorialActive = false
+        progressTutorial()
+        mainPopoverVisible = false
+//        tutorialActive = false
     }
     
     
@@ -1052,7 +1104,30 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         view.addSubview(mainPopover)
         mainPopover.center = view.center
         mainPopover.center.y += -100
+        mainPopoverVisible = true
         tutorialActive = true
+    }
+    
+    func progressTutorial() {
+        
+        pc!.tutorialPopup.hide()
+        if (currentTutorialPopup == tutorialPopupText.count) {
+            swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
+            tutorialActive = false
+            periphButtonArr[tutorialPopupText.count-1].layer.zPosition = getLayer(ilayer: "Default")
+            pc!.startTestReminder(itime: 20)
+            return;
+        }
+        for (i,_) in tutorialPopupText.enumerated() {
+//            periphButtonArr[i].layer.zPosition = getLayer(ilayer: "Default")
+            setLayer(iobject: periphButtonArr[i], ilayer: "Default")
+        }
+        
+//        periphButtonArr[currentTutorialPopup].layer.zPosition = getLayer(ilayer: "TutorialButton")
+        
+        setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialButton")
+        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject])
+        currentTutorialPopup += 1
     }
     
     @IBAction func OverlayButtonFunc(_ sender: Any) {
@@ -1060,25 +1135,44 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     
-    @objc func presentTutorialPopover () {
-//        view.addSubview(tutorialPopover)
-//        tutorialPopover.center = periphButtonArr[2].center
-//        tutorialPopover.center.x += 100
-//        tutorialPopover.center.y += 50
-        
-  //      self.tutorialPopover?.presentPopoverFromRect(periphButtonArr[2].frame, inView: periphButtonArr[2].superview, permittedArrowDirections: UIPopoverArrowDirection.Any, animated: true)
+    func returnStackViewButtonCoordinates(istackViewButton: UIButton, istack: UIStackView, ixoffset: CGFloat = 0.0, iyoffset: CGFloat = 0.0) -> CGRect {
 
+        let spacing = istack.arrangedSubviews[1].frame.minY - istack.arrangedSubviews[0].frame.minY
+        let minX = istack.frame.minX + ixoffset
+        let minY = istack.frame.minY - CGFloat(spacing) + istackViewButton.frame.height/2 + istackViewButton.frame.minY + iyoffset
+        let width = istack.frame.width
+        let height = istack.frame.height
+        let view1 = UIView(frame: CGRect(x: minX, y: minY, width: width, height: height))
+        return view1.frame
+    }
+    
+    func setuoPopupTutorialText() {
+        tutorialPopupText = ["The TEST button will begin the test!","The PLAY button will play the scale!","The INFO button will display the scale!"]
+    }
+
+    func setLayer(iobject: AnyObject, ilayer: String) {
+        if #available(iOS 13.0, *) {
+            iobject.layer.zPosition = getLayer(ilayer: ilayer)
+        } else {
+            // Fallback on earlier versions
+        }
+    }
+    
+    func getLayer(ilayer: String) -> CGFloat {
+        let layer = layerArr.firstIndex(of: ilayer)
+        if (layer != nil) {
+            return CGFloat(layer!)
+        }
+        print("layer does not exist")
+        return 0
+    }
+    
+    @objc func presentTutorialPopup (timer:Timer) {
         
-//        tutorialPopover.translatesAutoresizingMaskIntoConstraints = false
-//        self.periphButtonArr[2].addSubview(tutorialPopover)
-//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.centerX, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.periphButtonArr[2], attribute: NSLayoutConstraint.Attribute.centerX, multiplier: 1.0, constant: 0))
-//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.centerY, relatedBy: NSLayoutConstraint.Relation.equal, toItem: self.periphButtonArr[2], attribute: NSLayoutConstraint.Attribute.centerY, multiplier: 1.0, constant: 0))
-//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.height, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: 150))
-//        self.view.addConstraint(NSLayoutConstraint(item: tutorialPopover, attribute: NSLayoutConstraint.Attribute.width, relatedBy: NSLayoutConstraint.Relation.equal, toItem: nil, attribute: NSLayoutConstraint.Attribute.notAnAttribute, multiplier: 1.0, constant: 150))
-//
-//
-//
-//        tutorialActive = true
+        let argDict = timer.userInfo as! Dictionary<String, AnyObject>
+        let wchPopup = argDict["arg1"] as! Int
+        let c = returnStackViewButtonCoordinates(istackViewButton: periphButtonArr[wchPopup], istack: PeripheralStackView, iyoffset: -25)
+        pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .left, maxWidth: 200, in: view, from: c)
     }
     
 
@@ -1113,6 +1207,46 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         NSLayoutConstraint(item: blurEffectView, attribute: .width,   relatedBy: .equal, toItem: self.view, attribute: .width,   multiplier: 1.0, constant: 0).isActive = true
       }
       */
+
+    
+}
+
+class PopupController {
+    
+    let vc : ViewController?
+    let tutorialPopup = PopTip()
+    let reminderPopup = PopTip()
+    
+    init (ivc:ViewController) {
+        vc = ivc;
+        tutorialPopup.textColor = UIColor.white
+        tutorialPopup.bubbleColor = UIColor.red
+        tutorialPopup.shouldDismissOnTap = false
+        tutorialPopup.shouldDismissOnTapOutside = false
+        tutorialPopup.animationOut = 0.15
+        
+        reminderPopup.textColor = UIColor.blue
+        reminderPopup.bubbleColor = UIColor.red
+//        reminderPopup.shouldDismissOnTap = false
+//        reminderPopup.shouldDismissOnTapOutside = false
+
+    }
+    
+    
+    @objc func startTestReminder(itime: Double) {
+        
+        vc!.wt.waitThen(itime: itime, itarget: self, imethod: #selector(self.enactTestReminder) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+
+    }
+    
+    @objc func enactTestReminder (timer:Timer) {
+        
+  
+        let c = vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.periphButtonArr[0], istack: vc!.PeripheralStackView, iyoffset: -25)
+        reminderPopup.show(text: "Start Test When Ready!", direction: .left, maxWidth: 200, in: vc!.view, from: c)
+    }
+    
+    
 }
 
     

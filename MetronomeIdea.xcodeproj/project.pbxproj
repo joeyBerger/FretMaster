@@ -15,6 +15,7 @@
 		9E8527DA22C7303B00DFCB26 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527D922C7303B00DFCB26 /* circle.png */; };
 		9E8527DC22C91E7400DFCB26 /* FretBoard3.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527DB22C91E7400DFCB26 /* FretBoard3.png */; };
 		9E8527E022C91F5800DFCB26 /* Fretboard4.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527DF22C91F5700DFCB26 /* Fretboard4.png */; };
+		9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E944D0223B0046B00A8F7A2 /* Playground.swift */; };
 		9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C46E622C483C000B133A9 /* SoundController.swift */; };
 		9E9C46E922C4841700B133A9 /* MenuButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */; };
 		9E9C46EB22C484AE00B133A9 /* ButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */; };
@@ -50,6 +51,8 @@
 		9EDC280722C980E000387143 /* A#1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC27EA22C980E000387143 /* A#1.wav */; };
 		9EDC280822C980E000387143 /* C#2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC27EB22C980E000387143 /* C#2.wav */; };
 		9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE71F35238B8B5B00D87D24 /* UserData.swift */; };
+		9EEF76B223AFE4AB00F00010 /* AMPopTip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; };
+		9EEF76B323AFE4AB00F00010 /* AMPopTip.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		B8A6184F20DB9E2A00AF33C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */; };
 		B8A6185620DB9E2B00AF33C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */; };
 		B8A6185920DB9E2B00AF33C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */; };
@@ -60,6 +63,20 @@
 		B8A6186920DB9F4100AF33C5 /* High.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8A6186620DB9F1C00AF33C5 /* High.wav */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXCopyFilesBuildPhase section */
+		9EEF76B423AFE4AB00F00010 /* Embed Frameworks */ = {
+			isa = PBXCopyFilesBuildPhase;
+			buildActionMask = 2147483647;
+			dstPath = "";
+			dstSubfolderSpec = 10;
+			files = (
+				9EEF76B323AFE4AB00F00010 /* AMPopTip.framework in Embed Frameworks */,
+			);
+			name = "Embed Frameworks";
+			runOnlyForDeploymentPostprocessing = 0;
+		};
+/* End PBXCopyFilesBuildPhase section */
+
 /* Begin PBXFileReference section */
 		9E07F7252396B0E600E99444 /* DefaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultColor.swift; sourceTree = "<group>"; };
 		9E16FA142381C73600100F65 /* ScaleClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleClass.swift; sourceTree = "<group>"; };
@@ -69,6 +86,7 @@
 		9E8527D922C7303B00DFCB26 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
 		9E8527DB22C91E7400DFCB26 /* FretBoard3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoard3.png; sourceTree = "<group>"; };
 		9E8527DF22C91F5700DFCB26 /* Fretboard4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fretboard4.png; sourceTree = "<group>"; };
+		9E944D0223B0046B00A8F7A2 /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		9E9C46E622C483C000B133A9 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
 		9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MenuButtonClick.wav; sourceTree = "<group>"; };
 		9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ButtonClick.wav; sourceTree = "<group>"; };
@@ -104,6 +122,7 @@
 		9EDC27EA22C980E000387143 /* A#1.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "A#1.wav"; sourceTree = "<group>"; };
 		9EDC27EB22C980E000387143 /* C#2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "C#2.wav"; sourceTree = "<group>"; };
 		9EE71F35238B8B5B00D87D24 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
+		9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMPopTip.framework; path = Carthage/Build/iOS/AMPopTip.framework; sourceTree = "<group>"; };
 		B8A6184B20DB9E2A00AF33C5 /* MetronomeIdea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetronomeIdea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -121,6 +140,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				9EEF76B223AFE4AB00F00010 /* AMPopTip.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -163,11 +183,20 @@
 			path = Sounds;
 			sourceTree = "<group>";
 		};
+		9EEF76AA23AFE2FF00F00010 /* Frameworks */ = {
+			isa = PBXGroup;
+			children = (
+				9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */,
+			);
+			name = Frameworks;
+			sourceTree = "<group>";
+		};
 		B8A6184220DB9E2900AF33C5 = {
 			isa = PBXGroup;
 			children = (
 				B8A6184D20DB9E2A00AF33C5 /* MetronomeIdea */,
 				B8A6184C20DB9E2A00AF33C5 /* Products */,
+				9EEF76AA23AFE2FF00F00010 /* Frameworks */,
 			);
 			sourceTree = "<group>";
 		};
@@ -206,6 +235,7 @@
 				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
 				9E07F7252396B0E600E99444 /* DefaultColor.swift */,
 				9E69398D23A7DDB800C57B11 /* WaitThen.swift */,
+				9E944D0223B0046B00A8F7A2 /* Playground.swift */,
 			);
 			path = MetronomeIdea;
 			sourceTree = "<group>";
@@ -220,6 +250,7 @@
 				B8A6184720DB9E2A00AF33C5 /* Sources */,
 				B8A6184820DB9E2A00AF33C5 /* Frameworks */,
 				B8A6184920DB9E2A00AF33C5 /* Resources */,
+				9EEF76B423AFE4AB00F00010 /* Embed Frameworks */,
 			);
 			buildRules = (
 			);
@@ -327,6 +358,7 @@
 				9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */,
 				9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
+				9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */,
 				B8A6186320DB9E7500AF33C5 /* Metronome.swift in Sources */,
 				9ED9892122D1334B0076C65B /* DigitInput.swift in Sources */,
 				B8A6184F20DB9E2A00AF33C5 /* AppDelegate.swift in Sources */,
@@ -467,6 +499,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2AZ8JTZ3QU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MetronomeIdea/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
@@ -486,6 +522,10 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CODE_SIGN_STYLE = Automatic;
 				DEVELOPMENT_TEAM = 2AZ8JTZ3QU;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/Carthage/Build/iOS",
+				);
 				INFOPLIST_FILE = MetronomeIdea/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
