@@ -29,6 +29,8 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var NavBarFiller: UIImageView!
     @IBOutlet weak var NavSettingsButton: UIBarButtonItem!
     
+    var tutorialCompleteStatus = true
+    
     var levelArr: [Int] = []
 
     override func viewDidLoad() {
@@ -68,23 +70,23 @@ class MainMenuViewController: UIViewController {
         var level = returnConvertedLevel(iinput: userLevelData.scaleLevel)
         var subLevel = returnConvertedSubLevel(iinput: userLevelData.scaleLevel)
         var progress = returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.scale)
+        tutorialCompleteStatus = userLevelData.tutorialComplete == "1.0"
         levelArr.append(level)
         setupMainMenuButton(ibutton: Button0, ititle: "SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
-        
         level = returnConvertedLevel(iinput: userLevelData.arpeggioLevel)
         subLevel = returnConvertedSubLevel(iinput: userLevelData.arpeggioLevel)
         progress = returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.arpeggio)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
+        setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = returnConvertedLevel(iinput: userLevelData.et_singleNotes)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button2, ititle: "SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
+        setupMainMenuButton(ibutton: Button2, ititle: "SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = returnConvertedLevel(iinput: userLevelData.et_scales)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button3, ititle: "SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
+        setupMainMenuButton(ibutton: Button3, ititle: "SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = returnConvertedLevel(iinput: userLevelData.et_chords)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button4, ititle: "CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
+        setupMainMenuButton(ibutton: Button4, ititle: "CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         
         NavBar.barTintColor = defaultColor.MenuButtonColor
         NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
@@ -93,11 +95,25 @@ class MainMenuViewController: UIViewController {
         //periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
         
         print(userLevelData.scaleLevel)
+        
     }
     
-    func setupMainMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float) {
-        ibutton.backgroundColor = defaultColor.MenuButtonColor
-        ibutton.setTitleColor(defaultColor.MenuButtonTextColor, for: .normal)
+    func setupMainMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float, itutorialComplete : Bool = true) {
+        
+//        var buttonColor = defaultColor.MenuButtonColor
+        var buttonColor: UIColor
+        var textColor: UIColor
+        
+        if (!itutorialComplete) {
+            buttonColor = defaultColor.InactiveButton;
+            textColor = defaultColor.InactiveInlay
+        } else {
+            buttonColor = defaultColor.MenuButtonColor;
+            textColor = defaultColor.MenuButtonTextColor
+        }
+
+        ibutton.backgroundColor = buttonColor
+        ibutton.setTitleColor(textColor, for: .normal)
         ibutton.setTitle(ititle, for: .normal)
         ibutton.layer.shadowColor = UIColor.black.cgColor
         ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
@@ -110,7 +126,7 @@ class MainMenuViewController: UIViewController {
         buttonSubtext.textAlignment = NSTextAlignment.center
         buttonSubtext.text = isubtext;
         buttonSubtext.layer.zPosition = 1;
-        buttonSubtext.textColor = defaultColor.MenuButtonTextColor
+        buttonSubtext.textColor = textColor
         ibutton.addSubview(buttonSubtext)
         
         if (iprogressAmount >= 0.0) {
@@ -152,16 +168,18 @@ class MainMenuViewController: UIViewController {
     
     @IBAction func MainMenuButton(_ sender: UIButton) {
                
+        if (!tutorialCompleteStatus && sender.tag > 0) {
+            return
+        }
+        
         let vc = setViewController(iviewControllerStr: "ViewController")
-
         let lc = LevelConstruct()
-//        let levelIndex = levelArr[sender.tag]
         
         //Scale Test No Tempo
         if (sender.tag == 0) {
             vc.setStateProperties(icurrentState: ViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
         }
-        
+                
         //Arpeggio Test No Tempo
         if (sender.tag == 1) {
             vc.setStateProperties(icurrentState: ViewController.State.ArpeggioTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")

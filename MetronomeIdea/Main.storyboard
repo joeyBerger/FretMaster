@@ -598,7 +598,7 @@
                                 <fontDescription key="fontDescription" type="system" pointSize="20"/>
                                 <state key="normal" title="TRY AGAIN"/>
                                 <connections>
-                                    <action selector="Result1ButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4hb-hE-SfN"/>
+                                    <action selector="ResultButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="4hb-hE-SfN"/>
                                 </connections>
                             </button>
                             <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="qbe-l6-B0p">
@@ -694,11 +694,11 @@
                                 </subviews>
                             </stackView>
                             <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="hxB-BZ-JXJ">
-                                <rect key="frame" x="344" y="807" width="46" height="30"/>
+                                <rect key="frame" x="330" y="807" width="75" height="30"/>
                                 <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" title="Button"/>
+                                <state key="normal" title="TestButton"/>
                                 <connections>
-                                    <action selector="tempPopup:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u7C-VR-FoU"/>
+                                    <action selector="testButton:" destination="BYZ-38-t0r" eventType="touchUpInside" id="u7C-VR-FoU"/>
                                 </connections>
                             </button>
                             <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rNo-2k-Oe0" userLabel="OverlayButton">

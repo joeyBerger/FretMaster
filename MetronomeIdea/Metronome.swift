@@ -165,7 +165,7 @@ class Metronome {
     @objc func analyzeScaleTest()
     {
         vc!.currentState = ViewController.State.ScaleTestIdle_Tempo
-        vc!.result1ViewStrs.removeAll()
+        vc!.resultViewStrs.removeAll()
         for item in vc!.noteCollectionTestData {
             print(item.note)
             print(item.time)
@@ -173,9 +173,9 @@ class Metronome {
         if (vc!.noteCollectionTestData.count != vc!.specifiedNoteCollection.count)
         {
 //            print("Not Enough Notes Inputted")
-            vc!.result1ViewStrs.append("Try Again!")
-            vc!.result1ViewStrs.append("Not Enough Notes Inputted")
-            vc!.ResultButton1.setTitle(vc!.result1ViewStrs[0], for: .normal)
+            vc!.resultViewStrs.append("Try Again!")
+            vc!.resultViewStrs.append("Not Enough Notes Inputted")
+            vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
             return
         }
         let notesMatch = vc!.sCollection!.analyzeScale(iscaleTestData: vc!.noteCollectionTestData)
@@ -191,16 +191,16 @@ class Metronome {
         var resultsText = ""
         
         resultsText = notesMatch && timeAcurracyMet ? "Great!" : "Try Again!"
-        vc!.result1ViewStrs.append(resultsText)
+        vc!.resultViewStrs.append(resultsText)
         if (!notesMatch)
         {
-            vc!.result1ViewStrs.append("NOTES : INCORRECT")
+            vc!.resultViewStrs.append("NOTES : INCORRECT")
         }
         if (!timeAcurracyMet)
         {
-            vc!.result1ViewStrs.append("TIME : INCORRECT")
+            vc!.resultViewStrs.append("TIME : INCORRECT")
         }
-        vc!.ResultButton1.setTitle(vc!.result1ViewStrs[0], for: .normal)
+        vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
 //        vc!.ResultsLabel1.text = resultsText
         print(resultsText)
         _ = Timer.scheduledTimer(timeInterval: 2, target: vc, selector: #selector(vc!.resetResultsLabel), userInfo: nil, repeats: false)

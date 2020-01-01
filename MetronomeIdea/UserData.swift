@@ -43,6 +43,7 @@ class UserLevelData : NSObject, NSCoding {
         self.et_singleNotes = "0.0"
         self.et_scales = "0.0"
         self.et_chords = "0.0"
+        self.tutorialComplete = "0.0"
     }
     
  
@@ -87,14 +88,26 @@ class UserLevelData : NSObject, NSCoding {
 
 class LevelConstruct {
     let scale = [
-        ["MinorPentatonic", "MajorPentatonic"],
-        ["Ionian", "Aeolian"],
-        ["MinorPentatonic", "MajorPentatonic","Ionian", "Aeolian"],
+        ["MinorPentatonic_Up", "MajorPentatonic_Up"],
+        ["Ionian_Up", "Aeolian_Up"],
+        ["MinorPentatonic_Up", "MajorPentatonic_Up","Ionian_Up", "Aeolian_Up"],
     ]
     let arpeggio = [
-        ["MajorArp", "MinorArp"],
-        ["MajorSeventhArp", "MinorSeventhArp"],
-        ["MajorArp", "MinorArp","MajorSeventhArp", "MinorSeventhArp"],
-        ["DiminishedArp", "AugmentedArp"],
-    ]   
+        ["MajorArp_Up", "MinorArp_Up"],
+        ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
+        ["MajorArp_Up", "MinorArp_Up","MajorSeventhArp_Up", "MinorSeventhArp_Up"],
+        ["DiminishedArp_Up", "AugmentedArp_Up"],
+    ]
+    
+//    let scale = [
+//        ["MinorPentatonic", "MajorPentatonic"],
+//        ["Ionian", "Aeolian"],
+//        ["MinorPentatonic", "MajorPentatonic","Ionian", "Aeolian"],
+//    ]
+//    let arpeggio = [
+//        ["MajorArp", "MinorArp"],
+//        ["MajorSeventhArp", "MinorSeventhArp"],
+//        ["MajorArp", "MinorArp","MajorSeventhArp", "MinorSeventhArp"],
+//        ["DiminishedArp", "AugmentedArp"],
+//    ]
 }

@@ -143,9 +143,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     var specifiedNoteCollection : [String] = []
     let tempScale : [String] = ["A1","C2","D2","E2","G2"]
-    
         
-    var result1ViewStrs : [String] = []
+    var resultViewStrs : [String] = []
     var currentResultView = 0
     
     let sc = SoundController(isubInstances: 10)
@@ -296,28 +295,45 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         mainPopoverButton.setTitleColor(.white, for: .normal)
         mainPopoverButton.backgroundColor = UIColor.red
         
-//        popTip.borderColor = UIColor.blue
         
+//        let popTip = PopTip()
+//        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 240, height: 90))
+//
+//        let popoverText = UILabel()
+//        popoverText.frame = CGRect(x: 0,y: 0,width: 240,height: 30)
+//        popoverText.textAlignment = NSTextAlignment.center
+//        popoverText.text = "test mofo godmmit";
+//        popoverText.layer.zPosition = 1;
+//        popoverText.textColor = UIColor.white
+//        customView.addSubview(popoverText)
+//
+//        let popoverText1 = UILabel()
+//        popoverText1.frame = CGRect(x: 0,y: 30,width: 240,height: 30)
+//        popoverText1.textAlignment = NSTextAlignment.center
+//        popoverText1.text = "test mofo godmmit part 2";
+//        popoverText1.layer.zPosition = 1;
+//        popoverText1.textColor = UIColor.white
+//        customView.addSubview(popoverText1)
+//
+//        let popoverText2 = UILabel()
+//        popoverText2.frame = CGRect(x: 0,y: 60,width: 240,height: 30)
+//        popoverText2.textAlignment = NSTextAlignment.center
+//        popoverText2.text = "test mofo kwanza";
+//        popoverText2.layer.zPosition = 1;
+//        popoverText2.textColor = UIColor.white
+//        customView.addSubview(popoverText2)
+//
+//        let w = UIScreen.main.bounds.width
+//        let h = UIScreen.main.bounds.height
+//        var mid = ResultButton1.frame
+//        mid = mid.offsetBy(dx: 0.0, dy: 10.0)
+//        print(ResultButton1.frame)
+//
+//        popTip.show(customView: customView, direction: .down, in: view, from: mid)
         
-//        let butt = getLayer(ilayer: "TutorialButton")
-//        print("butt \(butt)")
+        pc!.setResultButtonPopupText(itextArr: ["butt"])
         
-        // popTip =
-        
-        
-//        mainPopoverButton.
-
-        
-//        mainPopoverLabel.adjustsFontSizeToFitWidth = true
-//        mainPopoverLabel.minimumScaleFactor = 0.5
-        
-//        mainPopoverLabel.minimumScaleFactor = 0.5
-//        mainPopoverLabel.numberOfLines = 6
-//        mainPopoverLabel.adjustsFontSizeToFitWidth = true
-//        mainPopoverLabel.text = "Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standa rd dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book. It has survived not only five centuries, but also the leap into electronic typesetting, remaining essentially unchanged. It was popularised in the 1960s with the release of Letraset sheets containing Lorem Ipsum passages, and more recently with desktop publishing software like Aldus PageMaker including versions of Lorem Ipsum."
-        
-//        mainPopoverLabel.sizeToFit()
-        
+       
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
         periphButtonArr.append(PeriphButton2)
@@ -327,28 +343,15 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         DimOverlay.alpha = 0.0
         
-        if (!tutorialComplete!) {
-            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
-            setuoPopupTutorialText()
-        }
+
         setupToSpecificState()
+        
+        if (!tutorialComplete!) {
+            hideAllFretMarkers()
+            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            setupPopupTutorialText()
+        }
     }
-    
-//    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-//        print (segue)
-//
-////        var controller: ViewController
-////        controller = self.storyboard?.instantiateViewController(withIdentifier: "showPopover") as! ViewController
-////
-////        if (segue.identifier == "showPopover") {
-////            let popoverViewController = segue.destination
-////            popoverViewController.popoverPresentationController?.delegate = self
-////        }
-//    }
-    
-//    func adaptivePresentationStyle(for controller: UIPresentationController) -> UIModalPresentationStyle {
-//        return UIModalPresentationStyle.none
-//    }
     
     func setStateProperties (icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
         currentState = icurrentState
@@ -357,6 +360,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         currentLevel = icurrentLevel
         currentLevelConstruct = ilevelConstruct
         currentLevelKey = ilevelKey
+        print("itutorialComplete \(itutorialComplete)")
         tutorialComplete = itutorialComplete == "1.0"
     }
     
@@ -379,11 +383,46 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     func setupCurrentTask () {
         let task = returnCurrentTask()
-        sCollection!.setupSpecifiedScale(iinput: task)
+        let trimmedTask = trimCurrentTask(iinput: task)
+        let dir = parseTaskDirection(iinput: task)
+        let tempoStatus = parseTempoStatus(iinput: task)
+        
+        sCollection!.setupSpecifiedScale(iinput: trimmedTask, idirection: dir)
 //        setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
-        ResultsLabel0.text = sCollection!.returnReadableScaleName(iinput: task)
+        ResultsLabel0.text = sCollection!.returnReadableScaleName(iinput: trimmedTask)
+        
+        
+        let resultPopoverDirText : String
+        var resultPopoverTempoText = "Tempo: "
+        var resultButtonText = ""
+        
+        if (dir == "Up") {
+            resultPopoverDirText = "Play From Low To High Note"
+            resultButtonText = "Up"
+        } else if (dir == "Down") {
+            resultPopoverDirText = "Play From High To Low Note"
+            resultButtonText = "Down"
+        } else {
+            resultPopoverDirText = "Play From Low To High Note Back To Low"
+            resultButtonText = "Up And Down"
+        }
+        
+        resultButtonText += " / "
+        
+        if (!tempoStatus) {
+            resultPopoverTempoText += "None, Play Freely!"
+            resultButtonText += "No Tempo"
+        } else {
+            let tempo = String(met!.bpm) + " BPM"
+            resultPopoverTempoText += tempo
+            resultButtonText += tempo
+        }
+        
+        pc!.setResultButtonPopupText(itextArr: [ResultsLabel0.text!,resultPopoverDirText,resultPopoverTempoText])
+        
+        ResultButton1.setTitle(resultButtonText, for: .normal)
     }
-    
+        
     func returnCurrentTask() -> String {
         let level = returnConvertedLevel(iinput: currentLevel!)
         let subLevel = returnConvertedSubLevel(iinput: currentLevel!)
@@ -397,8 +436,38 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         return currentLevelConstruct[level][currentLevelConstruct[level].count-1]
     }
     
+    
+    func trimCurrentTask(iinput: String) -> String {
+        let signifiers = ["Up","Tempo"]
+        var modifiedStr = iinput
+        if (modifiedStr.contains("_")) {
+            for (_,str) in signifiers.enumerated() {
+                if (modifiedStr.contains(str)) {
+                    modifiedStr = modifiedStr.replacingOccurrences(of: "_"+str, with: "")
+                    print(modifiedStr)
+                }
+            }
+        }
+        return modifiedStr
+    }
+    
+    func parseTaskDirection(iinput: String) -> String {
+        let signifiers = ["Up","Down","Both"]
+        var dir = ""
+        for (_,str) in signifiers.enumerated() {
+            if (iinput.contains(str)) {
+                dir = str
+                break
+            }
+        }
+        return dir
+    }
+    
+    func parseTempoStatus(iinput: String) -> Bool {
+        return iinput.contains("Tempo")
+    }
+    
     func setupPeripheralButtons (iiconArr : [String ]) {
-        
         for (i, _) in iiconArr.enumerated() {
             periphButtonArr[i].setTitle("", for: .normal)  //TODO: eventually get rid of text completely
             
@@ -726,15 +795,17 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     
-    @IBAction func Result1ButtonDown(_ sender: Any) {
+    @IBAction func ResultButtonDown(_ sender: Any) {
         
         print("currentState \(currentState)")
         
-        if (!result1ViewStrs.isEmpty)
-        {
-            ResultButton1.setTitle(result1ViewStrs[currentResultView], for: .normal)
-            currentResultView = (currentResultView + 1)%result1ViewStrs.count
-        }
+        pc!.showResultButtonPopup()
+        
+//        if (!resultViewStrs.isEmpty)
+//        {
+//            ResultButton1.setTitle(resultViewStrs[currentResultView], for: .normal)
+//            currentResultView = (currentResultView + 1)%resultViewStrs.count
+//        }
     }
     
     @IBAction func onBackButtonDown(_ sender: Any) {
@@ -757,13 +828,26 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     @IBAction func FretPressed(_ sender: UIButton) {
+        var tutorialDisplay = false
+        var inputNumb = sender.tag
+        if (inputNumb >= 100) {
+            inputNumb -= 100
+            tutorialDisplay = true
+        }
         
         if (tutorialActive || mainPopoverVisible) {
-            return
+            if (currentTutorialPopup < 4 && !tutorialDisplay) {
+                return
+            } else if (!tutorialDisplay) {
+                if (buttonDict[inputNumb] != specifiedNoteCollection[currentTutorialPopup-(defaultPeripheralIcon.count+1)]) {
+                    return
+                }
+                progressTutorial()
+            }
         }
         print("in fret pressed state \(currentState)")
         
-       let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowNotes, State.ArpeggioTestCountIn_Tempo, State.ArpeggioTestActive_Tempo, State.ArpeggioTestIdle_NoTempo, State.ArpeggioTestShowNotes, State.ArpeggioTestActive_NoTempo])
+        let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowNotes, State.ArpeggioTestCountIn_Tempo, State.ArpeggioTestActive_Tempo, State.ArpeggioTestIdle_NoTempo, State.ArpeggioTestShowNotes, State.ArpeggioTestActive_NoTempo])
         if (validState)
         {
             hideAllFretMarkers()
@@ -774,8 +858,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             }
             
             
-            sc.playSound(isoundName: buttonDict[sender.tag]!)
-            displaySingleFretMarker(iinputStr: buttonDict[sender.tag]!)
+            sc.playSound(isoundName: buttonDict[inputNumb]!)
+            displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
             if (currentState == State.Recording)
             {
                 if (recordStartTime == 0)
@@ -784,12 +868,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
                 }
                 let r = InputData()
                 r.time = CFAbsoluteTimeGetCurrent()
-                r.note = buttonDict[sender.tag]!
+                r.note = buttonDict[inputNumb]!
                 recordData.append(r)
             }
             if (currentState == State.EarTrainResponse)
             {
-                earTrainResponseArr.append(buttonDict[sender.tag]!)
+                earTrainResponseArr.append(buttonDict[inputNumb]!)
                 if (earTrainResponseArr.count == earTrainCallArr.count)
                 {
                     presentEarTrainResults()
@@ -798,7 +882,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             
             if (currentState == State.ScaleTestActive_Tempo) {
                 let st = InputData()
-                st.note = buttonDict[sender.tag]!
+                st.note = buttonDict[inputNumb]!
                 st.time = 0
                 noteCollectionTestData.append(st)
                 recordTimeAccuracy()
@@ -806,7 +890,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             
             if (currentState == State.ScaleTestActive_NoTempo || currentState == State.ArpeggioTestActive_NoTempo) {
                 let st = InputData()
-                st.note = buttonDict[sender.tag]!
+                st.note = buttonDict[inputNumb]!
                 st.time = 0
                 noteCollectionTestData.append(st)
                 if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode) {
@@ -842,8 +926,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
 
         var resultsText = ""
         resultsText =  testPassed ? "Great!" : "Try Again!"
-        result1ViewStrs.append(resultsText)
-        ResultButton1.setTitle(result1ViewStrs[0], for: .normal)
+        resultViewStrs.append(resultsText)
+        ResultButton1.setTitle(resultViewStrs[0], for: .normal)
         
 //        analyzeNewLevel(itestPassed: testPassed)
         analyzeNewLevel(itestPassed: true)
@@ -947,12 +1031,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func playScale(_ sender: Any)
     {
-        if (currentState == State.Idle)
-        {
-            currentState = State.PlayingNoteCollection
-            sCollection?.setupSpecifiedScale(iinput: "MinorPentatonic")
-            met?.startMetro()
-        }
+//        if (currentState == State.Idle)
+//        {
+//            currentState = State.PlayingNoteCollection
+//            sCollection?.setupSpecifiedScale(iinput: "MinorPentatonic")
+//            met?.startMetro()
+//        }
     }
     
     func killCurrentDotFade()
@@ -1001,9 +1085,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         }
     }
     
-    func displaySingleFretMarker(iinputStr: String)
+    func displaySingleFretMarker(iinputStr: String, cascadeFretMarkers: Bool = false)
     {
-        if previousNote != nil
+        if (previousNote != nil && !cascadeFretMarkers)
         {
             dotDict[previousNote!]?.alpha = 0.0
 //            UIView.animate(withDuration: 0.3, animations: {
@@ -1024,7 +1108,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         swoopScale(iobject: dotDict[iinputStr]!,iscaleX: 0,iscaleY: 0,iduration: 0)
         swoopScale(iobject: dotDict[iinputStr]!,iscaleX: 1,iscaleY: 1,iduration: 0.1)
         
-        dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.alphaSwoopImage), userInfo: ["ImageId":iinputStr], repeats: false)
+        if (!cascadeFretMarkers) {
+            dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.alphaSwoopImage), userInfo: ["ImageId":iinputStr], repeats: false)
+        }
     }
     
     @objc func alphaSwoopImage(timer:Timer)
@@ -1088,14 +1174,28 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func closeMainPopover(_ sender: Any) {
         mainPopover.removeFromSuperview()
-        progressTutorial()
+        if (tutorialActive) {
+            progressTutorial()
+        } else {
+            allMarkersDisplayed = true
+            swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
+            pc!.startTestReminder(itime: 20)
+            
+            var tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
+            tutorialComplete = tutorialComplete as! String == "0.0" ? "1.0" : "2.0"
+            UserDefaults.standard.set(tutorialComplete, forKey: "tutorialComplete")
+        }
+        
         mainPopoverVisible = false
 //        tutorialActive = false
     }
     
     
-    @IBAction func tempPopup(_ sender: Any) {
-        presentMainPopover()
+    @IBAction func testButton(_ sender: Any) {
+//        presentMainPopover()
+        
+        pc!.setResultButtonPopupText(itextArr: ["amigo","friend"])
+        pc!.showResultButtonPopup()
     }
     
     @objc func presentMainPopover() {
@@ -1103,31 +1203,67 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
         view.addSubview(mainPopover)
         mainPopover.center = view.center
-        mainPopover.center.y += -100
+//        mainPopover.center.y += -100
         mainPopoverVisible = true
-        tutorialActive = true
+        tutorialActive = !tutorialActive
     }
     
     func progressTutorial() {
-        
         pc!.tutorialPopup.hide()
+        print("hiding")
+        let peripheralButtonTutorialNumb = defaultPeripheralIcon.count
         if (currentTutorialPopup == tutorialPopupText.count) {
             swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
             tutorialActive = false
-            periphButtonArr[tutorialPopupText.count-1].layer.zPosition = getLayer(ilayer: "Default")
+            periphButtonArr[defaultPeripheralIcon.count-1].layer.zPosition = getLayer(ilayer: "Default")
             pc!.startTestReminder(itime: 20)
             return;
         }
-        for (i,_) in tutorialPopupText.enumerated() {
-//            periphButtonArr[i].layer.zPosition = getLayer(ilayer: "Default")
+        for i in  0..<peripheralButtonTutorialNumb {
             setLayer(iobject: periphButtonArr[i], ilayer: "Default")
         }
         
-//        periphButtonArr[currentTutorialPopup].layer.zPosition = getLayer(ilayer: "TutorialButton")
-        
-        setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialButton")
-        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject])
+        //peripheral button popups
+        var parentType = ""
+        if (currentTutorialPopup < peripheralButtonTutorialNumb) {
+            setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialButton")
+            parentType = "PeripheralButton"
+  
+        } else if (currentTutorialPopup < tutorialPopupText.count-1) {
+            //show starting note
+            let buttonStr = specifiedNoteCollection[currentTutorialPopup - peripheralButtonTutorialNumb]
+            
+            
+            
+            for (_,dot) in specifiedNoteCollection.enumerated() {
+                setLayer(iobject: dotDict[dot]!, ilayer: "Default")
+            }
+
+            setLayer(iobject: dotDict[buttonStr]!, ilayer: "TutorialButton")
+            parentType = buttonStr + "Fret"
+            print("setting button")
+            let button = UIButton()
+            button.tag = buttonDict.filter{$1 == buttonStr}.map{$0.0}[0] + 100
+            
+            FretPressed(button)
+        } else {
+            if (developmentMode) {
+                pc!.tutorialPopup.hide()
+            }
+            for (_,dot) in specifiedNoteCollection.enumerated() {
+                setLayer(iobject: dotDict[dot]!, ilayer: "Default")
+            }
+            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(35)
+
+            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count-1]
+            
+            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            return
+        }
+        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject, "arg2": parentType as AnyObject])
+
         currentTutorialPopup += 1
+        print("currentTutorialPopup \(currentTutorialPopup)")
     }
     
     @IBAction func OverlayButtonFunc(_ sender: Any) {
@@ -1146,8 +1282,23 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         return view1.frame
     }
     
-    func setuoPopupTutorialText() {
-        tutorialPopupText = ["The TEST button will begin the test!","The PLAY button will play the scale!","The INFO button will display the scale!"]
+    func setupPopupTutorialText() {
+        tutorialPopupText = ["The TEST button will begin the test!",
+                             "The PLAY button will play the scale!",
+                             "The INFO button will display the scale!",
+                             "Start With This Note!",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Next Note",
+                             "This Is The Last Note",
+                             "Tutorial Complete!"
+                            ]
     }
 
     func setLayer(iobject: AnyObject, ilayer: String) {
@@ -1171,8 +1322,23 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         let argDict = timer.userInfo as! Dictionary<String, AnyObject>
         let wchPopup = argDict["arg1"] as! Int
-        let c = returnStackViewButtonCoordinates(istackViewButton: periphButtonArr[wchPopup], istack: PeripheralStackView, iyoffset: -25)
-        pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .left, maxWidth: 200, in: view, from: c)
+        let popupObjectParentType = argDict["arg2"] as! String
+        if (popupObjectParentType == "PeripheralButton") {
+            let c = returnStackViewButtonCoordinates(istackViewButton: periphButtonArr[wchPopup], istack: PeripheralStackView, iyoffset: -25)
+            pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .left, maxWidth: 200, in: view, from: c)
+        } else if (popupObjectParentType.contains("Fret")) {
+            let buttonStr = popupObjectParentType.replacingOccurrences(of: "Fret", with: "")
+            pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .left, maxWidth: 200, in: view, from: dotDict[buttonStr]!.frame)
+        } else {
+            print("got here")
+            pc!.tutorialPopup.shouldDismissOnTap = true
+            let screenSize = UIScreen.main.bounds
+            let screenWidth = screenSize.width
+            let screenHeight = screenSize.height
+            let center = UIView(frame: CGRect(x: screenWidth/2, y: screenHeight/2, width: 0, height: 0))
+            pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .none, maxWidth: 700, in: view, from: center.frame)
+        }
+
     }
     
 
@@ -1216,20 +1382,34 @@ class PopupController {
     let vc : ViewController?
     let tutorialPopup = PopTip()
     let reminderPopup = PopTip()
+    let resultButtonPopup = PopTip()
+    var resultButtonView: UIView? = nil
+    var resultButtonPopupVisible = false
     
     init (ivc:ViewController) {
         vc = ivc;
+        
         tutorialPopup.textColor = UIColor.white
         tutorialPopup.bubbleColor = UIColor.red
         tutorialPopup.shouldDismissOnTap = false
         tutorialPopup.shouldDismissOnTapOutside = false
         tutorialPopup.animationOut = 0.15
+        tutorialPopup.layer.zPosition = 2.0
         
         reminderPopup.textColor = UIColor.blue
         reminderPopup.bubbleColor = UIColor.red
 //        reminderPopup.shouldDismissOnTap = false
 //        reminderPopup.shouldDismissOnTapOutside = false
-
+        
+        resultButtonPopup.textColor = UIColor.white
+        resultButtonPopup.bubbleColor = UIColor.red
+        resultButtonPopup.layer.zPosition = 2.0
+        resultButtonPopup.dismissHandler = { resultButtonPopup in
+            self.resultButtonPopupVisible = false
+        }
+        resultButtonPopup.appearHandler = { resultButtonPopup in
+            self.resultButtonPopupVisible = true
+        };
     }
     
     
@@ -1240,13 +1420,34 @@ class PopupController {
     }
     
     @objc func enactTestReminder (timer:Timer) {
-        
-  
         let c = vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.periphButtonArr[0], istack: vc!.PeripheralStackView, iyoffset: -25)
         reminderPopup.show(text: "Start Test When Ready!", direction: .left, maxWidth: 200, in: vc!.view, from: c)
     }
     
+    func setResultButtonPopupText(itextArr: [String]) {
+        let textSpacing = 30
+        let popoverSize = (vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.PeriphButton0, istack: vc!.PeripheralStackView).maxX - vc!.TempoDownButton.frame.maxX)*0.72
+        resultButtonView?.removeFromSuperview()
+        resultButtonView = UIView(frame: CGRect(x: 0, y: 0, width: Int(popoverSize), height: itextArr.count*textSpacing))
+        
+        for (i,_) in itextArr.enumerated() {
+            let popoverText = UILabel()
+            popoverText.frame = CGRect(x: 0,y: i*textSpacing,width: Int(popoverSize),height: textSpacing)
+            popoverText.textAlignment = NSTextAlignment.center
+            popoverText.text = itextArr[i];
+            popoverText.layer.zPosition = 2.0;
+            popoverText.textColor = UIColor.white
+            resultButtonView!.addSubview(popoverText)
+        }
+    }
     
+    func showResultButtonPopup () {
+        if (!resultButtonPopupVisible) {
+            var mid = vc!.ResultButton1.frame
+            mid = mid.offsetBy(dx: 0.0, dy: 10.0)
+            resultButtonPopup.show(customView: resultButtonView!, direction: .down, in: vc!.view, from: mid)
+        }
+    }
 }
 
     

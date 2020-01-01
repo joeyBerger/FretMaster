@@ -81,7 +81,7 @@ class ScaleCollection {
     var startingOctave = 0
     var scaleOctaves = 2
     
-    func setupSpecifiedScale (iinput : String)
+    func setupSpecifiedScale (iinput : String, idirection : String)
     {
         let startingNote = "A"
         var noteIndex = 0
@@ -94,8 +94,7 @@ class ScaleCollection {
         //find note index
         if ( vc!.specifiedNoteCollection.isEmpty)
         {
-            for (i, item) in refScale.enumerated()
-            {
+            for (i, item) in refScale.enumerated() {
                 if (startingNote == item)
                 {
                     noteIndex = i
@@ -103,8 +102,7 @@ class ScaleCollection {
                 }
             }
             
-            for (i, _) in desiredScale!.enumerated()
-            {
+            for (i, _) in desiredScale!.enumerated() {
                 let note = scaleDegreeDict[desiredScale![i]]
                 if ((noteIndex+note!) >= refScale.count*notePos)
                 {
@@ -113,18 +111,15 @@ class ScaleCollection {
                  vc!.specifiedNoteCollection.append(refScale[(noteIndex+note!)%refScale.count] + String(notePos+startingOctave))
             }
             
-            if (scaleOctaves > 1)
-            {
-                for item in vc!.specifiedNoteCollection
-                {
+            if (scaleOctaves > 1) {
+                for item in vc!.specifiedNoteCollection {
                     let noteName = item.count == 2 ? item.prefix(1) : item.prefix(2)
                     let pitch = Int(item.suffix(1))! + 1
                     let newNote = noteName + String(pitch)
                     vc!.specifiedNoteCollection.append(String(newNote))
                 }
             }
-            else if (startingOctave > 0)
-            {
+            else if (startingOctave > 0) {
                 let tempArr = vc!.specifiedNoteCollection
                 vc!.specifiedNoteCollection.removeAll()
                 for item in tempArr
@@ -142,14 +137,17 @@ class ScaleCollection {
             let newNote = noteName + String(pitch)
             vc!.specifiedNoteCollection.append(String(newNote))
             
-            var i = 0
-            for (item) in vc!.specifiedNoteCollection.reversed()
-            {
-                if (i > 0)
-                {
-                    vc!.specifiedNoteCollection.append(item)
+            if (idirection == "Down") {
+                vc!.specifiedNoteCollection = vc!.specifiedNoteCollection.reversed()
+            } else if (idirection == "Both") {
+                var i = 0
+                for (item) in vc!.specifiedNoteCollection.reversed() {
+                    if (i > 0)
+                    {
+                        vc!.specifiedNoteCollection.append(item)
+                    }
+                    i = i +  1
                 }
-                i = i +  1
             }
         }
     }

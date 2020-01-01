@@ -19,7 +19,7 @@ struct DefaultColor {
     let MenuButtonTextColor = UIColor.white
 //    let AlternateButtonInlayColor = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 1.0)
     let AlternateButtonInlayColor = UIColor.white
-    let InactiveButton = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.5)
+    let InactiveButton = UIColor(red: 40/255, green: 40/255, blue: 40/255, alpha: 0.8)
     let InactiveInlay = UIColor(red: 147/255, green: 154/255, blue: 184/255, alpha: 1.0)
     
     let ResultsButtonColor = UIColor(red: 25/255, green: 0/255, blue: 97/255, alpha: 1.0)
