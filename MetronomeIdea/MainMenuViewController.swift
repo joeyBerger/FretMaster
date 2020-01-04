@@ -29,6 +29,10 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var NavBarFiller: UIImageView!
     @IBOutlet weak var NavSettingsButton: UIBarButtonItem!
     
+    @IBOutlet weak var DevScreenPrint: UILabel!
+    
+    var developmentMode = true
+    
     var tutorialCompleteStatus = true
     
     var levelArr: [Int] = []
@@ -37,9 +41,9 @@ class MainMenuViewController: UIViewController {
         super.viewDidLoad()
         
         view.backgroundColor = defaultColor.BackgroundColor
+        self.DevScreenPrint.alpha = 0.0
         
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
-        
         if scaleLevel != nil {
             print ("restoring data")
             let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
@@ -95,7 +99,7 @@ class MainMenuViewController: UIViewController {
         //periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
         
         print(userLevelData.scaleLevel)
-        
+//        DevLabel.isHidden = true
     }
     
     func setupMainMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float, itutorialComplete : Bool = true) {
@@ -175,6 +179,8 @@ class MainMenuViewController: UIViewController {
         let vc = setViewController(iviewControllerStr: "ViewController")
         let lc = LevelConstruct()
         
+        vc.developmentMode = developmentMode
+        
         //Scale Test No Tempo
         if (sender.tag == 0) {
             vc.setStateProperties(icurrentState: ViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
@@ -206,15 +212,29 @@ class MainMenuViewController: UIViewController {
     }
     
     func presentViewController(iviewController: ViewController) {
-        
         iviewController.modalPresentationStyle = .fullScreen
         present(iviewController, animated: false, completion: nil)
     }
     
-    @IBAction func resetData(_ sender: Any) {
-        print("resetting data")
+    @IBAction func resetData() {
+        setDevScreenPrintText(itext: "Resetting Data")
         for (_,str) in userLevelData.stringEquivs.enumerated() {
             UserDefaults.standard.removeObject(forKey: str)
         }
+    }
+    
+    @IBAction func toggleDevMode(_ sender: Any) {
+        developmentMode = !developmentMode
+        let devStr = "Development Mode:"
+        let status = developmentMode == true ? "Enabled" : "Disabled"
+        setDevScreenPrintText(itext: devStr + status)
+    }
+    
+    func setDevScreenPrintText(itext: String) {
+        DevScreenPrint.text = itext
+        self.DevScreenPrint.alpha = 1.0
+        UIView.animate(withDuration: 3.5, animations: {
+         self.DevScreenPrint.alpha = 0.0
+        })
     }
 }

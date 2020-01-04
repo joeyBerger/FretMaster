@@ -74,6 +74,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBOutlet weak var DimOverlay: UIImageView!
     @IBOutlet weak var OverlayButton: UIButton!
+
     
     @IBOutlet weak var PeripheralStackView: UIStackView!
     lazy var dotDict: [String:UIImageView] = [
@@ -158,6 +159,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var tempoButtonsActive = false
     var tutorialActive = false
     var mainPopoverVisible = false
+    var tempoActive = false
+    var tempoUpdaterCycle = 0
     
     var buttonDict: [Int:String] = [
         0 : "G#1",
@@ -251,6 +254,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         if (developmentMode) {
             met?.bpm = 350.0
+            print("butt")
         }
             
         BPM_textField.text = String(Int(met!.bpm))
@@ -295,45 +299,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         mainPopoverButton.setTitleColor(.white, for: .normal)
         mainPopoverButton.backgroundColor = UIColor.red
         
-        
-//        let popTip = PopTip()
-//        let customView = UIView(frame: CGRect(x: 0, y: 0, width: 240, height: 90))
-//
-//        let popoverText = UILabel()
-//        popoverText.frame = CGRect(x: 0,y: 0,width: 240,height: 30)
-//        popoverText.textAlignment = NSTextAlignment.center
-//        popoverText.text = "test mofo godmmit";
-//        popoverText.layer.zPosition = 1;
-//        popoverText.textColor = UIColor.white
-//        customView.addSubview(popoverText)
-//
-//        let popoverText1 = UILabel()
-//        popoverText1.frame = CGRect(x: 0,y: 30,width: 240,height: 30)
-//        popoverText1.textAlignment = NSTextAlignment.center
-//        popoverText1.text = "test mofo godmmit part 2";
-//        popoverText1.layer.zPosition = 1;
-//        popoverText1.textColor = UIColor.white
-//        customView.addSubview(popoverText1)
-//
-//        let popoverText2 = UILabel()
-//        popoverText2.frame = CGRect(x: 0,y: 60,width: 240,height: 30)
-//        popoverText2.textAlignment = NSTextAlignment.center
-//        popoverText2.text = "test mofo kwanza";
-//        popoverText2.layer.zPosition = 1;
-//        popoverText2.textColor = UIColor.white
-//        customView.addSubview(popoverText2)
-//
-//        let w = UIScreen.main.bounds.width
-//        let h = UIScreen.main.bounds.height
-//        var mid = ResultButton1.frame
-//        mid = mid.offsetBy(dx: 0.0, dy: 10.0)
-//        print(ResultButton1.frame)
-//
-//        popTip.show(customView: customView, direction: .down, in: view, from: mid)
-        
-        pc!.setResultButtonPopupText(itextArr: ["butt"])
-        
-       
+                    
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
         periphButtonArr.append(PeriphButton2)
@@ -351,12 +317,85 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
             setupPopupTutorialText()
         }
+        
+        
+//        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
+//            self.TempoUpButton.addGestureRecognizer(longPressRecognizer)
+        
+//        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
+//        lpgr.minimumPressDuration = 0.5
+//        lpgr.delaysTouchesBegan = true
+//        lpgr.delegate = self as! UIGestureRecognizerDelegate
+//        self.colVw.addGestureRecognizer(lpgr)
+        
+        
+        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
+        TempoUpButton.addGestureRecognizer(recognizer)
+        recognizer.view?.tag = 0
+        
+        let recognizer0 = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
+        TempoDownButton.addGestureRecognizer(recognizer0)
+        recognizer0.view?.tag = 1
+        
+//        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(shortPress))
+//        view.addGestureRecognizer(recognizer)
+
+
+    }
+    
+    @objc func shortPress(sender: UILongPressGestureRecognizer) {
+        if sender.state == .ended {
+            
+        } else if sender.state == .began {
+            
+        } else if sender.state == .changed {
+            
+        }
+    }
+    
+    @objc func longPressHappened(sender: UILongPressGestureRecognizer) {
+        if sender.state == .ended {
+            wt.stopWaitThenOfType(iselector: #selector(self.tempoButtonUpdater) as Selector)
+            tempoUpdaterCycle = 0
+        } else if sender.state == .began {
+            wt.waitThen(itime: 0.02, itarget: self, imethod: #selector(self.tempoButtonUpdater) as Selector, irepeats: true, idict: ["arg1": sender.view!.tag as AnyObject])
+        } else if sender.state == .changed {
+            
+        }
+    }
+    
+    @objc func tempoButtonUpdater(timer:Timer) {
+        tempoUpdaterCycle += 1
+        let resultObj = timer.userInfo as! Dictionary<String, AnyObject>
+        let dir = resultObj["arg1"] as! Int == 0 ? 1 : -1
+        let tempoUpdaterThrehold = 10
+        var mult = 1.0
+        if (tempoUpdaterCycle >= 2 * 50 && tempoUpdaterCycle < 4 * 50) {
+            mult = 5.0
+        } else if (tempoUpdaterCycle >= 4 * 50 && tempoUpdaterCycle < 6 * 50) {
+            if (tempoUpdaterCycle == 4 * 50) {
+                print("met!.bpm  before \(met!.bpm )")
+                met!.bpm = ((met!.bpm/10.0).rounded(.up)) * 10.0
+                print("met!.bpm  after \(met!.bpm )")
+            }
+            mult = 10.0
+        } else if (tempoUpdaterCycle >= 6 * 50) {
+             mult = 30.0
+        }
+        if (tempoUpdaterCycle > 0 && tempoUpdaterCycle%tempoUpdaterThrehold == 0)
+        {
+            print(tempoUpdaterCycle)
+            met!.bpm = met!.bpm + Double(dir)*mult
+            TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
+        }
+        
+        
     }
     
     func setStateProperties (icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
         currentState = icurrentState
         defaultState = currentState
-        tempoButtonsActive = itempoButtonsActive
+//        tempoButtonsActive = itempoButtonsActive
         currentLevel = icurrentLevel
         currentLevelConstruct = ilevelConstruct
         currentLevelKey = ilevelKey
@@ -375,7 +414,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             setupCurrentTask()
             defaultPeripheralIcon = ["play","music.note","info"]
             activePeripheralIcon = ["pause","arrowshape.turn.up.left","arrowshape.turn.up.left"]
-            setupTempoButtons(ibuttonsActive: tempoButtonsActive)
+//            setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
         }
         setupPeripheralButtons(iiconArr : defaultPeripheralIcon)
@@ -385,8 +424,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         let task = returnCurrentTask()
         let trimmedTask = trimCurrentTask(iinput: task)
         let dir = parseTaskDirection(iinput: task)
-        let tempoStatus = parseTempoStatus(iinput: task)
-        
+        tempoActive = parseTempoStatus(iinput: task)
+        tempoButtonsActive = !tempoActive
+        setupTempoButtons(ibuttonsActive: tempoButtonsActive)
         sCollection!.setupSpecifiedScale(iinput: trimmedTask, idirection: dir)
 //        setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
         ResultsLabel0.text = sCollection!.returnReadableScaleName(iinput: trimmedTask)
@@ -409,7 +449,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         resultButtonText += " / "
         
-        if (!tempoStatus) {
+        if (!tempoActive) {
             resultPopoverTempoText += "None, Play Freely!"
             resultButtonText += "No Tempo"
         } else {
@@ -500,12 +540,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         }
     }
     
-    func setupTempoButtons (ibuttonsActive : Bool) {
+    func setupTempoButtons(ibuttonsActive : Bool) {
         var buttonColor : UIColor
         var inlayColor : UIColor
         if (ibuttonsActive) {
             buttonColor = defaultColor.MenuButtonColor
-            inlayColor = defaultColor.InactiveInlay
+            inlayColor = defaultColor.MenuButtonTextColor
         } else {
             buttonColor = defaultColor.InactiveButton
             inlayColor = defaultColor.InactiveInlay
@@ -635,6 +675,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func scrollTempo(_ sender: UIButton) {
         if (!tempoButtonsActive) {return}
+        pc!.resultButtonPopup.hide()
         let dir = sender.tag == 0 ? 1.0 : -1.0
         met!.bpm = met!.bpm + dir
         TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
@@ -657,9 +698,29 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         return true
     }
     
+    @IBAction func PeripheralButtonDown(_ sender: UIButton) {
+        pc!.resultButtonPopup.hide()
+
+        switch sender.tag {
+        case 0:
+            PeripheralButton0OnButtonDown()
+            break
+        case 1:
+            PeripheralButton1OnButtonDown()
+            break
+        case 2:
+            PeripheralButton2OnButtonDown()
+            break
+        case 3:
+//            PeripheralButton3OnButtonDown()
+            break
+        default:
+            break
+        }
+    }
     
     //Peripheral Buttons Down
-    @IBAction func PeripheralButton0OnButtonDown(_ sender: Any) {
+    @IBAction func PeripheralButton0OnButtonDown() {
         let wchButton = 0
         
         if (!handleTutorialInput(iwchButton: wchButton)) {
@@ -710,7 +771,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         }
     }
     
-    @IBAction func PeripheralButton1OnButtonDown(_: AnyObject) {
+    @IBAction func PeripheralButton1OnButtonDown() {
         
         let wchButton = 1
         
@@ -750,7 +811,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         }
     }
     
-    @IBAction func PeripheralButton2OnButtonDown(_ sender: Any) {
+    @IBAction func PeripheralButton2OnButtonDown() {
         
         let wchButton = 2
         
@@ -828,6 +889,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     }
     
     @IBAction func FretPressed(_ sender: UIButton) {
+        pc!.resultButtonPopup.hide()
         var tutorialDisplay = false
         var inputNumb = sender.tag
         if (inputNumb >= 100) {
@@ -921,7 +983,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         if let test = resultObj["ScaleCorrect"] {
             testPassed = test as! Bool
         } else {
-            // abc is nil
         }
 
         var resultsText = ""
@@ -1373,8 +1434,10 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         NSLayoutConstraint(item: blurEffectView, attribute: .width,   relatedBy: .equal, toItem: self.view, attribute: .width,   multiplier: 1.0, constant: 0).isActive = true
       }
       */
-
     
+    func toggleDevMode () {
+        developmentMode = !developmentMode
+    }
 }
 
 class PopupController {

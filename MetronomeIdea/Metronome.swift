@@ -82,7 +82,7 @@ class Metronome {
                 if (currentClick == vc!.specifiedNoteCollection.count-1)
                 {
                     endMetronome()
-                    vc!.currentState = ViewController.State.ScaleTestIdle_Tempo
+                    vc!.currentState = vc!.tempoActive ? ViewController.State.ScaleTestIdle_Tempo : ViewController.State.ScaleTestIdle_NoTempo
                 }
             }
             else if (vc!.currentState == ViewController.State.EarTrainCall)
@@ -164,7 +164,7 @@ class Metronome {
     
     @objc func analyzeScaleTest()
     {
-        vc!.currentState = ViewController.State.ScaleTestIdle_Tempo
+        vc!.currentState = vc!.tempoActive ? ViewController.State.ScaleTestIdle_Tempo : ViewController.State.ScaleTestIdle_NoTempo
         vc!.resultViewStrs.removeAll()
         for item in vc!.noteCollectionTestData {
             print(item.note)

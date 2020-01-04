@@ -629,10 +629,10 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                                         </state>
                                         <connections>
-                                            <action selector="PeripheralButton0OnButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="fTi-U9-NBF"/>
+                                            <action selector="PeripheralButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Txp-Wj-rqd"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TOC-Tt-7Ub">
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="TOC-Tt-7Ub">
                                         <rect key="frame" x="0.0" y="62" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -643,10 +643,10 @@
                                             <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
                                         </state>
                                         <connections>
-                                            <action selector="PeripheralButton1OnButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="28N-S3-BoF"/>
+                                            <action selector="PeripheralButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Xat-nH-uc8"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rjh-dA-tjQ">
+                                    <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="rjh-dA-tjQ">
                                         <rect key="frame" x="0.0" y="124" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -655,10 +655,10 @@
                                         </constraints>
                                         <state key="normal" title="Record"/>
                                         <connections>
-                                            <action selector="PeripheralButton2OnButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ehn-bv-1O6"/>
+                                            <action selector="PeripheralButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="yxK-Vw-OeU"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="its-p0-mb5" userLabel="StopRecord">
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="its-p0-mb5" userLabel="StopRecord">
                                         <rect key="frame" x="0.0" y="186" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -667,10 +667,11 @@
                                         </constraints>
                                         <state key="normal" title="Stop Record"/>
                                         <connections>
+                                            <action selector="PeripheralButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="xDZ-6K-8fx"/>
                                             <action selector="stopRecording:" destination="BYZ-38-t0r" eventType="touchUpInside" id="hcL-3n-O8s"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="co8-3f-Eme" userLabel="PlayScale">
+                                    <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="co8-3f-Eme" userLabel="PlayScale">
                                         <rect key="frame" x="0.0" y="248" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -678,8 +679,11 @@
                                             <constraint firstAttribute="height" constant="50" id="W34-Ah-kaQ"/>
                                         </constraints>
                                         <state key="normal" title="Play Scale"/>
+                                        <connections>
+                                            <action selector="PeripheralButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="SoW-QR-CQh"/>
+                                        </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n65-D5-6B2" userLabel="EarTraining">
+                                    <button opaque="NO" tag="5" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="n65-D5-6B2" userLabel="EarTraining">
                                         <rect key="frame" x="0.0" y="310" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
@@ -688,6 +692,7 @@
                                         </constraints>
                                         <state key="normal" title="Ear Training"/>
                                         <connections>
+                                            <action selector="PeripheralButtonDown:" destination="BYZ-38-t0r" eventType="touchUpInside" id="H9A-Bd-17V"/>
                                             <action selector="earTrainingPressed:" destination="BYZ-38-t0r" eventType="touchUpInside" id="TdO-hh-gkC"/>
                                         </connections>
                                     </button>
@@ -1110,7 +1115,7 @@
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="44"/>
                                 <color key="backgroundColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                             </imageView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ta1-82-spN">
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ta1-82-spN" userLabel="ResetDataButton">
                                 <rect key="frame" x="0.0" y="821" width="140" height="76"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="76" id="6UG-8W-MuI"/>
@@ -1123,6 +1128,25 @@
                                     <action selector="resetData:" destination="PUF-EH-UAq" eventType="touchUpInside" id="hHk-EH-9KY"/>
                                 </connections>
                             </button>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Development Mode:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iyn-2m-nxz">
+                                <rect key="frame" x="60" y="707" width="294" height="106"/>
+                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qY0-dI-S7X" userLabel="ToggleDevButton">
+                                <rect key="frame" x="274" y="820" width="140" height="76"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="76" id="0X0-OA-qEM"/>
+                                    <constraint firstAttribute="width" constant="140" id="GyG-dA-tLm"/>
+                                </constraints>
+                                <state key="normal">
+                                    <color key="titleShadowColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                </state>
+                                <connections>
+                                    <action selector="toggleDevMode:" destination="PUF-EH-UAq" eventType="touchUpInside" id="hmM-Bw-nsI"/>
+                                </connections>
+                            </button>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
@@ -1132,11 +1156,15 @@
                             <constraint firstItem="ta1-82-spN" firstAttribute="leading" secondItem="dXg-yi-7fh" secondAttribute="leading" id="5nN-wv-XTw"/>
                             <constraint firstItem="tAt-L0-hBL" firstAttribute="leading" secondItem="9sG-sC-1Sg" secondAttribute="leadingMargin" constant="-20" id="E89-x1-mPc"/>
                             <constraint firstItem="dXg-yi-7fh" firstAttribute="top" secondItem="9sG-sC-1Sg" secondAttribute="topMargin" id="FCa-EK-r1u"/>
+                            <constraint firstItem="iyn-2m-nxz" firstAttribute="centerX" secondItem="9sG-sC-1Sg" secondAttribute="centerX" id="P1c-1u-Sc4"/>
                             <constraint firstItem="dXg-yi-7fh" firstAttribute="centerX" secondItem="Qdh-0w-Ep8" secondAttribute="centerX" id="Vjj-gq-9R7"/>
                             <constraint firstItem="Qdh-0w-Ep8" firstAttribute="centerX" secondItem="9sG-sC-1Sg" secondAttribute="centerX" id="Xxh-lf-TCT"/>
+                            <constraint firstItem="qY0-dI-S7X" firstAttribute="centerY" secondItem="9sG-sC-1Sg" secondAttribute="centerY" constant="410" id="c9E-6f-WkZ"/>
                             <constraint firstAttribute="bottomMargin" secondItem="ta1-82-spN" secondAttribute="bottom" constant="-35" id="lb8-lv-KjD"/>
+                            <constraint firstItem="iyn-2m-nxz" firstAttribute="centerY" secondItem="9sG-sC-1Sg" secondAttribute="centerY" constant="312" id="mcy-sC-ccm"/>
                             <constraint firstItem="Qdh-0w-Ep8" firstAttribute="centerY" secondItem="9sG-sC-1Sg" secondAttribute="centerY" id="rnm-Id-ZIh"/>
                             <constraint firstItem="tAt-L0-hBL" firstAttribute="trailing" secondItem="dXg-yi-7fh" secondAttribute="trailing" id="sLM-YV-br4"/>
+                            <constraint firstItem="qY0-dI-S7X" firstAttribute="centerX" secondItem="9sG-sC-1Sg" secondAttribute="centerX" constant="137" id="w4o-gY-x6t"/>
                         </constraints>
                     </view>
                     <connections>
@@ -1145,6 +1173,7 @@
                         <outlet property="Button2" destination="rre-BB-aIH" id="aaH-PA-4M5"/>
                         <outlet property="Button3" destination="pOe-OH-TBB" id="edj-RC-iSv"/>
                         <outlet property="Button4" destination="240-ak-gDo" id="VXC-GH-coJ"/>
+                        <outlet property="DevScreenPrint" destination="iyn-2m-nxz" id="hjr-Y3-Ojz"/>
                         <outlet property="NavBar" destination="dXg-yi-7fh" id="gmm-9o-cJy"/>
                         <outlet property="NavBarFiller" destination="tAt-L0-hBL" id="fuq-TA-BMN"/>
                         <outlet property="NavSettingsButton" destination="opS-Xs-hpK" id="bmq-y7-gf9"/>
@@ -1152,7 +1181,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OSm-hb-dHi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-636" y="63"/>
+            <point key="canvasLocation" x="-636.23188405797111" y="62.946428571428569"/>
         </scene>
         <!--Playground-->
         <scene sceneID="3cg-DX-xmG">
