@@ -560,6 +560,9 @@
                                 <state key="normal" title="Button">
                                     <color key="titleColor" systemColor="systemGreenColor" red="0.20392156859999999" green="0.78039215689999997" blue="0.34901960780000002" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
+                                <connections>
+                                    <action selector="tempoTapped:" destination="BYZ-38-t0r" eventType="touchUpInside" id="OS0-TH-llj"/>
+                                </connections>
                             </button>
                             <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="jWp-3L-WLB">
                                 <rect key="frame" x="20" y="232" width="50" height="50"/>
@@ -1125,7 +1128,7 @@
                                     <color key="titleShadowColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 </state>
                                 <connections>
-                                    <action selector="resetData:" destination="PUF-EH-UAq" eventType="touchUpInside" id="hHk-EH-9KY"/>
+                                    <action selector="resetData" destination="PUF-EH-UAq" eventType="touchUpInside" id="NdK-g6-4nG"/>
                                 </connections>
                             </button>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" misplaced="YES" text="Development Mode:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iyn-2m-nxz">

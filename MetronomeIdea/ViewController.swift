@@ -160,7 +160,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var tutorialActive = false
     var mainPopoverVisible = false
     var tempoActive = false
-    var tempoUpdaterCycle = 0
+    var tempoUpdaterCycle = 0.0
     
     var buttonDict: [Int:String] = [
         0 : "G#1",
@@ -298,7 +298,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
         mainPopoverButton.setTitleColor(.white, for: .normal)
         mainPopoverButton.backgroundColor = UIColor.red
-        
                     
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
@@ -309,7 +308,6 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         
         DimOverlay.alpha = 0.0
         
-
         setupToSpecificState()
         
         if (!tutorialComplete!) {
@@ -318,45 +316,23 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             setupPopupTutorialText()
         }
         
+        //setup long pressed recognizers
+        let recognizer0 = UILongPressGestureRecognizer(target: self, action: #selector(tempoButtonLongPressed))
+        TempoUpButton.addGestureRecognizer(recognizer0)
+        recognizer0.view?.tag = 0
         
-//        let longPressRecognizer = UILongPressGestureRecognizer(target: self, action: "longPressed:")
-//            self.TempoUpButton.addGestureRecognizer(longPressRecognizer)
-        
-//        let lpgr = UILongPressGestureRecognizer(target: self, action: #selector(handleLongPress))
-//        lpgr.minimumPressDuration = 0.5
-//        lpgr.delaysTouchesBegan = true
-//        lpgr.delegate = self as! UIGestureRecognizerDelegate
-//        self.colVw.addGestureRecognizer(lpgr)
-        
-        
-        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
-        TempoUpButton.addGestureRecognizer(recognizer)
-        recognizer.view?.tag = 0
-        
-        let recognizer0 = UILongPressGestureRecognizer(target: self, action: #selector(longPressHappened))
-        TempoDownButton.addGestureRecognizer(recognizer0)
-        recognizer0.view?.tag = 1
-        
-//        let recognizer = UILongPressGestureRecognizer(target: self, action: #selector(shortPress))
-//        view.addGestureRecognizer(recognizer)
+        let recognizer1 = UILongPressGestureRecognizer(target: self, action: #selector(tempoButtonLongPressed))
+        TempoDownButton.addGestureRecognizer(recognizer1)
+        recognizer1.view?.tag = 1
 
 
     }
     
-    @objc func shortPress(sender: UILongPressGestureRecognizer) {
-        if sender.state == .ended {
-            
-        } else if sender.state == .began {
-            
-        } else if sender.state == .changed {
-            
-        }
-    }
     
-    @objc func longPressHappened(sender: UILongPressGestureRecognizer) {
+    @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if sender.state == .ended {
             wt.stopWaitThenOfType(iselector: #selector(self.tempoButtonUpdater) as Selector)
-            tempoUpdaterCycle = 0
+            tempoUpdaterCycle = 0.0
         } else if sender.state == .began {
             wt.waitThen(itime: 0.02, itarget: self, imethod: #selector(self.tempoButtonUpdater) as Selector, irepeats: true, idict: ["arg1": sender.view!.tag as AnyObject])
         } else if sender.state == .changed {
@@ -364,32 +340,38 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         }
     }
     
+    let tempoHoldTimeThresholds = [1.2,3.0,4.5]
     @objc func tempoButtonUpdater(timer:Timer) {
-        tempoUpdaterCycle += 1
+        tempoUpdaterCycle += 1.0
         let resultObj = timer.userInfo as! Dictionary<String, AnyObject>
         let dir = resultObj["arg1"] as! Int == 0 ? 1 : -1
-        let tempoUpdaterThrehold = 10
+        let tempoUpdaterThrehold = 5
         var mult = 1.0
-        if (tempoUpdaterCycle >= 2 * 50 && tempoUpdaterCycle < 4 * 50) {
-            mult = 5.0
-        } else if (tempoUpdaterCycle >= 4 * 50 && tempoUpdaterCycle < 6 * 50) {
-            if (tempoUpdaterCycle == 4 * 50) {
-                print("met!.bpm  before \(met!.bpm )")
-                met!.bpm = ((met!.bpm/10.0).rounded(.up)) * 10.0
-                print("met!.bpm  after \(met!.bpm )")
-            }
-            mult = 10.0
-        } else if (tempoUpdaterCycle >= 6 * 50) {
-             mult = 30.0
-        }
-        if (tempoUpdaterCycle > 0 && tempoUpdaterCycle%tempoUpdaterThrehold == 0)
+        
+        if (tempoUpdaterCycle > 0 && Int(tempoUpdaterCycle)%tempoUpdaterThrehold == 0)
         {
-            print(tempoUpdaterCycle)
+            if (tempoUpdaterCycle >= tempoHoldTimeThresholds[tempoHoldTimeThresholds.count-1] * 50) {
+                 mult = 30.0
+            } else if (tempoUpdaterCycle >= tempoHoldTimeThresholds[tempoHoldTimeThresholds.count-2] * 50) {
+                if (tempoUpdaterCycle == tempoHoldTimeThresholds[tempoHoldTimeThresholds.count-2] * 50) {
+                    met!.bpm = ((met!.bpm/10.0).rounded(.up)) * 10.0
+                }
+                mult = 10.0
+            } else if (tempoUpdaterCycle >= tempoHoldTimeThresholds[0] * 50) {
+                if (tempoUpdaterCycle == tempoHoldTimeThresholds[0] * 50) {
+                    var parsedTempo = met!.bpm/10.0
+                    if (parsedTempo > parsedTempo.rounded()) {
+                        parsedTempo = parsedTempo.rounded()+0.5
+                    } else {
+                        parsedTempo = parsedTempo.rounded()
+                    }
+                    met!.bpm = parsedTempo*10.0
+                }
+                mult = 5.0
+            }
             met!.bpm = met!.bpm + Double(dir)*mult
             TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
         }
-        
-        
     }
     
     func setStateProperties (icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
@@ -523,12 +505,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         }
         
         for (i, button) in periphButtonArr.enumerated() {
-            if (i < iiconArr.count)
-            {
+            if (i < iiconArr.count) {
                 button.isHidden = false
-            }
-            else
-            {
+            } else {
                 button.isHidden = true
             }
         }
@@ -679,8 +658,32 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         let dir = sender.tag == 0 ? 1.0 : -1.0
         met!.bpm = met!.bpm + dir
         TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
+        tapTime.removeAll()
     }
-   
+    
+    var tapTime: [Double] = []
+    var currentTapTempo = 0.0
+    @IBAction func tempoTapped(_ sender: Any) {
+        wt.stopWaitThenOfType(iselector: #selector(self.timeoutTapTempo) as Selector)
+        wt.waitThen(itime: 1.2, itarget: self, imethod: #selector(self.timeoutTapTempo) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+        tapTime.append(CFAbsoluteTimeGetCurrent())
+        if (tapTime.count > 1) {
+            let tappedCount = Double(tapTime.count-1)
+            var accTime = 0.0
+            for (i,_) in tapTime.enumerated() {
+                if (i > 0) {
+                    accTime += tapTime[i]-tapTime[i-1]
+                }
+            }
+            met!.bpm = ((tappedCount/accTime)*60).rounded()
+            TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
+        }
+    }
+    
+    @objc func timeoutTapTempo() {
+        print("timeoutTapTempo")
+        tapTime.removeAll()
+    }
     
     @IBAction func startMetronome(_ sender: Any) {
         met?.startMetro()
@@ -1314,10 +1317,9 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
             for (_,dot) in specifiedNoteCollection.enumerated() {
                 setLayer(iobject: dotDict[dot]!, ilayer: "Default")
             }
+            pc!.tutorialPopup.hide()
             mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(35)
-
             mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count-1]
-            
             wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(self.presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
             return
         }
