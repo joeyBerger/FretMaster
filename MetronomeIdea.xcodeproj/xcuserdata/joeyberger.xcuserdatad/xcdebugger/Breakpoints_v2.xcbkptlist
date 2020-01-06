@@ -48,8 +48,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "589"
-            endingLineNumber = "589"
+            startingLineNumber = "664"
+            endingLineNumber = "664"
             landmarkName = "ViewController"
             landmarkType = "3">
          </BreakpointContent>
@@ -64,8 +64,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "416"
-            endingLineNumber = "416"
+            startingLineNumber = "491"
+            endingLineNumber = "491"
             landmarkName = "setupCurrentTask()"
             landmarkType = "7">
          </BreakpointContent>
@@ -80,8 +80,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1123"
-            endingLineNumber = "1123"
+            startingLineNumber = "1204"
+            endingLineNumber = "1204"
             landmarkName = "displayMultipleFretMarkers(iinputArr:ialphaAmount:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -112,8 +112,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1213"
-            endingLineNumber = "1213"
+            startingLineNumber = "1294"
+            endingLineNumber = "1294"
             landmarkName = "presentEarTrainResults()"
             landmarkType = "7">
          </BreakpointContent>
@@ -128,8 +128,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1081"
-            endingLineNumber = "1081"
+            startingLineNumber = "1162"
+            endingLineNumber = "1162"
             landmarkName = "setStateHelper(timer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -160,8 +160,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "890"
-            endingLineNumber = "890"
+            startingLineNumber = "971"
+            endingLineNumber = "971"
             landmarkName = "onBackButtonDown(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -176,8 +176,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "805"
-            endingLineNumber = "805"
+            startingLineNumber = "886"
+            endingLineNumber = "886"
             landmarkName = "PeripheralButton1OnButtonDown()"
             landmarkType = "7">
          </BreakpointContent>
@@ -192,8 +192,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "846"
-            endingLineNumber = "846"
+            startingLineNumber = "927"
+            endingLineNumber = "927"
             landmarkName = "PeripheralButton2OnButtonDown()"
             landmarkType = "7">
          </BreakpointContent>
@@ -208,8 +208,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1166"
-            endingLineNumber = "1166"
+            startingLineNumber = "1247"
+            endingLineNumber = "1247"
             landmarkName = "displaySingleFretMarker(iinputStr:cascadeFretMarkers:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -224,8 +224,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "421"
-            endingLineNumber = "421"
+            startingLineNumber = "496"
+            endingLineNumber = "496"
             landmarkName = "setupCurrentTask()"
             landmarkType = "7">
          </BreakpointContent>
@@ -240,8 +240,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1375"
-            endingLineNumber = "1375"
+            startingLineNumber = "1456"
+            endingLineNumber = "1456"
             landmarkName = "getLayer(ilayer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -256,8 +256,8 @@
             filePath = "MetronomeIdea/ViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1376"
-            endingLineNumber = "1376"
+            startingLineNumber = "1457"
+            endingLineNumber = "1457"
             landmarkName = "getLayer(ilayer:)"
             landmarkType = "7">
          </BreakpointContent>

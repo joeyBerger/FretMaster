@@ -11,7 +11,7 @@ import UIKit
 extension UIButton {
 open override var isHighlighted: Bool {
     didSet {
-        super.isHighlighted = false
+//        super.isHighlighted = false
     }
 }}
 

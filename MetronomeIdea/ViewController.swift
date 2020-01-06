@@ -9,7 +9,40 @@
 import UIKit
 import AMPopTip
 
+extension UIButton {
+    open override func hitTest(_ point: CGPoint, with event: UIEvent?) -> UIView? {
+        return self.bounds.contains(point) ? self : nil
+    }
+    func blink(enabled: Bool = true, duration: CFTimeInterval = 1.0, stopAfter: CFTimeInterval = 0.0 ) {
+        enabled ? (UIView.animate(withDuration: duration, //Time duration you want,
+            delay: 0.0,
+            options: [.curveEaseInOut, .autoreverse, .repeat],
+            animations: { [weak self] in self?.alpha = 0.0 },
+            completion: { [weak self] _ in self?.alpha = 1.0 })) : self.layer.removeAllAnimations()
+        if !stopAfter.isEqual(to: 0.0) && enabled {
+            DispatchQueue.main.asyncAfter(deadline: .now() + stopAfter) { [weak self] in
+                self?.layer.removeAllAnimations()
+            }
+        }
+    }
+    func pulsate() {
+        let pulse = CASpringAnimation(keyPath: "transform.scale")
+        pulse.duration = 0.15
+        pulse.fromValue = 0.95
+        pulse.toValue = 1.3
+        pulse.autoreverses = true
+        pulse.repeatCount = 0;
+        pulse.initialVelocity = 10.5
+        pulse.damping = 1.0
+        
+        layer.add(pulse, forKey: nil)
+    }
+}
+
 class ViewController: UIViewController, UIPopoverPresentationControllerDelegate {
+    
+    
+
        
     //Game Objects
     @IBOutlet weak var Dot_GS1: UIImageView!
@@ -108,7 +141,8 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         "B3" : Dot_B3,
         "C4" : Dot_C4
     ]
-
+    @IBOutlet weak var GS1Button: UIButton!
+    
     //TIMERS
     var dotFadeTime : Timer?
     var userInputTime = CFAbsoluteTimeGetCurrent()
@@ -161,6 +195,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     var mainPopoverVisible = false
     var tempoActive = false
     var tempoUpdaterCycle = 0.0
+    var tempoButtonArr: [UIButton]? = []
     
     var buttonDict: [Int:String] = [
         0 : "G#1",
@@ -324,10 +359,50 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
         let recognizer1 = UILongPressGestureRecognizer(target: self, action: #selector(tempoButtonLongPressed))
         TempoDownButton.addGestureRecognizer(recognizer1)
         recognizer1.view?.tag = 1
-
-
+        
+        tempoButtonArr = [TempoUpButton,TempoDownButton]
+        
+        
+//        var image = UIImageView()
+//        image.frame = CGRect(x: 0, y: 0, width: 40, height: 40)
+//        image.backgroundColor = UIColor.red
+//        image.layer.masksToBounds = true
+//        image.layer.cornerRadius = image.frame.width/2
+//
+//        let noteLabel = UILabel()
+//        let xVal = 2 > 1 ? 7.5 : 11.5
+//        noteLabel.frame = CGRect(x: 0,y: 0,width: 40, height: 40)
+//        noteLabel.textAlignment = NSTextAlignment.center
+//        noteLabel.text = "C#";  //"C"
+//        noteLabel.layer.zPosition = 1;
+//
+//        image.addSubview(noteLabel)
+//        GS1Button.addSubview(image)
+        
+        
+//        let image = UIImage(named: "name") as UIImage?
+//        let button   = UIButton(type: UIButton.ButtonType.custom) as UIButton
+//        button.frame = CGRect(x: 0, y: 0, width: 1000, height: 1000)
+//        var image = UIImageView()
+//        image.frame = CGRect(x: 0, y: 0, width: 1000, height: 1000)
+//        button.addSubview(image)
+        
+//        let img = UIImage()
+//        img.withTintColor(<#T##color: UIColor##UIColor#>)
+//        let myButton = UIButton(type: UIButton.ButtonType.custom)
+//        myButton.frame = CGRect.init(x: 420, y: -500, width: 100, height: 45)
+//        myButton.setImage(img, for: .normal)
+////        myButton.addTarget(self, action: #selector(self.buttonClicked(_:)), for: UIControl.Event.touchUpInside)
+//        self.view.addSubview(myButton)
+        
+        let newFrame = CGRect(x: 0, y: 0, width: 40, height: 40)
+        let button = UIButton(frame: newFrame)
+        button.backgroundColor = UIColor.red
+//        button.setImage(image, for: .normal)
+//        image. = UIColor.red
+//        button.addTarget(self, action: "btnTouched:", forControlEvents:.touchUpInside)
+        self.view.addSubview(button)
     }
-    
     
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if sender.state == .ended {
@@ -576,13 +651,13 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
                 idx += 1
             }
 
-            let scrollView = UILabel()
+            let noteLabel = UILabel()
             let xVal = note.count > 1 ? 7.5 : 11.5
-            scrollView.frame = CGRect(x: xVal,y: -22.5,width: 80,height: 80)
-            scrollView.textAlignment = NSTextAlignment.natural
-            scrollView.text = note;  //"C"
-            scrollView.layer.zPosition = 1;
-            buttonNote[str] = scrollView
+            noteLabel.frame = CGRect(x: xVal,y: -22.5,width: 80,height: 80)
+            noteLabel.textAlignment = NSTextAlignment.natural
+            noteLabel.text = note;  //"C"
+            noteLabel.layer.zPosition = 1;
+            buttonNote[str] = noteLabel
             dotDict[str]!.addSubview(buttonNote[str]!)
         }
     }
@@ -654,6 +729,7 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func scrollTempo(_ sender: UIButton) {
         if (!tempoButtonsActive) {return}
+        tempoButtonArr![sender.tag].pulsate()
         pc!.resultButtonPopup.hide()
         let dir = sender.tag == 0 ? 1.0 : -1.0
         met!.bpm = met!.bpm + dir
@@ -703,7 +779,12 @@ class ViewController: UIViewController, UIPopoverPresentationControllerDelegate 
     
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
-
+//        periphButtonArr[sender.tag].blink()
+//        periphButtonArr[sender.tag].showsTouchWhenHighlighted = true
+//        periphButtonArr[sender.tag].imageView.sat
+        
+        periphButtonArr[sender.tag].pulsate()
+        
         switch sender.tag {
         case 0:
             PeripheralButton0OnButtonDown()

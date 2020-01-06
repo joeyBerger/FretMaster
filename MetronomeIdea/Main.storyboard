@@ -911,6 +911,7 @@
                         <outlet property="Dot_GS1" destination="dy7-OW-BjE" id="zq5-qk-wNC"/>
                         <outlet property="Dot_GS2" destination="01O-0H-dva" id="CKa-6k-Jtl"/>
                         <outlet property="Dot_GS3" destination="5uT-EE-HGK" id="mn8-PE-hPk"/>
+                        <outlet property="GS1Button" destination="anV-Ew-EDS" id="39N-LH-aHA"/>
                         <outlet property="NavBackButton" destination="A4J-aU-Xu6" id="y8D-V6-yec"/>
                         <outlet property="NavBar" destination="qdb-jF-edP" id="eBV-94-xjj"/>
                         <outlet property="NavBarFiller" destination="qbe-l6-B0p" id="2Yj-ra-DOR"/>
