@@ -10,11 +10,10 @@ import AVFoundation
 
 class Metronome {
     
-    var vc : ViewController?
+    var vc : MainViewController?
     
-    init (ivc:ViewController) {
+    init (ivc:MainViewController) {
         vc = ivc;
-//        print(vc!.currentState);
     }
 
     
@@ -65,7 +64,6 @@ class Metronome {
 
     @objc func MetroClick(timer:Timer)
     {
-        // print ("MetroClick")
         tick(timer:nextTimer!)
     }
 
@@ -75,23 +73,23 @@ class Metronome {
         let targetTime:Double = 60/bpm
         if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003)
         {
-            if (vc!.currentState == ViewController.State.PlayingNoteCollection)
+            if (vc!.currentState == MainViewController.State.PlayingNoteCollection)
             {
-                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick])
+                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick], ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
                 vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick])
                 if (currentClick == vc!.specifiedNoteCollection.count-1)
                 {
                     endMetronome()
-                    vc!.currentState = vc!.tempoActive ? ViewController.State.ScaleTestIdle_Tempo : ViewController.State.ScaleTestIdle_NoTempo
+                    vc!.currentState = vc!.tempoActive ? MainViewController.State.ScaleTestIdle_Tempo : MainViewController.State.ScaleTestIdle_NoTempo
                 }
             }
-            else if (vc!.currentState == ViewController.State.EarTrainCall)
+            else if (vc!.currentState == MainViewController.State.EarTrainCall)
             {
                 vc!.sc.playSound(isoundName: vc!.earTrainCallArr[currentClick])
                 if (currentClick == vc!.earTrainCallArr.count-1)
                 {
                     endMetronome()
-                    vc!.currentState = ViewController.State.EarTrainResponse
+                    vc!.currentState = MainViewController.State.EarTrainResponse
                 }
             }
             //Scale Test Active
@@ -100,18 +98,18 @@ class Metronome {
                 vc!.click.playSound(isoundName: "MenuButtonClick")
                 clickTime = CFAbsoluteTimeGetCurrent()
                 //                print ("playing something\(clickTime) diff = \(clickTime - userInputTime)")
-                if (currentClick == countInClick-1 && vc!.currentState == ViewController.State.ScaleTestCountIn_Tempo)
+                if (currentClick == countInClick-1 && vc!.currentState == MainViewController.State.ScaleTestCountIn_Tempo)
                 {
-                    vc!.currentState = ViewController.State.ScaleTestActive_Tempo
-                    vc!.ResultsLabel0.text = String(currentClick+1)
+                    vc!.currentState = MainViewController.State.ScaleTestActive_Tempo
+                    vc!.ResultsLabel.text = String(currentClick+1)
                 }
                 else if (currentClick < 3)
                 {
-                    vc!.ResultsLabel0.text = String(currentClick+1)
+                    vc!.ResultsLabel.text = String(currentClick+1)
                 }
                 else if (currentClick == 4)
                 {
-                    vc!.ResultsLabel0.text = "GO!"
+                    vc!.ResultsLabel.text = "GO!"
                 }
                 if (currentClick >= countInClick)
                 {
@@ -145,7 +143,7 @@ class Metronome {
             currentClick = currentClick + 1;
         }
     }
-//
+
     func endMetronome()
     {
         if nextTimer != nil {
@@ -156,15 +154,15 @@ class Metronome {
             metroTimer?.invalidate()
             metroTimer = nil
         }
-        if (vc!.currentState == ViewController.State.ScaleTestCountIn_Tempo || vc!.currentState == ViewController.State.ScaleTestActive_Tempo)
+        if (vc!.currentState == MainViewController.State.ScaleTestCountIn_Tempo || vc!.currentState == MainViewController.State.ScaleTestActive_Tempo)
         {
-            vc!.ResultsLabel0.text = "Minor Pentatonic"            
+            vc!.ResultsLabel.text = "Minor Pentatonic"            
         }
     }
     
     @objc func analyzeScaleTest()
     {
-        vc!.currentState = vc!.tempoActive ? ViewController.State.ScaleTestIdle_Tempo : ViewController.State.ScaleTestIdle_NoTempo
+        vc!.currentState = vc!.tempoActive ? MainViewController.State.ScaleTestIdle_Tempo : MainViewController.State.ScaleTestIdle_NoTempo
         vc!.resultViewStrs.removeAll()
         for item in vc!.noteCollectionTestData {
             print(item.note)
@@ -172,15 +170,13 @@ class Metronome {
         }
         if (vc!.noteCollectionTestData.count != vc!.specifiedNoteCollection.count)
         {
-//            print("Not Enough Notes Inputted")
             vc!.resultViewStrs.append("Try Again!")
             vc!.resultViewStrs.append("Not Enough Notes Inputted")
-            vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
+//            vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
             return
         }
         let notesMatch = vc!.sCollection!.analyzeScale(iscaleTestData: vc!.noteCollectionTestData)
         var timeAcurracyMet = true
-//        notesMatch = 
         for (_, items) in vc!.noteCollectionTestData.enumerated()
         {
             if (items.timeDelta > (vc!.timeThreshold["Easy"])!)
@@ -200,8 +196,7 @@ class Metronome {
         {
             vc!.resultViewStrs.append("TIME : INCORRECT")
         }
-        vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
-//        vc!.ResultsLabel1.text = resultsText
+//        vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
         print(resultsText)
         _ = Timer.scheduledTimer(timeInterval: 2, target: vc, selector: #selector(vc!.resetResultsLabel), userInfo: nil, repeats: false)
     }

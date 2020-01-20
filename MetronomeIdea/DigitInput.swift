@@ -6,7 +6,7 @@ class DigitsInput: NSObject, UITextFieldDelegate {
     //let controller = ViewController(nibName: "ViewController", bundle: nil)
     //self.navigationController.pushViewController(controller, animated: true)
     
-    var vc: ViewController? = nil
+    var vc: MainViewController? = nil
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
         

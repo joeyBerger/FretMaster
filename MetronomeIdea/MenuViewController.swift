@@ -11,14 +11,14 @@ import UIKit
 extension UIButton {
 open override var isHighlighted: Bool {
     didSet {
-//        super.isHighlighted = false
+        super.isHighlighted = false
     }
 }}
 
 var userLevelData = UserLevelData(scaleLevel: "0.0",arpeggioLevel: "0.0",et_singleNotes: "0.0",et_scales: "0.0",et_chords: "0.0",tutorialComplete: "0.0")
 let defaultColor = DefaultColor()
 
-class MainMenuViewController: UIViewController {
+class MenuViewController: UIViewController {
 
     @IBOutlet weak var Button0: UIButton!
     @IBOutlet weak var Button1: UIButton!
@@ -26,9 +26,10 @@ class MainMenuViewController: UIViewController {
     @IBOutlet weak var Button3: UIButton!
     @IBOutlet weak var Button4: UIButton!
     @IBOutlet weak var NavBar: UINavigationBar!
-    @IBOutlet weak var NavBarFiller: UIImageView!
+//    @IBOutlet weak var NavBarFiller: UIImageView!
     @IBOutlet weak var NavSettingsButton: UIBarButtonItem!
     
+    @IBOutlet weak var Stack: UIStackView!
     @IBOutlet weak var DevScreenPrint: UILabel!
     
     var developmentMode = true
@@ -40,7 +41,24 @@ class MainMenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         
-        view.backgroundColor = defaultColor.BackgroundColor
+//        view.backgroundColor = defaultColor.BackgroundColor
+//        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "MenuNeck.jpg")!)
+        
+//        self.view.backgroundColor = UIColor.black
+        
+        let screenSize: CGRect = UIScreen.main.bounds
+        var bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+        bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
+        self.view.insertSubview(bgImage, at: 0)
+        
+        let newFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: NavBar.frame.minY)
+        let navBarFillerReal = UIImageView()
+        navBarFillerReal.frame = newFrame
+        navBarFillerReal.backgroundColor = defaultColor.MenuButtonColor
+        self.view.insertSubview(navBarFillerReal, at: 1)
+        
+        
         self.DevScreenPrint.alpha = 0.0
         
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
@@ -59,7 +77,13 @@ class MainMenuViewController: UIViewController {
                 userLevelData.et_singleNotes = et_singleNotes as! String
                 userLevelData.et_scales = et_scales as! String
                 userLevelData.et_chords = et_chords as! String
-                userLevelData.tutorialComplete = tutorialComplete as! String
+                
+                if (tutorialComplete != nil) {
+                    userLevelData.tutorialComplete = tutorialComplete as! String
+                } else {
+                    print("bad data, ressetting")
+                    resetData()
+                }
             }
         } else {
              print ("brand new data")
@@ -84,22 +108,38 @@ class MainMenuViewController: UIViewController {
         setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = returnConvertedLevel(iinput: userLevelData.et_singleNotes)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button2, ititle: "SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        setupMainMenuButton(ibutton: Button2, ititle: "EAR TRAINING: SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = returnConvertedLevel(iinput: userLevelData.et_scales)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button3, ititle: "SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        setupMainMenuButton(ibutton: Button3, ititle: "EAR TRAINING: SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = returnConvertedLevel(iinput: userLevelData.et_chords)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button4, ititle: "CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        setupMainMenuButton(ibutton: Button4, ititle: "EAR TRAINING: CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         
         NavBar.barTintColor = defaultColor.MenuButtonColor
-        NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
+//        NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
         NavBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
         NavSettingsButton.tintColor = defaultColor.MenuButtonTextColor
         //periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
         
         print(userLevelData.scaleLevel)
-//        DevLabel.isHidden = true
+        
+        
+        
+        
+        let button4frame = view.convert(Button4.frame, from:Stack)
+        
+        //look to see if menu buttons are off the screen
+        if (button4frame.maxY + button4frame.height > view.frame.height) {
+            //conversion for iPhone8
+            //(667-85-145-(4*65))/5
+            let bottomBuffer: CGFloat = 10.0 //was 20.0
+            let numbButtons: CGFloat = 5.0
+            let button0frame = view.convert(Button0.frame, from:Stack)
+            let sP = (view.frame.height - (bottomBuffer+button0frame.height)-button0frame.minY - (numbButtons-1)*button0frame.height)/numbButtons
+            print("adapting stack to fit all buttons with new spacing of \(sP)")
+            Stack.spacing = CGFloat(sP)
+        }
     }
     
     func setupMainMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float, itutorialComplete : Bool = true) {
@@ -123,14 +163,21 @@ class MainMenuViewController: UIViewController {
         ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
         ibutton.layer.shadowRadius = 2
         ibutton.layer.shadowOpacity = 0.6
+        
+        print("ibutton \(ibutton.frame)")
        
-        let width = 273.0
+        let width = ibutton.frame.width
         let buttonSubtext = UILabel()
-        buttonSubtext.frame = CGRect(x: 0,y: 15,width: width,height: 62)
+        buttonSubtext.frame = CGRect(x: 0,y: 0,width: width, height: ibutton.frame.height+30)
+//        buttonSubtext.bounds = CGRect(x: 0,y: 0, width: width, height: ibutton.frame.height)
         buttonSubtext.textAlignment = NSTextAlignment.center
         buttonSubtext.text = isubtext;
         buttonSubtext.layer.zPosition = 1;
         buttonSubtext.textColor = textColor
+//        buttonSubtext.translatesAutoresizingMaskIntoConstraints = false
+        
+
+        
         ibutton.addSubview(buttonSubtext)
         
         if (iprogressAmount >= 0.0) {
@@ -176,42 +223,33 @@ class MainMenuViewController: UIViewController {
             return
         }
         
-        let vc = setViewController(iviewControllerStr: "ViewController")
+        let vc = setViewController(iviewControllerStr: "Playground2")
         let lc = LevelConstruct()
-        
+
         vc.developmentMode = developmentMode
         
         //Scale Test No Tempo
         if (sender.tag == 0) {
-            vc.setStateProperties(icurrentState: ViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
+            vc.setStateProperties(icurrentState: MainViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
         }
                 
         //Arpeggio Test No Tempo
         if (sender.tag == 1) {
-            vc.setStateProperties(icurrentState: ViewController.State.ArpeggioTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
+            vc.setStateProperties(icurrentState: MainViewController.State.ArpeggioTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
         }
         
         presentViewController(iviewController: vc)
     }
-    
-    @IBAction func testNav2(_ sender: Any) {
         
-        let vc = setViewController(iviewControllerStr: "ViewController")
+    func setViewController(iviewControllerStr: String) -> MainViewController {
+        var controller: MainViewController
         
-        vc.currentState = ViewController.State.RecordingIdle
-        
-        presentViewController(iviewController: vc)
-    }
-    
-    func setViewController(iviewControllerStr: String) -> ViewController {
-        var controller: ViewController
-        
-        controller = self.storyboard?.instantiateViewController(withIdentifier: iviewControllerStr) as! ViewController
+        controller = self.storyboard?.instantiateViewController(withIdentifier: iviewControllerStr) as! MainViewController
         
         return controller
     }
     
-    func presentViewController(iviewController: ViewController) {
+    func presentViewController(iviewController: MainViewController) {
         iviewController.modalPresentationStyle = .fullScreen
         present(iviewController, animated: false, completion: nil)
     }

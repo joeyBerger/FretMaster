@@ -9,9 +9,9 @@
 import Foundation
 class EarTraining {
     
-    var vc : ViewController?
+    var vc : MainViewController?
     
-    init (ivc:ViewController) {
+    init (ivc:MainViewController) {
         vc = ivc;
         
     }
@@ -24,24 +24,24 @@ class EarTraining {
         for _ in 0..<numbNotes {
             earTrainCallArr.append(vc!.tempScale[vc!.rand(max: vc!.tempScale.count)])
         }
-        vc!.currentState = ViewController.State.EarTrainCall
+        vc!.currentState = MainViewController.State.EarTrainCall
         vc!.met!.currentClick = 0
         let displayT = 1
         _ = Timer.scheduledTimer(timeInterval: TimeInterval(displayT), target: self, selector: #selector(self.beginEarTrainingHelper), userInfo: ["NoteSelection":vc!.tempScale,"AlphaVal":0.0], repeats: false)
         
         vc!.displaySelectionDots(inoteSelection: vc!.tempScale, ialphaAmount: 0.5)
-        vc!.dotDict[earTrainCallArr[0]]?.alpha = 1
+//        vc!.dotDict[earTrainCallArr[0]]?.alpha = 1
     }
     
     
     func presentEarTrainResults()
     {
         let resultText = earTrainCallArr == earTrainResponseArr ? "Good" : "Bad"
-        vc!.ResultsLabel0.text = resultText
+        vc!.ResultsLabel.text = resultText
         _ = Timer.scheduledTimer(timeInterval: 2, target: vc!, selector: #selector(vc!.resetResultsLabel), userInfo: nil, repeats: false)
         earTrainCallArr.removeAll()
         earTrainResponseArr.removeAll()
-        vc!.currentState = ViewController.State.Idle
+        vc!.currentState = MainViewController.State.Idle
     }
     
     @objc func beginEarTrainingHelper(timer:Timer)

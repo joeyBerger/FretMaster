@@ -10,9 +10,9 @@ import Foundation
 
 class ScaleCollection {
     
-    var vc : ViewController?
+    var vc : MainViewController?
     
-    init (ivc:ViewController) {
+    init (ivc:MainViewController) {
         vc = ivc;
     }
     
@@ -154,7 +154,10 @@ class ScaleCollection {
     
     func returnNoteDistance (iinput: String, icomparedNote: String) -> String {
         if let inputIndex = refScale.firstIndex(of: iinput) {
+//            print("inputIndex \(inputIndex)  ")
+//            print("iinput \(iinput)  ")
             if let comparedNoteIndex = refScale.firstIndex(of: icomparedNote) {
+//                print("comparedNoteIndex \(comparedNoteIndex)")
                 let dist = inputIndex < comparedNoteIndex ? (12 + inputIndex) - comparedNoteIndex : inputIndex - comparedNoteIndex
                 return scaleDegreeDict.filter{$1 == dist}.map{$0.0}[0]
             }
@@ -166,7 +169,7 @@ class ScaleCollection {
         return scaleNameDic[iinput]!
     }
     
-    func analyzeScale (iscaleTestData : [ViewController.InputData]) -> Bool {
+    func analyzeScale (iscaleTestData : [MainViewController.InputData]) -> Bool {
         for (i,item) in iscaleTestData.enumerated() {
             if (item.note != vc!.specifiedNoteCollection[i]) {
                 return false

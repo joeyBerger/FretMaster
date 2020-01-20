@@ -9,7 +9,8 @@
 /* Begin PBXBuildFile section */
 		9E07F7262396B0E600E99444 /* DefaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E07F7252396B0E600E99444 /* DefaultColor.swift */; };
 		9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E16FA142381C73600100F65 /* ScaleClass.swift */; };
-		9E5FB6EA2389F98C0078E980 /* MainMenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MainMenuViewController.swift */; };
+		9E18282223CA65650001E46F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E18282123CA65650001E46F /* MainViewController.swift */; };
+		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
 		9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E69398D23A7DDB800C57B11 /* WaitThen.swift */; };
 		9E8527D822C70D0800DFCB26 /* FretBoard2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527D722C70D0800DFCB26 /* FretBoard2.png */; };
 		9E8527DA22C7303B00DFCB26 /* circle.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527D922C7303B00DFCB26 /* circle.png */; };
@@ -53,12 +54,16 @@
 		9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE71F35238B8B5B00D87D24 /* UserData.swift */; };
 		9EEF76B223AFE4AB00F00010 /* AMPopTip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; };
 		9EEF76B323AFE4AB00F00010 /* AMPopTip.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9EF8A89E23D55E380079BE8D /* AcousticMain.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EF8A89D23D55E370079BE8D /* AcousticMain.png */; };
+		9EF8A8A023D55E6D0079BE8D /* ConcertHall.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EF8A89F23D55E6D0079BE8D /* ConcertHall.jpg */; };
+		9EF8A8A423D55E820079BE8D /* RecordingBoard.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EF8A8A123D55E810079BE8D /* RecordingBoard.jpg */; };
+		9EF8A8A523D55E820079BE8D /* RockCrowd.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EF8A8A223D55E820079BE8D /* RockCrowd.png */; };
+		9EF8A8A623D55E820079BE8D /* RockCrowd2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EF8A8A323D55E820079BE8D /* RockCrowd2.jpg */; };
 		B8A6184F20DB9E2A00AF33C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */; };
 		B8A6185620DB9E2B00AF33C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */; };
 		B8A6185920DB9E2B00AF33C5 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */; };
 		B8A6186320DB9E7500AF33C5 /* Metronome.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A6186020DB9E7500AF33C5 /* Metronome.swift */; };
 		B8A6186420DB9E7500AF33C5 /* Main.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = B8A6186120DB9E7500AF33C5 /* Main.storyboard */; };
-		B8A6186520DB9E7500AF33C5 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A6186220DB9E7500AF33C5 /* ViewController.swift */; };
 		B8A6186820DB9F3E00AF33C5 /* Low.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8A6186720DB9F1C00AF33C5 /* Low.wav */; };
 		B8A6186920DB9F4100AF33C5 /* High.wav in Resources */ = {isa = PBXBuildFile; fileRef = B8A6186620DB9F1C00AF33C5 /* High.wav */; };
 /* End PBXBuildFile section */
@@ -80,7 +85,9 @@
 /* Begin PBXFileReference section */
 		9E07F7252396B0E600E99444 /* DefaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultColor.swift; sourceTree = "<group>"; };
 		9E16FA142381C73600100F65 /* ScaleClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleClass.swift; sourceTree = "<group>"; };
-		9E5FB6E92389F98C0078E980 /* MainMenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainMenuViewController.swift; sourceTree = "<group>"; };
+		9E18282123CA65650001E46F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9E35760623D1880700C9001E /* MenuButtonClick1.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = MenuButtonClick1.aif; path = "../../../../../Udacity/iOS Nanodegree/FretMaster/Assets/GuitarNotes/Bounces/MenuButtonClick1.aif"; sourceTree = "<group>"; };
+		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		9E69398D23A7DDB800C57B11 /* WaitThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitThen.swift; sourceTree = "<group>"; };
 		9E8527D722C70D0800DFCB26 /* FretBoard2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoard2.png; sourceTree = "<group>"; };
 		9E8527D922C7303B00DFCB26 /* circle.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = circle.png; sourceTree = "<group>"; };
@@ -123,6 +130,11 @@
 		9EDC27EB22C980E000387143 /* C#2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "C#2.wav"; sourceTree = "<group>"; };
 		9EE71F35238B8B5B00D87D24 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMPopTip.framework; path = Carthage/Build/iOS/AMPopTip.framework; sourceTree = "<group>"; };
+		9EF8A89D23D55E370079BE8D /* AcousticMain.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = AcousticMain.png; sourceTree = "<group>"; };
+		9EF8A89F23D55E6D0079BE8D /* ConcertHall.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = ConcertHall.jpg; sourceTree = "<group>"; };
+		9EF8A8A123D55E810079BE8D /* RecordingBoard.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = RecordingBoard.jpg; sourceTree = "<group>"; };
+		9EF8A8A223D55E820079BE8D /* RockCrowd.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = RockCrowd.png; sourceTree = "<group>"; };
+		9EF8A8A323D55E820079BE8D /* RockCrowd2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = RockCrowd2.jpg; sourceTree = "<group>"; };
 		B8A6184B20DB9E2A00AF33C5 /* MetronomeIdea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetronomeIdea.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -130,7 +142,6 @@
 		B8A6185A20DB9E2B00AF33C5 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
 		B8A6186020DB9E7500AF33C5 /* Metronome.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Metronome.swift; sourceTree = "<group>"; };
 		B8A6186120DB9E7500AF33C5 /* Main.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; path = Main.storyboard; sourceTree = "<group>"; };
-		B8A6186220DB9E7500AF33C5 /* ViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ViewController.swift; sourceTree = "<group>"; };
 		B8A6186620DB9F1C00AF33C5 /* High.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = High.wav; sourceTree = "<group>"; };
 		B8A6186720DB9F1C00AF33C5 /* Low.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Low.wav; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -147,9 +158,37 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		9E12C8BD23CA5B8E0011C5CC /* Layout Helper */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = "Layout Helper";
+			sourceTree = "<group>";
+		};
+		9ED22C7C23CD8C840051D8A4 /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				9EF8A89D23D55E370079BE8D /* AcousticMain.png */,
+				9EF8A89F23D55E6D0079BE8D /* ConcertHall.jpg */,
+				9EF8A8A123D55E810079BE8D /* RecordingBoard.jpg */,
+				9EF8A8A223D55E820079BE8D /* RockCrowd.png */,
+				9EF8A8A323D55E820079BE8D /* RockCrowd2.jpg */,
+				9E8527D722C70D0800DFCB26 /* FretBoard2.png */,
+				9E8527DB22C91E7400DFCB26 /* FretBoard3.png */,
+				9E8527DF22C91F5700DFCB26 /* Fretboard4.png */,
+				9E8527D922C7303B00DFCB26 /* circle.png */,
+			);
+			path = Images;
+			sourceTree = "<group>";
+		};
 		9EDC27CE22C980E000387143 /* Sounds */ = {
 			isa = PBXGroup;
 			children = (
+				B8A6186620DB9F1C00AF33C5 /* High.wav */,
+				B8A6186720DB9F1C00AF33C5 /* Low.wav */,
+				9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */,
+				9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */,
+				9E35760623D1880700C9001E /* MenuButtonClick1.aif */,
 				9EDC27CF22C980E000387143 /* G2.wav */,
 				9EDC27D022C980E000387143 /* G3.wav */,
 				9EDC27D122C980E000387143 /* F3.wav */,
@@ -191,6 +230,13 @@
 			name = Frameworks;
 			sourceTree = "<group>";
 		};
+		9EF8A89C23D54EC20079BE8D /* HelperObjects */ = {
+			isa = PBXGroup;
+			children = (
+			);
+			path = HelperObjects;
+			sourceTree = "<group>";
+		};
 		B8A6184220DB9E2900AF33C5 = {
 			isa = PBXGroup;
 			children = (
@@ -211,31 +257,26 @@
 		B8A6184D20DB9E2A00AF33C5 /* MetronomeIdea */ = {
 			isa = PBXGroup;
 			children = (
+				9ED22C7C23CD8C840051D8A4 /* Images */,
+				9E12C8BD23CA5B8E0011C5CC /* Layout Helper */,
 				B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */,
 				B8A6186120DB9E7500AF33C5 /* Main.storyboard */,
-				9E8527DF22C91F5700DFCB26 /* Fretboard4.png */,
-				9EAD3C0D237E825F004467B1 /* EarTraining.swift */,
-				9E8527D922C7303B00DFCB26 /* circle.png */,
-				B8A6186020DB9E7500AF33C5 /* Metronome.swift */,
-				B8A6186220DB9E7500AF33C5 /* ViewController.swift */,
-				9E5FB6E92389F98C0078E980 /* MainMenuViewController.swift */,
-				9E16FA142381C73600100F65 /* ScaleClass.swift */,
-				9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */,
-				9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */,
-				9E9C46E622C483C000B133A9 /* SoundController.swift */,
-				B8A6186620DB9F1C00AF33C5 /* High.wav */,
-				B8A6186720DB9F1C00AF33C5 /* Low.wav */,
 				B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */,
-				9E8527D722C70D0800DFCB26 /* FretBoard2.png */,
-				9E8527DB22C91E7400DFCB26 /* FretBoard3.png */,
 				B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */,
 				B8A6185A20DB9E2B00AF33C5 /* Info.plist */,
-				9EDC27CE22C980E000387143 /* Sounds */,
+				9EAD3C0D237E825F004467B1 /* EarTraining.swift */,
+				B8A6186020DB9E7500AF33C5 /* Metronome.swift */,
+				9E16FA142381C73600100F65 /* ScaleClass.swift */,
+				9E9C46E622C483C000B133A9 /* SoundController.swift */,
 				9ED9892022D1334B0076C65B /* DigitInput.swift */,
 				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
 				9E07F7252396B0E600E99444 /* DefaultColor.swift */,
 				9E69398D23A7DDB800C57B11 /* WaitThen.swift */,
+				9EF8A89C23D54EC20079BE8D /* HelperObjects */,
+				9EDC27CE22C980E000387143 /* Sounds */,
 				9E944D0223B0046B00A8F7A2 /* Playground.swift */,
+				9E18282123CA65650001E46F /* MainViewController.swift */,
+				9E5FB6E92389F98C0078E980 /* MenuViewController.swift */,
 			);
 			path = MetronomeIdea;
 			sourceTree = "<group>";
@@ -301,8 +342,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EDC280722C980E000387143 /* A#1.wav in Resources */,
+				9EF8A8A023D55E6D0079BE8D /* ConcertHall.jpg in Resources */,
+				9EF8A8A423D55E820079BE8D /* RecordingBoard.jpg in Resources */,
 				9EDC27F322C980E000387143 /* C3.wav in Resources */,
 				9EDC27EE22C980E000387143 /* F3.wav in Resources */,
+				9EF8A89E23D55E380079BE8D /* AcousticMain.png in Resources */,
 				9EDC27EC22C980E000387143 /* G2.wav in Resources */,
 				9E8527D822C70D0800DFCB26 /* FretBoard2.png in Resources */,
 				9EDC27F522C980E000387143 /* D#2.wav in Resources */,
@@ -315,6 +359,7 @@
 				9EDC27F022C980E000387143 /* A2.wav in Resources */,
 				B8A6186420DB9E7500AF33C5 /* Main.storyboard in Resources */,
 				9EDC280122C980E000387143 /* E2.wav in Resources */,
+				9EF8A8A523D55E820079BE8D /* RockCrowd.png in Resources */,
 				B8A6186920DB9F4100AF33C5 /* High.wav in Resources */,
 				9EDC280822C980E000387143 /* C#2.wav in Resources */,
 				9EDC280522C980E000387143 /* D3.wav in Resources */,
@@ -339,6 +384,7 @@
 				B8A6185620DB9E2B00AF33C5 /* Assets.xcassets in Resources */,
 				9EDC27F822C980E000387143 /* F#3.wav in Resources */,
 				9EDC27FF22C980E000387143 /* G#1.wav in Resources */,
+				9EF8A8A623D55E820079BE8D /* RockCrowd2.jpg in Resources */,
 				9EDC27F222C980E000387143 /* A1.wav in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -350,13 +396,13 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E5FB6EA2389F98C0078E980 /* MainMenuViewController.swift in Sources */,
+				9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */,
 				9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */,
-				B8A6186520DB9E7500AF33C5 /* ViewController.swift in Sources */,
 				9E07F7262396B0E600E99444 /* DefaultColor.swift in Sources */,
 				9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */,
 				9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */,
 				9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */,
+				9E18282223CA65650001E46F /* MainViewController.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
 				9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */,
 				B8A6186320DB9E7500AF33C5 /* Metronome.swift in Sources */,
