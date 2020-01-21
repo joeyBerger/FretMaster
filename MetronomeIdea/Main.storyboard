@@ -232,9 +232,11 @@
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Development Mode:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iyn-2m-nxz">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Development Mode:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="iyn-2m-nxz">
                                 <rect key="frame" x="41" y="748" width="344" height="39"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
+                                <constraints>
+                                    <constraint firstAttribute="height" constant="39" id="NlX-JT-PoD"/>
+                                </constraints>
                                 <fontDescription key="fontDescription" type="system" pointSize="17"/>
                                 <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                 <nil key="highlightedColor"/>
@@ -242,11 +244,14 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
+                            <constraint firstItem="iyn-2m-nxz" firstAttribute="leading" secondItem="9sG-sC-1Sg" secondAttribute="leadingMargin" constant="21" id="38N-to-Kta"/>
+                            <constraint firstAttribute="trailingMargin" secondItem="iyn-2m-nxz" secondAttribute="trailing" constant="9" id="8da-JC-84b"/>
                             <constraint firstItem="dXg-yi-7fh" firstAttribute="leading" secondItem="9sG-sC-1Sg" secondAttribute="leading" symbolic="YES" id="D2e-5G-VUx"/>
                             <constraint firstAttribute="trailing" secondItem="qY0-dI-S7X" secondAttribute="trailing" id="Ki2-YX-5E8"/>
                             <constraint firstItem="q8a-7h-RlA" firstAttribute="top" secondItem="ta1-82-spN" secondAttribute="bottom" constant="-32" id="Tov-MZ-oER"/>
                             <constraint firstItem="dXg-yi-7fh" firstAttribute="top" secondItem="XSY-xe-N64" secondAttribute="bottom" symbolic="YES" id="UJP-UD-nio"/>
                             <constraint firstItem="YaK-Av-D8i" firstAttribute="top" secondItem="dXg-yi-7fh" secondAttribute="bottom" constant="57" id="c9v-bp-Ko0"/>
+                            <constraint firstItem="q8a-7h-RlA" firstAttribute="top" secondItem="iyn-2m-nxz" secondAttribute="bottom" constant="75" id="eTb-IJ-uRX"/>
                             <constraint firstItem="ta1-82-spN" firstAttribute="leading" secondItem="9sG-sC-1Sg" secondAttribute="leading" id="f5e-sZ-KPu"/>
                             <constraint firstAttribute="trailing" secondItem="dXg-yi-7fh" secondAttribute="trailing" symbolic="YES" id="rbN-qh-mqW"/>
                             <constraint firstItem="YaK-Av-D8i" firstAttribute="centerX" secondItem="9sG-sC-1Sg" secondAttribute="centerX" id="sZa-Ys-r0y"/>
@@ -649,8 +654,8 @@
     <resources>
         <image name="Fretboard4.png" width="355" height="979"/>
         <image name="I" width="16" height="16"/>
-        <image name="gear" catalog="system" width="64" height="58"/>
-        <image name="speaker.3" catalog="system" width="64" height="44"/>
-        <image name="xmark" catalog="system" width="64" height="56"/>
+        <image name="gear" catalog="system" width="32" height="32"/>
+        <image name="speaker.3" catalog="system" width="32" height="32"/>
+        <image name="xmark" catalog="system" width="32" height="32"/>
     </resources>
 </document>

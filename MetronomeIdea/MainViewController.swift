@@ -150,6 +150,8 @@ class MainViewController: UIViewController {
 
     @IBOutlet var Fret: UIImageView!
     
+    
+    var FretboardImage: UIImageView!
     var DimOverlay: UIImageView!
     var ActionOverlay: UIImageView!
     var dotDict: [String: UIImageView] = [:]
@@ -258,7 +260,11 @@ class MainViewController: UIViewController {
 
     let layerArr = [
         "Default",
-        "TutorialButton",
+        "DimOverlay",
+        "TutorialFrontLayer0",
+        "TutorialFrontLayer1",
+        "PopOverLayer",
+        "ActionOverlay",
     ]
 
     enum State {
@@ -307,11 +313,13 @@ class MainViewController: UIViewController {
         DimOverlay = setupScreenOverlay()
         DimOverlay.backgroundColor = UIColor.black
         view.addSubview(DimOverlay)
-        print("DimOverlay \(DimOverlay.layer.zPosition)")
+        setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
 //        view.insertSubview(DimOverlay, at: 2)
         
         ActionOverlay = setupScreenOverlay()
+        ActionOverlay.backgroundColor = UIColor.white
         view.addSubview(ActionOverlay)
+        setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
         
         setupFretBoardImage()
         setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
@@ -388,6 +396,7 @@ class MainViewController: UIViewController {
         mainPopoverBodyText.textColor = defaultColor.MenuButtonTextColor
         mainPopoverBodyText.contentMode = .scaleToFill
         mainPopoverBodyText.numberOfLines = 0
+        setLayer(iobject: mainPopover, ilayer: "TutorialFrontLayer0")
         mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
         mainPopoverButton.setTitleColor(.white, for: .normal)
         mainPopoverButton.backgroundColor = UIColor.red
@@ -1227,18 +1236,36 @@ class MainViewController: UIViewController {
 
     var testVar = 0
     @IBAction func testButton(_: Any) {
-        if (testVar%2 > 0) {
-//            sc.playSound(isoundName: "C2", ioneShot: true, ifadeAllOtherSoundsDuration: 0.2)
-            sc.fadeSound(isoundName: "C4", iduration: 0.2)
+//        if (testVar%2 > 0) {
+////            sc.playSound(isoundName: "C2", ioneShot: true, ifadeAllOtherSoundsDuration: 0.2)
+//            sc.fadeSound(isoundName: "C4", iduration: 0.2)
+//        } else {
+////            sc.playSound(isoundName: "C3", ioneShot: true)
+//            sc.playSound(isoundName: "C4", ioneShot: true)
+//        }
+//        testVar += 1
+        
+        
+//        ActionOverlay.layer.zPosition = 50.0
+//        ActionOverlay.alpha = 1.0
+//        print("asdfas")
+        
+        flashActionOverlay(isuccess: false)
+    }
+    
+    func flashActionOverlay (isuccess: Bool) {
+        if (isuccess) {
+            ActionOverlay.backgroundColor! = UIColor.white
         } else {
-//            sc.playSound(isoundName: "C3", ioneShot: true)
-            sc.playSound(isoundName: "C4", ioneShot: true)
+            ActionOverlay.backgroundColor! = UIColor.red
         }
-        testVar += 1
+        swoopAlpha(iobject: ActionOverlay, ialpha: 0.6, iduration: 0.0)
+        swoopAlpha(iobject: ActionOverlay, ialpha: 0.0, iduration: 0.5)
     }
 
     @objc func presentMainPopover() {
         // https://www.youtube.com/watch?v=qS21yjo822Y
+        pc!.tutorialPopup.hide()
         swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
         view.addSubview(mainPopover)
         mainPopover.center = view.center
@@ -1249,7 +1276,7 @@ class MainViewController: UIViewController {
 
     func progressTutorial() {
         pc!.tutorialPopup.hide()
-        print("hiding")
+
         let peripheralButtonTutorialNumb = defaultPeripheralIcon.count
         if currentTutorialPopup == tutorialPopupText.count {
             swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
@@ -1265,7 +1292,7 @@ class MainViewController: UIViewController {
         // peripheral button popups
         var parentType = ""
         if currentTutorialPopup < peripheralButtonTutorialNumb {
-            setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialButton")
+            setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialFrontLayer0")
             parentType = "PeripheralButton"
 
         } else if currentTutorialPopup < tutorialPopupText.count - 1 {
@@ -1273,12 +1300,12 @@ class MainViewController: UIViewController {
             let buttonStr = specifiedNoteCollection[currentTutorialPopup - peripheralButtonTutorialNumb]
 
             for (_, dot) in specifiedNoteCollection.enumerated() {
-                setLayer(iobject: dotDict[dot]!, ilayer: "Default")
+                setLayer(iobject: dotDict[dot]!, ilayer: "TutorialFrontLayer1")  //TODO: what to do here?
             }
-
-            setLayer(iobject: dotDict[buttonStr]!, ilayer: "TutorialButton")
+            setLayer(iobject: FretboardImage, ilayer: "TutorialFrontLayer0")
+            setLayer(iobject: dotDict[buttonStr]!, ilayer: "TutorialFrontLayer1")
             parentType = buttonStr + "Fret"
-            print("setting button")
+
             let button = UIButton()
             button.tag = buttonDict.filter { $1 == buttonStr }.map { $0.0 }[0] + 100
 
@@ -1290,13 +1317,14 @@ class MainViewController: UIViewController {
             for (_, dot) in specifiedNoteCollection.enumerated() {
                 setLayer(iobject: dotDict[dot]!, ilayer: "Default")
             }
+            setLayer(iobject: FretboardImage, ilayer: "Default")
             pc!.tutorialPopup.hide()
             mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(35)
             mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
-            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
             return
         }
-        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject, "arg2": parentType as AnyObject])
+        wt.waitThen(itime: 0.3, itarget: self, imethod: #selector(presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject, "arg2": parentType as AnyObject])
 
         currentTutorialPopup += 1
         print("currentTutorialPopup \(currentTutorialPopup)")
@@ -1339,6 +1367,7 @@ class MainViewController: UIViewController {
             iobject.layer.zPosition = getLayer(ilayer: ilayer)
         } else {
             // Fallback on earlier versions
+            print("Fallback within set Layer")
         }
     }
 
@@ -1362,7 +1391,8 @@ class MainViewController: UIViewController {
             let buttonStr = popupObjectParentType.replacingOccurrences(of: "Fret", with: "")
             
            
-            let frame = view.convert(dotDict[buttonStr]!.frame, from:fretButtonDict[buttonStr]!)
+//            let frame = view.convert(dotDict[buttonStr]!.frame, from:fretButtonDict[buttonStr]!)
+            let frame = dotDict[buttonStr]!.frame
             pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .left, maxWidth: 200, in: view, from: frame)
         } else {
             print("got here")
@@ -1420,14 +1450,16 @@ class MainViewController: UIViewController {
         let noteInputStrs = ["G#1", "A1", "A#1", "B1", "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2", "C3", "C#3", "D3", "D#3_0", "D#3_1", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3", "C4"]
 
         let image: UIImage = UIImage(named: "Fretboard4")!
-        let newImage = UIImageView()
-        newImage.image = image
-
+        FretboardImage = UIImageView()
+        FretboardImage.image = image
+        setLayer(iobject: FretboardImage, ilayer: "Default")
         
         let fretboardAspectFit = AVMakeRect(aspectRatio: FretboardDummy.image!.size, insideRect: FretboardDummy.bounds)
         
         print(FretboardDummy.frame)
         print("fretboardAspectFit \(fretboardAspectFit)")
+        
+        FretboardDummy.alpha = 0
 
         var fretboardXLoc = CGFloat(FretboardDummy.frame.minX+fretboardAspectFit.minX)
         let fretboardYLoc = FretboardDummy.frame.minY
@@ -1442,15 +1474,15 @@ class MainViewController: UIViewController {
 //        }
 
 
-        newImage.frame = CGRect(x: fretboardXLoc,
+        FretboardImage.frame = CGRect(x: fretboardXLoc,
                                 y: fretboardYLoc,
                                 width: fretboardWidth,
                                 height: fretboardHeight)
-        newImage.alpha = 1.0
+        FretboardImage.alpha = 1.0
 
         fretboardXLoc *= FretboardDummy.frame.width/fretboardAspectFit.width// * fretboardAspectFit.width/iphone11AspectFitWidth
         
-        view.addSubview(newImage)
+        view.addSubview(FretboardImage)
 
         let buttonSize: [CGFloat] = [0.03, 0.2, 0.195, 0.18, 0.17, 0.163]
 //        let buttonWidth: [CGFloat] = [0.3, 0.1667, 0.1667, 0.1667, 0.1667, 0.1667]
@@ -1462,39 +1494,48 @@ class MainViewController: UIViewController {
         for string in 0 ... 5 {
             var xOffset: CGFloat = -80*fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth)
             for k in 0 ... string {
-                xOffset += newImage.frame.width * buttonWidth[k]
+                xOffset += FretboardImage.frame.width * buttonWidth[k]
             }
 
             for i in 0 ... 5 {
                 let button = UIButton()
-                let height = newImage.frame.height * buttonSize[i]
+                let height = FretboardImage.frame.height * buttonSize[i]
                 var yOffset: CGFloat = 0
                 if i > 0 {
                     for j in 1 ... i {
-                        yOffset += newImage.frame.height * buttonSize[j - 1]
+                        yOffset += FretboardImage.frame.height * buttonSize[j - 1]
                     }
                 }
 
-                let width = newImage.frame.width * buttonWidth[string]
-                button.frame = CGRect(x: fretboardXLoc + xOffset, y: newImage.frame.minY + yOffset, width: width, height: height)
+                let width = FretboardImage.frame.width * buttonWidth[string]
+                button.frame = CGRect(x: fretboardXLoc + xOffset, y: FretboardImage.frame.minY + yOffset, width: width, height: height)
                 //button.backgroundColor = color[(i+string)%color.count]
                 button.imageView?.alpha = 0.5
 
                 view.addSubview(button)
 
                 if i > 0 {
-                    button.addTarget(self, action: #selector(FretPressed), for: .touchUpInside)
+                    button.addTarget(self, action: #selector(FretPressed), for: .touchDown)
                     button.tag = buttonTag
 
                     let image = UIImageView()
                     let imageXOffset: CGFloat = string == 0 ? 12 : 0
 //                    let imageSize: CGFloat = 40
                     let imageSize = 34 * (fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth))
-                    image.frame = CGRect(x: button.frame.width / 2 - imageSize / 2 - imageXOffset, y: button.frame.height / 2 - 20, width: imageSize, height: imageSize)
+                    //image.frame = CGRect(x: button.frame.width / 2 - imageSize / 2 - imageXOffset, y: button.frame.height / 2 - 20, width: imageSize, height: imageSize)
+                    //adding image to view to avoid z position problems
+                    image.frame = CGRect(x: button.frame.width / 2 - imageSize / 2 - imageXOffset + button.frame.minX,
+                                         y: button.frame.height / 2 - 20 + button.frame.minY,
+                                         width: imageSize,
+                                         height: imageSize)
+                    
                     image.backgroundColor = UIColor.red
                     image.layer.masksToBounds = true
                     image.layer.cornerRadius = image.frame.width / 2
-                    button.addSubview(image)
+                    
+                    //adding image to view to avoid z position problems
+                    //button.addSubview(image)
+                    view.addSubview(image)
 
                     let noteLabel = UILabel()
                     noteLabel.frame = CGRect(x: 0, y: 0, width: imageSize, height: imageSize)
@@ -1529,11 +1570,12 @@ class PopupController {
         vc = ivc
 
         tutorialPopup.textColor = UIColor.white
-        tutorialPopup.bubbleColor = UIColor.red
+        tutorialPopup.bubbleColor = UIColor(red: 80/255, green: 184/255, blue: 231/255, alpha: 1.0) //TODO: put in color class
         tutorialPopup.shouldDismissOnTap = false
         tutorialPopup.shouldDismissOnTapOutside = false
         tutorialPopup.animationOut = 0.15
-        tutorialPopup.layer.zPosition = 2.0
+
+        vc!.setLayer(iobject: tutorialPopup, ilayer: "PopOverLayer")
 
         reminderPopup.textColor = UIColor.blue
         reminderPopup.bubbleColor = UIColor.red
@@ -1542,7 +1584,8 @@ class PopupController {
 
         resultButtonPopup.textColor = UIColor.white
         resultButtonPopup.bubbleColor = UIColor.red
-        resultButtonPopup.layer.zPosition = 2.0
+//        resultButtonPopup.layer.zPosition = 2.0
+        vc!.setLayer(iobject: resultButtonPopup, ilayer: "PopOverLayer")
         resultButtonPopup.dismissHandler = { _ in
             self.resultButtonPopupVisible = false
         }
