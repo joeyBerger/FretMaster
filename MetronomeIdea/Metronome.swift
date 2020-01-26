@@ -35,6 +35,8 @@ class Metronome {
     //Metro Features
     var isOn = false
     var bpm = 120.0//60.0     //Tempo Used for beeps, calculated into time value
+    var minBPM = 40.0
+    var maxBPM = 350.0
 
     var barNoteValue = 4        //How Many Notes Per Bar (Set To Amount Of Hits Per Pattern)
     var noteInBar = 0        //What Note You Are On In Bar
@@ -81,6 +83,8 @@ class Metronome {
                 {
                     endMetronome()
                     vc!.currentState = vc!.tempoActive ? MainViewController.State.ScaleTestIdle_Tempo : MainViewController.State.ScaleTestIdle_NoTempo
+                    
+                    vc!.restorePeriphButtonsToDefault(idefaultIcons: vc!.defaultPeripheralIcon)
                 }
             }
             else if (vc!.currentState == MainViewController.State.EarTrainCall)

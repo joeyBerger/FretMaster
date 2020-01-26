@@ -32,7 +32,7 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var Stack: UIStackView!
     @IBOutlet weak var DevScreenPrint: UILabel!
     
-    var developmentMode = true
+    var developmentMode = false
     
     var tutorialCompleteStatus = true
     

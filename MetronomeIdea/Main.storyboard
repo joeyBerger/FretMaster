@@ -363,7 +363,11 @@
                                 <items>
                                     <navigationItem title="FRET MASTER" id="T15-zQ-1Gr">
                                         <barButtonItem key="leftBarButtonItem" title="&lt; Back" width="20" id="us8-M7-98o"/>
-                                        <barButtonItem key="rightBarButtonItem" title="Item" image="gear" catalog="system" id="OlP-47-FhT"/>
+                                        <barButtonItem key="rightBarButtonItem" title="Item" image="gear" catalog="system" id="OlP-47-FhT">
+                                            <connections>
+                                                <action selector="onSettingsButtonDown:" destination="g0s-ID-MHD" id="Y7v-aV-WkC"/>
+                                            </connections>
+                                        </barButtonItem>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -654,8 +658,8 @@
     <resources>
         <image name="Fretboard4.png" width="355" height="979"/>
         <image name="I" width="16" height="16"/>
-        <image name="gear" catalog="system" width="32" height="32"/>
-        <image name="speaker.3" catalog="system" width="32" height="32"/>
-        <image name="xmark" catalog="system" width="32" height="32"/>
+        <image name="gear" catalog="system" width="64" height="58"/>
+        <image name="speaker.3" catalog="system" width="64" height="44"/>
+        <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>
 </document>
