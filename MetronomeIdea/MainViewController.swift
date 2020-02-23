@@ -240,6 +240,7 @@ class MainViewController: UIViewController {
     var ActionOverlay: UIImageView!
     var dotDict: [String: UIImageView] = [:]
     var fretButtonDict: [String: UIButton] = [:]
+    var fretButtonFrame: [String: CGRect] = [:]
     var dotText: [UILabel] = []
     var periphButtonArr: [UIButton] = []
 
@@ -349,6 +350,7 @@ class MainViewController: UIViewController {
         "TutorialFrontLayer0",
         "TutorialFrontLayer1",
         "PopOverLayer",
+        "FretButton",
         "ActionOverlay",
     ]
 
@@ -428,13 +430,7 @@ class MainViewController: UIViewController {
         }
     }
     
-    // my selector that was defined above
     @objc func willEnterForeground() {
-        // do stuff
-        print("WILL ENTER FOREGROUND")
-//        setButtonImage(ibutton: TempoUpButton, iimageStr: "arrowtriangle.up")
-//        setButtonImage(ibutton: TempoDownButton, iimageStr: "arrowtriangle.down")
-//        setPeripheralButtonsToDefault()
         let n: Any = 0
         onBackButtonDown(n)
     }
@@ -944,6 +940,7 @@ class MainViewController: UIViewController {
             hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             noteCollectionTestData.removeAll()
+            scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[0]]!)
             return
         } else if currentState == State.ScaleTestActive_NoTempo {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
@@ -951,6 +948,7 @@ class MainViewController: UIViewController {
             met!.endMetronome()
             ResultButton.setTitle("", for: .normal)
             setNavBarColor()
+            resetButtonFrames()
             return
         }
 
@@ -959,12 +957,14 @@ class MainViewController: UIViewController {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
             currentState = State.ArpeggioTestActive_NoTempo
             hideAllFretMarkers()
+            scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[0]]!)
             return
         } else if currentState == State.ArpeggioTestActive_NoTempo {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
             currentState = State.ArpeggioTestIdle_NoTempo
             met!.endMetronome()
             ResultButton.setTitle("", for: .normal)
+            resetButtonFrames()
             return
         }
     }
@@ -1142,19 +1142,44 @@ class MainViewController: UIViewController {
                 if (st.note != specifiedNoteCollection[noteCollectionTestData.count-1]) {
                     noteMismatch = true
                     flashActionOverlay(isuccess: false)
+                    resetButtonFrames()
                 }
                 if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode || noteMismatch) {
                     currentState = State.ScaleTestIdle_NoTempo
                     restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
                     setNavBarColor()
+                    resetButtonFrames()
                     let scaleCorrect = sCollection!.analyzeScale(iscaleTestData: noteCollectionTestData)
                     if (scaleCorrect) {
                         flashActionOverlay(isuccess: true)
                         Vibration.success.vibrate()
                     }
                     _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(presentTestResult), userInfo: ["ScaleCorrect": scaleCorrect], repeats: false)
+                } else {
+                    scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[noteCollectionTestData.count]]!)
                 }
             }
+        }
+    }
+    
+    func scaleButtonForClickableEase(ibutton: UIButton) {
+        resetButtonFrames()
+        let enlargementFactor: CGFloat = 1.5
+        let buttonFrame = ibutton.frame
+        ibutton.layer.zPosition = 1000 //for dev purposes
+        view.bringSubviewToFront(ibutton)  //this will cause issues with the complete button
+        ibutton.frame =
+               CGRect(
+                  x: buttonFrame.minX-(buttonFrame.width*enlargementFactor)/2+buttonFrame.width/2,
+                  y: buttonFrame.minY-(buttonFrame.height*enlargementFactor)/2+buttonFrame.height/2,
+                  width: buttonFrame.width*enlargementFactor,
+                  height: buttonFrame.height*enlargementFactor)
+        
+    }
+
+    func resetButtonFrames() {
+        for (str,fretButton) in fretButtonDict {
+            fretButton.frame = fretButtonFrame[str]!
         }
     }
 
@@ -1440,7 +1465,6 @@ class MainViewController: UIViewController {
             FretPressed(fretButtonDict[randomName.key]!)
         default: break
         }
-        
         let t = Double(rand(max: 50))/100.0
         wt.waitThen(itime: t, itarget: self, imethod: #selector(randomButtonTest) as Selector, irepeats: false, idict: ["arg1": "0" as AnyObject])
     }
@@ -1476,6 +1500,7 @@ class MainViewController: UIViewController {
         mainPopover.center = view.center
         mainPopover.center.y -= 50
         mainPopoverVisible = true
+        view.bringSubviewToFront(mainPopoverButton)
         
         //reset tempo/peripheral button layer orders
         for button in tempoButtonArr! {
@@ -1661,6 +1686,39 @@ class MainViewController: UIViewController {
 
     func setupFretBoardImage() {
         let noteInputStrs = ["G#1", "A1", "A#1", "B1", "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2", "C3", "C#3", "D3", "D#3_0", "D#3_1", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3", "C4"]
+        
+        let fretMarkerImageOffset : [String:CGFloat] = [
+           "G#1": 1.2,
+           "A1" : 1.2,
+           "A#1":1.2,
+           "B1" :1.2,
+           "C2" :1.2,
+           "C#2":1.0,
+           "D2" :1.0,
+           "D#2":1.0,
+           "E2" :1.0,
+           "F2" :1.0,
+           "F#2":1.0,
+           "G2" :0.9,
+           "G#2":1.0,
+           "A2" :1.0,
+           "A#2":1.0,
+           "B2" :1.0,
+           "C3" :1.0,
+           "C#3":1.0,
+           "D3" :1.0,
+           "D#3_0" :1.0,
+           "D#3_1" :1.0,
+           "E3" :1.0,
+           "F3" :1.0,
+           "F#3" :1.0,
+           "G3" :1.0,
+           "G#3":0.8,
+           "A3" :0.8,
+           "A#3":0.8,
+           "B3" :0.8,
+           "C4" :0.8,
+        ]
 
         let image: UIImage = UIImage(named: "Fretboard4")!
         FretboardImage = UIImageView()
@@ -1698,15 +1756,16 @@ class MainViewController: UIViewController {
         view.addSubview(FretboardImage)
 
         let buttonSize: [CGFloat] = [0.03, 0.2, 0.195, 0.18, 0.17, 0.163]
-//        let buttonWidth: [CGFloat] = [0.3, 0.1667, 0.1667, 0.1667, 0.1667, 0.1667]
-        let buttonWidth: [CGFloat] = [0.3, 0.1667, 0.1667, 0.165, 0.158, 0.15]
+       
+//        let buttonWidth: [CGFloat] = [0.3, 0.1667, 0.1667, 0.165, 0.158, 0.15]
+        let buttonWidth: [CGFloat] = [0.18, 0.164, 0.164, 0.164, 0.164, 0.18]
 
         let color = [UIColor.blue, UIColor.yellow, UIColor.red, UIColor.green, UIColor.black, UIColor.cyan]
         var buttonTag = 0
 
         for string in 0 ... 5 {
-            var xOffset: CGFloat = -80*fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth)
-            for k in 0 ... string {
+            var xOffset: CGFloat = -15*fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth)
+            for k in 0 ..< string {
                 xOffset += FretboardImage.frame.width * buttonWidth[k]
             }
 
@@ -1722,8 +1781,9 @@ class MainViewController: UIViewController {
 
                 let width = FretboardImage.frame.width * buttonWidth[string]
                 button.frame = CGRect(x: fretboardXLoc + xOffset, y: FretboardImage.frame.minY + yOffset, width: width, height: height)
-                //button.backgroundColor = color[(i+string)%color.count]
-                button.imageView?.alpha = 0.5
+                
+//                button.backgroundColor = color[(i+string)%color.count]
+//                button.alpha = 0.5
 
                 view.addSubview(button)
 
@@ -1732,15 +1792,17 @@ class MainViewController: UIViewController {
                     button.tag = buttonTag
 
                     let image = UIImageView()
-                    let imageXOffset: CGFloat = string == 0 ? 12 : 0
-//                    let imageSize: CGFloat = 40
+                    let imageXOffset: CGFloat = 0
+
                     let imageSize = 34 * (fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth))
                     //image.frame = CGRect(x: button.frame.width / 2 - imageSize / 2 - imageXOffset, y: button.frame.height / 2 - 20, width: imageSize, height: imageSize)
                     //adding image to view to avoid z position problems
-                    image.frame = CGRect(x: button.frame.width / 2 - imageSize / 2 - imageXOffset + button.frame.minX,
-                                         y: button.frame.height / 2 - 20 + button.frame.minY,
-                                         width: imageSize,
-                                         height: imageSize)
+//                    let offset = button.frame.minX * fretMarkerImageOffset["G#1"]!
+                    image.frame = CGRect(
+                            x: (button.frame.width / 2 * fretMarkerImageOffset[noteInputStrs[buttonTag]]!)  - imageSize / 2 - imageXOffset + button.frame.minX,
+                            y: button.frame.height / 2 - 20 + button.frame.minY,
+                            width: imageSize,
+                            height: imageSize)
                     
                     image.backgroundColor = UIColor.red
                     image.layer.masksToBounds = true
@@ -1760,10 +1822,13 @@ class MainViewController: UIViewController {
 
                     fretButtonDict[noteInputStrs[buttonTag]] = button
                     dotDict[noteInputStrs[buttonTag]] = image
+                    fretButtonFrame[noteInputStrs[buttonTag]] = button.frame
                     buttonTag += 1
                 }
             }
         }
+        fretButtonDict["A1"]?.layer.zPosition = 1000
+        fretButtonDict["A2"]?.layer.zPosition = 1000
     }
 
     @objc func buttonActionTemp(sender: UIButton!) {
