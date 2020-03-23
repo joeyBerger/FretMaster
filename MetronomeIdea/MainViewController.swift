@@ -974,21 +974,6 @@ class MainViewController: UIViewController {
             resetButtonFrames()
             return
         }
-
-        // Arpeggio Test States
-//        if currentState == State.NotesTestIdle_NoTempo || currentState == State.NotesTestShowNotes {
-//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-//            currentState = State.NotesTestActive_NoTempo
-//            hideAllFretMarkers()
-//            scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[0]]!)
-//            return
-//        } else if currentState == State.NotesTestActive_NoTempo {
-//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-//            currentState = State.NotesTestIdle_NoTempo
-//            met!.endMetronome()
-//            resetButtonFrames()
-//            return
-//        }
     }
 
     @IBAction func PeripheralButton1OnButtonDown() {
@@ -1019,20 +1004,6 @@ class MainViewController: UIViewController {
             met?.endMetronome()
             return
         }
-
-        // Arpeggio Test States
-//        if currentState == State.NotesTestIdle_NoTempo {
-//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-//            currentState = State.PlayingNotesCollection
-//            met?.startMetro()
-//            hideAllFretMarkers()
-//            return
-//        } else if currentState == State.PlayingNotesCollection {
-//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-//            currentState = State.NotesTestIdle_NoTempo
-//            met?.endMetronome()
-//            return
-//        }
     }
 
     @IBAction func PeripheralButton2OnButtonDown() {
@@ -1109,7 +1080,6 @@ class MainViewController: UIViewController {
         }
         print("in fret pressed state \(currentState)")
 
-
         let validState = returnValidState(iinputState: currentState, istateArr: [
             State.Recording,
             State.Idle,
@@ -1148,12 +1118,10 @@ class MainViewController: UIViewController {
                     presentEarTrainResults()
                 }
             }
-            
-            let currentStateStr = currentState.rawValue
+
             
             //TODO: overlapping function invocations taking place below
-            
-            if (currentState == State.NotesTestActive_Tempo) {
+            if (currentState == State.NotesTestActive_Tempo && noteCollectionTestData.count < specifiedNoteCollection.count) {
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
                 st.time = 0
@@ -1161,7 +1129,7 @@ class MainViewController: UIViewController {
                 recordTimeAccuracy()
             }
 
-            if (currentState == State.NotesTestActive_NoTempo) { //TODO: don't need to seperate string from raw value, now arp is
+            if (currentState == State.NotesTestActive_NoTempo && noteCollectionTestData.count < specifiedNoteCollection.count) { //TODO: don't need to seperate string from raw value, now arp is
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
                 st.time = 0

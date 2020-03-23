@@ -16,7 +16,6 @@ class Metronome {
         vc = ivc;
     }
 
-    
     var previousClick = CFAbsoluteTimeGetCurrent()    //When Metro Starts Last Click
 
     var clickTime = CFAbsoluteTimeGetCurrent()
@@ -34,7 +33,7 @@ class Metronome {
 
     //Metro Features
     var isOn = false
-    var bpm = 120.0//60.0     //Tempo Used for beeps, calculated into time value
+    var bpm = 120.0
     var minBPM = 40.0
     var maxBPM = 350.0
 
@@ -54,8 +53,7 @@ class Metronome {
     }
 
     //Main Metro Pulse Timer
-    func MetronomeCount()
-    {
+    func MetronomeCount() {
         previousClick = CFAbsoluteTimeGetCurrent()
 
         metroTimer = Timer.scheduledTimer(timeInterval: (60.0/Double(bpm)) * 0.01, target: self, selector: #selector(self.MetroClick), userInfo: ["bpm":bpm], repeats: true)
@@ -64,58 +62,47 @@ class Metronome {
     }
 
 
-    @objc func MetroClick(timer:Timer)
-    {
+    @objc func MetroClick(timer:Timer) {
         tick(timer:nextTimer!)
     }
 
-    @objc func tick(timer:Timer)
-    {
+    @objc func tick(timer:Timer) {
         let elapsedTime:CFAbsoluteTime = CFAbsoluteTimeGetCurrent() - previousClick
         let targetTime:Double = 60/bpm
-        if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003)
-        {
+        if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003) {
             if (vc!.currentState == MainViewController.State.PlayingNotesCollection) {
                 vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick], ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
                 vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick])
-                if (currentClick == vc!.specifiedNoteCollection.count-1)
-                {
+                if (currentClick == vc!.specifiedNoteCollection.count-1) {
                     endMetronome()
                     vc!.currentState = vc!.tempoActive ? MainViewController.State.NotesTestIdle_Tempo : MainViewController.State.NotesTestIdle_NoTempo
                     
                     vc!.setPeriphButtonsToDefault(idefaultIcons: vc!.defaultPeripheralIcon)
                 }
             }
-            else if (vc!.currentState == MainViewController.State.EarTrainCall)
-            {
+            else if (vc!.currentState == MainViewController.State.EarTrainCall) {
                 vc!.sc.playSound(isoundName: vc!.earTrainCallArr[currentClick])
-                if (currentClick == vc!.earTrainCallArr.count-1)
-                {
+                if (currentClick == vc!.earTrainCallArr.count-1) {
                     endMetronome()
                     vc!.currentState = MainViewController.State.EarTrainResponse
                 }
             }
             //Scale Test Active
-            else
-            {
+            else {
                 vc!.click.playSound(isoundName: "MenuButtonClick")
                 clickTime = CFAbsoluteTimeGetCurrent()
                 //                print ("playing something\(clickTime) diff = \(clickTime - userInputTime)")
-                if (currentClick == countInClick-1 && vc!.currentState == MainViewController.State.NotesTestCountIn_Tempo)
-                {
+                if (currentClick == countInClick-1 && vc!.currentState == MainViewController.State.NotesTestCountIn_Tempo) {
                     vc!.currentState = MainViewController.State.NotesTestActive_Tempo
-                    vc!.ResultsLabel.text = String(currentClick+1)
+                    vc!.ResultsLabel.text = "Count In: " + String(currentClick+1)
                 }
-                else if (currentClick < 3)
-                {
-                    vc!.ResultsLabel.text = String(currentClick+1)
+                else if (currentClick < 3) {
+                    vc!.ResultsLabel.text = "Count In: " + String(currentClick+1)
                 }
-                else if (currentClick == 4)
-                {
+                else if (currentClick == 4) {
                     vc!.ResultsLabel.text = "GO!"
                 }
-                if (currentClick >= countInClick)
-                {
+                if (currentClick >= countInClick) {
                     if (clickTime - userInputTime > 0.5) {
                         //print ("late")
                     }
@@ -133,9 +120,9 @@ class Metronome {
                 }
                 if (currentClick == countInClick + vc!.specifiedNoteCollection.count - 1) {
                     endMetronome()
-//                    _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.analyzeNotesInTempoTest), userInfo: nil, repeats: false)
+                    _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.analyzeNotesInTempoTest), userInfo: nil, repeats: false)
                     
-                    analyzeNotesInTempoTest()
+//                    analyzeNotesInTempoTest()
                 }
             }
             previousClick = CFAbsoluteTimeGetCurrent()

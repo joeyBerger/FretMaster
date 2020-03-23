@@ -128,8 +128,8 @@
             filePath = "MetronomeIdea/Metronome.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "114"
-            endingLineNumber = "114"
+            startingLineNumber = "102"
+            endingLineNumber = "102"
             landmarkName = "tick(timer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -336,8 +336,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1416"
-            endingLineNumber = "1416"
+            startingLineNumber = "1384"
+            endingLineNumber = "1384"
             landmarkName = "swoopScale(iobject:iscaleX:iscaleY:iduration:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -352,8 +352,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1254"
-            endingLineNumber = "1254"
+            startingLineNumber = "1222"
+            endingLineNumber = "1222"
             landmarkName = "analyzeNewLevel(itestPassed:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -368,8 +368,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1276"
-            endingLineNumber = "1276"
+            startingLineNumber = "1244"
+            endingLineNumber = "1244"
             landmarkName = "analyzeNewLevel(itestPassed:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -384,8 +384,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1048"
-            endingLineNumber = "1048"
+            startingLineNumber = "1019"
+            endingLineNumber = "1019"
             landmarkName = "PeripheralButton2OnButtonDown()"
             landmarkType = "7">
          </BreakpointContent>
@@ -400,8 +400,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1057"
-            endingLineNumber = "1057"
+            startingLineNumber = "1028"
+            endingLineNumber = "1028"
             landmarkName = "PeripheralButton2OnButtonDown()"
             landmarkType = "7">
          </BreakpointContent>
@@ -435,6 +435,22 @@
             startingLineNumber = "593"
             endingLineNumber = "593"
             landmarkName = "setupCurrentTask()"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "D4AED084-66F9-4275-9768-5175FCF25980"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MetronomeIdea/ScaleClass.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "172"
+            endingLineNumber = "172"
+            landmarkName = "analyzeScale(iscaleTestData:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
