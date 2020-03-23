@@ -230,12 +230,12 @@ class MenuViewController: UIViewController {
         
         //Scale Test No Tempo
         if (sender.tag == 0) {
-            vc.setStateProperties(icurrentState: MainViewController.State.ScaleTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
+            vc.setStateProperties(icurrentState: MainViewController.State.NotesTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
         }
                 
         //Arpeggio Test No Tempo
         if (sender.tag == 1) {
-            vc.setStateProperties(icurrentState: MainViewController.State.ArpeggioTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
+            vc.setStateProperties(icurrentState: MainViewController.State.NotesTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
         }
         
         presentViewController(iviewController: vc)

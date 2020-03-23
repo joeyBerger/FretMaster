@@ -358,25 +358,13 @@ class MainViewController: UIViewController {
         case EarTrainCall
         case EarTrainResponse
 
-        case PlayingNoteCollection
-
-        case ScaleTestIdle_NoTempo
-        case ScaleTestActive_NoTempo
-
-        case ScaleTestCountIn_Tempo
-        case ScaleTestActive_Tempo
-        case ScaleTestIdle_Tempo
-
-        case ArpeggioTestIdle_NoTempo
-        case ArpeggioTestActive_NoTempo
-
-        case ArpeggioTestCountIn_Tempo // still need to do this
-        case ArpeggioTestActive_Tempo
-        case ArpeggioTestIdle_Tempo
-
-        case ScaleTestShowNotes
-        case ArpeggioTestShowNotes
-        //        case ScaleTestResult
+        case PlayingNotesCollection
+        case NotesTestIdle_NoTempo
+        case NotesTestActive_NoTempo
+        case NotesTestCountIn_Tempo
+        case NotesTestActive_Tempo
+        case NotesTestIdle_Tempo
+        case NotesTestShowNotes
     }
 
     var currentState = State.Idle
@@ -406,7 +394,9 @@ class MainViewController: UIViewController {
         setupFretBoardImage()
         setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
         setupToSpecificState()
-
+        currentState = State.NotesTestShowNotes
+        setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
+        
         let navBarButtonAnnotation0 = UIButton()
         navBarButtonAnnotation0.frame = CGRect(x: 0, y: NavBar.frame.minY, width: 100, height: NavBar.frame.height)
         navBarButtonAnnotation0.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
@@ -566,7 +556,7 @@ class MainViewController: UIViewController {
     func setStateProperties(icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
         print("itutorialComplete \(itutorialComplete)")
         currentState = icurrentState //TODO: should not need this, as state is more accuratly being setup in setupCurrentTask
-        defaultState = currentState
+//        defaultState = currentState
         currentLevel = icurrentLevel
         currentLevelConstruct = ilevelConstruct
         currentLevelKey = ilevelKey
@@ -581,7 +571,7 @@ class MainViewController: UIViewController {
             setButtonState(ibutton: PeriphButton0, ibuttonState: false)
         }
         // Scale/Arpeggio test
-        if (returnValidState(iinputState: currentState, istateArr: [State.ScaleTestIdle_NoTempo,State.ArpeggioTestIdle_NoTempo])) {  //TODO: instead of checking against current state, check against currentLevelKey
+        if (returnValidState(iinputState: currentState, istateArr: [State.NotesTestIdle_NoTempo,State.NotesTestIdle_NoTempo])) {  //TODO: instead of checking against current state, check against currentLevelKey
             setupCurrentTask()
             defaultPeripheralIcon = ["play", "speaker.3", "info"] // music.note"
             activePeripheralIcon = ["pause", "speaker.slash", "arrowshape.turn.up.left"]
@@ -602,19 +592,21 @@ class MainViewController: UIViewController {
         resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
         ResultsLabel.text = resultsLabelDefaultText
         
+        
         if (currentLevelKey!.contains("scale")) {
             if (tempoActive) {
-                currentState = State.ScaleTestIdle_Tempo
+                currentState = State.NotesTestIdle_Tempo
             } else {
-                currentState = State.ScaleTestIdle_NoTempo
+                currentState = State.NotesTestIdle_NoTempo
             }
         } else if currentLevelKey!.contains("arpeggio") {
             if (tempoActive) {
-                currentState = State.ArpeggioTestIdle_Tempo
+                currentState = State.NotesTestIdle_Tempo
             } else {
-                currentState = State.ArpeggioTestIdle_NoTempo
+                currentState = State.NotesTestIdle_NoTempo
             }
         }
+        defaultState = currentState
 
         let resultPopoverDirText: String
         var resultPopoverTempoText = "Tempo: "
@@ -720,7 +712,7 @@ class MainViewController: UIViewController {
         }
     }
 
-    func restorePeriphButtonsToDefault(idefaultIcons: [String]) {
+    func setPeriphButtonsToDefault(idefaultIcons: [String]) {
         for (i, _) in idefaultIcons.enumerated() {
             setButtonImage(ibutton: periphButtonArr[i], iimageStr: idefaultIcons[i])
         }
@@ -850,7 +842,7 @@ class MainViewController: UIViewController {
     
     func checkForValidTempoInput() -> Bool {
         if !tempoButtonsActive { return false }
-        return !returnValidState(iinputState: currentState, istateArr: [State.ScaleTestActive_NoTempo,State.PlayingNoteCollection])
+        return !returnValidState(iinputState: currentState, istateArr: [State.NotesTestActive_NoTempo,State.PlayingNotesCollection])
     }
 
     @IBAction func scrollTempo(_ sender: UIButton) {
@@ -938,46 +930,42 @@ class MainViewController: UIViewController {
         
         print("PeripheralButton0OnButtonDown \(currentState)")
 //        print("Audience.public.rawValue \(currentState.rawValue)")
-        let currentStateStr = currentState.rawValue
-        setPeripheralButtonsToDefault()
 
         let s = #selector(pc!.enactTestReminder) as Selector
         wt.stopWaitThenOfType(iselector: s)
         pc!.reminderPopup.hide()
-
-        //TODO: merge scale and arpeggio checks using returnValidState
-        
+       
         // Scale Test States
         if (returnValidState(iinputState: currentState,
                              istateArr: [
-                                State.ScaleTestIdle_NoTempo,
-                                State.ScaleTestShowNotes,
-                                State.ScaleTestIdle_Tempo,
+                                State.NotesTestIdle_NoTempo,
+                                State.NotesTestShowNotes,
+                                State.NotesTestIdle_Tempo,
+                                State.NotesTestShowNotes
                             ])) {
+            currentState = toggleTestState(icurrentState: defaultState!)
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-            currentState = State.ScaleTestActive_NoTempo
             hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             noteCollectionTestData.removeAll()
             scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[0]]!)
             setResultButton(istr: resultButtonText)
             wt.stopWaitThenOfType(iselector: #selector(setResultButtonHelper) as Selector)
-            if (currentStateStr.contains("_Tempo")) {
-                print("should start metro")
-                currentState = State.ScaleTestCountIn_Tempo
+            if (currentState == State.NotesTestActive_Tempo) {
+                currentState = State.NotesTestCountIn_Tempo
                 met?.startMetro()
             }
             return
         } else if (returnValidState(iinputState: currentState,
                              istateArr: [
-                                State.ScaleTestActive_NoTempo,
-                                State.ScaleTestActive_Tempo,
-                                State.ScaleTestCountIn_Tempo
+                                State.NotesTestActive_NoTempo,
+                                State.NotesTestActive_Tempo,
+                                State.NotesTestCountIn_Tempo
                             ])) {
-            //if currentState == State.ScaleTestActive_NoTempo {
+            //if currentState == State.NotesTestActive_NoTempo {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-//            currentState = State.ScaleTestIdle_NoTempo
-            currentState = toggleTestState()
+//            currentState = State.NotesTestIdle_NoTempo
+            currentState = toggleTestState(icurrentState: currentState)
             met!.endMetronome()
             setResultButton(istr: resultButtonText)
             ResultsLabel.text = resultsLabelDefaultText
@@ -988,19 +976,19 @@ class MainViewController: UIViewController {
         }
 
         // Arpeggio Test States
-        if currentState == State.ArpeggioTestIdle_NoTempo || currentState == State.ArpeggioTestShowNotes {
-            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-            currentState = State.ArpeggioTestActive_NoTempo
-            hideAllFretMarkers()
-            scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[0]]!)
-            return
-        } else if currentState == State.ArpeggioTestActive_NoTempo {
-            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-            currentState = State.ArpeggioTestIdle_NoTempo
-            met!.endMetronome()
-            resetButtonFrames()
-            return
-        }
+//        if currentState == State.NotesTestIdle_NoTempo || currentState == State.NotesTestShowNotes {
+//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+//            currentState = State.NotesTestActive_NoTempo
+//            hideAllFretMarkers()
+//            scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[0]]!)
+//            return
+//        } else if currentState == State.NotesTestActive_NoTempo {
+//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+//            currentState = State.NotesTestIdle_NoTempo
+//            met!.endMetronome()
+//            resetButtonFrames()
+//            return
+//        }
     }
 
     @IBAction func PeripheralButton1OnButtonDown() {
@@ -1012,40 +1000,39 @@ class MainViewController: UIViewController {
 
         print("PeripheralButton1OnButtonDown \(currentState)")
 
-        // Scale Test States
-//        if currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes {
+        // Notes Test States
         if (returnValidState(iinputState: currentState,
                              istateArr: [
-                                State.ScaleTestIdle_NoTempo,
-                                State.ScaleTestIdle_Tempo,
-                                State.ScaleTestShowNotes
+                                State.NotesTestIdle_NoTempo,
+                                State.NotesTestIdle_Tempo,
+                                State.NotesTestShowNotes
         ]))
         {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-            currentState = State.PlayingNoteCollection
+            currentState = State.PlayingNotesCollection
             met?.startMetro()
             hideAllFretMarkers()
             return
-        } else if currentState == State.PlayingNoteCollection {
+        } else if currentState == State.PlayingNotesCollection {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-            currentState = State.ScaleTestIdle_NoTempo
+            currentState = State.NotesTestIdle_NoTempo
             met?.endMetronome()
             return
         }
 
         // Arpeggio Test States
-        if currentState == State.ArpeggioTestIdle_NoTempo {
-            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-            currentState = State.PlayingNoteCollection
-            met?.startMetro()
-            hideAllFretMarkers()
-            return
-        } else if currentState == State.PlayingNoteCollection {
-            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-            currentState = State.ArpeggioTestIdle_NoTempo
-            met?.endMetronome()
-            return
-        }
+//        if currentState == State.NotesTestIdle_NoTempo {
+//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+//            currentState = State.PlayingNotesCollection
+//            met?.startMetro()
+//            hideAllFretMarkers()
+//            return
+//        } else if currentState == State.PlayingNotesCollection {
+//            setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+//            currentState = State.NotesTestIdle_NoTempo
+//            met?.endMetronome()
+//            return
+//        }
     }
 
     @IBAction func PeripheralButton2OnButtonDown() {
@@ -1058,34 +1045,19 @@ class MainViewController: UIViewController {
         print("PeripheralButton2OnButtonDown \(currentState)")
 
         // Scale Test States
-        if currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes {
-            if currentState == State.ScaleTestIdle_NoTempo {
+        if (returnValidState(iinputState: currentState, istateArr: [
+                State.NotesTestIdle_NoTempo,
+                State.NotesTestIdle_Tempo,
+        ])) {
                 setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
                 displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
-                currentState = State.ScaleTestShowNotes
+                currentState = State.NotesTestShowNotes
                 return
-            } else if currentState == State.ScaleTestShowNotes {
-                setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
+            } else if currentState == State.NotesTestShowNotes {
                 hideAllFretMarkers()
-                currentState = State.ScaleTestIdle_NoTempo
+                currentState = defaultState!
                 return
             }
-        }
-
-        // Arpeggio Test States
-        if currentState == State.ArpeggioTestIdle_NoTempo || currentState == State.ArpeggioTestShowNotes {
-            if currentState == State.ArpeggioTestIdle_NoTempo {
-                setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
-                displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
-                currentState = State.ArpeggioTestShowNotes
-                return
-            } else if currentState == State.ArpeggioTestShowNotes {
-                setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-                hideAllFretMarkers()
-                currentState = State.ArpeggioTestIdle_NoTempo
-                return
-            }
-        }
     }
 
     @IBAction func ResultButtonDown(_: Any) {
@@ -1137,27 +1109,24 @@ class MainViewController: UIViewController {
         }
         print("in fret pressed state \(currentState)")
 
-        //TODO: should reverse this and exclude certain states
+
         let validState = returnValidState(iinputState: currentState, istateArr: [
             State.Recording,
             State.Idle,
             State.EarTrainResponse,
-            State.ScaleTestActive_NoTempo,
-            State.ScaleTestCountIn_Tempo,
-            State.ScaleTestIdle_NoTempo,
-            State.ScaleTestShowNotes,
-            State.ArpeggioTestCountIn_Tempo,
-            State.ArpeggioTestActive_Tempo,
-            State.ArpeggioTestIdle_NoTempo,
-            State.ArpeggioTestShowNotes,
-            State.ArpeggioTestActive_NoTempo,
-            State.ScaleTestActive_Tempo
+            State.NotesTestActive_NoTempo,
+            State.NotesTestIdle_NoTempo,
+            State.NotesTestIdle_Tempo,
+            State.NotesTestCountIn_Tempo,
+            State.NotesTestActive_Tempo,
+            State.NotesTestShowNotes,
+            State.NotesTestActive_Tempo
         ])
         if validState {
             hideAllFretMarkers()
-            if currentState == State.ScaleTestShowNotes {
-                currentState = State.ScaleTestIdle_NoTempo
-                //TODO: set current state of arpeggio, scale/arpeggio tempo here
+            
+            if currentState == State.NotesTestShowNotes {
+                currentState = State.NotesTestIdle_NoTempo
             }
 
             var str = buttonDict[inputNumb]!
@@ -1184,7 +1153,7 @@ class MainViewController: UIViewController {
             
             //TODO: overlapping function invocations taking place below
             
-            if (currentStateStr.contains("_Tempo")) {
+            if (currentState == State.NotesTestActive_Tempo) {
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
                 st.time = 0
@@ -1192,7 +1161,7 @@ class MainViewController: UIViewController {
                 recordTimeAccuracy()
             }
 
-            if (currentStateStr.contains("_NoTempo")) {
+            if (currentState == State.NotesTestActive_NoTempo) { //TODO: don't need to seperate string from raw value, now arp is
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
                 st.time = 0
@@ -1207,8 +1176,8 @@ class MainViewController: UIViewController {
                 if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode || noteMismatch) {
                     
                     //TODO: need to also set the arpeggio state to noTempo FUCK
-//                    currentState = State.ScaleTestIdle_NoTempo
-//                    restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
+//                    currentState = State.NotesTestIdle_NoTempo
+//                    setPeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
 //                    setNavBarColor()
 //                    resetButtonFrames()
                                         
@@ -1224,7 +1193,7 @@ class MainViewController: UIViewController {
     
     func onTestComplete(inotesCorrect : Bool) {
         
-        restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
+        setPeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
         setNavBarColor()
         resetButtonFrames()
 //        currentState = toggleTestState()
@@ -1234,22 +1203,14 @@ class MainViewController: UIViewController {
         }
     }
     
-    func toggleTestState() -> State {
-        let currentStateStr = currentState.rawValue
+    func toggleTestState(icurrentState: State) -> State {
+        let currentStateStr = icurrentState.rawValue
         print("toggle state in \(currentStateStr)")
         var newState: State
         if (currentStateStr.contains("Active") || currentStateStr.contains("CountIn")) {
-            if (currentStateStr.contains("Scale")) {
-                newState = currentStateStr.contains("_NoTempo") ? State.ScaleTestIdle_NoTempo : State.ScaleTestIdle_Tempo
-            } else {
-                newState = currentStateStr.contains("_NoTempo") ? State.ArpeggioTestIdle_NoTempo : State.ArpeggioTestIdle_Tempo
-            }
+            newState = currentStateStr.contains("_NoTempo") ? State.NotesTestIdle_NoTempo : State.NotesTestIdle_Tempo
         } else {
-            if (currentStateStr.contains("Scale")) {
-                newState = currentStateStr.contains("_NoTempo") ? State.ScaleTestActive_NoTempo : State.ScaleTestActive_Tempo
-            } else {
-                newState = currentStateStr.contains("_NoTempo") ? State.ArpeggioTestActive_NoTempo : State.ArpeggioTestActive_Tempo
-            }
+            newState = currentStateStr.contains("_NoTempo") ? State.NotesTestActive_NoTempo : State.NotesTestActive_Tempo
         }
         print("toggle state out \(newState)")
         return newState
@@ -1267,7 +1228,6 @@ class MainViewController: UIViewController {
                   y: buttonFrame.minY-(buttonFrame.height*enlargementFactor)/2+buttonFrame.height/2,
                   width: buttonFrame.width*enlargementFactor,
                   height: buttonFrame.height*enlargementFactor)
-        
     }
 
     func resetButtonFrames() {
@@ -1287,7 +1247,7 @@ class MainViewController: UIViewController {
         resultsText = testPassed ? "Great!" : "Try Again!"
         setResultButton(istr: resultsText)
         analyzeNewLevel(itestPassed: testPassed)
-        currentState = toggleTestState()
+        currentState = toggleTestState(icurrentState: currentState)
     }
 
     func analyzeNewLevel(itestPassed: Bool) {
@@ -1420,6 +1380,7 @@ class MainViewController: UIViewController {
     func hideAllFretMarkers() {
         if allMarkersDisplayed {
             killCurrentDotFade()
+            setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
             for (str, _) in dotDict {
                 dotDict[str]!.alpha = 0.0
             }

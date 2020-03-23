@@ -90,13 +90,20 @@ class LevelConstruct {
     let scale = [
         
         
-        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+//        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+//
+//                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+//                        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+//                                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
         
-                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
-                        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
-                                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
         
+                                
+        ["MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up"],
         
+                ["MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up"],
+                        ["MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up"],
+                                
+                                
         
         ["MinorPentatonic_Both_Tempo", "MajorPentatonic_Both_Tempo","Ionian_Both_Tempo", "Aeolian_Both_Tempo"],
         ["MinorPentatonic_Up", "MajorPentatonic_Up"],
@@ -105,6 +112,13 @@ class LevelConstruct {
         ["MinorPentatonic_Both", "MajorPentatonic_Both","Ionian_Both", "Aeolian_Both"],
     ]
     let arpeggio = [
+        
+         ["MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo"],
+                  ["MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo"],
+                           ["MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo"],
+        
+        
+        
         ["MajorArp_Up", "MinorArp_Up"],
         ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
         ["MajorArp_Up", "MinorArp_Up","MajorSeventhArp_Up", "MinorSeventhArp_Up"],
