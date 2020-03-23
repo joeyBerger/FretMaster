@@ -88,11 +88,10 @@ class ScaleCollection {
         var notePos = 1
         
         let desiredScale = availableScales[iinput]
-       
         vc!.specifiedNoteCollection.removeAll()
         
         //find note index
-        if ( vc!.specifiedNoteCollection.isEmpty)
+        if (vc!.specifiedNoteCollection.isEmpty)
         {
             for (i, item) in refScale.enumerated() {
                 if (startingNote == item)
@@ -170,6 +169,9 @@ class ScaleCollection {
     }
     
     func analyzeScale (iscaleTestData : [MainViewController.InputData]) -> Bool {
+        if (iscaleTestData.count != vc!.specifiedNoteCollection.count) {
+            return false
+        }
         for (i,item) in iscaleTestData.enumerated() {
             if (item.note != vc!.specifiedNoteCollection[i]) {
                 return false

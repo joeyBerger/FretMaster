@@ -40,7 +40,7 @@ class MenuViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        resetData()
 //        view.backgroundColor = defaultColor.BackgroundColor
 //        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "MenuNeck.jpg")!)
         

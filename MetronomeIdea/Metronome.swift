@@ -117,30 +117,24 @@ class Metronome {
                 }
                 if (currentClick >= countInClick)
                 {
-                    if (clickTime - userInputTime > 0.5)
-                    {
+                    if (clickTime - userInputTime > 0.5) {
                         //print ("late")
                     }
-                    else
-                    {
+                    else {
                         let timeDelta = clickTime - userInputTime
-                        if (timeDelta < 0.05)
-                        {
+                        if (timeDelta < 0.05) {
                             print("good0")
                         }
-                        else
-                        {
+                        else {
                             print("early0")
                         }
                         vc!.noteCollectionTestData[vc!.noteCollectionTestData.count-1].time = userInputTime
                         vc!.noteCollectionTestData[vc!.noteCollectionTestData.count-1].timeDelta = timeDelta
                     }
                 }
-                if (currentClick == countInClick + vc!.specifiedNoteCollection.count - 1)
-                {
+                if (currentClick == countInClick + vc!.specifiedNoteCollection.count - 1) {
                     endMetronome()
-                    _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.analyzeScaleTest), userInfo: nil, repeats: false)
-                    
+                    _ = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(self.analyzeNotesInTempoTest), userInfo: nil, repeats: false)
                 }
             }
             previousClick = CFAbsoluteTimeGetCurrent()
@@ -148,8 +142,7 @@ class Metronome {
         }
     }
 
-    func endMetronome()
-    {
+    func endMetronome() {
         if nextTimer != nil {
             nextTimer?.invalidate()
             nextTimer = nil
@@ -164,45 +157,25 @@ class Metronome {
         }
     }
     
-    @objc func analyzeScaleTest()
-    {
-        vc!.currentState = vc!.tempoActive ? MainViewController.State.ScaleTestIdle_Tempo : MainViewController.State.ScaleTestIdle_NoTempo
-        vc!.resultViewStrs.removeAll()
-        for item in vc!.noteCollectionTestData {
-            print(item.note)
-            print(item.time)
-        }
-        if (vc!.noteCollectionTestData.count != vc!.specifiedNoteCollection.count)
-        {
-            vc!.resultViewStrs.append("Try Again!")
-            vc!.resultViewStrs.append("Not Enough Notes Inputted")
-//            vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
-            return
-        }
+    @objc func analyzeNotesInTempoTest() {
+//        vc!.currentState = vc!.tempoActive ? MainViewController.State.ScaleTestIdle_Tempo : MainViewController.State.ArpeggioTestIdle_Tempo
+//        for item in vc!.noteCollectionTestData {
+//            print(item.note)
+//            print(item.time)
+//        }
         let notesMatch = vc!.sCollection!.analyzeScale(iscaleTestData: vc!.noteCollectionTestData)
         var timeAcurracyMet = true
-        for (_, items) in vc!.noteCollectionTestData.enumerated()
-        {
-            if (items.timeDelta > (vc!.timeThreshold["Easy"])!)
-            {
+        for (_, items) in vc!.noteCollectionTestData.enumerated() {
+            if (items.timeDelta > (vc!.timeThreshold["Easy"])!) {
                 timeAcurracyMet = false
             }
         }
-        var resultsText = ""
         
-        resultsText = notesMatch && timeAcurracyMet ? "Great!" : "Try Again!"
-        vc!.resultViewStrs.append(resultsText)
-        if (!notesMatch)
-        {
-            vc!.resultViewStrs.append("NOTES : INCORRECT")
-        }
-        if (!timeAcurracyMet)
-        {
-            vc!.resultViewStrs.append("TIME : INCORRECT")
-        }
-//        vc!.ResultButton1.setTitle(vc!.resultViewStrs[0], for: .normal)
-        print(resultsText)
-        _ = Timer.scheduledTimer(timeInterval: 2, target: vc, selector: #selector(vc!.resetResultsLabel), userInfo: nil, repeats: false)
+        print("notesMatch \(notesMatch)")
+        print("timeAcurracyMet \(timeAcurracyMet)")
+        let notesCorrect = notesMatch && timeAcurracyMet
+        vc!.onTestComplete(inotesCorrect : notesCorrect)
+        vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject])
     }
     
     

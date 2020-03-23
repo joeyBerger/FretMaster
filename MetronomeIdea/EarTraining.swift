@@ -38,7 +38,7 @@ class EarTraining {
     {
         let resultText = earTrainCallArr == earTrainResponseArr ? "Good" : "Bad"
         vc!.ResultsLabel.text = resultText
-        _ = Timer.scheduledTimer(timeInterval: 2, target: vc!, selector: #selector(vc!.resetResultsLabel), userInfo: nil, repeats: false)
+        _ = Timer.scheduledTimer(timeInterval: 2, target: vc!, selector: #selector(vc!.setResultsLabel), userInfo: nil, repeats: false)
         earTrainCallArr.removeAll()
         earTrainResponseArr.removeAll()
         vc!.currentState = MainViewController.State.Idle

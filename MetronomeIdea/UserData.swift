@@ -88,9 +88,21 @@ class UserLevelData : NSObject, NSCoding {
 
 class LevelConstruct {
     let scale = [
+        
+        
+        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+        
+                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+                        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+                                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
+        
+        
+        
+        ["MinorPentatonic_Both_Tempo", "MajorPentatonic_Both_Tempo","Ionian_Both_Tempo", "Aeolian_Both_Tempo"],
         ["MinorPentatonic_Up", "MajorPentatonic_Up"],
         ["Ionian_Up", "Aeolian_Up"],
         ["MinorPentatonic_Up", "MajorPentatonic_Up","Ionian_Up", "Aeolian_Up"],
+        ["MinorPentatonic_Both", "MajorPentatonic_Both","Ionian_Both", "Aeolian_Both"],
     ]
     let arpeggio = [
         ["MajorArp_Up", "MinorArp_Up"],

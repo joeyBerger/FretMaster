@@ -132,12 +132,9 @@ extension UIButton {
         }
     }
 
-
-    
-    
     func pulsate(ilayer: Int) -> Int {
         let pulse = CASpringAnimation(keyPath: "transform.scale")
-        pulse.duration = 0.15
+        pulse.duration = 0.1
         pulse.fromValue = 0.95
         pulse.toValue = 1.3
         pulse.autoreverses = true
@@ -228,10 +225,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var FretboardDummy: UIImageView!
     
 
-    @IBOutlet var OverlayButton: UIButton!
-
     @IBOutlet var PeripheralStackView: UIStackView!
-
     @IBOutlet var Fret: UIImageView!
     
     
@@ -287,16 +281,19 @@ class MainViewController: UIViewController {
     var specifiedNoteCollection: [String] = []
     let tempScale: [String] = ["A1", "C2", "D2", "E2", "G2"]
 
-    var resultViewStrs: [String] = []
-    var currentResultView = 0
     var defaultSoundFadeTime = 0.3
-    var tempoButtonsActive = false
+    
     var tutorialActive = false
     var mainPopoverVisible = false
     var mainPopoverState = ""
+    
+    var tempoButtonsActive = false
     var tempoActive = false
     var tempoUpdaterCycle = 0.0
     var tempoButtonArr: [UIButton]? = []
+    
+    var resultButtonText = ""
+    var resultsLabelDefaultText = ""
 
     var buttonDict: [Int: String] = [ // this could probably be an array
         0: "G#1",
@@ -331,8 +328,6 @@ class MainViewController: UIViewController {
         29: "C4",
     ]
 
-//    var buttonDict = [ "G#1",     "A1",     "A#1",     "B1",     "C2",     "C#2",     "D2",     "D#2",     "E2",     "F2",     "F#2",     "G2",     "G#2",     "A2",     "A#2",     "B2",     "C3",     "C#3",     "D3",     "D#3_0",     "D#3_1",     "E3",     "F3",     "F#3",     "G3",     "G#3",     "A3",     "A#3",     "B3",     "C4"]
-
     var currentBackgroundPic = ""
     var backgroundPicDict: [String: String] = [  //TODO: need to add states and unify image types
         "scaleLevel": "RockCrowd.png",
@@ -354,7 +349,7 @@ class MainViewController: UIViewController {
         "ActionOverlay",
     ]
 
-    enum State {
+    enum State : String {
         case Idle
         case RecordingIdle
         case Recording
@@ -477,7 +472,8 @@ class MainViewController: UIViewController {
 
         ResultButton.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton.setTitleColor(.black, for: .normal)
-        ResultButton.setTitle("", for: .normal)
+//        ResultButton.setTitle("", for: .normal)
+        setResultButton()
         ResultButton.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton.titleLabel?.minimumScaleFactor = 0.5
         ResultButton.backgroundColor = defaultColor.ResultsButtonColor
@@ -515,6 +511,8 @@ class MainViewController: UIViewController {
     }
     
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
+        print("tempoButtonLongPressed, state: \(currentState)")
+        if !checkForValidTempoInput() {return}
         if sender.state == .ended {
             wt.stopWaitThenOfType(iselector: #selector(tempoButtonUpdater) as Selector)
             tempoUpdaterCycle = 0.0
@@ -566,12 +564,12 @@ class MainViewController: UIViewController {
     }
 
     func setStateProperties(icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
-        currentState = icurrentState
+        print("itutorialComplete \(itutorialComplete)")
+        currentState = icurrentState //TODO: should not need this, as state is more accuratly being setup in setupCurrentTask
         defaultState = currentState
         currentLevel = icurrentLevel
         currentLevelConstruct = ilevelConstruct
         currentLevelKey = ilevelKey
-        print("itutorialComplete \(itutorialComplete)")
         tutorialComplete = itutorialComplete == "1.0"
         currentBackgroundPic = backgroundPicDict[ilevelKey]!
     }
@@ -583,14 +581,14 @@ class MainViewController: UIViewController {
             setButtonState(ibutton: PeriphButton0, ibuttonState: false)
         }
         // Scale/Arpeggio test
-        if currentState == State.ScaleTestIdle_NoTempo || currentState == State.ArpeggioTestIdle_NoTempo {
+        if (returnValidState(iinputState: currentState, istateArr: [State.ScaleTestIdle_NoTempo,State.ArpeggioTestIdle_NoTempo])) {  //TODO: instead of checking against current state, check against currentLevelKey
             setupCurrentTask()
             defaultPeripheralIcon = ["play", "speaker.3", "info"] // music.note"
             activePeripheralIcon = ["pause", "speaker.slash", "arrowshape.turn.up.left"]
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
         }
-        setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
+            setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
     }
 
     @objc func setupCurrentTask() {
@@ -601,11 +599,26 @@ class MainViewController: UIViewController {
         tempoButtonsActive = !tempoActive
         setupTempoButtons(ibuttonsActive: tempoButtonsActive)
         sCollection!.setupSpecifiedScale(iinput: trimmedTask, idirection: dir)
-        ResultsLabel.text = sCollection!.returnReadableScaleName(iinput: trimmedTask)
+        resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
+        ResultsLabel.text = resultsLabelDefaultText
+        
+        if (currentLevelKey!.contains("scale")) {
+            if (tempoActive) {
+                currentState = State.ScaleTestIdle_Tempo
+            } else {
+                currentState = State.ScaleTestIdle_NoTempo
+            }
+        } else if currentLevelKey!.contains("arpeggio") {
+            if (tempoActive) {
+                currentState = State.ArpeggioTestIdle_Tempo
+            } else {
+                currentState = State.ArpeggioTestIdle_NoTempo
+            }
+        }
 
         let resultPopoverDirText: String
         var resultPopoverTempoText = "Tempo: "
-        var resultButtonText = ""
+        resultButtonText = ""
 
         if dir == "Up" {
             resultPopoverDirText = "Play From Low To High Note"
@@ -614,7 +627,7 @@ class MainViewController: UIViewController {
             resultPopoverDirText = "Play From High To Low Note"
             resultButtonText = "Down"
         } else {
-            resultPopoverDirText = "Play From Low To High Note Back To Low"
+            resultPopoverDirText = "Play From Low To High To Low"
             resultButtonText = "Up And Down"
         }
 
@@ -624,14 +637,13 @@ class MainViewController: UIViewController {
             resultPopoverTempoText += "None, Play Freely!"
             resultButtonText += "No Tempo"
         } else {
-            let tempo = String(met!.bpm) + " BPM"
+            let tempo = String(Int(met!.bpm)) + " BPM"
             resultPopoverTempoText += tempo
             resultButtonText += tempo
         }
 
         pc!.setResultButtonPopupText(itextArr: [ResultsLabel.text!, resultPopoverDirText, resultPopoverTempoText])
-
-        ResultButton.setTitle(resultButtonText, for: .normal)
+        setResultButton(istr: resultButtonText)
     }
     
     func setupBackgroundImage(ibackgroundPic: String) {
@@ -655,13 +667,13 @@ class MainViewController: UIViewController {
     }
 
     func trimCurrentTask(iinput: String) -> String {
-        let signifiers = ["Up", "Tempo"]
+        let signifiers = ["Up", "Tempo", "Both"]
         var modifiedStr = iinput
         if modifiedStr.contains("_") {
             for (_, str) in signifiers.enumerated() {
                 if modifiedStr.contains(str) {
                     modifiedStr = modifiedStr.replacingOccurrences(of: "_" + str, with: "")
-                    print(modifiedStr)
+                    print("mod string\(modifiedStr)")
                 }
             }
         }
@@ -827,15 +839,6 @@ class MainViewController: UIViewController {
         // sc.playSound(isoundName: "ButtonClick")
     }
 
-    func returnValidState(iinputState: State, istateArr: [State]) -> Bool {
-        for (_, item) in istateArr.enumerated() {
-            if iinputState == item {
-                return true
-            }
-        }
-        return false
-    }
-
     @IBAction func NavToMainMenu(_: Any) {
         var controller: MenuViewController
 
@@ -844,9 +847,15 @@ class MainViewController: UIViewController {
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: false, completion: nil)
     }
+    
+    func checkForValidTempoInput() -> Bool {
+        if !tempoButtonsActive { return false }
+        return !returnValidState(iinputState: currentState, istateArr: [State.ScaleTestActive_NoTempo,State.PlayingNoteCollection])
+    }
 
     @IBAction func scrollTempo(_ sender: UIButton) {
-        if !tempoButtonsActive { return }
+        print("scroll tempo, state: \(currentState)")
+        if !checkForValidTempoInput() {return}
         pc!.resultButtonPopup.hide()
         let dir = sender.tag == 0 ? 1.0 : -1.0
         if (met!.bpm + dir >= met!.minBPM && met!.bpm + dir <= met!.maxBPM) {
@@ -860,6 +869,8 @@ class MainViewController: UIViewController {
     var tapTime: [Double] = []
     var currentTapTempo = 0.0
     @IBAction func tempoTapped(_: Any) {
+        print("tempoTapped, state: \(currentState)")
+        if !checkForValidTempoInput() {return}
         currentButtonLayer = TempoButton!.pulsate(ilayer: currentButtonLayer)
         wt.stopWaitThenOfType(iselector: #selector(timeoutTapTempo) as Selector)
         wt.waitThen(itime: 1.2, itarget: self, imethod: #selector(timeoutTapTempo) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
@@ -901,7 +912,7 @@ class MainViewController: UIViewController {
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
         currentButtonLayer = periphButtonArr[sender.tag].pulsate(ilayer: currentButtonLayer)
-
+        ResultsLabel.text = resultsLabelDefaultText
         switch sender.tag {
         case 0:
             PeripheralButton0OnButtonDown()
@@ -926,27 +937,51 @@ class MainViewController: UIViewController {
         }
         
         print("PeripheralButton0OnButtonDown \(currentState)")
-
+//        print("Audience.public.rawValue \(currentState.rawValue)")
+        let currentStateStr = currentState.rawValue
         setPeripheralButtonsToDefault()
 
         let s = #selector(pc!.enactTestReminder) as Selector
         wt.stopWaitThenOfType(iselector: s)
         pc!.reminderPopup.hide()
 
+        //TODO: merge scale and arpeggio checks using returnValidState
+        
         // Scale Test States
-        if currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes {
+        if (returnValidState(iinputState: currentState,
+                             istateArr: [
+                                State.ScaleTestIdle_NoTempo,
+                                State.ScaleTestShowNotes,
+                                State.ScaleTestIdle_Tempo,
+                            ])) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
             currentState = State.ScaleTestActive_NoTempo
             hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             noteCollectionTestData.removeAll()
             scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[0]]!)
+            setResultButton(istr: resultButtonText)
+            wt.stopWaitThenOfType(iselector: #selector(setResultButtonHelper) as Selector)
+            if (currentStateStr.contains("_Tempo")) {
+                print("should start metro")
+                currentState = State.ScaleTestCountIn_Tempo
+                met?.startMetro()
+            }
             return
-        } else if currentState == State.ScaleTestActive_NoTempo {
+        } else if (returnValidState(iinputState: currentState,
+                             istateArr: [
+                                State.ScaleTestActive_NoTempo,
+                                State.ScaleTestActive_Tempo,
+                                State.ScaleTestCountIn_Tempo
+                            ])) {
+            //if currentState == State.ScaleTestActive_NoTempo {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
-            currentState = State.ScaleTestIdle_NoTempo
+//            currentState = State.ScaleTestIdle_NoTempo
+            currentState = toggleTestState()
             met!.endMetronome()
-            ResultButton.setTitle("", for: .normal)
+            setResultButton(istr: resultButtonText)
+            ResultsLabel.text = resultsLabelDefaultText
+            wt.stopWaitThenOfType(iselector: #selector(setResultButtonHelper) as Selector)
             setNavBarColor()
             resetButtonFrames()
             return
@@ -963,7 +998,6 @@ class MainViewController: UIViewController {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
             currentState = State.ArpeggioTestIdle_NoTempo
             met!.endMetronome()
-            ResultButton.setTitle("", for: .normal)
             resetButtonFrames()
             return
         }
@@ -979,7 +1013,14 @@ class MainViewController: UIViewController {
         print("PeripheralButton1OnButtonDown \(currentState)")
 
         // Scale Test States
-        if currentState == State.ScaleTestIdle_NoTempo {
+//        if currentState == State.ScaleTestIdle_NoTempo || currentState == State.ScaleTestShowNotes {
+        if (returnValidState(iinputState: currentState,
+                             istateArr: [
+                                State.ScaleTestIdle_NoTempo,
+                                State.ScaleTestIdle_Tempo,
+                                State.ScaleTestShowNotes
+        ]))
+        {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
             currentState = State.PlayingNoteCollection
             met?.startMetro()
@@ -1070,7 +1111,7 @@ class MainViewController: UIViewController {
     
     
     func setNavBarColor (istate: String = "Idle") {
-        var color = istate == "Idle" ? defaultColor.MenuButtonColor : UIColor.red
+        let color = istate == "Idle" ? defaultColor.MenuButtonColor : UIColor.red
         NavBar.barTintColor = color
         NavBarFiller.backgroundColor = color
     }
@@ -1096,11 +1137,27 @@ class MainViewController: UIViewController {
         }
         print("in fret pressed state \(currentState)")
 
-        let validState = returnValidState(iinputState: currentState, istateArr: [State.Recording, State.Idle, State.EarTrainResponse, State.ScaleTestActive_NoTempo, State.ScaleTestCountIn_Tempo, State.ScaleTestIdle_NoTempo, State.ScaleTestShowNotes, State.ArpeggioTestCountIn_Tempo, State.ArpeggioTestActive_Tempo, State.ArpeggioTestIdle_NoTempo, State.ArpeggioTestShowNotes, State.ArpeggioTestActive_NoTempo])
+        //TODO: should reverse this and exclude certain states
+        let validState = returnValidState(iinputState: currentState, istateArr: [
+            State.Recording,
+            State.Idle,
+            State.EarTrainResponse,
+            State.ScaleTestActive_NoTempo,
+            State.ScaleTestCountIn_Tempo,
+            State.ScaleTestIdle_NoTempo,
+            State.ScaleTestShowNotes,
+            State.ArpeggioTestCountIn_Tempo,
+            State.ArpeggioTestActive_Tempo,
+            State.ArpeggioTestIdle_NoTempo,
+            State.ArpeggioTestShowNotes,
+            State.ArpeggioTestActive_NoTempo,
+            State.ScaleTestActive_Tempo
+        ])
         if validState {
             hideAllFretMarkers()
             if currentState == State.ScaleTestShowNotes {
                 currentState = State.ScaleTestIdle_NoTempo
+                //TODO: set current state of arpeggio, scale/arpeggio tempo here
             }
 
             var str = buttonDict[inputNumb]!
@@ -1116,15 +1173,18 @@ class MainViewController: UIViewController {
                 r.time = CFAbsoluteTimeGetCurrent()
                 r.note = buttonDict[inputNumb]!
                 recordData.append(r)
-            }
-            if currentState == State.EarTrainResponse {
+            } else if currentState == State.EarTrainResponse {
                 earTrainResponseArr.append(buttonDict[inputNumb]!)
                 if earTrainResponseArr.count == earTrainCallArr.count {
                     presentEarTrainResults()
                 }
             }
-
-            if currentState == State.ScaleTestActive_Tempo {
+            
+            let currentStateStr = currentState.rawValue
+            
+            //TODO: overlapping function invocations taking place below
+            
+            if (currentStateStr.contains("_Tempo")) {
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
                 st.time = 0
@@ -1132,7 +1192,7 @@ class MainViewController: UIViewController {
                 recordTimeAccuracy()
             }
 
-            if currentState == State.ScaleTestActive_NoTempo || currentState == State.ArpeggioTestActive_NoTempo {
+            if (currentStateStr.contains("_NoTempo")) {
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
                 st.time = 0
@@ -1145,21 +1205,54 @@ class MainViewController: UIViewController {
                     resetButtonFrames()
                 }
                 if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode || noteMismatch) {
-                    currentState = State.ScaleTestIdle_NoTempo
-                    restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
-                    setNavBarColor()
-                    resetButtonFrames()
-                    let scaleCorrect = sCollection!.analyzeScale(iscaleTestData: noteCollectionTestData)
-                    if (scaleCorrect) {
-                        flashActionOverlay(isuccess: true)
-                        Vibration.success.vibrate()
-                    }
-                    _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(presentTestResult), userInfo: ["ScaleCorrect": scaleCorrect], repeats: false)
+                    
+                    //TODO: need to also set the arpeggio state to noTempo FUCK
+//                    currentState = State.ScaleTestIdle_NoTempo
+//                    restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
+//                    setNavBarColor()
+//                    resetButtonFrames()
+                                        
+                    let notesCorrect = sCollection!.analyzeScale(iscaleTestData: noteCollectionTestData)
+                    onTestComplete(inotesCorrect : notesCorrect)
+                    wt.waitThen(itime: 0.5, itarget: self, imethod: #selector(presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject])
                 } else {
                     scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[noteCollectionTestData.count]]!)
                 }
             }
         }
+    }
+    
+    func onTestComplete(inotesCorrect : Bool) {
+        
+        restorePeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
+        setNavBarColor()
+        resetButtonFrames()
+//        currentState = toggleTestState()
+        if (inotesCorrect) {
+            flashActionOverlay(isuccess: true)
+            //Vibration.success.vibrate()
+        }
+    }
+    
+    func toggleTestState() -> State {
+        let currentStateStr = currentState.rawValue
+        print("toggle state in \(currentStateStr)")
+        var newState: State
+        if (currentStateStr.contains("Active") || currentStateStr.contains("CountIn")) {
+            if (currentStateStr.contains("Scale")) {
+                newState = currentStateStr.contains("_NoTempo") ? State.ScaleTestIdle_NoTempo : State.ScaleTestIdle_Tempo
+            } else {
+                newState = currentStateStr.contains("_NoTempo") ? State.ArpeggioTestIdle_NoTempo : State.ArpeggioTestIdle_Tempo
+            }
+        } else {
+            if (currentStateStr.contains("Scale")) {
+                newState = currentStateStr.contains("_NoTempo") ? State.ScaleTestActive_NoTempo : State.ScaleTestActive_Tempo
+            } else {
+                newState = currentStateStr.contains("_NoTempo") ? State.ArpeggioTestActive_NoTempo : State.ArpeggioTestActive_Tempo
+            }
+        }
+        print("toggle state out \(newState)")
+        return newState
     }
     
     func scaleButtonForClickableEase(ibutton: UIButton) {
@@ -1186,19 +1279,22 @@ class MainViewController: UIViewController {
     @objc func presentTestResult(timer: Timer) {
         var testPassed = false
         let resultObj = timer.userInfo as! [String: AnyObject]
-        if let test = resultObj["ScaleCorrect"] {
+        if let test = resultObj["notesCorrect"] {
             testPassed = test as! Bool
         } else {}
 
         var resultsText = ""
         resultsText = testPassed ? "Great!" : "Try Again!"
-        resultViewStrs.append(resultsText) //TODO: wont need this array
-        ResultButton.setTitle(resultViewStrs[0], for: .normal)
+        setResultButton(istr: resultsText)
         analyzeNewLevel(itestPassed: testPassed)
+        currentState = toggleTestState()
     }
 
     func analyzeNewLevel(itestPassed: Bool) {
-        if !itestPassed, !developmentMode { return }
+        if !itestPassed && !developmentMode {
+            wt.waitThen(itime: 3.0, itarget: self, imethod: #selector(setResultButtonHelper) as Selector, irepeats: false, idict: ["arg1": resultButtonText as AnyObject])
+            return
+        }
 
         print("sub level passed \(userLevelData.scaleLevel)")
         
@@ -1221,10 +1317,10 @@ class MainViewController: UIViewController {
         UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
         print("updated current level \(currentLevel ?? "")")
         
-        Vibration.success.vibrate()
+//        Vibration.success.vibrate()
         
+        //TODO: this will need to be cancelled if premature input
         wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
-//        setupCurrentTask()
     }
 
     // these functions should exist inone place
@@ -1249,7 +1345,8 @@ class MainViewController: UIViewController {
         currentState = State.Playback
 
         for (i, data) in recordData.enumerated() {
-            _ = Timer.scheduledTimer(timeInterval: data.time - recordStartTime, target: self, selector: #selector(playSoundHelper), userInfo: ["Note": data.note], repeats: false)
+//            _ = Timer.scheduledTimer(timeInterval: data.time - recordStartTime, target: self, selector: #selector(playSoundHelper), userInfo: ["Note": data.note], repeats: false)
+            wt.waitThen(itime: data.time - recordStartTime, itarget: self, imethod: #selector(playSoundHelper) as Selector, irepeats: false, idict: ["Note": data.note as AnyObject])
             if i == recordData.count - 1 {
                 setState(newState: State.Idle)
             }
@@ -1263,13 +1360,15 @@ class MainViewController: UIViewController {
         }
         currentState = State.EarTrainCall
         met?.currentClick = 0
-        let displayT = 1
-        _ = Timer.scheduledTimer(timeInterval: TimeInterval(displayT), target: self, selector: #selector(beginEarTrainingHelper), userInfo: ["NoteSelection": tempScale, "AlphaVal": 0.0], repeats: false)
+        let displayT = 1.0
+        
+        wt.waitThen(itime: displayT, itarget: self, imethod: #selector(beginEarTrainingHelper) as Selector, irepeats: false, idict: ["NoteSelection": tempScale as AnyObject, "AlphaVal": 0.0 as AnyObject])
 
         displaySelectionDots(inoteSelection: tempScale, ialphaAmount: 0.5)
         dotDict[earTrainCallArr[0]]?.alpha = 1
     }
 
+    //State Handlers
     func setState(newState: State) {
         print("setting \(newState)")
         currentState = newState
@@ -1278,7 +1377,15 @@ class MainViewController: UIViewController {
     @objc func setStateHelper(timer: Timer) {
         let stateDict = timer.userInfo as! [String: AnyObject]
         setState(newState: stateDict["state"] as! State)
-        // currentState = newState;
+    }
+    
+    func returnValidState(iinputState: State, istateArr: [State]) -> Bool {
+        for (_, item) in istateArr.enumerated() {
+            if iinputState == item {
+                return true
+            }
+        }
+        return false
     }
 
     @objc func playSoundHelper(timer: Timer) {
@@ -1363,7 +1470,8 @@ class MainViewController: UIViewController {
     func presentEarTrainResults() {
         let resultText = earTrainCallArr == earTrainResponseArr ? "Good" : "Bad"
         ResultsLabel.text = resultText
-        _ = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(resetResultsLabel), userInfo: nil, repeats: false)
+//        _ = Timer.scheduledTimer(timeInterval: 2, target: self, selector: #selector(setResultsLabel), userInfo: nil, repeats: false)
+        wt.waitThen(itime: 2, itarget: self, imethod: #selector(setResultsLabel) as Selector, irepeats: false, idict: ["arg1": "" as AnyObject])
         earTrainCallArr.removeAll()
         earTrainResponseArr.removeAll()
         currentState = State.Idle
@@ -1381,9 +1489,24 @@ class MainViewController: UIViewController {
         }
     }
 
-    @objc func resetResultsLabel() {
-        ResultsLabel.text = ""
-//             ResultsLabel1.text = ""
+    @objc func setResultsLabel(timer: Timer? = nil) {
+        return //TODO: this function should not exist
+        var str = ""
+        if timer != nil {
+            let argDict = timer?.userInfo as! [String: AnyObject]
+            str = argDict["arg1"] as! String
+        }
+        ResultsLabel.text = str
+    }
+    
+    func setResultButton(istr: String? = "") {
+        var str = istr == nil ? "" : istr
+        ResultButton.setTitle(str, for: .normal)
+    }
+    
+    @objc func setResultButtonHelper(timer: Timer) {
+        let argDict = timer.userInfo as! [String: AnyObject]
+        setResultButton(istr: argDict["arg1"] as! String)
     }
 
     @IBAction func closeMainPopover(_: Any) {
@@ -1409,43 +1532,14 @@ class MainViewController: UIViewController {
 
     var testVar = 0
     @IBAction func testButton(_: Any) {
-//        if (testVar%2 > 0) {
-////            sc.playSound(isoundName: "C2", ioneShot: true, ifadeAllOtherSoundsDuration: 0.2)
-//            sc.fadeSound(isoundName: "C4", iduration: 0.2)
-//        } else {
-////            sc.playSound(isoundName: "C3", ioneShot: true)
-//            sc.playSound(isoundName: "C4", ioneShot: true)
-//        }
-//        testVar += 1
-        
-        
-//        ActionOverlay.layer.zPosition = 50.0
-//        ActionOverlay.alpha = 1.0
-//        print("asdfas")
-        
-//        flashActionOverlay(isuccess: false)
-////        AudioServicesPlaySystemSound(1519)
-//        Vibration.success.vibrate()
-        
-        
-//         giveButtonBackgroundShadow(ibutton: periphButtonArr[0])
-        
-//        presentMainPopover(itype: "LevelComplete", ilevelPassed: 2)
-        
-        
-//        wt.waitThen(itime: 0.1, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "LevelComplete" as AnyObject, "arg2": 2 as AnyObject])
         
         randomButtonTest()
         
     }
     
     @objc func randomButtonTest() {
-//        TempoUpButton.target(forAction: Selector, withSender: <#T##Any?#>)
-        
-        
-        
-        var randNumb = rand(max: 4)
-//        randNumb = 3
+
+        let randNumb = rand(max: 4)
         switch randNumb {
         case 0:
             let button = UIButton()
