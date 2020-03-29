@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15505" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="PUF-EH-UAq">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="15705" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" colorMatched="YES" initialViewController="PUF-EH-UAq">
     <device id="retina6_1" orientation="portrait" appearance="light"/>
     <dependencies>
         <deployment identifier="iOS"/>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15510"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="15706"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
@@ -117,7 +117,7 @@
                                                 <action selector="onBackButtonDown:" destination="BYZ-38-t0r" id="DCi-rT-YuQ"/>
                                             </connections>
                                         </barButtonItem>
-                                        <barButtonItem key="rightBarButtonItem" image="gear" catalog="system" id="opS-Xs-hpK"/>
+                                        <barButtonItem key="rightBarButtonItem" id="opS-Xs-hpK"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
@@ -363,7 +363,7 @@
                                 <items>
                                     <navigationItem title="FRET MASTER" id="T15-zQ-1Gr">
                                         <barButtonItem key="leftBarButtonItem" title="&lt; Back" width="20" id="us8-M7-98o"/>
-                                        <barButtonItem key="rightBarButtonItem" title="Item" image="gear" catalog="system" id="OlP-47-FhT">
+                                        <barButtonItem key="rightBarButtonItem" title="Item" image="outline_settings_black_18dp-scaled" id="OlP-47-FhT">
                                             <connections>
                                                 <action selector="onSettingsButtonDown:" destination="g0s-ID-MHD" id="Y7v-aV-WkC"/>
                                             </connections>
@@ -374,16 +374,14 @@
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="x3t-Q9-tnG">
                                 <rect key="frame" x="358" y="108" width="50" height="286"/>
                                 <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qd4-Hj-4WW">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="qd4-Hj-4WW">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemBrownColor" red="0.63529411759999999" green="0.51764705879999995" blue="0.36862745099999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="50" id="SHJ-j4-nEZ"/>
                                             <constraint firstAttribute="width" constant="50" id="nd6-31-Ues"/>
                                         </constraints>
-                                        <state key="normal" title="Button">
-                                            <preferredSymbolConfiguration key="preferredSymbolConfiguration" scale="default"/>
-                                        </state>
+                                        <state key="normal" title="Button"/>
                                         <connections>
                                             <action selector="PeripheralButtonDown:" destination="g0s-ID-MHD" eventType="touchUpInside" id="4Vc-Wx-9yf"/>
                                         </connections>
@@ -658,7 +656,7 @@
     <resources>
         <image name="Fretboard4.png" width="355" height="979"/>
         <image name="I" width="16" height="16"/>
-        <image name="gear" catalog="system" width="64" height="58"/>
+        <image name="outline_settings_black_18dp-scaled" width="29" height="29"/>
         <image name="speaker.3" catalog="system" width="64" height="44"/>
         <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>

@@ -463,6 +463,20 @@ class MainViewController: UIViewController {
         NavBackButton.target = self;
         NavBackButton.action = #selector(onBackButtonDown)
         NavSettingsButton.tintColor = defaultColor.MenuButtonTextColor
+        
+        // control button size
+//         let insets: CGFloat = 10
+//        NavSettingsButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
+//
+        
+//        let widthConstraint = NavSettingsButton.button
+        
+        
+//        widthAnchor.constraint(equalToConstant: 32)
+//        let heightConstraint = NavSettingsButton.heightAnchor.constraint(equalToConstant: 32)
+//        heightConstraint.isActive = true
+//        widthConstraint.isActive = true
+        
         NavBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor]
 
         ResultButton.titleLabel?.adjustsFontSizeToFitWidth = true
@@ -580,8 +594,10 @@ class MainViewController: UIViewController {
         // Scale/Arpeggio test
         if (returnValidState(iinputState: currentState, istateArr: [State.NotesTestIdle_NoTempo,State.NotesTestIdle_NoTempo])) {  //TODO: instead of checking against current state, check against lc.currentLevelKey
             setupCurrentTask()
-            defaultPeripheralIcon = ["play", "speaker.3", "info"] // music.note"
-            activePeripheralIcon = ["pause", "speaker.slash", "arrowshape.turn.up.left"]
+            defaultPeripheralIcon = ["outline_play_arrow_black_18dp", "outline_volume_up_black_18dp", "outline_info_black_18dp"] // music.note"
+            activePeripheralIcon = ["outline_stop_black_18dp", "outline_volume_off_black_18dp", "outline_undo_black_18dp"]
+//            defaultPeripheralIcon = ["play", "speaker.3", "info"] // music.note"
+//            activePeripheralIcon = ["pause", "speaker.slash", "arrowshape.turn.up.left"]
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
         }
@@ -689,7 +705,12 @@ class MainViewController: UIViewController {
     func setupPeripheralButtons(iiconArr: [String]) {
         for (i, _) in iiconArr.enumerated() {
             periphButtonArr[i].setTitle("", for: .normal) // TODO: eventually get rid of text completely
-
+            
+            // control button size
+             let insets: CGFloat = 10
+            periphButtonArr[i].imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
+            
+            
             setButtonImage(ibutton: periphButtonArr[i], iimageStr: iiconArr[i])
             periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
             periphButtonArr[i].layer.masksToBounds = true
@@ -733,8 +754,9 @@ class MainViewController: UIViewController {
         TempoButton.layer.masksToBounds = true
         TempoButton.layer.cornerRadius = 25
 
-        let insets: CGFloat = 18
-        setButtonImage(ibutton: TempoDownButton, iimageStr: "arrowtriangle.down")
+        // control button size
+        let insets: CGFloat = 10
+        setButtonImage(ibutton: TempoDownButton, iimageStr: "outline_expand_more_black_18dp")
         TempoDownButton.contentVerticalAlignment = .fill
         TempoDownButton.contentHorizontalAlignment = .fill
         TempoDownButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
@@ -745,7 +767,7 @@ class MainViewController: UIViewController {
         TempoDownButton.layer.cornerRadius = 25
         TempoDownButton.imageView?.alpha = 1.0
 
-        setButtonImage(ibutton: TempoUpButton, iimageStr: "arrowtriangle.up")
+        setButtonImage(ibutton: TempoUpButton, iimageStr: "outline_expand_less_black_18dp")
         TempoUpButton.contentVerticalAlignment = .fill
         TempoUpButton.contentHorizontalAlignment = .fill
         TempoUpButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
@@ -786,14 +808,28 @@ class MainViewController: UIViewController {
     }
 
     func setButtonImage(ibutton: UIButton, iimageStr: String) {
+        
+//        ibutton.imageEdgeInsets = UIEdgeInsets(top: 6, left: 6, bottom: 6, right: 6)
+//        ibutton.imageView.contentMode = UIViewContentModeScaleAspectFit;
+        let image = UIImage(named: iimageStr)
+        ibutton.setImage(image, for: .normal)
+        ibutton.imageView?.tintColor = defaultColor.MenuButtonTextColor
+        ibutton.imageView?.alpha = 1.0
+        return
         if #available(iOS 13.0, *) {
-            ibutton.setImage(UIImage(systemName: iimageStr), for: .normal)
-            ibutton.imageView?.tintColor = defaultColor.MenuButtonTextColor // TODO: need?
-            ibutton.imageView?.alpha = 1.0 // TODO: need?
-//            periphButtonArr[0].setTitle("", for: .normal)  //TODO: test
+//            ibutton.setImage(UIImage(systemName: iimageStr), for: .normal)
+
+            
+            let image = UIImage(named: "outline_undo_black_18dp")
+            ibutton.setImage(image, for: .normal)
+            ibutton.imageView?.tintColor = defaultColor.MenuButtonTextColor
+            ibutton.imageView?.alpha = 1.0
         } else {
             // Fallback on earlier versions
             //            PeriphButton0.setImage(UIImage(named: "pencil"), for: UIControl.State.normal)  //i am not sure if this works
+//            ibutton.image(for: <#T##UIControl.State#>)
+            let image = UIImage(named: "outline_undo_black_18dp")
+            ibutton.setImage(image, for: .normal)
         }
     }
     
@@ -863,7 +899,8 @@ class MainViewController: UIViewController {
         if !checkForValidTempoInput() {return}
         currentButtonLayer = TempoButton!.pulsate(ilayer: currentButtonLayer)
         wt.stopWaitThenOfType(iselector: #selector(timeoutTapTempo) as Selector)
-        wt.waitThen(itime: 1.2, itarget: self, imethod: #selector(timeoutTapTempo) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+        //this caps the low tempo at 40 bpm
+        wt.waitThen(itime: 60.0/40.0, itarget: self, imethod: #selector(timeoutTapTempo) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
         tapTime.append(CFAbsoluteTimeGetCurrent())
         if tapTime.count > 1 {
             let tappedCount = Double(tapTime.count - 1)
@@ -874,6 +911,8 @@ class MainViewController: UIViewController {
                 }
             }
             met!.bpm = ((tappedCount / accTime) * 60).rounded()
+            //cap tapped tempo
+            if (met!.bpm > 350.0) {met!.bpm = 350.0}
             TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
         }
     }
@@ -1799,7 +1838,7 @@ class MainViewController: UIViewController {
                     //adding image to view to avoid z position problems
 //                    let offset = button.frame.minX * fretMarkerImageOffset["G#1"]!
                     image.frame = CGRect(
-                            x: (button.frame.width / 2 * fretMarkerImageOffset[noteInputStrs[buttonTag]]!)  - imageSize / 2 - imageXOffset + button.frame.minX,
+                            x: (button.frame.width / 2 * fretMarkerImageOffset[noteInputStrs[buttonTag]]!) - imageSize / 2 - imageXOffset + button.frame.minX,
                             y: button.frame.height / 2 - 20 + button.frame.minY,
                             width: imageSize,
                             height: imageSize)
@@ -1829,10 +1868,16 @@ class MainViewController: UIViewController {
         }
         fretButtonDict["A1"]?.layer.zPosition = 1000
         fretButtonDict["A2"]?.layer.zPosition = 1000
+        
+        setupFretReferenceText()
     }
-
-    @objc func buttonActionTemp(sender: UIButton!) {
-        print("here \(sender.tag)")
+    
+    func setupFretReferenceText() {
+        var fretRefText = UILabel()
+        fretRefText.text = "5th Fret"
+        let a1ButtonFrame = fretButtonFrame["A1"]!
+        fretRefText.frame = CGRect(x: a1ButtonFrame.minX-75, y: a1ButtonFrame.minY, width: 100, height: 100)
+        view.addSubview(fretRefText)
     }
 }
 
