@@ -262,7 +262,7 @@ class MainViewController: UIViewController {
         var timeDelta = 0.0
     }
     
-    let timeThreshold: [String: Double] = [
+    let timeThreshold: [String: Double] = [  //TODO: this should live in met
         "Easy": 0.1,
         "Medium": 0.075,
         "Hard": 0.05,
@@ -294,6 +294,11 @@ class MainViewController: UIViewController {
     
     var resultButtonText = ""
     var resultsLabelDefaultText = ""
+    
+    let testResultStrDict: [String: String] = [
+        "incorrect_notes" : "Notes Played Were Incorrect",
+        "incorrect_time" : "Time Was Inaccurate",
+    ]
 
     var buttonDict: [Int: String] = [ // this could probably be an array
         0: "G#1",
@@ -370,9 +375,9 @@ class MainViewController: UIViewController {
     var currentState = State.Idle
     var allMarkersDisplayed = false
     var defaultState: State?
-    var currentLevel: String?
-    var currentLevelConstruct: [[String]] = [[]]
-    var currentLevelKey: String?
+    
+    let lc = LevelConstruct()  //TODO: change name
+    
     var tutorialComplete: Bool?
     var currentButtonLayer = 0
     let digitInput = DigitsInput()
@@ -557,10 +562,12 @@ class MainViewController: UIViewController {
         print("itutorialComplete \(itutorialComplete)")
         currentState = icurrentState //TODO: should not need this, as state is more accuratly being setup in setupCurrentTask
 //        defaultState = currentState
-        currentLevel = icurrentLevel
-        currentLevelConstruct = ilevelConstruct
-        currentLevelKey = ilevelKey
+               
+        lc.setLevelVars(icurrentLevel: icurrentLevel, icurrentLevelConstruct: ilevelConstruct, icurrentLevelKey: ilevelKey)
+        
+        
         tutorialComplete = itutorialComplete == "1.0"
+        if (developmentMode) {tutorialComplete = true} // TODO: temp
         currentBackgroundPic = backgroundPicDict[ilevelKey]!
     }
 
@@ -571,7 +578,7 @@ class MainViewController: UIViewController {
             setButtonState(ibutton: PeriphButton0, ibuttonState: false)
         }
         // Scale/Arpeggio test
-        if (returnValidState(iinputState: currentState, istateArr: [State.NotesTestIdle_NoTempo,State.NotesTestIdle_NoTempo])) {  //TODO: instead of checking against current state, check against currentLevelKey
+        if (returnValidState(iinputState: currentState, istateArr: [State.NotesTestIdle_NoTempo,State.NotesTestIdle_NoTempo])) {  //TODO: instead of checking against current state, check against lc.currentLevelKey
             setupCurrentTask()
             defaultPeripheralIcon = ["play", "speaker.3", "info"] // music.note"
             activePeripheralIcon = ["pause", "speaker.slash", "arrowshape.turn.up.left"]
@@ -580,9 +587,14 @@ class MainViewController: UIViewController {
         }
             setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
     }
+    
+    func setupCurrentTaskHelper() {
+        setupCurrentTask()
+        wt.stopWaitThenOfType(iselector: #selector(setupCurrentTask) as Selector)
+    }
 
     @objc func setupCurrentTask() {
-        let task = returnCurrentTask()
+        let task = lc.returnCurrentTask()
         let trimmedTask = trimCurrentTask(iinput: task)
         let dir = parseTaskDirection(iinput: task)
         tempoActive = parseTempoStatus(iinput: task)
@@ -592,14 +604,13 @@ class MainViewController: UIViewController {
         resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
         ResultsLabel.text = resultsLabelDefaultText
         
-        
-        if (currentLevelKey!.contains("scale")) {
+        if (lc.currentLevelKey!.contains("scale")) {
             if (tempoActive) {
                 currentState = State.NotesTestIdle_Tempo
             } else {
                 currentState = State.NotesTestIdle_NoTempo
             }
-        } else if currentLevelKey!.contains("arpeggio") {
+        } else if lc.currentLevelKey!.contains("arpeggio") {
             if (tempoActive) {
                 currentState = State.NotesTestIdle_Tempo
             } else {
@@ -643,19 +654,6 @@ class MainViewController: UIViewController {
          bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
          bgImage.contentMode = UIView.ContentMode.scaleAspectFill
          self.view.insertSubview(bgImage, at: 0)
-    }
-
-    func returnCurrentTask() -> String {
-        let level = returnConvertedLevel(iinput: currentLevel!)
-        let subLevel = returnConvertedSubLevel(iinput: currentLevel!)
-
-        // make sure the current level/sublevel is not out of range
-        if currentLevelConstruct[level].count > subLevel {
-            return currentLevelConstruct[level][subLevel]
-        }
-
-        // level/sublevel is out of range, return last task in construct
-        return currentLevelConstruct[level][currentLevelConstruct[level].count - 1]
     }
 
     func trimCurrentTask(iinput: String) -> String {
@@ -904,7 +902,12 @@ class MainViewController: UIViewController {
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
         currentButtonLayer = periphButtonArr[sender.tag].pulsate(ilayer: currentButtonLayer)
-        ResultsLabel.text = resultsLabelDefaultText
+        if (!returnValidState(iinputState: currentState, istateArr: [
+            State.NotesTestCountIn_Tempo
+        ])) {
+            ResultsLabel.text = resultsLabelDefaultText
+        }
+        
         switch sender.tag {
         case 0:
             PeripheralButton0OnButtonDown()
@@ -943,6 +946,7 @@ class MainViewController: UIViewController {
                                 State.NotesTestIdle_Tempo,
                                 State.NotesTestShowNotes
                             ])) {
+            setupCurrentTaskHelper()
             currentState = toggleTestState(icurrentState: defaultState!)
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
             hideAllFretMarkers()
@@ -994,11 +998,15 @@ class MainViewController: UIViewController {
         ]))
         {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
+            setupCurrentTaskHelper()
             currentState = State.PlayingNotesCollection
             met?.startMetro()
             hideAllFretMarkers()
             return
-        } else if currentState == State.PlayingNotesCollection {
+        } else if (returnValidState(iinputState: currentState,
+                             istateArr: [
+                                State.PlayingNotesCollection,
+        ])) {
             setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: defaultPeripheralIcon[wchButton])
             currentState = State.NotesTestIdle_NoTempo
             met?.endMetronome()
@@ -1020,9 +1028,10 @@ class MainViewController: UIViewController {
                 State.NotesTestIdle_NoTempo,
                 State.NotesTestIdle_Tempo,
         ])) {
+                setupCurrentTaskHelper()
+                currentState = State.NotesTestShowNotes
                 setButtonImage(ibutton: periphButtonArr[wchButton], iimageStr: activePeripheralIcon[wchButton])
                 displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
-                currentState = State.NotesTestShowNotes
                 return
             } else if currentState == State.NotesTestShowNotes {
                 hideAllFretMarkers()
@@ -1118,7 +1127,6 @@ class MainViewController: UIViewController {
                     presentEarTrainResults()
                 }
             }
-
             
             //TODO: overlapping function invocations taking place below
             if (currentState == State.NotesTestActive_Tempo && noteCollectionTestData.count < specifiedNoteCollection.count) {
@@ -1129,7 +1137,7 @@ class MainViewController: UIViewController {
                 recordTimeAccuracy()
             }
 
-            if (currentState == State.NotesTestActive_NoTempo && noteCollectionTestData.count < specifiedNoteCollection.count) { //TODO: don't need to seperate string from raw value, now arp is
+            if (currentState == State.NotesTestActive_NoTempo && noteCollectionTestData.count < specifiedNoteCollection.count) {
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
                 st.time = 0
@@ -1143,15 +1151,13 @@ class MainViewController: UIViewController {
                 }
                 if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode || noteMismatch) {
                     
-                    //TODO: need to also set the arpeggio state to noTempo FUCK
-//                    currentState = State.NotesTestIdle_NoTempo
-//                    setPeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
-//                    setNavBarColor()
-//                    resetButtonFrames()
-                                        
-                    let notesCorrect = sCollection!.analyzeScale(iscaleTestData: noteCollectionTestData)
-                    onTestComplete(inotesCorrect : notesCorrect)
-                    wt.waitThen(itime: 0.5, itarget: self, imethod: #selector(presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject])
+                                       
+                    let notesCorrect = sCollection!.analyzeNotes(iscaleTestData: noteCollectionTestData)
+                    onTestComplete(itestPassed : notesCorrect)
+                    var testResultStrs: [String] = []
+                    if (!notesCorrect) {                        testResultStrs.append(testResultStrDict["incorrect_notes"]!)
+                    }
+                    wt.waitThen(itime: 0.5, itarget: self, imethod: #selector(presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
                 } else {
                     scaleButtonForClickableEase(ibutton: fretButtonDict[specifiedNoteCollection[noteCollectionTestData.count]]!)
                 }
@@ -1159,15 +1165,17 @@ class MainViewController: UIViewController {
         }
     }
     
-    func onTestComplete(inotesCorrect : Bool) {
+    func onTestComplete(itestPassed: Bool, iflashRed: Bool = false) {
         
         setPeriphButtonsToDefault(idefaultIcons: defaultPeripheralIcon)
         setNavBarColor()
         resetButtonFrames()
-//        currentState = toggleTestState()
-        if (inotesCorrect) {
+        ResultButton.isEnabled = false
+        if (itestPassed) {
             flashActionOverlay(isuccess: true)
             //Vibration.success.vibrate()
+        } else if (iflashRed) {
+            flashActionOverlay(isuccess: false)
         }
     }
     
@@ -1205,61 +1213,34 @@ class MainViewController: UIViewController {
     }
 
     @objc func presentTestResult(timer: Timer) {
+        ResultButton.isEnabled = true
         var testPassed = false
         let resultObj = timer.userInfo as! [String: AnyObject]
         if let test = resultObj["notesCorrect"] {
             testPassed = test as! Bool
         } else {}
 
-        var resultsText = ""
-        resultsText = testPassed ? "Great!" : "Try Again!"
+        let resultsText = testPassed ? "Great!" : "Try Again!  ⓘ"
         setResultButton(istr: resultsText)
-        analyzeNewLevel(itestPassed: testPassed)
-        currentState = toggleTestState(icurrentState: currentState)
-    }
-
-    func analyzeNewLevel(itestPassed: Bool) {
-        if !itestPassed && !developmentMode {
-            wt.waitThen(itime: 3.0, itarget: self, imethod: #selector(setResultButtonHelper) as Selector, irepeats: false, idict: ["arg1": resultButtonText as AnyObject])
-            return
-        }
-
-        print("sub level passed \(userLevelData.scaleLevel)")
-        
-        var level = returnConvertedLevel(iinput: currentLevel!)
-        var subLevel = returnConvertedSubLevel(iinput: currentLevel!) + 1
-
-        if subLevel == currentLevelConstruct[level].count {
-            // upgrade level
-            let levelConstruct = LevelConstruct()
-            if level < levelConstruct.scale.count - 1 {
-                level = level + 1
-                subLevel = 0
-                wt.waitThen(itime: 0.1, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "LevelComplete" as AnyObject, "arg2": level as AnyObject])
-            } else {
-                //subLevel = subLevel - 1
+        let newLevel = lc.analyzeNewLevel(itestPassed: testPassed,  idevelopmentMode: developmentMode)
+        if (!newLevel["SubLevelIncremented"]!) {
+            //wt.waitThen(itime: 3.0, itarget: self, imethod: #selector(setResultButtonHelper) as Selector, irepeats: false, idict: ["arg1": resultButtonText as AnyObject])
+            
+//
+            if let testResultStrs = resultObj["testResultStrs"] {
+                pc!.setResultButtonPopupText(itextArr: testResultStrs as! [String])
             }
+            
+        } else {
+            if (newLevel["LevelIncremented"]!) {
+                let level = lc.returnConvertedLevel(iinput: lc.currentLevel!)
+                wt.waitThen(itime: 0.1, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "LevelComplete" as AnyObject, "arg2": level as AnyObject])
+            }
+            
+            wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            
         }
-
-        currentLevel = "\(level).\(subLevel)"
-        UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
-        print("updated current level \(currentLevel ?? "")")
-        
-//        Vibration.success.vibrate()
-        
-        //TODO: this will need to be cancelled if premature input
-        wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
-    }
-
-    // these functions should exist inone place
-    func returnConvertedLevel(iinput: String) -> Int {
-        let numb = Int(iinput.split(separator: ".")[0])
-        return numb!
-    }
-
-    func returnConvertedSubLevel(iinput: String) -> Int {
-        let numb = Int(iinput.split(separator: ".")[1])
-        return numb!
+        currentState = toggleTestState(icurrentState: currentState)
     }
 
     @IBAction func record(_: Any) {
@@ -1429,13 +1410,13 @@ class MainViewController: UIViewController {
     }
     
     func setResultButton(istr: String? = "") {
-        var str = istr == nil ? "" : istr
+        let str = istr == nil ? "" : istr
         ResultButton.setTitle(str, for: .normal)
     }
     
     @objc func setResultButtonHelper(timer: Timer) {
         let argDict = timer.userInfo as! [String: AnyObject]
-        setResultButton(istr: argDict["arg1"] as! String)
+        setResultButton(istr: argDict["arg1"] as? String)
     }
 
     @IBAction func closeMainPopover(_: Any) {
@@ -1446,28 +1427,24 @@ class MainViewController: UIViewController {
             allMarkersDisplayed = true
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
             pc!.startTestReminder(itime: 20)
-
             var tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
             tutorialComplete = tutorialComplete as! String == "0.0" ? "1.0" : "2.0"
             UserDefaults.standard.set(tutorialComplete, forKey: "tutorialComplete")
+            UserDefaults.standard.set("1.0", forKey: "scaleLevel")
         } else if (mainPopoverState == "LevelComplete") {
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
+            setupCurrentTaskHelper()
         }
-        
-        
-
         mainPopoverVisible = false
     }
 
     var testVar = 0
     @IBAction func testButton(_: Any) {
-        
-        randomButtonTest()
-        
+//        randomButtonTest()
+        pc!.resultButtonPopup.hide()
     }
     
     @objc func randomButtonTest() {
-
         let randNumb = rand(max: 4)
         switch randNumb {
         case 0:
@@ -1905,6 +1882,7 @@ class PopupController {
     }
 
     func setResultButtonPopupText(itextArr: [String]) {
+        
         let textSpacing = 30
         let popoverSize = (vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.PeriphButton0, istack: vc!.PeripheralStackView).maxX - vc!.TempoDownButton.frame.maxX) * 0.72
         resultButtonView?.removeFromSuperview()

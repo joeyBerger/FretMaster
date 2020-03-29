@@ -21,6 +21,7 @@
 		9E9C46E922C4841700B133A9 /* MenuButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */; };
 		9E9C46EB22C484AE00B133A9 /* ButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */; };
 		9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAD3C0D237E825F004467B1 /* EarTraining.swift */; };
+		9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBCF8AC2429D09400074C4C /* LevelHandler.swift */; };
 		9ED9892122D1334B0076C65B /* DigitInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED9892022D1334B0076C65B /* DigitInput.swift */; };
 		9EDC27EC22C980E000387143 /* G2.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC27CF22C980E000387143 /* G2.wav */; };
 		9EDC27ED22C980E000387143 /* G3.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC27D022C980E000387143 /* G3.wav */; };
@@ -98,6 +99,7 @@
 		9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MenuButtonClick.wav; sourceTree = "<group>"; };
 		9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ButtonClick.wav; sourceTree = "<group>"; };
 		9EAD3C0D237E825F004467B1 /* EarTraining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarTraining.swift; sourceTree = "<group>"; };
+		9EBCF8AC2429D09400074C4C /* LevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHandler.swift; sourceTree = "<group>"; };
 		9ED9892022D1334B0076C65B /* DigitInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitInput.swift; sourceTree = "<group>"; };
 		9EDC27CF22C980E000387143 /* G2.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = G2.wav; sourceTree = "<group>"; };
 		9EDC27D022C980E000387143 /* G3.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = G3.wav; sourceTree = "<group>"; };
@@ -268,6 +270,7 @@
 				B8A6186020DB9E7500AF33C5 /* Metronome.swift */,
 				9E16FA142381C73600100F65 /* ScaleClass.swift */,
 				9E9C46E622C483C000B133A9 /* SoundController.swift */,
+				9EBCF8AC2429D09400074C4C /* LevelHandler.swift */,
 				9ED9892022D1334B0076C65B /* DigitInput.swift */,
 				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
 				9E07F7252396B0E600E99444 /* DefaultColor.swift */,
@@ -405,6 +408,7 @@
 				9E18282223CA65650001E46F /* MainViewController.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
 				9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */,
+				9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */,
 				B8A6186320DB9E7500AF33C5 /* Metronome.swift in Sources */,
 				9ED9892122D1334B0076C65B /* DigitInput.swift in Sources */,
 				B8A6184F20DB9E2A00AF33C5 /* AppDelegate.swift in Sources */,

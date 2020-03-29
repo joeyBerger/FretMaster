@@ -168,7 +168,7 @@ class ScaleCollection {
         return scaleNameDic[iinput]!
     }
     
-    func analyzeScale (iscaleTestData : [MainViewController.InputData]) -> Bool {
+    func analyzeNotes (iscaleTestData : [MainViewController.InputData]) -> Bool {
         if (iscaleTestData.count != vc!.specifiedNoteCollection.count) {
             return false
         }

@@ -130,8 +130,8 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "102"
             endingLineNumber = "102"
-            landmarkName = "tick(timer:)"
-            landmarkType = "7">
+            landmarkName = "unknown"
+            landmarkType = "0">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -336,9 +336,9 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1384"
-            endingLineNumber = "1384"
-            landmarkName = "swoopScale(iobject:iscaleX:iscaleY:iduration:)"
+            startingLineNumber = "1357"
+            endingLineNumber = "1357"
+            landmarkName = "displaySingleFretMarker(iinputStr:cascadeFretMarkers:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -352,25 +352,9 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1222"
-            endingLineNumber = "1222"
-            landmarkName = "analyzeNewLevel(itestPassed:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EA096985-8440-4CE2-A29B-91C110777214"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "MetronomeIdea/MainViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1244"
-            endingLineNumber = "1244"
-            landmarkName = "analyzeNewLevel(itestPassed:)"
+            startingLineNumber = "1221"
+            endingLineNumber = "1221"
+            landmarkName = "presentTestResult(timer:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -384,10 +368,10 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1019"
-            endingLineNumber = "1019"
-            landmarkName = "PeripheralButton2OnButtonDown()"
-            landmarkType = "7">
+            startingLineNumber = "1016"
+            endingLineNumber = "1016"
+            landmarkName = "MainViewController"
+            landmarkType = "3">
          </BreakpointContent>
       </BreakpointProxy>
       <BreakpointProxy
@@ -400,8 +384,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1028"
-            endingLineNumber = "1028"
+            startingLineNumber = "1025"
+            endingLineNumber = "1025"
             landmarkName = "PeripheralButton2OnButtonDown()"
             landmarkType = "7">
          </BreakpointContent>
@@ -416,9 +400,9 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "592"
-            endingLineNumber = "592"
-            landmarkName = "setupCurrentTask()"
+            startingLineNumber = "588"
+            endingLineNumber = "588"
+            landmarkName = "setupToSpecificState()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -432,9 +416,9 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "593"
-            endingLineNumber = "593"
-            landmarkName = "setupCurrentTask()"
+            startingLineNumber = "589"
+            endingLineNumber = "589"
+            landmarkName = "setupToSpecificState()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -450,7 +434,55 @@
             endingColumnNumber = "9223372036854775807"
             startingLineNumber = "172"
             endingLineNumber = "172"
-            landmarkName = "analyzeScale(iscaleTestData:)"
+            landmarkName = "analyzeNotes(iscaleTestData:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "7FA06844-4843-4C59-B63C-38CDED65A095"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MetronomeIdea/LevelHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "29"
+            endingLineNumber = "29"
+            landmarkName = "analyzeNewLevel(itestPassed:idevelopmentMode:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6118BD53-69E3-41DC-AB11-6D5391DE3A9B"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MetronomeIdea/LevelHandler.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "42"
+            endingLineNumber = "42"
+            landmarkName = "analyzeNewLevel(itestPassed:idevelopmentMode:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "6C3ECD49-7E0F-40CD-9DC3-45C4C2808696"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "MetronomeIdea/MenuViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "50"
+            endingLineNumber = "50"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

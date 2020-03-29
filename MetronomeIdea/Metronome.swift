@@ -150,7 +150,7 @@ class Metronome {
 //            print(item.note)
 //            print(item.time)
 //        }
-        let notesMatch = vc!.sCollection!.analyzeScale(iscaleTestData: vc!.noteCollectionTestData)
+        let notesMatch = vc!.sCollection!.analyzeNotes(iscaleTestData: vc!.noteCollectionTestData)
         var timeAcurracyMet = true
         for (_, items) in vc!.noteCollectionTestData.enumerated() {
             if (items.timeDelta > (vc!.timeThreshold["Easy"])!) {
@@ -158,11 +158,19 @@ class Metronome {
             }
         }
         
+        var testResultStrs: [String] = []
+        if (!notesMatch) {
+            testResultStrs.append(vc!.testResultStrDict["incorrect_notes"]!)
+        }
+        if (!timeAcurracyMet) {
+            testResultStrs.append(vc!.testResultStrDict["incorrect_time"]!)
+        }
+        
         print("notesMatch \(notesMatch)")
         print("timeAcurracyMet \(timeAcurracyMet)")
         let notesCorrect = notesMatch && timeAcurracyMet
-        vc!.onTestComplete(inotesCorrect : notesCorrect)
-        vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject])
+        vc!.onTestComplete(itestPassed : notesCorrect, iflashRed : true)
+        vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
     }
     
     

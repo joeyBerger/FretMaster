@@ -46,8 +46,8 @@ class MenuViewController: UIViewController {
         
 //        self.view.backgroundColor = UIColor.black
         
-        let screenSize: CGRect = UIScreen.main.bounds
-        var bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+//        let screenSize: CGRect = UIScreen.main.bounds
+        let bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(bgImage, at: 0)
@@ -95,24 +95,27 @@ class MenuViewController: UIViewController {
         }
                 
         let lc = LevelConstruct()
-        var level = returnConvertedLevel(iinput: userLevelData.scaleLevel)
-        var subLevel = returnConvertedSubLevel(iinput: userLevelData.scaleLevel)
-        var progress = returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.scale)
+        var level = lc.returnConvertedLevel(iinput: userLevelData.scaleLevel)
+        var subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.scaleLevel)
+        var progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.scale)
         tutorialCompleteStatus = userLevelData.tutorialComplete == "1.0"
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button0, ititle: "SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress)
-        level = returnConvertedLevel(iinput: userLevelData.arpeggioLevel)
-        subLevel = returnConvertedSubLevel(iinput: userLevelData.arpeggioLevel)
-        progress = returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.arpeggio)
+        var key = "scales"
+        setupMainMenuButton(ibutton: Button0, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress)
+        level = lc.returnConvertedLevel(iinput: userLevelData.arpeggioLevel)
+        subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.arpeggioLevel)
+        progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.arpeggio)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button1, ititle: "ARPEGGIOS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
-        level = returnConvertedLevel(iinput: userLevelData.et_singleNotes)
+        key = "arpeggios"
+        setupMainMenuButton(ibutton: Button1, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        level = lc.returnConvertedLevel(iinput: userLevelData.et_singleNotes)
+        
         levelArr.append(level)
         setupMainMenuButton(ibutton: Button2, ititle: "EAR TRAINING: SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
-        level = returnConvertedLevel(iinput: userLevelData.et_scales)
+        level = lc.returnConvertedLevel(iinput: userLevelData.et_scales)
         levelArr.append(level)
         setupMainMenuButton(ibutton: Button3, ititle: "EAR TRAINING: SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
-        level = returnConvertedLevel(iinput: userLevelData.et_chords)
+        level = lc.returnConvertedLevel(iinput: userLevelData.et_chords)
         levelArr.append(level)
         setupMainMenuButton(ibutton: Button4, ititle: "EAR TRAINING: CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         
@@ -177,7 +180,6 @@ class MenuViewController: UIViewController {
 //        buttonSubtext.translatesAutoresizingMaskIntoConstraints = false
         
 
-        
         ibutton.addSubview(buttonSubtext)
         
         if (iprogressAmount >= 0.0) {
@@ -191,31 +193,6 @@ class MenuViewController: UIViewController {
         }
     }
     
-    func returnConvertedLevel (iinput : String) -> Int {
-        
-        let numb = Int(iinput.split(separator: ".")[0])
-        return numb!
-    }
-    
-    func returnConvertedSubLevel (iinput : String) -> Int {
-        
-        let numb = Int(iinput.split(separator: ".")[1])
-        return numb!
-    }
-    
-    func returnTotalProgress (ilevel: Int, isubLevel: Int, ilevelConstruct: [[String]]) -> Float {
-        var subLevels = 0
-        var totalLevels = 0
-        for (i,item) in ilevelConstruct.enumerated() {
-            for (j,_) in item.enumerated() {
-                if ((ilevel >= i && isubLevel > j || ilevel > i) && (ilevel > 0 || isubLevel > 0)) {
-                    subLevels += 1
-                }
-                totalLevels += 1
-            }
-        }
-        return Float(subLevels)/Float(totalLevels)
-    }
     
     @IBAction func MainMenuButton(_ sender: UIButton) {
                
@@ -266,6 +243,10 @@ class MenuViewController: UIViewController {
         let devStr = "Development Mode:"
         let status = developmentMode == true ? "Enabled" : "Disabled"
         setDevScreenPrintText(itext: devStr + status)
+    }
+    
+    func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
+        return "L\(ilevel+1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
     }
     
     func setDevScreenPrintText(itext: String) {
