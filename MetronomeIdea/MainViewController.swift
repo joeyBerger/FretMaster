@@ -1876,7 +1876,10 @@ class MainViewController: UIViewController {
         var fretRefText = UILabel()
         fretRefText.text = "5th Fret"
         let a1ButtonFrame = fretButtonFrame["A1"]!
-        fretRefText.frame = CGRect(x: a1ButtonFrame.minX-75, y: a1ButtonFrame.minY, width: 100, height: 100)
+        var width: CGFloat = 100.0, height: CGFloat = 100.0
+        let xPos = a1ButtonFrame.minX/2-width/4
+        fretRefText.frame = CGRect(x: xPos, y: a1ButtonFrame.minY-height/2+a1ButtonFrame.height/2, width: width, height: height)
+        fretRefText.textColor = defaultColor.MenuButtonColor
         view.addSubview(fretRefText)
     }
 }
