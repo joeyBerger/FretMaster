@@ -254,6 +254,7 @@ class MainViewController: UIViewController {
     var sCollection: ScaleCollection?
     var et: EarTraining?
     var pc: PopupController?
+    var settingsMenu: SettingsViewController?
     var wt = waitThen()
     
     class InputData {
@@ -424,6 +425,10 @@ class MainViewController: UIViewController {
         let n: Any = 0
         onBackButtonDown(n)
     }
+    
+//    override func viewWillAppear(_ animated: Bool) {
+//        super.viewWillAppear(true)
+//    }
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -443,7 +448,7 @@ class MainViewController: UIViewController {
         sCollection = ScaleCollection(ivc: self)
         et = EarTraining(ivc: self)
         pc = PopupController(ivc: self)
-
+//        settingsMenu = SettingsViewController(ivc: self)
         if developmentMode {
             met?.bpm = 350.0
         }
@@ -572,32 +577,24 @@ class MainViewController: UIViewController {
         }
     }
 
-    func setStateProperties(icurrentState: State, itempoButtonsActive: Bool, icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
-        print("itutorialComplete \(itutorialComplete)")
-        currentState = icurrentState //TODO: should not need this, as state is more accuratly being setup in setupCurrentTask
-//        defaultState = currentState
-               
+    func setStateProperties(icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
         lc.setLevelVars(icurrentLevel: icurrentLevel, icurrentLevelConstruct: ilevelConstruct, icurrentLevelKey: ilevelKey)
-        
-        
         tutorialComplete = itutorialComplete == "1.0"
         if (developmentMode) {tutorialComplete = true} // TODO: temp
         currentBackgroundPic = backgroundPicDict[ilevelKey]!
+        
+        print("icurrentLevel \(icurrentLevel)")
     }
 
     func setupToSpecificState() {
-        print("setupToSpecificState \(currentState)")
-
         if currentState == State.RecordingIdle {
             setButtonState(ibutton: PeriphButton0, ibuttonState: false)
         }
         // Scale/Arpeggio test
-        if (returnValidState(iinputState: currentState, istateArr: [State.NotesTestIdle_NoTempo,State.NotesTestIdle_NoTempo])) {  //TODO: instead of checking against current state, check against lc.currentLevelKey
+        if (lc.currentLevelKey!.contains("scale") || lc.currentLevelKey!.contains("arpeggio")) {
             setupCurrentTask()
-            defaultPeripheralIcon = ["outline_play_arrow_black_18dp", "outline_volume_up_black_18dp", "outline_info_black_18dp"] // music.note"
+            defaultPeripheralIcon = ["outline_play_arrow_black_18dp", "outline_volume_up_black_18dp", "outline_info_black_18dp"]
             activePeripheralIcon = ["outline_stop_black_18dp", "outline_volume_off_black_18dp", "outline_undo_black_18dp"]
-//            defaultPeripheralIcon = ["play", "speaker.3", "info"] // music.note"
-//            activePeripheralIcon = ["pause", "speaker.slash", "arrowshape.turn.up.left"]
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
         }
@@ -1086,18 +1083,20 @@ class MainViewController: UIViewController {
     }
 
     @objc func onBackButtonDown(_: Any) {
-
         met!.endMetronome()
         var controller: MenuViewController
-
         controller = storyboard?.instantiateViewController(withIdentifier: "MainMenuViewController") as! MenuViewController
-
         controller.modalPresentationStyle = .fullScreen
         present(controller, animated: false, completion: nil)
     }
     
     @IBAction func onSettingsButtonDown(_ sender: Any) {
-        print("OnSettingsButtonDown")
+        met!.endMetronome()
+        var controller: SettingsViewController
+        controller = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
+        controller.vc = self
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: false, completion: nil)
     }
     
     

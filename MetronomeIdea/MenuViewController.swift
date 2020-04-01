@@ -101,23 +101,23 @@ class MenuViewController: UIViewController {
         tutorialCompleteStatus = userLevelData.tutorialComplete == "1.0"
         levelArr.append(level)
         var key = "scales"
-        setupMainMenuButton(ibutton: Button0, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress)
+        setupMenuButton(ibutton: Button0, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress)
         level = lc.returnConvertedLevel(iinput: userLevelData.arpeggioLevel)
         subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.arpeggioLevel)
         progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.arpeggio)
         levelArr.append(level)
         key = "arpeggios"
-        setupMainMenuButton(ibutton: Button1, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        setupMenuButton(ibutton: Button1, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = lc.returnConvertedLevel(iinput: userLevelData.et_singleNotes)
         
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button2, ititle: "EAR TRAINING: SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        setupMenuButton(ibutton: Button2, ititle: "EAR TRAINING: SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = lc.returnConvertedLevel(iinput: userLevelData.et_scales)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button3, ititle: "EAR TRAINING: SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        setupMenuButton(ibutton: Button3, ititle: "EAR TRAINING: SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = lc.returnConvertedLevel(iinput: userLevelData.et_chords)
         levelArr.append(level)
-        setupMainMenuButton(ibutton: Button4, ititle: "EAR TRAINING: CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        setupMenuButton(ibutton: Button4, ititle: "EAR TRAINING: CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         
         NavBar.barTintColor = defaultColor.MenuButtonColor
 //        NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
@@ -145,9 +145,8 @@ class MenuViewController: UIViewController {
         }
     }
     
-    func setupMainMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float, itutorialComplete : Bool = true) {
-        
-//        var buttonColor = defaultColor.MenuButtonColor
+    func setupMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float, itutorialComplete : Bool = true) {
+
         var buttonColor: UIColor
         var textColor: UIColor
         
@@ -200,19 +199,19 @@ class MenuViewController: UIViewController {
             return
         }
         
-        let vc = setViewController(iviewControllerStr: "Playground2")
+        let vc = setViewController(iviewControllerStr: "Playground2")  //TODO: get rid of playground2
         let lc = LevelConstruct()
 
         vc.developmentMode = developmentMode
         
         //Scale Test No Tempo
         if (sender.tag == 0) {
-            vc.setStateProperties(icurrentState: MainViewController.State.NotesTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
+            vc.setStateProperties(icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
         }
                 
         //Arpeggio Test No Tempo
         if (sender.tag == 1) {
-            vc.setStateProperties(icurrentState: MainViewController.State.NotesTestIdle_NoTempo, itempoButtonsActive: false, icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
+            vc.setStateProperties(icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
         }
         
         presentViewController(iviewController: vc)

@@ -20,6 +20,7 @@
 		9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C46E622C483C000B133A9 /* SoundController.swift */; };
 		9E9C46E922C4841700B133A9 /* MenuButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */; };
 		9E9C46EB22C484AE00B133A9 /* ButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */; };
+		9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA49F9424330B8800BF9398 /* SettingsViewController.swift */; };
 		9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAD3C0D237E825F004467B1 /* EarTraining.swift */; };
 		9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBCF8AC2429D09400074C4C /* LevelHandler.swift */; };
 		9ED9892122D1334B0076C65B /* DigitInput.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9ED9892022D1334B0076C65B /* DigitInput.swift */; };
@@ -98,6 +99,7 @@
 		9E9C46E622C483C000B133A9 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
 		9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MenuButtonClick.wav; sourceTree = "<group>"; };
 		9E9C46EA22C484AE00B133A9 /* ButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = ButtonClick.wav; sourceTree = "<group>"; };
+		9EA49F9424330B8800BF9398 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9EAD3C0D237E825F004467B1 /* EarTraining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarTraining.swift; sourceTree = "<group>"; };
 		9EBCF8AC2429D09400074C4C /* LevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHandler.swift; sourceTree = "<group>"; };
 		9ED9892022D1334B0076C65B /* DigitInput.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DigitInput.swift; sourceTree = "<group>"; };
@@ -280,6 +282,7 @@
 				9E944D0223B0046B00A8F7A2 /* Playground.swift */,
 				9E18282123CA65650001E46F /* MainViewController.swift */,
 				9E5FB6E92389F98C0078E980 /* MenuViewController.swift */,
+				9EA49F9424330B8800BF9398 /* SettingsViewController.swift */,
 			);
 			path = MetronomeIdea;
 			sourceTree = "<group>";
@@ -408,6 +411,7 @@
 				9E18282223CA65650001E46F /* MainViewController.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
 				9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */,
+				9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */,
 				9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */,
 				B8A6186320DB9E7500AF33C5 /* Metronome.swift in Sources */,
 				9ED9892122D1334B0076C65B /* DigitInput.swift in Sources */,
