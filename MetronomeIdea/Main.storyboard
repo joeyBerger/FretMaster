@@ -363,7 +363,7 @@
                                 <items>
                                     <navigationItem title="FRET MASTER" id="T15-zQ-1Gr">
                                         <barButtonItem key="leftBarButtonItem" title="&lt; Back" width="20" id="us8-M7-98o"/>
-                                        <barButtonItem key="rightBarButtonItem" title="Item" image="outline_settings_black_18dp-scaled" id="OlP-47-FhT"/>
+                                        <barButtonItem key="rightBarButtonItem" image="outline_settings_black_18dp-scaled" id="OlP-47-FhT"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>

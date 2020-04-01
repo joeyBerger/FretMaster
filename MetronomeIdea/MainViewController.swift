@@ -254,6 +254,7 @@ class MainViewController: UIViewController {
     var sCollection: ScaleCollection?
     var et: EarTraining?
     var pc: PopupController?
+    var styler: ViewStyler?
     var settingsMenu: SettingsViewController?
     var wt = waitThen()
     
@@ -435,7 +436,8 @@ class MainViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
-        setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
+
+        
         
         NavBarFiller = UIImageView()
         let newFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: NavBar.frame.minY)
@@ -448,12 +450,14 @@ class MainViewController: UIViewController {
         sCollection = ScaleCollection(ivc: self)
         et = EarTraining(ivc: self)
         pc = PopupController(ivc: self)
+        styler = ViewStyler(ivc: self)
 //        settingsMenu = SettingsViewController(ivc: self)
         if developmentMode {
             met?.bpm = 350.0
         }
-
-
+        
+//        setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
+        styler!.setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
         ResultsLabel.text = ""
         ResultsLabel.font = UIFont(name: "Helvetica", size: 35)
         ResultsLabel.textAlignment = NSTextAlignment.center

@@ -46,7 +46,7 @@ class SettingsViewController: UIViewController {
     
     @IBOutlet weak var Button0: UIButton!
     @IBOutlet weak var Button1: UIButton!
-    @IBOutlet weak var Button2: UIButton!    
+    @IBOutlet weak var Button2: UIButton!
    
     struct buttonText {
         var header: String
@@ -58,20 +58,25 @@ class SettingsViewController: UIViewController {
             id = iid
         }
     }
-
     
     var buttonInfo: [buttonText] = [
         buttonText(iheader: "Guitar Sound".uppercased(), isubtext: "Explore Sonic Options", iid: "guitarTone"),
         buttonText(iheader: "Fret Board Dot".uppercased(), isubtext: "Manage Your Dot Display", iid: "fretDot"),
         buttonText(iheader: "Click Sound".uppercased(), isubtext: "Pick Your Click Sound", iid: "clickTone"),
     ]
+    var styler: ViewStyler?
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        styler = ViewStyler(ivc: self)
+        styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
         let buttonArr = [Button0,Button1,Button2]
         for (i,button) in buttonArr.enumerated() {
             setupMenuButton(ibutton: button!, ititle: buttonInfo[i].header, isubtext: buttonInfo[i].subtext)
         }
+        
+        //RecordingBoard
     }
     
     func setupMenuButton (ibutton : UIButton, ititle: String, isubtext : String) {

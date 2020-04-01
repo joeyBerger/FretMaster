@@ -336,8 +336,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1391"
-            endingLineNumber = "1391"
+            startingLineNumber = "1395"
+            endingLineNumber = "1395"
             landmarkName = "displaySingleFretMarker(iinputStr:cascadeFretMarkers:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -352,8 +352,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1255"
-            endingLineNumber = "1255"
+            startingLineNumber = "1259"
+            endingLineNumber = "1259"
             landmarkName = "presentTestResult(timer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -368,8 +368,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1048"
-            endingLineNumber = "1048"
+            startingLineNumber = "1052"
+            endingLineNumber = "1052"
             landmarkName = "PeripheralButton1OnButtonDown()"
             landmarkType = "7">
          </BreakpointContent>
@@ -384,8 +384,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1057"
-            endingLineNumber = "1057"
+            startingLineNumber = "1061"
+            endingLineNumber = "1061"
             landmarkName = "PeripheralButton2OnButtonDown()"
             landmarkType = "7">
          </BreakpointContent>
@@ -400,8 +400,8 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "598"
-            endingLineNumber = "598"
+            startingLineNumber = "602"
+            endingLineNumber = "602"
             landmarkName = "setupToSpecificState()"
             landmarkType = "7">
          </BreakpointContent>
