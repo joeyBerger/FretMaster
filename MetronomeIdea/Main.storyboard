@@ -667,33 +667,13 @@
                                     <navigationItem title="Fret Master" id="oNG-eU-Jcx">
                                         <barButtonItem key="leftBarButtonItem" title="&lt; Back" landscapeImage="I" largeContentSizeImage="I" id="MkK-oB-lot">
                                             <connections>
-                                                <action selector="onBackButtonDown:" destination="o4J-d1-JWA" id="XYq-WD-Bvn"/>
+                                                <action selector="onBackButtonDown:" destination="o4J-d1-JWA" id="KY6-4u-ZDs"/>
                                             </connections>
                                         </barButtonItem>
                                         <barButtonItem key="rightBarButtonItem" id="h1q-Oa-oX5"/>
                                     </navigationItem>
                                 </items>
                             </navigationBar>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="m74-LD-6ao" userLabel="ResetDataButton">
-                                <rect key="frame" x="0.0" y="818" width="140" height="76"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="76" id="2oc-qf-OIn"/>
-                                    <constraint firstAttribute="width" constant="140" id="GoY-d9-ad3"/>
-                                </constraints>
-                                <state key="normal">
-                                    <color key="titleShadowColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="b0S-iN-IZJ" userLabel="ToggleDevButton">
-                                <rect key="frame" x="274" y="818" width="140" height="76"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="76" id="VS7-gh-N5n"/>
-                                    <constraint firstAttribute="width" constant="140" id="inz-VM-csa"/>
-                                </constraints>
-                                <state key="normal">
-                                    <color key="titleShadowColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                </state>
-                            </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="oIi-CX-n4f">
                                 <rect key="frame" x="70.5" y="145" width="273" height="565"/>
                                 <subviews>
@@ -710,7 +690,7 @@
                                             <color key="titleShadowColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="SettingsButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="U8u-n3-syV"/>
+                                            <action selector="settingsCategoryButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="LQO-Ul-gsW"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="caZ-3j-IXB">
@@ -726,7 +706,7 @@
                                             <color key="titleShadowColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="SettingsButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="HsE-nc-Cw6"/>
+                                            <action selector="settingsCategoryButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="0lU-pg-oZw"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="2" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="IY1-lN-Nz7">
@@ -742,59 +722,43 @@
                                             <color key="titleShadowColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                         <connections>
-                                            <action selector="SettingsButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="WC6-5W-7dR"/>
+                                            <action selector="settingsCategoryButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="ttZ-OS-C7I"/>
                                         </connections>
                                     </button>
                                     <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNN-6c-e1z">
                                         <rect key="frame" x="0.0" y="375" width="273" height="65"/>
-                                        <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="Gsf-Hd-pbm"/>
                                             <constraint firstAttribute="width" constant="273" id="JxY-w3-Nvu"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="SCALES">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="titleShadowColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gge-OU-CzU">
                                         <rect key="frame" x="0.0" y="500" width="273" height="65"/>
-                                        <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="X1b-8k-fdY"/>
                                             <constraint firstAttribute="width" constant="273" id="yov-fO-mO6"/>
                                         </constraints>
                                         <fontDescription key="fontDescription" type="system" pointSize="18"/>
                                         <state key="normal" title="SCALES">
-                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                             <color key="titleShadowColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         </state>
                                     </button>
                                 </subviews>
                             </stackView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Development Mode:" textAlignment="center" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="kMt-sp-MX2">
-                                <rect key="frame" x="41" y="748" width="344" height="39"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="39" id="Wba-Gk-YGB"/>
-                                </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                <color key="textColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                         <constraints>
-                            <constraint firstAttribute="trailingMargin" secondItem="kMt-sp-MX2" secondAttribute="trailing" constant="9" id="1mD-vI-MIA"/>
                             <constraint firstAttribute="trailing" secondItem="5MQ-Sd-SuT" secondAttribute="trailing" symbolic="YES" id="5X4-OZ-zAl"/>
-                            <constraint firstItem="Ucm-hq-d2I" firstAttribute="top" secondItem="kMt-sp-MX2" secondAttribute="bottom" constant="75" id="9gR-bc-8ie"/>
                             <constraint firstItem="oIi-CX-n4f" firstAttribute="centerX" secondItem="SvE-vU-hBi" secondAttribute="centerX" id="ClI-eQ-58n"/>
-                            <constraint firstItem="Ucm-hq-d2I" firstAttribute="top" secondItem="b0S-iN-IZJ" secondAttribute="bottom" constant="-32" id="FHG-Ox-ZP4"/>
                             <constraint firstItem="oIi-CX-n4f" firstAttribute="top" secondItem="5MQ-Sd-SuT" secondAttribute="bottom" constant="57" id="P4d-0P-J6d"/>
-                            <constraint firstItem="Ucm-hq-d2I" firstAttribute="top" secondItem="m74-LD-6ao" secondAttribute="bottom" constant="-32" id="Qa7-4f-LaV"/>
-                            <constraint firstItem="m74-LD-6ao" firstAttribute="leading" secondItem="SvE-vU-hBi" secondAttribute="leading" id="aZt-v2-6cb"/>
-                            <constraint firstItem="kMt-sp-MX2" firstAttribute="leading" secondItem="SvE-vU-hBi" secondAttribute="leadingMargin" constant="21" id="fqN-m2-1jO"/>
-                            <constraint firstAttribute="trailing" secondItem="b0S-iN-IZJ" secondAttribute="trailing" id="q0k-gG-2Iv"/>
                             <constraint firstItem="5MQ-Sd-SuT" firstAttribute="top" secondItem="APX-TT-rpf" secondAttribute="bottom" symbolic="YES" id="vYs-HO-ubw"/>
                             <constraint firstItem="5MQ-Sd-SuT" firstAttribute="leading" secondItem="SvE-vU-hBi" secondAttribute="leading" symbolic="YES" id="xxD-R8-gfS"/>
                         </constraints>
@@ -803,7 +767,8 @@
                         <outlet property="Button0" destination="Xcu-V4-TKE" id="X7X-0U-g44"/>
                         <outlet property="Button1" destination="caZ-3j-IXB" id="7e6-JH-adz"/>
                         <outlet property="Button2" destination="IY1-lN-Nz7" id="rMv-rO-MeO"/>
-                        <outlet property="NavBar" destination="5MQ-Sd-SuT" id="Ho7-hJ-gn9"/>
+                        <outlet property="NavBackButton" destination="MkK-oB-lot" id="qoB-qo-P0Z"/>
+                        <outlet property="NavBar" destination="5MQ-Sd-SuT" id="oot-T6-HSB"/>
                         <outlet property="Stack" destination="oIi-CX-n4f" id="KIU-YL-bXk"/>
                     </connections>
                 </viewController>

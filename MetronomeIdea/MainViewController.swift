@@ -254,7 +254,7 @@ class MainViewController: UIViewController {
     var sCollection: ScaleCollection?
     var et: EarTraining?
     var pc: PopupController?
-    var styler: ViewStyler?
+    var styler: ViewStyler?  //TODO: change this name to Shared Styler
     var settingsMenu: SettingsViewController?
     var wt = waitThen()
     
@@ -403,16 +403,14 @@ class MainViewController: UIViewController {
         setupToSpecificState()
         currentState = State.NotesTestShowNotes
         setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
+
+        let backButtonAnnotation = styler!.setupBackButtonAnnotation(iNavBar: NavBar)
+        backButtonAnnotation.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
+        view.addSubview(backButtonAnnotation)
         
-        let navBarButtonAnnotation0 = UIButton()
-        navBarButtonAnnotation0.frame = CGRect(x: 0, y: NavBar.frame.minY, width: 100, height: NavBar.frame.height)
-        navBarButtonAnnotation0.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
-        view.addSubview(navBarButtonAnnotation0)
-        
-        let navBarButtonAnnotation1 = UIButton()
-        navBarButtonAnnotation1.frame = CGRect(x: NavBar.frame.width-100, y: NavBar.frame.minY, width: 100, height: NavBar.frame.height)
-        navBarButtonAnnotation1.addTarget(self, action: #selector(onSettingsButtonDown), for: .touchUpInside)
-        view.addSubview(navBarButtonAnnotation1)
+        let settingsButtonAnnotation = styler!.setupSettingsButtonAnnotation(iNavBar: NavBar)
+        settingsButtonAnnotation.addTarget(self, action: #selector(onSettingsButtonDown), for: .touchUpInside)
+        view.addSubview(settingsButtonAnnotation)
         
         if !tutorialComplete! {
             hideAllFretMarkers()
@@ -436,28 +434,28 @@ class MainViewController: UIViewController {
         
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
+            //initialize objects
+            met = Metronome(ivc: self)
+            sCollection = ScaleCollection(ivc: self)
+            et = EarTraining(ivc: self)
+            pc = PopupController(ivc: self)
+            styler = ViewStyler(ivc: self)
+            if developmentMode {
+                met?.bpm = 350.0
+            }
+        
+        
+        styler!.setupNavBar(iNavBar: NavBar)
+        styler!.setupNavBarComponents(iNavBackButton: NavBackButton, iNavSettingsButton: NavSettingsButton)
+        
+        NavBarFiller = styler!.navBarFillerInit(iNavBar: NavBar)
+        self.view.insertSubview(NavBarFiller, at: 0)
+        
+        NavBackButton.target = self;
+        NavBackButton.action = #selector(onBackButtonDown)
 
-        
-        
-        NavBarFiller = UIImageView()
-        let newFrame = CGRect(x: 0, y: 0, width: view.frame.width, height: NavBar.frame.minY)
-        NavBarFiller.frame = newFrame
-        NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
-        self.view.insertSubview(NavBarFiller, at: 1)
-
-        //initialize objects
-        met = Metronome(ivc: self)
-        sCollection = ScaleCollection(ivc: self)
-        et = EarTraining(ivc: self)
-        pc = PopupController(ivc: self)
-        styler = ViewStyler(ivc: self)
-//        settingsMenu = SettingsViewController(ivc: self)
-        if developmentMode {
-            met?.bpm = 350.0
-        }
-        
-//        setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
         styler!.setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
+        
         ResultsLabel.text = ""
         ResultsLabel.font = UIFont(name: "Helvetica", size: 35)
         ResultsLabel.textAlignment = NSTextAlignment.center
@@ -466,27 +464,9 @@ class MainViewController: UIViewController {
         ResultsLabel?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         ResultsLabel?.textColor = defaultColor.MenuButtonTextColor
 
-        NavBar.barTintColor = defaultColor.MenuButtonColor
-        NavBar.isTranslucent = false
-        NavBackButton.tintColor = defaultColor.MenuButtonTextColor
-        NavBackButton.target = self;
-        NavBackButton.action = #selector(onBackButtonDown)
-        NavSettingsButton.tintColor = defaultColor.MenuButtonTextColor
+
         
-        // control button size
-//         let insets: CGFloat = 10
-//        NavSettingsButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
-//
-        
-//        let widthConstraint = NavSettingsButton.button
-        
-        
-//        widthAnchor.constraint(equalToConstant: 32)
-//        let heightConstraint = NavSettingsButton.heightAnchor.constraint(equalToConstant: 32)
-//        heightConstraint.isActive = true
-//        widthConstraint.isActive = true
-        
-        NavBar.titleTextAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor]
+
 
         ResultButton.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton.setTitleColor(.black, for: .normal)
@@ -588,6 +568,8 @@ class MainViewController: UIViewController {
         currentBackgroundPic = backgroundPicDict[ilevelKey]!
         
         print("icurrentLevel \(icurrentLevel)")
+        print("ilevelConstruct \(ilevelConstruct)")
+        print("ilevelKey \(ilevelKey)")
     }
 
     func setupToSpecificState() {
