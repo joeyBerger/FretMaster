@@ -30,17 +30,23 @@ class SettingsViewController: UIViewController {
         var header: String
         var subtext: String
         var id: String
-        init(iheader: String, isubtext: String, iid: String) {
+        var availableSettings: [String]
+        init(iheader: String, isubtext: String, iid: String, iavailableSettings: [String]) {
             header = iheader
             subtext = isubtext
             id = iid
+            availableSettings = iavailableSettings
         }
     }
     
     var buttonInfo: [buttonText] = [
-        buttonText(iheader: "Guitar Sound".uppercased(), isubtext: "Explore Sonic Options", iid: "guitarTone"),
-        buttonText(iheader: "Fret Board Dot".uppercased(), isubtext: "Manage Your Dot Display", iid: "fretDot"),
-        buttonText(iheader: "Click Sound".uppercased(), isubtext: "Pick Your Click Sound", iid: "clickTone"),
+        buttonText(iheader: "Guitar Sound".uppercased(),
+                   isubtext: "Explore Sonic Options",
+                   iid: "guitarTone",
+                   iavailableSettings: ["Acoustic","Jazz","Rock"]
+                   ),
+        buttonText(iheader: "Fret Board Dot".uppercased(), isubtext: "Manage Your Dot Display", iid: "fretDot",iavailableSettings: []),
+        buttonText(iheader: "Click Sound".uppercased(), isubtext: "Pick Your Click Sound", iid: "clickTone", iavailableSettings: []),
     ]
     
     var styler: ViewStyler?
@@ -82,5 +88,11 @@ class SettingsViewController: UIViewController {
     
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
         print("adsfa \(buttonInfo[sender.tag].id)")
+        
+        var controller: SettingsItemViewController
+        controller = self.storyboard?.instantiateViewController(withIdentifier: "SettingsItemViewController") as! SettingsItemViewController
+        controller.setupSettingsCellData(isettingStrings: buttonInfo[sender.tag].availableSettings)
+        controller.modalPresentationStyle = .fullScreen
+        present(controller, animated: false, completion: nil)
     }
 }
