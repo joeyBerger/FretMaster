@@ -52,7 +52,7 @@ class SettingsViewController: UIViewController {
         styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
         let buttonArr = [Button0,Button1,Button2]
         for (i,button) in buttonArr.enumerated() {
-            setupMenuButton(ibutton: button!, ititle: buttonInfo[i].header, isubtext: buttonInfo[i].subtext)
+            styler!.setupMenuButton(ibutton: button!, ititle: buttonInfo[i].header, isubtext: buttonInfo[i].subtext, iprogressAmount: -1.0)
         }
         
         styler!.setupNavBar(iNavBar: NavBar)
@@ -62,8 +62,14 @@ class SettingsViewController: UIViewController {
         self.view.insertSubview(NavBarFiller, at: 1)
         
         let backButtonAnnotation = styler!.setupBackButtonAnnotation(iNavBar: NavBar)
+//        backButtonAnnotation.backgroundColor! = UIColor.green
         backButtonAnnotation.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
-        view.addSubview(backButtonAnnotation)
+        view.addSubview(backButtonAnnotation)  //TODO: buttonlayer is behind text, sometimes?
+//        self.view.insertSubview(backButtonAnnotation, at: 100)
+    }
+    
+    @objc func temp() {
+        print("asdfadsf dfadsfas")
     }
     
     @IBAction func onBackButtonDown(_ sender: Any) {
@@ -76,33 +82,5 @@ class SettingsViewController: UIViewController {
     
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
         print("adsfa \(buttonInfo[sender.tag].id)")
-    }
-    
-    func setupMenuButton (ibutton : UIButton, ititle: String, isubtext : String) {
-
-        //TODO: this should be in styler
-        var buttonColor: UIColor
-        var textColor: UIColor
-        buttonColor = defaultColor.MenuButtonColor;
-        textColor = defaultColor.MenuButtonTextColor
-
-        ibutton.backgroundColor = buttonColor
-        ibutton.setTitleColor(textColor, for: .normal)
-        ibutton.setTitle(ititle, for: .normal)
-        ibutton.layer.shadowColor = UIColor.black.cgColor
-        ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
-        ibutton.layer.shadowRadius = 2
-        ibutton.layer.shadowOpacity = 0.6
-       
-        let width = ibutton.frame.width
-        let buttonSubtext = UILabel()
-        buttonSubtext.frame = CGRect(x: 0,y: 0,width: width, height: ibutton.frame.height+30)
-
-        buttonSubtext.textAlignment = NSTextAlignment.center
-        buttonSubtext.text = isubtext;
-        buttonSubtext.layer.zPosition = 1;
-        buttonSubtext.textColor = textColor
-
-        ibutton.addSubview(buttonSubtext)
     }
 }

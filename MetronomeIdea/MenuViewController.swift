@@ -33,20 +33,14 @@ class MenuViewController: UIViewController {
     @IBOutlet weak var DevScreenPrint: UILabel!
     
     var developmentMode = false
-    
-    var tutorialCompleteStatus = true
-    
-    var levelArr: [Int] = []
 
+    var tutorialCompleteStatus = true
+    var levelArr: [Int] = []
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 //        resetData()
-//        view.backgroundColor = defaultColor.BackgroundColor
-//        self.view.backgroundColor = UIColor(patternImage: UIImage(named: "MenuNeck.jpg")!)
-        
-//        self.view.backgroundColor = UIColor.black
-        
-//        let screenSize: CGRect = UIScreen.main.bounds
+
         let bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
@@ -58,7 +52,6 @@ class MenuViewController: UIViewController {
         navBarFillerReal.backgroundColor = defaultColor.MenuButtonColor
         self.view.insertSubview(navBarFillerReal, at: 1)
         
-        
         self.DevScreenPrint.alpha = 0.0
         
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
@@ -66,7 +59,6 @@ class MenuViewController: UIViewController {
             print ("restoring data")
             let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
             if let scaleLevel = scaleLevel {
-                print ("scaleLevel \(scaleLevel)")
                 let arpeggioLevel = UserDefaults.standard.object(forKey: "arpeggioLevel")
                 let et_singleNotes = UserDefaults.standard.object(forKey: "et_singleNotes")
                 let et_scales = UserDefaults.standard.object(forKey: "et_scales")
@@ -95,29 +87,75 @@ class MenuViewController: UIViewController {
         }
                 
         let lc = LevelConstruct()
+        let styler = ViewStyler(ivc: self)
+        
+        struct buttonText {
+            var header: String
+            var subtext: String
+            var id: String
+            init(iheader: String, isubtext: String, iid: String) {
+                header = iheader
+                subtext = isubtext
+                id = iid
+            }
+        }
+        
+        tutorialCompleteStatus = userLevelData.tutorialComplete == "1.0"
+        
         var level = lc.returnConvertedLevel(iinput: userLevelData.scaleLevel)
         var subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.scaleLevel)
-        var progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.scale)
-        tutorialCompleteStatus = userLevelData.tutorialComplete == "1.0"
-        levelArr.append(level)
+        
+        var progress = lc.returnTotalProgress (
+            ilevel:lc.returnConvertedLevel(iinput: userLevelData.scaleLevel),
+            isubLevel: lc.returnConvertedSubLevel(iinput: userLevelData.scaleLevel),
+            ilevelConstruct: lc.scale
+        )
+
+        
+        
         var key = "scales"
-        setupMenuButton(ibutton: Button0, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress)
+        
+        
+        let buttonArr = [Button0,Button1,Button2,Button3,Button4]
+        
+        
+        
+        for (i,button) in buttonArr.enumerated() {
+            
+            if (i == 0) {
+//                styler!.setupMenuButton(ibutton: button!, ititle: buttonInfo[i].header, isubtext: buttonInfo[i].subtext, iprogressAmount: -1.0)
+            }
+            
+
+        }
+        
+        var tempThing = buttonText(
+            iheader: key.uppercased(),
+            isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level),
+            iid: key
+        )
+        
+        styler.setupMenuButton(ibutton: Button0, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress)
+        
+        
+        
+        
         level = lc.returnConvertedLevel(iinput: userLevelData.arpeggioLevel)
         subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.arpeggioLevel)
         progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.arpeggio)
         levelArr.append(level)
         key = "arpeggios"
-        setupMenuButton(ibutton: Button1, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        styler.setupMenuButton(ibutton: Button1, ititle: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = lc.returnConvertedLevel(iinput: userLevelData.et_singleNotes)
         
         levelArr.append(level)
-        setupMenuButton(ibutton: Button2, ititle: "EAR TRAINING: SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        styler.setupMenuButton(ibutton: Button2, ititle: "EAR TRAINING: SINGLE NOTES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = lc.returnConvertedLevel(iinput: userLevelData.et_scales)
         levelArr.append(level)
-        setupMenuButton(ibutton: Button3, ititle: "EAR TRAINING: SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        styler.setupMenuButton(ibutton: Button3, ititle: "EAR TRAINING: SCALES", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         level = lc.returnConvertedLevel(iinput: userLevelData.et_chords)
         levelArr.append(level)
-        setupMenuButton(ibutton: Button4, ititle: "EAR TRAINING: CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
+        styler.setupMenuButton(ibutton: Button4, ititle: "EAR TRAINING: CHORDS", isubtext: "LEVEL \(level+1)", iprogressAmount: progress, itutorialComplete : tutorialCompleteStatus)
         
         NavBar.barTintColor = defaultColor.MenuButtonColor
 //        NavBarFiller.backgroundColor = defaultColor.MenuButtonColor
@@ -125,9 +163,7 @@ class MenuViewController: UIViewController {
         NavSettingsButton.tintColor = defaultColor.MenuButtonTextColor
         //periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
         
-        print(userLevelData.scaleLevel)
-        
-        
+
         
         
         let button4frame = view.convert(Button4.frame, from:Stack)
@@ -145,54 +181,7 @@ class MenuViewController: UIViewController {
         }
     }
     
-    func setupMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float, itutorialComplete : Bool = true) {
-
-        var buttonColor: UIColor
-        var textColor: UIColor
-        
-        if (!itutorialComplete) {
-            buttonColor = defaultColor.InactiveButton;
-            textColor = defaultColor.InactiveInlay
-        } else {
-            buttonColor = defaultColor.MenuButtonColor;
-            textColor = defaultColor.MenuButtonTextColor
-        }
-
-        ibutton.backgroundColor = buttonColor
-        ibutton.setTitleColor(textColor, for: .normal)
-        ibutton.setTitle(ititle, for: .normal)
-        ibutton.layer.shadowColor = UIColor.black.cgColor
-        ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
-        ibutton.layer.shadowRadius = 2
-        ibutton.layer.shadowOpacity = 0.6
-        
-        print("ibutton \(ibutton.frame)")
-       
-        let width = ibutton.frame.width
-        let buttonSubtext = UILabel()
-        buttonSubtext.frame = CGRect(x: 0,y: 0,width: width, height: ibutton.frame.height+30)
-//        buttonSubtext.bounds = CGRect(x: 0,y: 0, width: width, height: ibutton.frame.height)
-        buttonSubtext.textAlignment = NSTextAlignment.center
-        buttonSubtext.text = isubtext;
-        buttonSubtext.layer.zPosition = 1;
-        buttonSubtext.textColor = textColor
-//        buttonSubtext.translatesAutoresizingMaskIntoConstraints = false
-        
-
-        ibutton.addSubview(buttonSubtext)
-        
-        if (iprogressAmount >= 0.0) {
-            let progressSlider = UIProgressView()
-            progressSlider.frame = CGRect(x: (width-(width * 0.85))/2.0 ,y: 75,width: (width * 0.85),height: 62)
-            let progressAmount = iprogressAmount == 0.0 ? 0.05 : iprogressAmount
-            progressSlider.setProgress(progressAmount, animated: true)
-            progressSlider.progressTintColor = defaultColor.ProgressBarColor
-            progressSlider.trackTintColor = defaultColor.ProgressTrackColor
-            ibutton.addSubview(progressSlider)
-        }
-    }
-    
-    
+  
     @IBAction func MainMenuButton(_ sender: UIButton) {
                
         if (!tutorialCompleteStatus && sender.tag > 0) {

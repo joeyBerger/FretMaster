@@ -8,9 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		9E07F7262396B0E600E99444 /* DefaultColor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E07F7252396B0E600E99444 /* DefaultColor.swift */; };
+		9E0D26C72435AF1B00595BC9 /* ViewStyler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E0D26C62435AF1B00595BC9 /* ViewStyler.swift */; };
 		9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E16FA142381C73600100F65 /* ScaleClass.swift */; };
 		9E18282223CA65650001E46F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E18282123CA65650001E46F /* MainViewController.swift */; };
-		9E2815612434618600DD2A4E /* ViewStyler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E2815602434618600DD2A4E /* ViewStyler.swift */; };
 		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
 		9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E69398D23A7DDB800C57B11 /* WaitThen.swift */; };
 		9E8527D822C70D0800DFCB26 /* FretBoard2.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527D722C70D0800DFCB26 /* FretBoard2.png */; };
@@ -87,9 +87,9 @@
 
 /* Begin PBXFileReference section */
 		9E07F7252396B0E600E99444 /* DefaultColor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DefaultColor.swift; sourceTree = "<group>"; };
+		9E0D26C62435AF1B00595BC9 /* ViewStyler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStyler.swift; sourceTree = "<group>"; };
 		9E16FA142381C73600100F65 /* ScaleClass.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ScaleClass.swift; sourceTree = "<group>"; };
 		9E18282123CA65650001E46F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
-		9E2815602434618600DD2A4E /* ViewStyler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ViewStyler.swift; sourceTree = "<group>"; };
 		9E35760623D1880700C9001E /* MenuButtonClick1.aif */ = {isa = PBXFileReference; lastKnownFileType = file; name = MenuButtonClick1.aif; path = "../../../../../Udacity/iOS Nanodegree/FretMaster/Assets/GuitarNotes/Bounces/MenuButtonClick1.aif"; sourceTree = "<group>"; };
 		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		9E69398D23A7DDB800C57B11 /* WaitThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitThen.swift; sourceTree = "<group>"; };
@@ -285,7 +285,7 @@
 				9E18282123CA65650001E46F /* MainViewController.swift */,
 				9E5FB6E92389F98C0078E980 /* MenuViewController.swift */,
 				9EA49F9424330B8800BF9398 /* SettingsViewController.swift */,
-				9E2815602434618600DD2A4E /* ViewStyler.swift */,
+				9E0D26C62435AF1B00595BC9 /* ViewStyler.swift */,
 			);
 			path = MetronomeIdea;
 			sourceTree = "<group>";
@@ -405,7 +405,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				9E2815612434618600DD2A4E /* ViewStyler.swift in Sources */,
+				9E0D26C72435AF1B00595BC9 /* ViewStyler.swift in Sources */,
 				9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */,
 				9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */,
 				9E07F7262396B0E600E99444 /* DefaultColor.swift in Sources */,
