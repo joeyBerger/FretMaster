@@ -207,11 +207,11 @@ class MainViewController: UIViewController {
     @IBOutlet var PeriphButton2: UIButton!
     @IBOutlet var PeriphButton3: UIButton!
     @IBOutlet var PeriphButton4: UIButton!
-    @IBOutlet var NavBar: UINavigationBar!
+//    @IBOutlet var NavBar: UINavigationBar!
     var NavBarFiller: UIImageView!
-    @IBOutlet var NavBackButton: UIBarButtonItem!
-    @IBOutlet var NavSettingsButton: UIBarButtonItem!
-    @IBOutlet var NavBarTitle: UINavigationItem!
+//    @IBOutlet var NavBackButton: UIBarButtonItem!
+//    @IBOutlet var NavSettingsButton: UIBarButtonItem!
+//    @IBOutlet var NavBarTitle: UINavigationItem!
     @IBOutlet var TempoButton: UIButton!
     @IBOutlet var TempoDownButton: UIButton!
     @IBOutlet var TempoUpButton: UIButton!
@@ -384,52 +384,62 @@ class MainViewController: UIViewController {
     var currentButtonLayer = 0
     let digitInput = DigitsInput()
     
+    var sceneHasBeenSetup = false
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
-        //Add overlays
-        DimOverlay = setupScreenOverlay()
-        DimOverlay.backgroundColor = UIColor.black
-        view.addSubview(DimOverlay)
-        setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
+        if (!sceneHasBeenSetup) {
+            //Add overlays
+            DimOverlay = setupScreenOverlay()
+            DimOverlay.backgroundColor = UIColor.black
+            view.addSubview(DimOverlay)
+            setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
+            DimOverlay.alpha = 0.0 //TODO: get rid of this once swoop alpha is figured out
+            
+            ActionOverlay = setupScreenOverlay()
+            ActionOverlay.backgroundColor = UIColor.white
+            view.addSubview(ActionOverlay)
+            setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
+            
+            print("sceneHasBeenSetup \(sceneHasBeenSetup)")
+     
+            setupFretBoardImage()
+            setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
+            
+            if !tutorialComplete! {
+                hideAllFretMarkers()
+                wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
+                setupPopupTutorialText()
+                
+            }
+         }
         
-        ActionOverlay = setupScreenOverlay()
-        ActionOverlay.backgroundColor = UIColor.white
-        view.addSubview(ActionOverlay)
-        setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
-        
-        setupFretBoardImage()
-        setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
         setupToSpecificState()
         currentState = State.NotesTestShowNotes
         setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
-
-        let backButtonAnnotation = styler!.setupBackButtonAnnotation(iNavBar: NavBar)
-        backButtonAnnotation.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
-        view.addSubview(backButtonAnnotation)
-        
-        let settingsButtonAnnotation = styler!.setupSettingsButtonAnnotation(iNavBar: NavBar)
-        settingsButtonAnnotation.addTarget(self, action: #selector(onSettingsButtonDown), for: .touchUpInside)
-        view.addSubview(settingsButtonAnnotation)
-        
-        if !tutorialComplete! {
-            hideAllFretMarkers()
-            wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
-            setupPopupTutorialText()
-            
-        }
     }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
+        print("Back button pressed")
+        met!.endMetronome()
+    }
+    
+//    func didMoveToParentViewController() {
+//        print("viewWillDisappear")
+//         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
+//        met!.endMetronome()
+//    }
     
     @objc func willEnterForeground() {
         let n: Any = 0
-        onBackButtonDown(n)
+//        onBackButtonDown(n)
+        //TODO: perform segue to menu
     }
-    
-//    override func viewWillAppear(_ animated: Bool) {
-//        super.viewWillAppear(true)
-//    }
 
     override func viewDidLoad() {
+        print("view did load")
         super.viewDidLoad()
         
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
@@ -443,16 +453,6 @@ class MainViewController: UIViewController {
             if developmentMode {
                 met?.bpm = 350.0
             }
-        
-        
-        styler!.setupNavBar(iNavBar: NavBar)
-        styler!.setupNavBarComponents(iNavBackButton: NavBackButton, iNavSettingsButton: NavSettingsButton)
-        
-        NavBarFiller = styler!.navBarFillerInit(iNavBar: NavBar)
-        self.view.insertSubview(NavBarFiller, at: 0)
-        
-        NavBackButton.target = self;
-        NavBackButton.action = #selector(onBackButtonDown)
 
         styler!.setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
         
@@ -460,13 +460,8 @@ class MainViewController: UIViewController {
         ResultsLabel.font = UIFont(name: "Helvetica", size: 35)
         ResultsLabel.textAlignment = NSTextAlignment.center
         ResultsLabel?.adjustsFontSizeToFitWidth = true
-//           ResultsLabel1?.adjustsFontSizeToFitWidth = true
         ResultsLabel?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         ResultsLabel?.textColor = defaultColor.MenuButtonTextColor
-
-
-        
-
 
         ResultButton.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton.setTitleColor(.black, for: .normal)
@@ -1064,32 +1059,19 @@ class MainViewController: UIViewController {
 
     @IBAction func ResultButtonDown(_: Any) {
         print("currentState \(currentState)")
-
         pc!.showResultButtonPopup()
-    }
-
-    @objc func onBackButtonDown(_: Any) {
-        met!.endMetronome()
-        var controller: MenuViewController
-        controller = storyboard?.instantiateViewController(withIdentifier: "MainMenuViewController") as! MenuViewController
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: false, completion: nil)
     }
     
     @IBAction func onSettingsButtonDown(_ sender: Any) {
         met!.endMetronome()
-        var controller: SettingsViewController
-        controller = self.storyboard?.instantiateViewController(withIdentifier: "SettingsViewController") as! SettingsViewController
-        controller.vc = self
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: false, completion: nil)
+        UIView.setAnimationsEnabled(false)
+        self.performSegue(withIdentifier: "SettingsView", sender: nil)
     }
     
     
     func setNavBarColor (istate: String = "Idle") {
         let color = istate == "Idle" ? defaultColor.MenuButtonColor : UIColor.red
-        NavBar.barTintColor = color
-        NavBarFiller.backgroundColor = color
+        navigationController?.navigationBar.barTintColor = color
     }
 
     @IBAction func FretPressed(_ sender: UIButton) {
@@ -1465,7 +1447,28 @@ class MainViewController: UIViewController {
     var testVar = 0
     @IBAction func testButton(_: Any) {
 //        randomButtonTest()
-        pc!.resultButtonPopup.hide()
+//        pc!.resultButtonPopup.hide()
+//        flashActionOverlay(isuccess: false)
+//        UIView.animate(withDuration: 1.0, animations: { () -> Void in
+//            self.FretboardImage.transform = CGAffineTransform(scaleX: CGFloat(5.0), y: CGFloat(5.0))
+//        }, completion: nil)
+        
+//        UIView.animate(withDuration: TimeInterval(20.0), animations: {
+//            self.FretboardImage.alpha = CGFloat(0.0)
+//        }, completion: nil)
+        
+//        UIView.animate(withDuration: 10, delay: 1, options: .curveEaseIn, animations: {
+//            self.FretboardImage.alpha = 0
+//        })
+//
+//        UIView.animate(withDuration: 10.5) {
+//            self.FretboardImage.alpha = 0.0
+//
+//        }
+        
+//        UIView.animate(withDuration: 10.3, animations: { () -> Void in
+//            self.FretboardImage.alpha = 0.0
+//        })
     }
     
     @objc func randomButtonTest() {
@@ -1494,6 +1497,7 @@ class MainViewController: UIViewController {
     }
     
     func flashActionOverlay (isuccess: Bool) {
+        print("flashActionOverlay")
         if (isuccess) {
             ActionOverlay.backgroundColor! = UIColor.white
         } else {
@@ -1703,12 +1707,14 @@ class MainViewController: UIViewController {
     
     func setupScreenOverlay() -> UIImageView {
         let overlay = UIImageView()
-        overlay.frame = CGRect(x: NavBar.frame.minX, y: NavBar.frame.minY+NavBar.frame.height, width: view.frame.width, height: view.frame.height)
+        let frame = navigationController?.navigationBar.frame
+        overlay.frame = CGRect(x: (frame?.minX)!, y: (frame?.minY)!+(frame?.height)!, width: view.frame.width, height: view.frame.height)  //TODO: need this
         overlay.alpha = 0.0
         return overlay
     }
 
     func setupFretBoardImage() {
+        sceneHasBeenSetup = true
         let noteInputStrs = ["G#1", "A1", "A#1", "B1", "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2", "C3", "C#3", "D3", "D#3_0", "D#3_1", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3", "C4"]
         
         let fretMarkerImageOffset : [String:CGFloat] = [

@@ -1,7 +1,7 @@
 import Foundation
 import UIKit
 
-class SettingsItemViewController : UIViewController, UITableViewDataSource {
+class SettingsItemViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     let cellReuseIdentifier = "SettingViewCell"
     
@@ -15,6 +15,7 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource {
 //    }
     
     var settingStrings:[String] = []
+    var settingsType: String?
     
     func setupSettingsCellData(isettingStrings: [String]) {
         settingStrings = isettingStrings
@@ -28,19 +29,44 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource {
         let cell = tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier)! as! SettingViewCell
         let labelStr = self.settingStrings[(indexPath as NSIndexPath).row]
         cell.setupCell(isettingLabelText: labelStr)
+//        cell.textLabel?.text = labelStr
+        tableView.tableFooterView = UIView(frame: .zero)
+        
+        if (indexPath.row == 1) {
+            print("got index")
+//            tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
+            cell.accessoryType = .checkmark
+        }
+        
         
         return cell
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+
+//        let someCharacter: Character = "z"
+        switch settingsType {
+        case "guitarTone":
+            //set vc sound to mod
+            print("The first letter of the alphabet")
+        case "dotValue":
+            //set vc dot to mod
+            print("The last letter of the alphabet")
+        case "clickTone":
+            //set vc sound to mod
+            print("The last letter of the alphabet")
+        default:
+            print("error")
+        }
+        //https://www.youtube.com/watch?time_continue=397&v=5MZ-WJuSdpg&feature=emb_logo
+        for row in 0..<tableView.numberOfRows(inSection: indexPath.section) {
+            if let cell = tableView.cellForRow(at: IndexPath(row: row, section: indexPath.section)) {
+                cell.accessoryType = row == indexPath.row ? .checkmark : .none
+            }
+        }
         
-        //        let selectedTrail = trails[indexPath.row]
-//
-//        if let viewController = storyboard?.instantiateViewController(identifier: "TrailViewController") as? TrailViewController {
-//            viewController.trail = selectedTrail
-//            navigationController?.pushViewController(viewController, animated: true)
-//        }
-        
-        print("getting here")
+        tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
+
+        print("getting here \(indexPath.row)")
     }
 }

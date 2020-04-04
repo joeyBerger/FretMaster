@@ -60,11 +60,59 @@ class ViewStyler: UIViewController {
         return settingsButtonAnnotation
     }
     
-    func setupMenuButton (ibutton : UIButton, ititle: String, isubtext : String, iprogressAmount: Float, itutorialComplete : Bool = true) {
+    func setupMenuButton (ibutton : UIButton, isubText: UILabel, iprogressBar: UIProgressView) {
+//            var buttonColor: UIColor
+//            var textColor: UIColor
+            
+//            if (!itutorialComplete) {
+//                buttonColor = defaultColor.InactiveButton;
+//                textColor = defaultColor.InactiveInlay
+//            } else {
+//                buttonColor = defaultColor.MenuButtonColor;
+//                textColor = defaultColor.MenuButtonTextColor
+//            }
+
+//            ibutton.backgroundColor = buttonColor
+//            ibutton.setTitleColor(textColor, for: .normal)
+//            ibutton.setTitle(ititle, for: .normal)
+            ibutton.layer.shadowColor = UIColor.black.cgColor
+            ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
+            ibutton.layer.shadowRadius = 2
+            ibutton.layer.shadowOpacity = 0.6
+           
+            let width = ibutton.frame.width
+//            let buttonSubtext = UILabel()
+            isubText.frame = CGRect(x: 0,y: 0,width: width, height: ibutton.frame.height+30)
+            isubText.textAlignment = NSTextAlignment.center
+//            buttonSubtext.text = isubtext;
+            isubText.layer.zPosition = 1;
+//            buttonSubtext.textColor = textColor
+            
+//            for view in ibutton.subviews {
+//                view.removeFromSuperview()
+//            }
+            ibutton.addSubview(isubText)
+        
+//            let progressSlider = UIProgressView()
+            iprogressBar.frame = CGRect(x: (width-(width * 0.85))/2.0 ,y: 75,width: (width * 0.85),height: 62)
+            
+//            if (iprogressAmount >= 0.0) {
+//                let progressSlider = UIProgressView()
+//                progressSlider.frame = CGRect(x: (width-(width * 0.85))/2.0 ,y: 75,width: (width * 0.85),height: 62)
+//                let progressAmount = iprogressAmount == 0.0 ? 0.05 : iprogressAmount
+//                progressSlider.setProgress(progressAmount, animated: true)
+//                progressSlider.progressTintColor = defaultColor.ProgressBarColor
+//                progressSlider.trackTintColor = defaultColor.ProgressTrackColor
+//                ibutton.addSubview(progressSlider)
+//            }
+        }
+    
+    func setupMenuButtonAttributes(ibutton: UIButton, isubText: UILabel, iprogressBar: UIProgressView, ibuttonActive: Bool, ibuttonStr: String, isubTextStr: String, iprogressAmount: Float) {
+        
             var buttonColor: UIColor
             var textColor: UIColor
             
-            if (!itutorialComplete) {
+            if (!ibuttonActive) {
                 buttonColor = defaultColor.InactiveButton;
                 textColor = defaultColor.InactiveInlay
             } else {
@@ -74,30 +122,16 @@ class ViewStyler: UIViewController {
 
             ibutton.backgroundColor = buttonColor
             ibutton.setTitleColor(textColor, for: .normal)
-            ibutton.setTitle(ititle, for: .normal)
-            ibutton.layer.shadowColor = UIColor.black.cgColor
-            ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
-            ibutton.layer.shadowRadius = 2
-            ibutton.layer.shadowOpacity = 0.6
-           
-            let width = ibutton.frame.width
-            let buttonSubtext = UILabel()
-            buttonSubtext.frame = CGRect(x: 0,y: 0,width: width, height: ibutton.frame.height+30)
-            buttonSubtext.textAlignment = NSTextAlignment.center
-            buttonSubtext.text = isubtext;
-            buttonSubtext.layer.zPosition = 1;
-            buttonSubtext.textColor = textColor
-            
-            ibutton.addSubview(buttonSubtext)
-            
+            ibutton.setTitle(ibuttonStr, for: .normal)
+
+            isubText.text = isubTextStr;
+            isubText.textColor = textColor
+                   
             if (iprogressAmount >= 0.0) {
-                let progressSlider = UIProgressView()
-                progressSlider.frame = CGRect(x: (width-(width * 0.85))/2.0 ,y: 75,width: (width * 0.85),height: 62)
                 let progressAmount = iprogressAmount == 0.0 ? 0.05 : iprogressAmount
-                progressSlider.setProgress(progressAmount, animated: true)
-                progressSlider.progressTintColor = defaultColor.ProgressBarColor
-                progressSlider.trackTintColor = defaultColor.ProgressTrackColor
-                ibutton.addSubview(progressSlider)
+                iprogressBar.setProgress(progressAmount, animated: true)
+                iprogressBar.progressTintColor = defaultColor.ProgressBarColor
+                iprogressBar.trackTintColor = defaultColor.ProgressTrackColor
             }
-        }
+    }
 }

@@ -18,24 +18,29 @@ class SettingsViewController: UIViewController {
     }
     
     @IBOutlet weak var Stack: UIStackView!
-    @IBOutlet weak var NavBar: UINavigationBar!
-    @IBOutlet weak var NavBackButton: UIBarButtonItem!
-    var NavBarFiller: UIImageView!
+//    @IBOutlet weak var NavBar: UINavigationBar!
+//    @IBOutlet weak var NavBackButton: UIBarButtonItem!
+//    var NavBarFiller: UIImageView!
     
     @IBOutlet weak var Button0: UIButton!
     @IBOutlet weak var Button1: UIButton!
     @IBOutlet weak var Button2: UIButton!
+    
+    var buttonId = 0
     
     struct buttonText {
         var header: String
         var subtext: String
         var id: String
         var availableSettings: [String]
-        init(iheader: String, isubtext: String, iid: String, iavailableSettings: [String]) {
+        var settingsType: String
+        
+        init(iheader: String, isubtext: String, iid: String, iavailableSettings: [String], isettingsType: String) {
             header = iheader
             subtext = isubtext
             id = iid
             availableSettings = iavailableSettings
+            settingsType = isettingsType
         }
     }
     
@@ -43,10 +48,11 @@ class SettingsViewController: UIViewController {
         buttonText(iheader: "Guitar Sound".uppercased(),
                    isubtext: "Explore Sonic Options",
                    iid: "guitarTone",
-                   iavailableSettings: ["Acoustic","Jazz","Rock"]
+                   iavailableSettings: ["Acoustic","Jazz","Rock"],
+                   isettingsType: "guitarTone"
                    ),
-        buttonText(iheader: "Fret Board Dot".uppercased(), isubtext: "Manage Your Dot Display", iid: "fretDot",iavailableSettings: []),
-        buttonText(iheader: "Click Sound".uppercased(), isubtext: "Pick Your Click Sound", iid: "clickTone", iavailableSettings: []),
+        buttonText(iheader: "Fret Board Dot".uppercased(), isubtext: "Manage Your Dot Display", iid: "fretDot",iavailableSettings: [], isettingsType: "dotValue"),
+        buttonText(iheader: "Click Sound".uppercased(), isubtext: "Pick Your Click Sound", iid: "clickTone", iavailableSettings: [], isettingsType: "clickTone"),
     ]
     
     var styler: ViewStyler?
@@ -58,19 +64,19 @@ class SettingsViewController: UIViewController {
         styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
         let buttonArr = [Button0,Button1,Button2]
         for (i,button) in buttonArr.enumerated() {
-            styler!.setupMenuButton(ibutton: button!, ititle: buttonInfo[i].header, isubtext: buttonInfo[i].subtext, iprogressAmount: -1.0)
+//            styler!.setupMenuButton(ibutton: button!, ititle: buttonInfo[i].header, isubtext: buttonInfo[i].subtext, iprogressAmount: -1.0)
         }
         
-        styler!.setupNavBar(iNavBar: NavBar)
-        styler!.setupNavBarComponents(iNavBackButton: NavBackButton, iNavSettingsButton: nil)
+//        styler!.setupNavBar(iNavBar: NavBar)
+//        styler!.setupNavBarComponents(iNavBackButton: NavBackButton, iNavSettingsButton: nil)
+//
+//        NavBarFiller = styler!.navBarFillerInit(iNavBar: NavBar)
+//        self.view.insertSubview(NavBarFiller, at: 1)
         
-        NavBarFiller = styler!.navBarFillerInit(iNavBar: NavBar)
-        self.view.insertSubview(NavBarFiller, at: 1)
-        
-        let backButtonAnnotation = styler!.setupBackButtonAnnotation(iNavBar: NavBar)
+//        let backButtonAnnotation = styler!.setupBackButtonAnnotation(iNavBar: NavBar)
 //        backButtonAnnotation.backgroundColor! = UIColor.green
-        backButtonAnnotation.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
-        view.addSubview(backButtonAnnotation)  //TODO: buttonlayer is behind text, sometimes?
+//        backButtonAnnotation.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
+//        view.addSubview(backButtonAnnotation)  //TODO: buttonlayer is behind text, sometimes?
 //        self.view.insertSubview(backButtonAnnotation, at: 100)
     }
     
@@ -87,12 +93,20 @@ class SettingsViewController: UIViewController {
     }
     
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
-        print("adsfa \(buttonInfo[sender.tag].id)")
+        buttonId = sender.tag
+        UIView.setAnimationsEnabled(false)
+        self.performSegue(withIdentifier: "SettingsItem", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         
-        var controller: SettingsItemViewController
-        controller = self.storyboard?.instantiateViewController(withIdentifier: "SettingsItemViewController") as! SettingsItemViewController
-        controller.setupSettingsCellData(isettingStrings: buttonInfo[sender.tag].availableSettings)
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: false, completion: nil)
+        print("in prepare \(buttonId)")
+        
+        var sItem = segue.destination as! SettingsItemViewController
+        sItem.setupSettingsCellData(isettingStrings: buttonInfo[buttonId].availableSettings)
+//        let lc = LevelConstruct()
+//        print(newVC.layerArr)
+//        newVC.setStateProperties(icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
+
     }
 }
