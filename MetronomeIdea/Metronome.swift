@@ -71,7 +71,7 @@ class Metronome {
         let targetTime:Double = 60/bpm
         if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003) {
             if (vc!.currentState == MainViewController.State.PlayingNotesCollection) {
-                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick], ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
+                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick] + "_" + vc!.guitarTone, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
                 vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick])
                 if (currentClick == vc!.specifiedNoteCollection.count-1) {
                     endMetronome()
@@ -89,7 +89,7 @@ class Metronome {
             }
             //Scale Test Active
             else {
-                vc!.click.playSound(isoundName: "MenuButtonClick")
+                vc!.click.playSound(isoundName: "Click_" + vc!.clickTone)
                 clickTime = CFAbsoluteTimeGetCurrent()
                 //                print ("playing something\(clickTime) diff = \(clickTime - userInputTime)")
                 if (currentClick == countInClick-1 && vc!.currentState == MainViewController.State.NotesTestCountIn_Tempo) {

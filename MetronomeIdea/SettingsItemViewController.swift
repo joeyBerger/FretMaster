@@ -9,13 +9,20 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     var settingsType: String?
     var initialCheckmarkIdx = 0
     let cellReuseIdentifier = "SettingViewCell"
+    let sc = SoundController(isubInstances: 10)
+    let soundStringDict = [
+        "clickTone_Digital" : "Click_Digital",
+        "clickTone_Woodblock1" : "Click_Woodblock1",
+        "clickTone_Woodblock2" : "Click_Woodblock2",
+        "guitarTone_Acoustic" : "Selection_Acoustic",
+        "guitarTone_Rock" : "Selection_Rock",
+        "guitarTone_Jazz" : "Selection_Jazz"
+    ]
     
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.tableView.backgroundColor = UIColor.black
         //TODO: style table cell
-        
-        
         print("settingsType \(settingsType)")
         let defaultKey = UserDefaults.standard.object(forKey: settingsType!)
         initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey! as! String)!
@@ -28,6 +35,10 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     
     func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
         return self.settingStrings.count;
+    }
+    
+    func playSound(isoundName: String) {
+        sc.playSound(isoundName: isoundName)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
@@ -58,5 +69,9 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
             }
         }
         tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
+
+        if soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]] != nil {
+            playSound(isoundName: soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]]!)
+        }
     }
 }

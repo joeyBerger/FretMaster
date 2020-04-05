@@ -56,14 +56,14 @@ class SettingsViewController: UIViewController {
             iheader: "Fret Board Dot".uppercased(),
             isubtext: "Manage Your Dot Display",
             iid: "fretDot",
-            iavailableSettings: ["Scale Degree","Note Name"],
+            iavailableSettings: ["Scale Degree","Note Name","None"],
             isettingsType: "dotValue"
         ),
         buttonText(
             iheader: "Click Sound".uppercased(),
             isubtext: "Pick Your Click Sound",
             iid: "clickTone",
-            iavailableSettings: ["Digital","Woodblock"],
+            iavailableSettings: ["Digital","Woodblock1","Woodblock2"],
             isettingsType: "clickTone"
         ),
     ]

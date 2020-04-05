@@ -157,10 +157,14 @@ class MenuViewController: UIViewController {
             menuButtonProgress.append(UIProgressView())
             styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
         }
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.tintColor = .white
     }
     
     @IBAction func MainMenuButton(_ sender: UIButton) {
-        if (!tutorialCompleteStatus && sender.tag > 0) {
+        if (!tutorialCompleteStatus && sender.tag > 0 || sender.tag > 1) {
             return
         }
         buttonId = sender.tag

@@ -399,7 +399,6 @@ class MainViewController: UIViewController {
             DimOverlay.backgroundColor = UIColor.black
             view.addSubview(DimOverlay)
             setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
-            DimOverlay.alpha = 0.0 //TODO: get rid of this once swoop alpha is figured out
             
             ActionOverlay = setupScreenOverlay()
             ActionOverlay.backgroundColor = UIColor.white
@@ -423,11 +422,14 @@ class MainViewController: UIViewController {
         currentState = State.NotesTestShowNotes
         setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
         getDynamicAudioVisualData()
+        
+        print("guitarTone \(guitarTone)")
     }
     
 
     
     override func didMove(toParent parent: UIViewController?) {
+        UIView.setAnimationsEnabled(false)
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
         print("Back button pressed")
         met!.endMetronome()
@@ -508,6 +510,10 @@ class MainViewController: UIViewController {
         recognizer1.view?.tag = 1
         
         tempoButtonArr = [TempoUpButton, TempoDownButton]
+        
+//        let textAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
+//        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        
     }
     
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
@@ -678,6 +684,10 @@ class MainViewController: UIViewController {
             guitarTone = iinput
         case "fretDot":
             dotType = iinput
+            //TODO: potentially add fingering to this
+            let alphaNote = dotType == "Note Name"
+            let degree = dotType == "Scale Degree"
+            setupFretMarkerText(ishowAlphabeticalNote: alphaNote, ishowNumericDegree: degree)
         default:
             clickTone = iinput
         }
@@ -797,16 +807,12 @@ class MainViewController: UIViewController {
     }
 
     func setupFretMarkerText(ishowAlphabeticalNote: Bool, ishowNumericDegree: Bool, inumericDefaults: [String] = ["b5", "b6"]) {
-        if !ishowAlphabeticalNote, !ishowNumericDegree {
-            return
-        }
-
         for (idx, _) in buttonDict {
             var str = buttonDict[idx]
             var note = ""
             if (ishowAlphabeticalNote) {
                 note = str!.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789_"))
-            } else {
+            } else if (ishowNumericDegree) {
                 str = str!.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
                 note = sCollection!.returnNoteDistance(iinput: String(str!.dropLast()), icomparedNote: "A")
                 if note == "#4", inumericDefaults[0] == "b5" {
@@ -1156,7 +1162,8 @@ class MainViewController: UIViewController {
 
             var str = buttonDict[inputNumb]!
             str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
-            sc.playSound(isoundName: str, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
+            sc.playSound(isoundName: str + "_" + guitarTone, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
+            
             print("fret pressed \(str)")
             displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
             if currentState == State.Recording {
@@ -1345,7 +1352,7 @@ class MainViewController: UIViewController {
 
     @objc func playSoundHelper(timer: Timer) {
         let noteDict = timer.userInfo as! [String: AnyObject]
-        sc.playSound(isoundName: noteDict["Note"] as! String)
+        sc.playSound(isoundName: noteDict["Note"] as! String + "_" + guitarTone)
 
         displaySingleFretMarker(iinputStr: noteDict["Note"] as! String)
     }
@@ -1900,7 +1907,7 @@ class MainViewController: UIViewController {
         fretButtonDict["A1"]?.layer.zPosition = 1000
         fretButtonDict["A2"]?.layer.zPosition = 1000
         
-        setupFretReferenceText()
+//        setupFretReferenceText() //TODO: do when necessary
     }
     
     func setupFretReferenceText() {
