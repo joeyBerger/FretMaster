@@ -45,14 +45,27 @@ class SettingsViewController: UIViewController {
     }
     
     var buttonInfo: [buttonText] = [
-        buttonText(iheader: "Guitar Sound".uppercased(),
-                   isubtext: "Explore Sonic Options",
-                   iid: "guitarTone",
-                   iavailableSettings: ["Acoustic","Jazz","Rock"],
-                   isettingsType: "guitarTone"
-                   ),
-        buttonText(iheader: "Fret Board Dot".uppercased(), isubtext: "Manage Your Dot Display", iid: "fretDot",iavailableSettings: [], isettingsType: "dotValue"),
-        buttonText(iheader: "Click Sound".uppercased(), isubtext: "Pick Your Click Sound", iid: "clickTone", iavailableSettings: [], isettingsType: "clickTone"),
+        buttonText(
+            iheader: "Guitar Sound".uppercased(),
+            isubtext: "Explore Sonic Options",
+            iid: "guitarTone",
+            iavailableSettings: ["Acoustic","Jazz","Rock"],
+            isettingsType: "guitarTone"
+        ),
+        buttonText(
+            iheader: "Fret Board Dot".uppercased(),
+            isubtext: "Manage Your Dot Display",
+            iid: "fretDot",
+            iavailableSettings: ["Scale Degree","Note Name"],
+            isettingsType: "dotValue"
+        ),
+        buttonText(
+            iheader: "Click Sound".uppercased(),
+            isubtext: "Pick Your Click Sound",
+            iid: "clickTone",
+            iavailableSettings: ["Digital","Woodblock"],
+            isettingsType: "clickTone"
+        ),
     ]
     
     var styler: ViewStyler?
@@ -64,24 +77,21 @@ class SettingsViewController: UIViewController {
         styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
         let buttonArr = [Button0,Button1,Button2]
         for (i,button) in buttonArr.enumerated() {
-//            styler!.setupMenuButton(ibutton: button!, ititle: buttonInfo[i].header, isubtext: buttonInfo[i].subtext, iprogressAmount: -1.0)
+            let subText = UILabel()
+            styler!.setupMenuButton(
+                ibutton: button!,
+                isubText: subText
+            )
+            styler!.setupMenuButtonAttributes(
+                ibutton: button!,
+                isubText: subText,
+                iprogressBar: nil,
+                ibuttonActive: true,
+                ibuttonStr: buttonInfo[i].header,
+                isubTextStr: buttonInfo[i].subtext,
+                iprogressAmount: -1.0
+            )
         }
-        
-//        styler!.setupNavBar(iNavBar: NavBar)
-//        styler!.setupNavBarComponents(iNavBackButton: NavBackButton, iNavSettingsButton: nil)
-//
-//        NavBarFiller = styler!.navBarFillerInit(iNavBar: NavBar)
-//        self.view.insertSubview(NavBarFiller, at: 1)
-        
-//        let backButtonAnnotation = styler!.setupBackButtonAnnotation(iNavBar: NavBar)
-//        backButtonAnnotation.backgroundColor! = UIColor.green
-//        backButtonAnnotation.addTarget(self, action: #selector(onBackButtonDown), for: .touchUpInside)
-//        view.addSubview(backButtonAnnotation)  //TODO: buttonlayer is behind text, sometimes?
-//        self.view.insertSubview(backButtonAnnotation, at: 100)
-    }
-    
-    @objc func temp() {
-        print("asdfadsf dfadsfas")
     }
     
     @IBAction func onBackButtonDown(_ sender: Any) {
@@ -103,7 +113,8 @@ class SettingsViewController: UIViewController {
         print("in prepare \(buttonId)")
         
         var sItem = segue.destination as! SettingsItemViewController
-        sItem.setupSettingsCellData(isettingStrings: buttonInfo[buttonId].availableSettings)
+        sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
+        
 //        let lc = LevelConstruct()
 //        print(newVC.layerArr)
 //        newVC.setStateProperties(icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)

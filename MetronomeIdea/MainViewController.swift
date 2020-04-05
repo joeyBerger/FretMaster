@@ -386,6 +386,10 @@ class MainViewController: UIViewController {
     
     var sceneHasBeenSetup = false
     
+    var guitarTone = ""
+    var dotType = ""
+    var clickTone = ""
+    
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         
@@ -418,7 +422,10 @@ class MainViewController: UIViewController {
         setupToSpecificState()
         currentState = State.NotesTestShowNotes
         setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
+        getDynamicAudioVisualData()
     }
+    
+
     
     override func didMove(toParent parent: UIViewController?) {
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
@@ -641,6 +648,39 @@ class MainViewController: UIViewController {
 
         pc!.setResultButtonPopupText(itextArr: [ResultsLabel.text!, resultPopoverDirText, resultPopoverTempoText])
         setResultButton(istr: resultButtonText)
+    }
+    
+    func getDynamicAudioVisualData() {
+        let dataStrTypes = [
+            "guitarTone",
+            "fretDot",
+            "clickTone"
+        ]
+        for dataStr in dataStrTypes {
+            let data = UserDefaults.standard.object(forKey: dataStr)
+            if data == nil {
+                let defaultVal = [
+                    "guitarTone" : "Acoustic",
+                    "fretDot" : "Scale Degree",
+                    "clickTone" : "Digital"
+                ]
+                UserDefaults.standard.set(defaultVal[dataStr], forKey: dataStr)
+                setDynamicAudioVisualVars(iinputType: dataStr, iinput: defaultVal[dataStr]!)
+            } else {
+                setDynamicAudioVisualVars(iinputType: dataStr, iinput: data as! String)
+            }
+        }
+    }
+    
+    func setDynamicAudioVisualVars(iinputType: String, iinput: String) {
+        switch iinputType {
+        case "guitarTone":
+            guitarTone = iinput
+        case "fretDot":
+            dotType = iinput
+        default:
+            clickTone = iinput
+        }
     }
     
     func setupBackgroundImage(ibackgroundPic: String) {

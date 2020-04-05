@@ -779,26 +779,7 @@
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fdJ-jk-Mf8" id="mFh-mb-YKW">
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="60"/>
                                             <autoresizingMask key="autoresizingMask"/>
-                                            <subviews>
-                                                <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="lGy-w6-FDk">
-                                                    <rect key="frame" x="39" y="20" width="288" height="21"/>
-                                                    <constraints>
-                                                        <constraint firstAttribute="width" constant="288" id="cxe-NG-hRz"/>
-                                                        <constraint firstAttribute="height" constant="21" id="ie9-Kj-Rx4"/>
-                                                    </constraints>
-                                                    <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                                                    <nil key="textColor"/>
-                                                    <nil key="highlightedColor"/>
-                                                </label>
-                                            </subviews>
-                                            <constraints>
-                                                <constraint firstItem="lGy-w6-FDk" firstAttribute="top" secondItem="mFh-mb-YKW" secondAttribute="topMargin" constant="9" id="AH9-0f-u06"/>
-                                                <constraint firstAttribute="trailingMargin" secondItem="lGy-w6-FDk" secondAttribute="trailing" constant="67" id="Fe4-by-7Ig"/>
-                                            </constraints>
                                         </tableViewCellContentView>
-                                        <connections>
-                                            <outlet property="SettingLabel" destination="lGy-w6-FDk" id="3UM-pR-jfI"/>
-                                        </connections>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
