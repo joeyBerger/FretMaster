@@ -404,8 +404,6 @@ class MainViewController: UIViewController {
             ActionOverlay.backgroundColor = UIColor.white
             view.addSubview(ActionOverlay)
             setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
-            
-            print("sceneHasBeenSetup \(sceneHasBeenSetup)")
      
             setupFretBoardImage()
             setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
@@ -1754,7 +1752,7 @@ class MainViewController: UIViewController {
     func setupScreenOverlay() -> UIImageView {
         let overlay = UIImageView()
         let frame = navigationController?.navigationBar.frame
-        overlay.frame = CGRect(x: (frame?.minX)!, y: (frame?.minY)!+(frame?.height)!, width: view.frame.width, height: view.frame.height)  //TODO: need this
+        overlay.frame = CGRect(x: (frame?.minX)!, y: (frame?.minY)!+(frame?.height)!, width: view.frame.width, height: view.frame.height)
         overlay.alpha = 0.0
         return overlay
     }
@@ -1795,6 +1793,9 @@ class MainViewController: UIViewController {
            "B3" :0.8,
            "C4" :0.8,
         ]
+        
+
+        
 
         let image: UIImage = UIImage(named: "Fretboard4")!
         FretboardImage = UIImageView()
@@ -1813,9 +1814,9 @@ class MainViewController: UIViewController {
         let fretboardWidth = fretboardAspectFit.width
         let fretboardHeight = fretboardAspectFit.height //FretboardDummy.frame.height
         
-        let iphone11AspectFitWidth = 227.35955056179776
+        let iphone11AspectFitWidth = 225.5464759959142//227.35955056179776
 
-//        print("UIDevice.modelName \(UIDevice.modelName)")
+        print("UIDevice.modelName \(UIDevice.modelName)")
 //        if UIDevice.modelName.contains("iPhone 8") && !UIDevice.modelName.contains("iPhone 8 Plus") || UIDevice.modelName.contains("iPhone 11 Pro") && !UIDevice.modelName.contains("iPhone 11 Pro Max") {
 //            fretboardXLoc -= 20
 //        }
@@ -1829,18 +1830,43 @@ class MainViewController: UIViewController {
 
         fretboardXLoc *= FretboardDummy.frame.width/fretboardAspectFit.width// * fretboardAspectFit.width/iphone11AspectFitWidth
         
+        
+        
         view.addSubview(FretboardImage)
-
+        fretboardXLoc = FretboardImage.frame.minX
+        
+        let tempImage = UIImageView()
+        tempImage.frame = CGRect(
+            x: FretboardImage.frame.minX,
+                y: FretboardImage.frame.minY,
+                width: 25,
+                height: 25)
+        tempImage.backgroundColor = UIColor.green
+        tempImage.alpha = 0.5
+        self.view.insertSubview(tempImage, at: 100)
+        
+        let tempImage2 = UIImageView()
+        tempImage2.frame = CGRect(
+            x: FretboardImage.frame.maxX,
+                y: FretboardImage.frame.minY,
+                width: 25,
+                height: 25)
+        tempImage2.backgroundColor = UIColor.green
+        tempImage2.alpha = 0.5
+        self.view.insertSubview(tempImage2, at: 100)
+        
+        print("difference of green : \(FretboardImage.frame.maxX - FretboardImage.frame.minX)")
+        
+        
         let buttonSize: [CGFloat] = [0.03, 0.2, 0.195, 0.18, 0.17, 0.163]
-       
-//        let buttonWidth: [CGFloat] = [0.3, 0.1667, 0.1667, 0.165, 0.158, 0.15]
         let buttonWidth: [CGFloat] = [0.18, 0.164, 0.164, 0.164, 0.164, 0.18]
 
         let color = [UIColor.blue, UIColor.yellow, UIColor.red, UIColor.green, UIColor.black, UIColor.cyan]
         var buttonTag = 0
 
         for string in 0 ... 5 {
-            var xOffset: CGFloat = -15*fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth)
+            var xOffset: CGFloat = 0 //-7*fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth)
+            print("xOffset \(xOffset)")
             for k in 0 ..< string {
                 xOffset += FretboardImage.frame.width * buttonWidth[k]
             }

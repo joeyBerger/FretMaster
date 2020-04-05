@@ -22,7 +22,6 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.tableView.backgroundColor = defaultColor.TableViewBackground
-        print("test")
         print("settingsType \(settingsType)")
         let defaultKey = UserDefaults.standard.object(forKey: settingsType!)
         initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey! as! String)!
