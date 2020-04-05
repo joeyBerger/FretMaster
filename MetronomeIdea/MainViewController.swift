@@ -413,8 +413,7 @@ class MainViewController: UIViewController {
             if !tutorialComplete! {
                 hideAllFretMarkers()
                 wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
-                setupPopupTutorialText()
-                
+                setupPopupTutorialText()                
             }
          }
         

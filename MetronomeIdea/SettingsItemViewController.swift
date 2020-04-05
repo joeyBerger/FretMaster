@@ -4,7 +4,7 @@ import UIKit
 class SettingsItemViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
 
     @IBOutlet weak var tableView: UITableView!
-    
+
     var settingStrings:[String] = []
     var settingsType: String?
     var initialCheckmarkIdx = 0
@@ -21,8 +21,8 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.tableView.backgroundColor = UIColor.black
-        //TODO: style table cell
+//        self.tableView.backgroundColor = defaultColor.TableViewBackground
+        print("test")
         print("settingsType \(settingsType)")
         let defaultKey = UserDefaults.standard.object(forKey: settingsType!)
         initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey! as! String)!
@@ -56,8 +56,7 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
-//        cell.backgroundColor = UIColor.black
-        //TODO: style table cell
+//        cell.backgroundColor = defaultColor.TableViewBackground
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
