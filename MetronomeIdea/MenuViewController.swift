@@ -28,7 +28,7 @@ class MenuViewController: UIViewController {
     var buttonArr: [UIButton] = []
     
     @IBOutlet weak var Stack: UIStackView!
-    @IBOutlet weak var DevScreenPrint: UILabel!
+//    @IBOutlet weak var DevScreenPrint: UILabel!
     
     var menuButtonSubtext:[UILabel] = []
     var menuButtonProgress:[UIProgressView] = []
@@ -141,7 +141,7 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        
+//        resetData()
         buttonArr = [Button0,Button1,Button2,Button3,Button4]
 
         let bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
@@ -149,7 +149,7 @@ class MenuViewController: UIViewController {
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(bgImage, at: 0)
         
-        self.DevScreenPrint.alpha = 0.0
+//        self.DevScreenPrint.alpha = 0.0
         
         let styler = ViewStyler(ivc: self)
         for (i,Button) in buttonArr.enumerated() {
@@ -161,6 +161,20 @@ class MenuViewController: UIViewController {
         let textAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.tintColor = .white
+        
+        
+        let button4frame = view.convert(Button4.frame, from:Stack)
+        //look to see if menu buttons are off the screen
+        if (button4frame.maxY + button4frame.height > view.frame.height) {
+            //conversion for iPhone8
+            //(667-85-145-(4*65))/5
+            let bottomBuffer: CGFloat = 10.0 //was 20.0
+            let numbButtons: CGFloat = 5.0
+            let button0frame = view.convert(Button0.frame, from:Stack)
+            let sP = (view.frame.height - (bottomBuffer+button0frame.height)-button0frame.minY - (numbButtons-1)*button0frame.height)/numbButtons
+            print("adapting stack to fit all buttons with new spacing of \(sP)")
+            Stack.spacing = CGFloat(sP)
+        }
     }
     
     @IBAction func MainMenuButton(_ sender: UIButton) {
@@ -203,28 +217,28 @@ class MenuViewController: UIViewController {
     }
         
     @IBAction func resetData() {
-        setDevScreenPrintText(itext: "Resetting Data")
+//        setDevScreenPrintText(itext: "Resetting Data")
         for (_,str) in userLevelData.stringEquivs.enumerated() {
             UserDefaults.standard.removeObject(forKey: str)
         }
     }
     
-    @IBAction func toggleDevMode(_ sender: Any) {
-        developmentMode = !developmentMode
-        let devStr = "Development Mode:"
-        let status = developmentMode == true ? "Enabled" : "Disabled"
-        setDevScreenPrintText(itext: devStr + status)
-    }
+//    @IBAction func toggleDevMode(_ sender: Any) {
+//        developmentMode = !developmentMode
+//        let devStr = "Development Mode:"
+//        let status = developmentMode == true ? "Enabled" : "Disabled"
+//        setDevScreenPrintText(itext: devStr + status)
+//    }
     
     func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
         return "L\(ilevel+1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
     }
     
-    func setDevScreenPrintText(itext: String) {
-        DevScreenPrint.text = itext
-        self.DevScreenPrint.alpha = 1.0
-        UIView.animate(withDuration: 3.5, animations: {
-         self.DevScreenPrint.alpha = 0.0
-        })
-    }
+//    func setDevScreenPrintText(itext: String) {
+//        DevScreenPrint.text = itext
+//        self.DevScreenPrint.alpha = 1.0
+//        UIView.animate(withDuration: 3.5, animations: {
+//         self.DevScreenPrint.alpha = 0.0
+//        })
+//    }
 }

@@ -199,7 +199,7 @@ class MainViewController: UIViewController {
     }
    
     //Outlets
-    @IBOutlet var BlankImageView: UIImageView!
+//    @IBOutlet var BlankImageView: UIImageView!
     @IBOutlet var ResultsLabel: UILabel!
     @IBOutlet var ResultButton: UIButton!
     @IBOutlet var PeriphButton0: UIButton!
@@ -226,7 +226,7 @@ class MainViewController: UIViewController {
     
 
     @IBOutlet var PeripheralStackView: UIStackView!
-    @IBOutlet var Fret: UIImageView!
+//    @IBOutlet var Fret: UIImageView!
     
     
     var FretboardImage: UIImageView!
@@ -426,17 +426,25 @@ class MainViewController: UIViewController {
 
     
     override func didMove(toParent parent: UIViewController?) {
-        UIView.setAnimationsEnabled(false)
-        navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
+//        UIView.setAnimationsEnabled(false)
+//        navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
         print("Back button pressed")
-        met!.endMetronome()
+//        met!.endMetronome()
     }
     
 //    func didMoveToParentViewController() {
 //        print("viewWillDisappear")
-//         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
-//        met!.endMetronome()
+//        UIView.setAnimationsEnabled(false)
 //    }
+    
+    override func willMove(toParent parent: UIViewController?) {
+        super.willMove(toParent: parent)
+        UIView.setAnimationsEnabled(false)
+        if let met = met {
+            met.endMetronome()
+        }
+        
+    }
     
     @objc func willEnterForeground() {
         let n: Any = 0
@@ -728,30 +736,25 @@ class MainViewController: UIViewController {
     }
 
     func setupPeripheralButtons(iiconArr: [String]) {
-        for (i, _) in iiconArr.enumerated() {
-            periphButtonArr[i].setTitle("", for: .normal) // TODO: eventually get rid of text completely
-            
-            // control button size
-             let insets: CGFloat = 10
-            periphButtonArr[i].imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
-            
-            
-            setButtonImage(ibutton: periphButtonArr[i], iimageStr: iiconArr[i])
-            periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
-            periphButtonArr[i].layer.masksToBounds = true
-            periphButtonArr[i].layer.cornerRadius = 25
-//            periphButtonArr[i].setTitleColor(.black, for: .normal)
-            periphButtonArr[i].backgroundColor = defaultColor.MenuButtonColor
-//            periphButtonArr[i].imageView?.tintColor = defaultColor.MenuButtonTextColor
-            periphButtonArr[i].imageView?.alpha = 1.0
-//            giveButtonBackgroundShadow(ibutton: periphButtonArr[i])  //TODO: why isnt this working?
-        }
-
         for (i, button) in periphButtonArr.enumerated() {
             if i < iiconArr.count {
-                button.isHidden = false
+                button.isEnabled = true
+                button.alpha = 1.0
+                periphButtonArr[i].setTitle("", for: .normal)
+                // control button size
+                 let insets: CGFloat = 10
+                periphButtonArr[i].imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
+                setButtonImage(ibutton: periphButtonArr[i], iimageStr: iiconArr[i])
+                periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
+                periphButtonArr[i].layer.masksToBounds = true
+                periphButtonArr[i].layer.cornerRadius = 25
+                periphButtonArr[i].backgroundColor = defaultColor.MenuButtonColor
+                periphButtonArr[i].imageView?.alpha = 1.0
+    //            giveButtonBackgroundShadow(ibutton: periphButtonArr[i])  //TODO: why isnt this working?
             } else {
-                button.isHidden = true
+//                button.isHidden = true
+                button.isEnabled = false
+                button.alpha = 0.0
             }
         }
     }
@@ -958,6 +961,7 @@ class MainViewController: UIViewController {
         }
         return true
     }
+  
 
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
@@ -967,7 +971,7 @@ class MainViewController: UIViewController {
         ])) {
             ResultsLabel.text = resultsLabelDefaultText
         }
-        
+        UIView.setAnimationsEnabled(true)
         switch sender.tag {
         case 0:
             PeripheralButton0OnButtonDown()
@@ -1830,33 +1834,8 @@ class MainViewController: UIViewController {
 
         fretboardXLoc *= FretboardDummy.frame.width/fretboardAspectFit.width// * fretboardAspectFit.width/iphone11AspectFitWidth
         
-        
-        
         view.addSubview(FretboardImage)
         fretboardXLoc = FretboardImage.frame.minX
-        
-        let tempImage = UIImageView()
-        tempImage.frame = CGRect(
-            x: FretboardImage.frame.minX,
-                y: FretboardImage.frame.minY,
-                width: 25,
-                height: 25)
-        tempImage.backgroundColor = UIColor.green
-        tempImage.alpha = 0.5
-        self.view.insertSubview(tempImage, at: 100)
-        
-        let tempImage2 = UIImageView()
-        tempImage2.frame = CGRect(
-            x: FretboardImage.frame.maxX,
-                y: FretboardImage.frame.minY,
-                width: 25,
-                height: 25)
-        tempImage2.backgroundColor = UIColor.green
-        tempImage2.alpha = 0.5
-        self.view.insertSubview(tempImage2, at: 100)
-        
-        print("difference of green : \(FretboardImage.frame.maxX - FretboardImage.frame.minX)")
-        
         
         let buttonSize: [CGFloat] = [0.03, 0.2, 0.195, 0.18, 0.17, 0.163]
         let buttonWidth: [CGFloat] = [0.18, 0.164, 0.164, 0.164, 0.164, 0.18]
