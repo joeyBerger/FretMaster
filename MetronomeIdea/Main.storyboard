@@ -114,7 +114,6 @@
         <!--MainMenuViewController-->
         <scene sceneID="0tK-wS-SYB">
             <objects>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="OSm-hb-dHi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <viewController storyboardIdentifier="Playground2" title="MainMenuViewController" id="PUF-EH-UAq" customClass="MenuViewController" customModule="MetronomeIdea" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XSY-xe-N64"/>
@@ -227,6 +226,7 @@
                         <segue destination="enO-xU-PLA" kind="show" identifier="FretPlayground" id="bWV-N8-ouA"/>
                     </connections>
                 </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="OSm-hb-dHi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-661" y="55"/>
         </scene>
@@ -500,7 +500,7 @@
                                             <action selector="scrollTempo:" destination="enO-xU-PLA" eventType="touchUpInside" id="s40-k4-DpI"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eky-Jw-yq4">
+                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Eky-Jw-yq4">
                                         <rect key="frame" x="0.0" y="59" width="50" height="50"/>
                                         <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                         <constraints>

@@ -4,202 +4,13 @@ import Foundation
 import AVFoundation
 import UIKit
 
-//for design purposes
-@IBDesignable extension UIButton {
 
-    @IBInspectable var borderWidth: CGFloat {
-        set {
-            layer.borderWidth = newValue
-        }
-        get {
-            return layer.borderWidth
-        }
-    }
 
-    @IBInspectable var cornerRadius: CGFloat {
-        set {
-            layer.cornerRadius = newValue
-        }
-        get {
-            return layer.cornerRadius
-        }
-    }
 
-    @IBInspectable var borderColor: UIColor? {
-        set {
-            guard let uiColor = newValue else { return }
-            layer.borderColor = uiColor.cgColor
-        }
-        get {
-            guard let color = layer.borderColor else { return nil }
-            return UIColor(cgColor: color)
-        }
-    }
-}
-
-public extension UIDevice {
-    static let modelName: String = {
-        var systemInfo = utsname()
-        uname(&systemInfo)
-        let machineMirror = Mirror(reflecting: systemInfo.machine)
-        let identifier = machineMirror.children.reduce("") { identifier, element in
-            guard let value = element.value as? Int8, value != 0 else { return identifier }
-            return identifier + String(UnicodeScalar(UInt8(value)))
-        }
-
-        func mapToDevice(identifier: String) -> String { // swiftlint:disable:this cyclomatic_complexity
-            #if os(iOS)
-                switch identifier {
-                case "iPod5,1": return "iPod touch (5th generation)"
-                case "iPod7,1": return "iPod touch (6th generation)"
-                case "iPod9,1": return "iPod touch (7th generation)"
-                case "iPhone3,1", "iPhone3,2", "iPhone3,3": return "iPhone 4"
-                case "iPhone4,1": return "iPhone 4s"
-                case "iPhone5,1", "iPhone5,2": return "iPhone 5"
-                case "iPhone5,3", "iPhone5,4": return "iPhone 5c"
-                case "iPhone6,1", "iPhone6,2": return "iPhone 5s"
-                case "iPhone7,2": return "iPhone 6"
-                case "iPhone7,1": return "iPhone 6 Plus"
-                case "iPhone8,1": return "iPhone 6s"
-                case "iPhone8,2": return "iPhone 6s Plus"
-                case "iPhone9,1", "iPhone9,3": return "iPhone 7"
-                case "iPhone9,2", "iPhone9,4": return "iPhone 7 Plus"
-                case "iPhone8,4": return "iPhone SE"
-                case "iPhone10,1", "iPhone10,4": return "iPhone 8"
-                case "iPhone10,2", "iPhone10,5": return "iPhone 8 Plus"
-                case "iPhone10,3", "iPhone10,6": return "iPhone X"
-                case "iPhone11,2": return "iPhone XS"
-                case "iPhone11,4", "iPhone11,6": return "iPhone XS Max"
-                case "iPhone11,8": return "iPhone XR"
-                case "iPhone12,1": return "iPhone 11"
-                case "iPhone12,3": return "iPhone 11 Pro"
-                case "iPhone12,5": return "iPhone 11 Pro Max"
-                case "iPad2,1", "iPad2,2", "iPad2,3", "iPad2,4": return "iPad 2"
-                case "iPad3,1", "iPad3,2", "iPad3,3": return "iPad (3rd generation)"
-                case "iPad3,4", "iPad3,5", "iPad3,6": return "iPad (4th generation)"
-                case "iPad6,11", "iPad6,12": return "iPad (5th generation)"
-                case "iPad7,5", "iPad7,6": return "iPad (6th generation)"
-                case "iPad7,11", "iPad7,12": return "iPad (7th generation)"
-                case "iPad4,1", "iPad4,2", "iPad4,3": return "iPad Air"
-                case "iPad5,3", "iPad5,4": return "iPad Air 2"
-                case "iPad11,4", "iPad11,5": return "iPad Air (3rd generation)"
-                case "iPad2,5", "iPad2,6", "iPad2,7": return "iPad mini"
-                case "iPad4,4", "iPad4,5", "iPad4,6": return "iPad mini 2"
-                case "iPad4,7", "iPad4,8", "iPad4,9": return "iPad mini 3"
-                case "iPad5,1", "iPad5,2": return "iPad mini 4"
-                case "iPad11,1", "iPad11,2": return "iPad mini (5th generation)"
-                case "iPad6,3", "iPad6,4": return "iPad Pro (9.7-inch)"
-                case "iPad6,7", "iPad6,8": return "iPad Pro (12.9-inch)"
-                case "iPad7,1", "iPad7,2": return "iPad Pro (12.9-inch) (2nd generation)"
-                case "iPad7,3", "iPad7,4": return "iPad Pro (10.5-inch)"
-                case "iPad8,1", "iPad8,2", "iPad8,3", "iPad8,4": return "iPad Pro (11-inch)"
-                case "iPad8,5", "iPad8,6", "iPad8,7", "iPad8,8": return "iPad Pro (12.9-inch) (3rd generation)"
-                case "AppleTV5,3": return "Apple TV"
-                case "AppleTV6,2": return "Apple TV 4K"
-                case "AudioAccessory1,1": return "HomePod"
-                case "i386", "x86_64": return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "iOS"))"
-                default: return identifier
-                }
-            #elseif os(tvOS)
-                switch identifier {
-                case "AppleTV5,3": return "Apple TV 4"
-                case "AppleTV6,2": return "Apple TV 4K"
-                case "i386", "x86_64": return "Simulator \(mapToDevice(identifier: ProcessInfo().environment["SIMULATOR_MODEL_IDENTIFIER"] ?? "tvOS"))"
-                default: return identifier
-                }
-            #endif
-        }
-
-        return mapToDevice(identifier: identifier)
-    }()
-}
-
-extension UIButton {
-    open override func hitTest(_ point: CGPoint, with _: UIEvent?) -> UIView? {
-        return bounds.contains(point) ? self : nil
-    }
-
-    func blink(enabled: Bool = true, duration: CFTimeInterval = 1.0, stopAfter: CFTimeInterval = 0.0) {
-        enabled ? UIView.animate(withDuration: duration, // Time duration you want,
-                                 delay: 0.0,
-                                 options: [.curveEaseInOut, .autoreverse, .repeat],
-                                 animations: { [weak self] in self?.alpha = 0.0 },
-                                 completion: { [weak self] _ in self?.alpha = 1.0 }) : layer.removeAllAnimations()
-        if !stopAfter.isEqual(to: 0.0) && enabled {
-            DispatchQueue.main.asyncAfter(deadline: .now() + stopAfter) { [weak self] in
-                self?.layer.removeAllAnimations()
-            }
-        }
-    }
-
-    func pulsate(ilayer: Int) -> Int {
-        let pulse = CASpringAnimation(keyPath: "transform.scale")
-        pulse.duration = 0.1
-        pulse.fromValue = 0.95
-        pulse.toValue = 1.3
-        pulse.autoreverses = true
-        pulse.repeatCount = 0
-        pulse.initialVelocity = 10.5
-        pulse.damping = 1.0
-
-        layer.add(pulse, forKey: nil)
-
-        self.layer.zPosition += 1.0
-        return (ilayer + 1)
-    }
-}
 
 class MainViewController: UIViewController {
-    
-    enum Vibration {
-        case error
-        case success
-        case warning
-        case light
-        case medium
-        case heavy
-        case selection
-        case oldSchool
 
-        func vibrate() {
-
-          switch self {
-          case .error:
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.error)
-
-          case .success:
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.success)
-
-          case .warning:
-            let generator = UINotificationFeedbackGenerator()
-            generator.notificationOccurred(.warning)
-
-          case .light:
-            let generator = UIImpactFeedbackGenerator(style: .light)
-            generator.impactOccurred()
-
-          case .medium:
-            let generator = UIImpactFeedbackGenerator(style: .medium)
-            generator.impactOccurred()
-
-          case .heavy:
-            let generator = UIImpactFeedbackGenerator(style: .heavy)
-            generator.impactOccurred()
-
-          case .selection:
-            let generator = UISelectionFeedbackGenerator()
-            generator.selectionChanged()
-
-          case .oldSchool:
-            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-          }
-        }
-    }
-   
     //Outlets
-//    @IBOutlet var BlankImageView: UIImageView!
     @IBOutlet var ResultsLabel: UILabel!
     @IBOutlet var ResultButton: UIButton!
     @IBOutlet var PeriphButton0: UIButton!
@@ -207,11 +18,7 @@ class MainViewController: UIViewController {
     @IBOutlet var PeriphButton2: UIButton!
     @IBOutlet var PeriphButton3: UIButton!
     @IBOutlet var PeriphButton4: UIButton!
-//    @IBOutlet var NavBar: UINavigationBar!
-    var NavBarFiller: UIImageView!
-//    @IBOutlet var NavBackButton: UIBarButtonItem!
-//    @IBOutlet var NavSettingsButton: UIBarButtonItem!
-//    @IBOutlet var NavBarTitle: UINavigationItem!
+
     @IBOutlet var TempoButton: UIButton!
     @IBOutlet var TempoDownButton: UIButton!
     @IBOutlet var TempoUpButton: UIButton!
@@ -223,11 +30,7 @@ class MainViewController: UIViewController {
     @IBOutlet var mainPopoverButton: UIButton!
 
     @IBOutlet weak var FretboardDummy: UIImageView!
-    
-
     @IBOutlet var PeripheralStackView: UIStackView!
-//    @IBOutlet var Fret: UIImageView!
-    
     
     var FretboardImage: UIImageView!
     var DimOverlay: UIImageView!
@@ -254,7 +57,7 @@ class MainViewController: UIViewController {
     var sCollection: ScaleCollection?
     var et: EarTraining?
     var pc: PopupController?
-    var styler: ViewStyler?  //TODO: change this name to Shared Styler
+    var styler: ViewStyler?
     var settingsMenu: SettingsViewController?
     var wt = waitThen()
     
@@ -263,12 +66,6 @@ class MainViewController: UIViewController {
         var note = ""
         var timeDelta = 0.0
     }
-    
-    let timeThreshold: [String: Double] = [  //TODO: this should live in met
-        "Easy": 0.1,
-        "Medium": 0.075,
-        "Hard": 0.05,
-    ]
     
     var recordData: [InputData] = []
     var noteCollectionTestData: [InputData] = []
@@ -302,7 +99,7 @@ class MainViewController: UIViewController {
         "incorrect_time" : "Time Was Inaccurate",
     ]
 
-    var buttonDict: [Int: String] = [ // this could probably be an array
+    var buttonDict: [Int: String] = [ // this could probably just be an array
         0: "G#1",
         1: "A1",
         2: "A#1",
@@ -432,11 +229,6 @@ class MainViewController: UIViewController {
 //        met!.endMetronome()
     }
     
-//    func didMoveToParentViewController() {
-//        print("viewWillDisappear")
-//        UIView.setAnimationsEnabled(false)
-//    }
-    
     override func willMove(toParent parent: UIViewController?) {
         super.willMove(toParent: parent)
         UIView.setAnimationsEnabled(false)
@@ -447,9 +239,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func willEnterForeground() {
-        let n: Any = 0
-//        onBackButtonDown(n)
-        //TODO: perform segue to menu
+        navigationController?.popViewController(animated: false)
     }
 
     override func viewDidLoad() {
@@ -1818,12 +1608,7 @@ class MainViewController: UIViewController {
         let fretboardWidth = fretboardAspectFit.width
         let fretboardHeight = fretboardAspectFit.height //FretboardDummy.frame.height
         
-        let iphone11AspectFitWidth = 225.5464759959142//227.35955056179776
-
-        print("UIDevice.modelName \(UIDevice.modelName)")
-//        if UIDevice.modelName.contains("iPhone 8") && !UIDevice.modelName.contains("iPhone 8 Plus") || UIDevice.modelName.contains("iPhone 11 Pro") && !UIDevice.modelName.contains("iPhone 11 Pro Max") {
-//            fretboardXLoc -= 20
-//        }
+        let iphone11AspectFitWidth = 225.5464759959142
 
 
         FretboardImage.frame = CGRect(x: fretboardXLoc,
@@ -1998,5 +1783,73 @@ class PopupController {
             resultButtonPopup.hide()
 //                resultButtonPopupVisible = false
         }
+    }
+}
+
+@IBDesignable extension UIButton {
+
+    @IBInspectable var borderWidth: CGFloat {
+        set {
+            layer.borderWidth = newValue
+        }
+        get {
+            return layer.borderWidth
+        }
+    }
+
+    @IBInspectable var cornerRadius: CGFloat {
+        set {
+            layer.cornerRadius = newValue
+        }
+        get {
+            return layer.cornerRadius
+        }
+    }
+
+    @IBInspectable var borderColor: UIColor? {
+        set {
+            guard let uiColor = newValue else { return }
+            layer.borderColor = uiColor.cgColor
+        }
+        get {
+            guard let color = layer.borderColor else { return nil }
+            return UIColor(cgColor: color)
+        }
+    }
+}
+
+
+extension UIButton {
+    open override func hitTest(_ point: CGPoint, with _: UIEvent?) -> UIView? {
+        return bounds.contains(point) ? self : nil
+    }
+
+    func blink(enabled: Bool = true, duration: CFTimeInterval = 1.0, stopAfter: CFTimeInterval = 0.0) {
+        enabled ? UIView.animate(withDuration: duration, // Time duration you want,
+                                 delay: 0.0,
+                                 options: [.curveEaseInOut, .autoreverse, .repeat],
+                                 animations: { [weak self] in self?.alpha = 0.0 },
+                                 completion: { [weak self] _ in self?.alpha = 1.0 }) : layer.removeAllAnimations()
+        if !stopAfter.isEqual(to: 0.0) && enabled {
+            DispatchQueue.main.asyncAfter(deadline: .now() + stopAfter) { [weak self] in
+                self?.layer.removeAllAnimations()
+            }
+        }
+    }
+
+    func pulsate(ilayer: Int) -> Int {
+        let pulse = CASpringAnimation(keyPath: "transform.scale")
+        pulse.duration = 0.1
+        pulse.fromValue = 0.95
+        pulse.toValue = 1.3
+        pulse.autoreverses = true
+        pulse.repeatCount = 0
+        pulse.initialVelocity = 10.5
+        pulse.damping = 1.0
+
+        layer.add(pulse, forKey: nil)
+
+        self.layer.zPosition += 1.0
+        return (ilayer + 1)
     }
 }

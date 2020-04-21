@@ -40,6 +40,12 @@ class Metronome {
     var barNoteValue = 4        //How Many Notes Per Bar (Set To Amount Of Hits Per Pattern)
     var noteInBar = 0        //What Note You Are On In Bar
     var subdivision = 1;
+    
+    let timeThreshold: [String: Double] = [  //TODO: this should live in met
+        "Easy": 0.1,
+        "Medium": 0.075,
+        "Hard": 0.05,
+    ]
 
     func startMetro()
     {
@@ -153,7 +159,7 @@ class Metronome {
         let notesMatch = vc!.sCollection!.analyzeNotes(iscaleTestData: vc!.noteCollectionTestData)
         var timeAcurracyMet = true
         for (_, items) in vc!.noteCollectionTestData.enumerated() {
-            if (items.timeDelta > (vc!.timeThreshold["Easy"])!) {
+            if (items.timeDelta > (timeThreshold["Easy"])!) {
                 timeAcurracyMet = false
             }
         }
