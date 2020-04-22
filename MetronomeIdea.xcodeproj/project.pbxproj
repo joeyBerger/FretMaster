@@ -455,6 +455,7 @@
 		9EB5733F244FF42000322305 /* Model */ = {
 			isa = PBXGroup;
 			children = (
+				9EBCF8AC2429D09400074C4C /* LevelHandler.swift */,
 				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
 			);
 			path = Model;
@@ -504,7 +505,6 @@
 				B8A6186020DB9E7500AF33C5 /* Metronome.swift */,
 				9E16FA142381C73600100F65 /* ScaleClass.swift */,
 				9E9C46E622C483C000B133A9 /* SoundController.swift */,
-				9EBCF8AC2429D09400074C4C /* LevelHandler.swift */,
 				9E919EEF244EBB4C008027EF /* Vibration.swift */,
 				9E69398D23A7DDB800C57B11 /* WaitThen.swift */,
 			);

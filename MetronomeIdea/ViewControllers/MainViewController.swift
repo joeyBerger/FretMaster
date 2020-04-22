@@ -72,7 +72,7 @@ class MainViewController: UIViewController {
     var activePeripheralIcon: [String] = []
     var tutorialPopupText: [String] = []
     var currentTutorialPopup = 0
-    var developmentMode = false
+    var developmentMode = 0
 
     var specifiedNoteCollection: [String] = []
     let tempScale: [String] = ["A1", "C2", "D2", "E2", "G2"]
@@ -214,10 +214,7 @@ class MainViewController: UIViewController {
     }
     
     override func didMove(toParent parent: UIViewController?) {
-//        UIView.setAnimationsEnabled(false)
-//        navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
-        print("Back button pressed")
-//        met!.endMetronome()
+        if developmentMode > 0 {print("Back button pressed")}
     }
     
     override func willMove(toParent parent: UIViewController?) {
@@ -244,7 +241,7 @@ class MainViewController: UIViewController {
             et = EarTraining(ivc: self)
             pc = PopupController(ivc: self)
             styler = ViewStyler(ivc: self)
-            if developmentMode {
+            if developmentMode > 1 {
                 met?.bpm = 350.0
             }
 
@@ -302,7 +299,7 @@ class MainViewController: UIViewController {
     }
     
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
-        print("tempoButtonLongPressed, state: \(currentState)")
+        if developmentMode > 0 {print("tempoButtonLongPressed, state: \(currentState)")}
         if !checkForValidTempoInput() {return}
         if sender.state == .ended {
             wt.stopWaitThenOfType(iselector: #selector(tempoButtonUpdater) as Selector)
@@ -356,12 +353,14 @@ class MainViewController: UIViewController {
     func setStateProperties(icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
         lc.setLevelVars(icurrentLevel: icurrentLevel, icurrentLevelConstruct: ilevelConstruct, icurrentLevelKey: ilevelKey)
         tutorialComplete = itutorialComplete == "1.0"
-        if (developmentMode) {tutorialComplete = true} // TODO: temp
+        if (developmentMode > 1) {tutorialComplete = true}
         currentBackgroundPic = backgroundPicDict[ilevelKey]!
         
-        print("icurrentLevel \(icurrentLevel)")
-        print("ilevelConstruct \(ilevelConstruct)")
-        print("ilevelKey \(ilevelKey)")
+        if developmentMode > 0 {
+            print("icurrentLevel \(icurrentLevel)")
+            print("ilevelConstruct \(ilevelConstruct)")
+            print("ilevelKey \(ilevelKey)")
+        }
     }
 
     func setupToSpecificState() {
@@ -653,7 +652,7 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func scrollTempo(_ sender: UIButton) {
-        print("scroll tempo, state: \(currentState)")
+        if developmentMode > 0 {print("scroll tempo, state: \(currentState)")}
         if !checkForValidTempoInput() {return}
         pc!.resultButtonPopup.hide()
         let dir = sender.tag == 0 ? 1.0 : -1.0
@@ -666,7 +665,7 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func tempoTapped(_: Any) {
-        print("tempoTapped, state: \(currentState)")
+        if developmentMode > 0 {print("tempoTapped, state: \(currentState)")}
         if !checkForValidTempoInput() {return}
         currentButtonLayer = TempoButton!.pulsate(ilayer: currentButtonLayer)
         wt.stopWaitThenOfType(iselector: #selector(timeoutTapTempo) as Selector)
@@ -718,7 +717,7 @@ class MainViewController: UIViewController {
             ResultsLabel.text = resultsLabelDefaultText
         }
         UIView.setAnimationsEnabled(true)
-        print("PeripheralButtonButtonDown \(currentState)")
+        if developmentMode > 0 {print("PeripheralButtonButtonDown \(currentState)")}
         switch sender.tag {
         case 0:
             PeripheralButton0OnButtonDown(sender.tag)
@@ -837,7 +836,7 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func ResultButtonDown(_: Any) {
-        print("currentState \(currentState)")
+        if developmentMode > 0 {print("currentState \(currentState)")}
         pc!.showResultButtonPopup()
     }
     
@@ -871,7 +870,7 @@ class MainViewController: UIViewController {
                 progressTutorial()
             }
         }
-        print("in fret pressed state \(currentState)")
+        if developmentMode > 0 {print("in fret pressed state \(currentState)")}
 
         let validState = returnValidState(iinputState: currentState, istateArr: [
             State.Recording,
@@ -933,7 +932,7 @@ class MainViewController: UIViewController {
                     flashActionOverlay(isuccess: false)
                     resetButtonFrames()
                 }
-                if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode || noteMismatch) {
+                if (noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode > 1 || noteMismatch) {
                     
                     let notesCorrect = sCollection!.analyzeNotes(iscaleTestData: noteCollectionTestData)
                     onTestComplete(itestPassed : notesCorrect)
@@ -963,14 +962,14 @@ class MainViewController: UIViewController {
     
     func toggleTestState(icurrentState: State) -> State {
         let currentStateStr = icurrentState.rawValue
-        print("toggle state in \(currentStateStr)")
+        if developmentMode > 0 {print("toggle state in \(currentStateStr)")}
         var newState: State
         if (currentStateStr.contains("Active") || currentStateStr.contains("CountIn")) {
             newState = currentStateStr.contains("_NoTempo") ? State.NotesTestIdle_NoTempo : State.NotesTestIdle_Tempo
         } else {
             newState = currentStateStr.contains("_NoTempo") ? State.NotesTestActive_NoTempo : State.NotesTestActive_Tempo
         }
-        print("toggle state out \(newState)")
+        if developmentMode > 0 {print("toggle state out \(newState)")}
         return newState
     }
     
@@ -1022,7 +1021,7 @@ class MainViewController: UIViewController {
 
     //State Handlers
     func setState(newState: State) {
-        print("setting \(newState)")
+        if developmentMode > 0 {print("setting \(newState)")}
         currentState = newState
     }
 
@@ -1211,7 +1210,7 @@ class MainViewController: UIViewController {
 
             FretPressed(button)
         } else {
-            if developmentMode {
+            if developmentMode > 1 {
                 pc!.tutorialPopup.hide()
             }
             for (_, dot) in specifiedNoteCollection.enumerated() {
@@ -1227,7 +1226,7 @@ class MainViewController: UIViewController {
         wt.waitThen(itime: 0.3, itarget: self, imethod: #selector(presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject, "arg2": parentType as AnyObject])
 
         currentTutorialPopup += 1
-        print("currentTutorialPopup \(currentTutorialPopup)")
+        if developmentMode > 0 {print("currentTutorialPopup \(currentTutorialPopup)")}
     }
 
     func setupPopupTutorialText() {
@@ -1447,10 +1446,6 @@ class MainViewController: UIViewController {
         }
         print("layer does not exist")
         return 0
-    }
-    
-    func toggleDevMode() {
-        developmentMode = !developmentMode
     }
     
     func returnStackViewButtonCoordinates(istackViewButton: UIButton, istack: UIStackView, ixoffset: CGFloat = 0.0, iyoffset: CGFloat = 0.0) -> CGRect {

@@ -33,18 +33,19 @@ class MenuViewController: UIViewController {
     var menuButtonSubtext:[UILabel] = []
     var menuButtonProgress:[UIProgressView] = []
     
-    var developmentMode = false
+    var developmentMode = 1
 
     var tutorialCompleteStatus = true
     var levelArr: [Int] = []
     var buttonId = 0
     
+    var devToggleButton = UIButton()
+    
     override func viewDidAppear(_ animated: Bool) {
-        print("viewDidAppear")
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
+        setupDevButton()
         
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
-        print("scaleLevel \(scaleLevel)")
         if scaleLevel != nil {
             print ("restoring data")
             let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
@@ -223,22 +224,35 @@ class MenuViewController: UIViewController {
         }
     }
     
-//    @IBAction func toggleDevMode(_ sender: Any) {
-//        developmentMode = !developmentMode
-//        let devStr = "Development Mode:"
-//        let status = developmentMode == true ? "Enabled" : "Disabled"
-//        setDevScreenPrintText(itext: devStr + status)
-//    }
+    @objc func toggleDevMode() {
+        developmentMode = (developmentMode + 1) % 3
+        let devStr = "Dev Mode: \(developmentMode)"
+        print("developmentMode \(developmentMode)")                
+        setDevScreenPrintText(itext: devStr)
+    }
+    
+    func setDevScreenPrintText(itext: String) {
+//        DevScreenPrint.text = itext
+        devToggleButton.setTitle(itext,for: .normal)
+        devToggleButton.alpha = 1.0
+        UIView.animate(withDuration: 3.5, animations: {
+         self.devToggleButton.alpha = 0.0
+        })
+    }
     
     func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
         return "L\(ilevel+1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
     }
     
-//    func setDevScreenPrintText(itext: String) {
-//        DevScreenPrint.text = itext
-//        self.DevScreenPrint.alpha = 1.0
-//        UIView.animate(withDuration: 3.5, animations: {
-//         self.DevScreenPrint.alpha = 0.0
-//        })
-//    }
+    func setupDevButton() {
+        devToggleButton = UIButton()
+        
+        let screenRect = UIScreen.main.bounds
+        let screenWidth = screenRect.size.width
+        let screenHeight = screenRect.size.height
+        let height:CGFloat = screenHeight*0.1
+        devToggleButton.frame = CGRect(x: 0, y: screenHeight-height, width: screenWidth*0.5, height: height)
+        view.addSubview(devToggleButton)
+        devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
+    }
 }

@@ -15,12 +15,12 @@ class LevelConstruct: UIViewController {
     var currentLevelConstruct: [[String]] = [[]]
     var currentLevelKey: String?
     
-    func analyzeNewLevel(itestPassed: Bool, idevelopmentMode: Bool) ->  Dictionary<String, Bool> {
+    func analyzeNewLevel(itestPassed: Bool, idevelopmentMode: Int) ->  Dictionary<String, Bool> {
         var returnDict : [String: Bool] = [
             "SubLevelIncremented" : false,
             "LevelIncremented" : false
         ]
-        if !itestPassed && !idevelopmentMode {
+        if !itestPassed && idevelopmentMode < 2 {
             return returnDict
         }
         var level = returnConvertedLevel(iinput: currentLevel!)
