@@ -174,7 +174,7 @@ class MainViewController: UIViewController {
     
     var tutorialComplete: Bool?
     var currentButtonLayer = 0
-    let digitInput = DigitsInput()
+//    let digitInput = DigitsInput()
     
     var sceneHasBeenSetup = false
     

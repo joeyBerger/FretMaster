@@ -89,14 +89,6 @@ class SettingsViewController: UIViewController {
         }
     }
     
-    @IBAction func onBackButtonDown(_ sender: Any) {
-        var controller: MainViewController
-        controller = self.storyboard?.instantiateViewController(withIdentifier: "Playground2") as! MainViewController  //TODO: get rid of playground2
-        controller.setStateProperties(icurrentLevel: vc!.lc.currentLevel!, ilevelConstruct: vc!.lc.currentLevelConstruct, ilevelKey: vc!.lc.currentLevelKey!)
-        controller.modalPresentationStyle = .fullScreen
-        present(controller, animated: false, completion: nil)
-    }
-    
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
         buttonId = sender.tag
         UIView.setAnimationsEnabled(false)

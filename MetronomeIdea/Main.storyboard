@@ -7,94 +7,6 @@
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--ViewController-->
-        <scene sceneID="tne-QT-ifu">
-            <objects>
-                <viewController storyboardIdentifier="ViewController" title="ViewController" id="BYZ-38-t0r" customClass="ViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="y3c-jy-aDJ"/>
-                        <viewControllerLayoutGuide type="bottom" id="wfy-db-euE"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" systemColor="systemTealColor" red="0.35294117650000001" green="0.7843137255" blue="0.98039215690000003" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                    </view>
-                    <connections>
-                        <outlet property="mainPopover" destination="cDq-A9-5QQ" id="3YQ-Zn-SjO"/>
-                        <outlet property="mainPopoverBodyText" destination="Z4T-5d-xfz" id="dS6-V1-aSE"/>
-                        <outlet property="mainPopoverButton" destination="BdP-8i-q2s" id="gGr-r2-jSo"/>
-                        <outlet property="mainPopoverCloseButton" destination="wcO-lo-w5f" id="n0B-ws-6pS"/>
-                        <outlet property="mainPopoverTitle" destination="YdE-h2-KFb" id="Tqb-gc-itD"/>
-                        <outlet property="tutorialPopover" destination="1Pd-qq-Zjm" id="3X3-QI-oXu"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
-                <view contentMode="scaleToFill" id="cDq-A9-5QQ">
-                    <rect key="frame" x="0.0" y="0.0" width="382" height="355"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="wcO-lo-w5f" userLabel="MainPopoverXButton">
-                            <rect key="frame" x="330" y="0.0" width="52" height="41"/>
-                            <constraints>
-                                <constraint firstAttribute="height" constant="41" id="3dX-Of-M6H"/>
-                                <constraint firstAttribute="width" constant="52" id="Tz0-5U-48T"/>
-                            </constraints>
-                            <state key="normal" image="xmark" catalog="system"/>
-                            <connections>
-                                <action selector="closeMainPopover:" destination="BYZ-38-t0r" eventType="touchUpInside" id="woY-g6-Hmd"/>
-                            </connections>
-                        </button>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Z4T-5d-xfz" userLabel="Main Popover Body">
-                            <rect key="frame" x="16" y="108" width="350" height="138"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <string key="text">Welcome To Fret Master™! You will learn and sharpen valuable skiills needed to become a great guitarist! Let get started with a simple tutorial!</string>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Fret Master™" textAlignment="center" lineBreakMode="tailTruncation" numberOfLines="0" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="YdE-h2-KFb" userLabel="Main Popover Title">
-                            <rect key="frame" x="16" y="30" width="350" height="47"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="28"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                        <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="BdP-8i-q2s">
-                            <rect key="frame" x="68" y="287" width="246" height="48"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="23"/>
-                            <state key="normal" title="Let's Go!"/>
-                            <connections>
-                                <action selector="closeMainPopover:" destination="BYZ-38-t0r" eventType="touchUpInside" id="Ko5-lK-Mv8"/>
-                            </connections>
-                        </button>
-                    </subviews>
-                    <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
-                    <constraints>
-                        <constraint firstItem="wcO-lo-w5f" firstAttribute="top" secondItem="cDq-A9-5QQ" secondAttribute="top" id="5jg-5j-Feh"/>
-                        <constraint firstItem="wcO-lo-w5f" firstAttribute="leading" secondItem="cDq-A9-5QQ" secondAttribute="leading" constant="330" id="PuK-5q-nB4"/>
-                        <constraint firstAttribute="trailing" secondItem="wcO-lo-w5f" secondAttribute="trailing" id="Waw-pH-xpW"/>
-                    </constraints>
-                </view>
-                <view contentMode="scaleToFill" id="1Pd-qq-Zjm">
-                    <rect key="frame" x="0.0" y="0.0" width="240" height="128"/>
-                    <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                    <subviews>
-                        <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" fixedFrame="YES" text="Keep me alive" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="56P-31-63J">
-                            <rect key="frame" x="64" y="35" width="113" height="59"/>
-                            <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                            <fontDescription key="fontDescription" type="system" pointSize="17"/>
-                            <nil key="textColor"/>
-                            <nil key="highlightedColor"/>
-                        </label>
-                    </subviews>
-                    <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                </view>
-            </objects>
-            <point key="canvasLocation" x="97" y="1407"/>
-        </scene>
         <!--Navigation Controller-->
         <scene sceneID="Pia-Wu-eMN">
             <objects>
@@ -114,7 +26,7 @@
         <!--MainMenuViewController-->
         <scene sceneID="0tK-wS-SYB">
             <objects>
-                <viewController storyboardIdentifier="Playground2" title="MainMenuViewController" id="PUF-EH-UAq" customClass="MenuViewController" customModule="MetronomeIdea" sceneMemberID="viewController">
+                <viewController title="MainMenuViewController" id="PUF-EH-UAq" customClass="MenuViewController" customModule="MetronomeIdea" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XSY-xe-N64"/>
                         <viewControllerLayoutGuide type="bottom" id="q8a-7h-RlA"/>
@@ -229,73 +141,6 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OSm-hb-dHi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-661" y="55"/>
-        </scene>
-        <!--Playground-->
-        <scene sceneID="3cg-DX-xmG">
-            <objects>
-                <viewController storyboardIdentifier="Sandbox" useStoryboardIdentifierAsRestorationIdentifier="YES" id="tuK-0w-8pw" customClass="Playground" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
-                    <layoutGuides>
-                        <viewControllerLayoutGuide type="top" id="9Zk-Wq-SnF"/>
-                        <viewControllerLayoutGuide type="bottom" id="Q84-tz-qtx"/>
-                    </layoutGuides>
-                    <view key="view" contentMode="scaleToFill" id="wWI-Kd-nIj">
-                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
-                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" translatesAutoresizingMaskIntoConstraints="NO" id="Ytx-8D-3fC">
-                                <rect key="frame" x="87" y="267" width="240" height="128"/>
-                                <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                            </imageView>
-                            <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" translatesAutoresizingMaskIntoConstraints="NO" id="qGt-Xt-WXU">
-                                <rect key="frame" x="184" y="433" width="46" height="30"/>
-                                <subviews>
-                                    <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="ta4-5T-ga3">
-                                        <rect key="frame" x="0.0" y="0.0" width="46" height="30"/>
-                                        <state key="normal" title="Button"/>
-                                        <connections>
-                                            <action selector="button0Down:" destination="tuK-0w-8pw" eventType="touchUpInside" id="Hts-jA-ewG"/>
-                                        </connections>
-                                    </button>
-                                </subviews>
-                            </stackView>
-                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="6po-iX-bMu">
-                                <rect key="frame" x="100" y="164" width="214" height="78"/>
-                                <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
-                                <constraints>
-                                    <constraint firstAttribute="height" constant="78" id="JdJ-0b-QHb"/>
-                                    <constraint firstAttribute="width" constant="214" id="TJ9-Gr-N0w"/>
-                                </constraints>
-                                <state key="normal" title="Button"/>
-                            </button>
-                            <button opaque="NO" contentMode="scaleToFill" fixedFrame="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uyN-jN-gVW">
-                                <rect key="frame" x="195" y="578" width="27" height="22"/>
-                                <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
-                                <state key="normal" image="speaker.3" catalog="system"/>
-                            </button>
-                        </subviews>
-                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
-                        <constraints>
-                            <constraint firstItem="6po-iX-bMu" firstAttribute="centerY" secondItem="wWI-Kd-nIj" secondAttribute="centerY" constant="-245" id="CJQ-j0-Brh"/>
-                            <constraint firstItem="Ytx-8D-3fC" firstAttribute="centerY" secondItem="wWI-Kd-nIj" secondAttribute="centerY" constant="-117" id="H06-le-8Kg"/>
-                            <constraint firstItem="Ytx-8D-3fC" firstAttribute="leading" secondItem="wWI-Kd-nIj" secondAttribute="leadingMargin" constant="67" id="UyD-j9-0hK"/>
-                            <constraint firstItem="qGt-Xt-WXU" firstAttribute="centerX" secondItem="wWI-Kd-nIj" secondAttribute="centerX" id="e9N-4a-aWo"/>
-                            <constraint firstItem="Ytx-8D-3fC" firstAttribute="centerX" secondItem="wWI-Kd-nIj" secondAttribute="centerX" id="fSf-XN-3LW"/>
-                            <constraint firstItem="6po-iX-bMu" firstAttribute="centerX" secondItem="wWI-Kd-nIj" secondAttribute="centerX" id="lbg-gk-Gxx"/>
-                            <constraint firstItem="Ytx-8D-3fC" firstAttribute="top" secondItem="9Zk-Wq-SnF" secondAttribute="bottom" constant="223" id="n5t-eU-jlA"/>
-                            <constraint firstItem="qGt-Xt-WXU" firstAttribute="centerY" secondItem="wWI-Kd-nIj" secondAttribute="centerY" id="oDS-zt-amY"/>
-                        </constraints>
-                    </view>
-                    <connections>
-                        <outlet property="Button0" destination="ta4-5T-ga3" id="NXj-za-tF0"/>
-                        <outlet property="Button1" destination="uyN-jN-gVW" id="hSB-1N-wJf"/>
-                        <outlet property="Button2" destination="6po-iX-bMu" id="4NS-Zl-Uga"/>
-                        <outlet property="stackView" destination="qGt-Xt-WXU" id="JIl-AZ-ry8"/>
-                        <outlet property="testImage" destination="Ytx-8D-3fC" id="0eg-kf-hJr"/>
-                    </connections>
-                </viewController>
-                <placeholder placeholderIdentifier="IBFirstResponder" id="dca-8P-jkA" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
-            </objects>
-            <point key="canvasLocation" x="-660.86956521739137" y="761.38392857142856"/>
         </scene>
         <!--SettingsViewController-->
         <scene sceneID="Y5e-jA-XrR">
@@ -746,7 +591,6 @@
     </scenes>
     <resources>
         <image name="Fretboard4.png" width="355" height="979"/>
-        <image name="speaker.3" catalog="system" width="64" height="44"/>
         <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>
 </document>
