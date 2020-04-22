@@ -295,13 +295,6 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
-		9E12C8BD23CA5B8E0011C5CC /* Layout Helper */ = {
-			isa = PBXGroup;
-			children = (
-			);
-			path = "Layout Helper";
-			sourceTree = "<group>";
-		};
 		9E4CD97E2439720100FBF308 /* GuitarTones */ = {
 			isa = PBXGroup;
 			children = (
@@ -440,6 +433,35 @@
 			path = MenuSelection;
 			sourceTree = "<group>";
 		};
+		9EB5733D244FF29300322305 /* View */ = {
+			isa = PBXGroup;
+			children = (
+				9E07F7252396B0E600E99444 /* DefaultColor.swift */,
+				9E0D26C62435AF1B00595BC9 /* ViewStyler.swift */,
+			);
+			path = View;
+			sourceTree = "<group>";
+		};
+		9EB5733E244FF3D700322305 /* ViewControllers */ = {
+			isa = PBXGroup;
+			children = (
+				9E56839B2436FC5C007070C4 /* SettingViewCell.swift */,
+				9EA49F9424330B8800BF9398 /* SettingsViewController.swift */,
+				9E5683992436F65E007070C4 /* SettingsItemViewController.swift */,
+				9E5FB6E92389F98C0078E980 /* MenuViewController.swift */,
+				9E18282123CA65650001E46F /* MainViewController.swift */,
+			);
+			path = ViewControllers;
+			sourceTree = "<group>";
+		};
+		9EB5733F244FF42000322305 /* Model */ = {
+			isa = PBXGroup;
+			children = (
+				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
+			);
+			path = Model;
+			sourceTree = "<group>";
+		};
 		9ED22C7C23CD8C840051D8A4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
@@ -480,6 +502,13 @@
 		9EF8A89C23D54EC20079BE8D /* HelperObjects */ = {
 			isa = PBXGroup;
 			children = (
+				9EAD3C0D237E825F004467B1 /* EarTraining.swift */,
+				B8A6186020DB9E7500AF33C5 /* Metronome.swift */,
+				9E16FA142381C73600100F65 /* ScaleClass.swift */,
+				9E9C46E622C483C000B133A9 /* SoundController.swift */,
+				9EBCF8AC2429D09400074C4C /* LevelHandler.swift */,
+				9E919EEF244EBB4C008027EF /* Vibration.swift */,
+				9E69398D23A7DDB800C57B11 /* WaitThen.swift */,
 			);
 			path = HelperObjects;
 			sourceTree = "<group>";
@@ -504,32 +533,19 @@
 		B8A6184D20DB9E2A00AF33C5 /* MetronomeIdea */ = {
 			isa = PBXGroup;
 			children = (
+				9EB5733F244FF42000322305 /* Model */,
+				9EB5733E244FF3D700322305 /* ViewControllers */,
+				9EB5733D244FF29300322305 /* View */,
+				9EDC27CE22C980E000387143 /* Sounds */,
 				9ED22C7C23CD8C840051D8A4 /* Images */,
-				9E12C8BD23CA5B8E0011C5CC /* Layout Helper */,
+				9EF8A89C23D54EC20079BE8D /* HelperObjects */,
 				B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */,
 				B8A6186120DB9E7500AF33C5 /* Main.storyboard */,
 				B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */,
 				B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */,
 				B8A6185A20DB9E2B00AF33C5 /* Info.plist */,
-				9EAD3C0D237E825F004467B1 /* EarTraining.swift */,
-				B8A6186020DB9E7500AF33C5 /* Metronome.swift */,
-				9E16FA142381C73600100F65 /* ScaleClass.swift */,
-				9E9C46E622C483C000B133A9 /* SoundController.swift */,
-				9EBCF8AC2429D09400074C4C /* LevelHandler.swift */,
 				9ED9892022D1334B0076C65B /* DigitInput.swift */,
-				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
-				9E07F7252396B0E600E99444 /* DefaultColor.swift */,
-				9E69398D23A7DDB800C57B11 /* WaitThen.swift */,
-				9EF8A89C23D54EC20079BE8D /* HelperObjects */,
-				9EDC27CE22C980E000387143 /* Sounds */,
 				9E944D0223B0046B00A8F7A2 /* Playground.swift */,
-				9E0D26C62435AF1B00595BC9 /* ViewStyler.swift */,
-				9EA49F9424330B8800BF9398 /* SettingsViewController.swift */,
-				9E5683992436F65E007070C4 /* SettingsItemViewController.swift */,
-				9E5FB6E92389F98C0078E980 /* MenuViewController.swift */,
-				9E18282123CA65650001E46F /* MainViewController.swift */,
-				9E56839B2436FC5C007070C4 /* SettingViewCell.swift */,
-				9E919EEF244EBB4C008027EF /* Vibration.swift */,
 			);
 			path = MetronomeIdea;
 			sourceTree = "<group>";

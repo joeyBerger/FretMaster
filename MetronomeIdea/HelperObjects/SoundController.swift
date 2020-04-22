@@ -4,8 +4,7 @@ class SoundController: NSObject,AVAudioRecorderDelegate {
     var player: AVAudioPlayer!
     var scSub = [SoundControllerSub]()
     var scSubIdx = Int()
-    
-    
+        
     init (isubInstances:Int) {
         for _ in 0..<isubInstances {
             scSub.append(SoundControllerSub())
@@ -36,10 +35,6 @@ class SoundController: NSObject,AVAudioRecorderDelegate {
             scSub[scSubIdx%scSub.count].fadeSound(iduration: iduration)
         }
     }
-    
-//    func fadeSound(iduration: Double) {
-//        scSub[scSubIdx%scSub.count].fadeSound(iduration: iduration)
-//    }
 }
 
 class SoundControllerSub : NSObject, AVAudioRecorderDelegate  {

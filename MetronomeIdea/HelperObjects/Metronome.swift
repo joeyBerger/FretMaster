@@ -1,11 +1,3 @@
-//
-//  Metronome.swift
-//  MetronomeIdea
-//
-//  Created by Alex Shubin on 26.03.17.
-//  Copyright © 2017 Alex Shubin. All rights reserved.
-//
-
 import AVFoundation
 
 class Metronome {
@@ -16,7 +8,7 @@ class Metronome {
         vc = ivc;
     }
 
-    var previousClick = CFAbsoluteTimeGetCurrent()    //When Metro Starts Last Click
+    var previousClick = CFAbsoluteTimeGetCurrent()
 
     var clickTime = CFAbsoluteTimeGetCurrent()
     var userInputTime = CFAbsoluteTimeGetCurrent()
@@ -37,24 +29,23 @@ class Metronome {
     var minBPM = 40.0
     var maxBPM = 350.0
 
-    var barNoteValue = 4        //How Many Notes Per Bar (Set To Amount Of Hits Per Pattern)
-    var noteInBar = 0        //What Note You Are On In Bar
+    var barNoteValue = 4
+    var noteInBar = 0
     var subdivision = 1;
     
-    let timeThreshold: [String: Double] = [  //TODO: this should live in met
+    let timeThreshold: [String: Double] = [
         "Easy": 0.1,
         "Medium": 0.075,
         "Hard": 0.05,
     ]
 
-    func startMetro()
-    {
+    func startMetro() {
         endMetronome()
         MetronomeCount()
         
         currentClick = 0
-        barNoteValue = 4         // How Many Notes Per Bar (Set To Amount Of Hits Per Pattern)
-        noteInBar = 0         // What Note You Are On In Bar
+        barNoteValue = 4
+        noteInBar = 0
         isOn = true
     }
 
@@ -127,8 +118,6 @@ class Metronome {
                 if (currentClick == countInClick + vc!.specifiedNoteCollection.count - 1) {
                     endMetronome()
                     _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(self.analyzeNotesInTempoTest), userInfo: nil, repeats: false)
-                    
-//                    analyzeNotesInTempoTest()
                 }
             }
             previousClick = CFAbsoluteTimeGetCurrent()
@@ -151,11 +140,6 @@ class Metronome {
     }
     
     @objc func analyzeNotesInTempoTest() {
-//        vc!.currentState = vc!.tempoActive ? MainViewController.State.NotesTestIdle_Tempo : MainViewController.State.NotesTestIdle_Tempo
-//        for item in vc!.noteCollectionTestData {
-//            print(item.note)
-//            print(item.time)
-//        }
         let notesMatch = vc!.sCollection!.analyzeNotes(iscaleTestData: vc!.noteCollectionTestData)
         var timeAcurracyMet = true
         for (_, items) in vc!.noteCollectionTestData.enumerated() {
@@ -178,12 +162,7 @@ class Metronome {
         vc!.onTestComplete(itestPassed : notesCorrect, iflashRed : true)
         vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
     }
-    
-    
-    
-    
-    
-    
+
 //    private let audioPlayerNode: AVAudioPlayerNode
 //    private let audioFileMainClick: AVAudioFile
 //    private let audioFileAccentedClick: AVAudioFile

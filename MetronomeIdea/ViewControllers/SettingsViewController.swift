@@ -18,14 +18,11 @@ class SettingsViewController: UIViewController {
     }
     
     @IBOutlet weak var Stack: UIStackView!
-//    @IBOutlet weak var NavBar: UINavigationBar!
-//    @IBOutlet weak var NavBackButton: UIBarButtonItem!
-//    var NavBarFiller: UIImageView!
-    
     @IBOutlet weak var Button0: UIButton!
     @IBOutlet weak var Button1: UIButton!
     @IBOutlet weak var Button2: UIButton!
     
+    var styler: ViewStyler?
     var buttonId = 0
     
     struct buttonText {
@@ -68,8 +65,6 @@ class SettingsViewController: UIViewController {
         ),
     ]
     
-    var styler: ViewStyler?
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -109,15 +104,7 @@ class SettingsViewController: UIViewController {
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        
-        print("in prepare \(buttonId)")
-        
-        var sItem = segue.destination as! SettingsItemViewController
+        let sItem = segue.destination as! SettingsItemViewController
         sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
-        
-//        let lc = LevelConstruct()
-//        print(newVC.layerArr)
-//        newVC.setStateProperties(icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
-
     }
 }

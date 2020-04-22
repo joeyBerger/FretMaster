@@ -38,9 +38,7 @@ class waitThen
     
     @objc public func stopWaitThenOfType(iselector: Selector) {
         for (i,_) in infoStruct.enumerated() {
-            // Unexpectedly found nil while unwrapping an Optional value
-            if (infoStruct[i]?.method == iselector)
-            {
+            if (infoStruct[i]?.method == iselector) {
                 nullifyWaitThenAtIndex(iindex: i)
             }
         }

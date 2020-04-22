@@ -620,7 +620,7 @@
                     </view>
                     <navigationItem key="navigationItem" id="WbH-SB-Dkq">
                         <rightBarButtonItems>
-                            <barButtonItem title="Settings" id="Kjp-Xs-Fjq">
+                            <barButtonItem title="Settings" style="plain" id="Kjp-Xs-Fjq">
                                 <connections>
                                     <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="i8u-2u-Zeg"/>
                                 </connections>
@@ -631,6 +631,7 @@
                                     <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="nVN-li-5nZ"/>
                                 </connections>
                             </barButtonItem>
+                            <barButtonItem title="Item" id="9FD-wI-rJJ"/>
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>

@@ -9,13 +9,11 @@
 import Foundation
 class EarTraining {
     
-    var vc : MainViewController?
-    
     init (ivc:MainViewController) {
         vc = ivc;
-        
     }
     
+    var vc : MainViewController?
     var earTrainCallArr: [String] = []
     var earTrainResponseArr: [String] = []
     
@@ -30,15 +28,12 @@ class EarTraining {
         _ = Timer.scheduledTimer(timeInterval: TimeInterval(displayT), target: self, selector: #selector(self.beginEarTrainingHelper), userInfo: ["NoteSelection":vc!.tempScale,"AlphaVal":0.0], repeats: false)
         
         vc!.displaySelectionDots(inoteSelection: vc!.tempScale, ialphaAmount: 0.5)
-//        vc!.dotDict[earTrainCallArr[0]]?.alpha = 1
     }
-    
     
     func presentEarTrainResults()
     {
         let resultText = earTrainCallArr == earTrainResponseArr ? "Good" : "Bad"
         vc!.ResultsLabel.text = resultText
-        _ = Timer.scheduledTimer(timeInterval: 2, target: vc!, selector: #selector(vc!.setResultsLabel), userInfo: nil, repeats: false)
         earTrainCallArr.removeAll()
         earTrainResponseArr.removeAll()
         vc!.currentState = MainViewController.State.Idle
@@ -48,7 +43,6 @@ class EarTraining {
     {
         let argDict = timer.userInfo as! Dictionary<String, AnyObject>
         vc!.displaySelectionDots(inoteSelection: argDict["NoteSelection"] as! [String],ialphaAmount: argDict["AlphaVal"] as! Double)
-//        vc!.met.startMetro()
         vc!.startMetronome(self)
     }
 }

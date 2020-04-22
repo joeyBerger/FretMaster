@@ -91,8 +91,7 @@ class LevelConstruct: UIViewController {
     
     }
     
-    let currentLevelName:[String:[String]] = [
-        
+    let currentLevelName:[String:[String]] = [        
         "scales" : ["Intro","Pentatonics","Pentatonic Modes","Random Pentatonic","Major/Minor","Modes"],
         "arpeggios" : ["Intro","Pentatonics","Pentatonic Modes","Random Pentatonic","Major/Minor","Modes"]
     ]

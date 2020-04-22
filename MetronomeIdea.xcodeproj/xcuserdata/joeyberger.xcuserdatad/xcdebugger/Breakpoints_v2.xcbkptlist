@@ -128,8 +128,8 @@
             filePath = "MetronomeIdea/Metronome.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "102"
-            endingLineNumber = "102"
+            startingLineNumber = "108"
+            endingLineNumber = "108"
             landmarkName = "tick(timer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -384,9 +384,9 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "462"
-            endingLineNumber = "462"
-            landmarkName = "tempoButtonLongPressed(sender:)"
+            startingLineNumber = "245"
+            endingLineNumber = "245"
+            landmarkName = "viewDidLoad()"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>
@@ -416,9 +416,9 @@
             filePath = "MetronomeIdea/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "431"
-            endingLineNumber = "431"
-            landmarkName = "viewDidLoad()"
+            startingLineNumber = "219"
+            endingLineNumber = "219"
+            landmarkName = "didMove(toParent:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

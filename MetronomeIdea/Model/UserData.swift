@@ -9,8 +9,7 @@ class UserLevelData : NSObject, NSCoding {
     var et_chords : String
     var tutorialComplete : String
     var stringEquivs = ["scaleLevel","arpeggioLevel","et_singleNotes","et_scales","et_chords","tutorialComplete"]
-    
-    init(scaleLevel:String,arpeggioLevel:String,et_singleNotes:String,et_scales:String,et_chords:String,tutorialComplete:String) {
+     init(scaleLevel:String,arpeggioLevel:String,et_singleNotes:String,et_scales:String,et_chords:String,tutorialComplete:String) {
         self.scaleLevel = scaleLevel
         self.arpeggioLevel = arpeggioLevel
         self.et_singleNotes = et_singleNotes
