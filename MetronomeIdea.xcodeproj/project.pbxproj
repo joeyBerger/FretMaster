@@ -118,6 +118,7 @@
 		9E9C46E922C4841700B133A9 /* MenuButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */; };
 		9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA49F9424330B8800BF9398 /* SettingsViewController.swift */; };
 		9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAD3C0D237E825F004467B1 /* EarTraining.swift */; };
+		9EB573412450095C00322305 /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB573402450095C00322305 /* PopupController.swift */; };
 		9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBCF8AC2429D09400074C4C /* LevelHandler.swift */; };
 		9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE71F35238B8B5B00D87D24 /* UserData.swift */; };
 		9EEF76B223AFE4AB00F00010 /* AMPopTip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; };
@@ -262,6 +263,7 @@
 		9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MenuButtonClick.wav; sourceTree = "<group>"; };
 		9EA49F9424330B8800BF9398 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
 		9EAD3C0D237E825F004467B1 /* EarTraining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarTraining.swift; sourceTree = "<group>"; };
+		9EB573402450095C00322305 /* PopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupController.swift; sourceTree = "<group>"; };
 		9EBCF8AC2429D09400074C4C /* LevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHandler.swift; sourceTree = "<group>"; };
 		9EE71F35238B8B5B00D87D24 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMPopTip.framework; path = Carthage/Build/iOS/AMPopTip.framework; sourceTree = "<group>"; };
@@ -436,6 +438,7 @@
 			children = (
 				9E07F7252396B0E600E99444 /* DefaultColor.swift */,
 				9E0D26C62435AF1B00595BC9 /* ViewStyler.swift */,
+				9EB573402450095C00322305 /* PopupController.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -735,6 +738,7 @@
 				9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */,
 				9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */,
 				9E18282223CA65650001E46F /* MainViewController.swift in Sources */,
+				9EB573412450095C00322305 /* PopupController.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
 				9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */,
 				9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */,

@@ -61,16 +61,19 @@ class ViewStyler: UIViewController {
     }
     
     func setupMenuButton (ibutton : UIButton, isubText: UILabel, iprogressBar: UIProgressView? = nil) {
-            ibutton.layer.shadowColor = UIColor.black.cgColor
-            ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
-            ibutton.layer.shadowRadius = 2
-            ibutton.layer.shadowOpacity = 0.6
+        ibutton.layer.shadowColor = UIColor.black.cgColor
+        ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
+        ibutton.layer.shadowRadius = 2
+        ibutton.layer.shadowOpacity = 0.6
            
-            let width = ibutton.frame.width
-            isubText.frame = CGRect(x: 0,y: 0,width: width, height: ibutton.frame.height+30)
-            isubText.textAlignment = NSTextAlignment.center
-            isubText.layer.zPosition = 1;
-            ibutton.addSubview(isubText)
+        let width = ibutton.frame.width*0.94
+        let x = (ibutton.frame.width-width)/2
+        isubText.frame = CGRect(x: x,y: 0,width: width, height: ibutton.frame.height+30)
+        isubText.textAlignment = NSTextAlignment.center
+        isubText.adjustsFontSizeToFitWidth = true
+    
+        isubText.layer.zPosition = 1;
+        ibutton.addSubview(isubText)
             
         if let progressBar = iprogressBar {
             progressBar.frame = CGRect(x: (width-(width * 0.85))/2.0 ,y: 75,width: (width * 0.85),height: 62)

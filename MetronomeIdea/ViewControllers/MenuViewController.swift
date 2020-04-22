@@ -40,10 +40,49 @@ class MenuViewController: UIViewController {
     var buttonId = 0
     
     var devToggleButton = UIButton()
+    var resetDataButton = UIButton()
+    
+    override func viewDidLoad() {
+        super.viewDidLoad()
+
+        buttonArr = [Button0,Button1,Button2,Button3,Button4]
+        
+        setupHiddenButtons()
+
+        let bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+        bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
+        self.view.insertSubview(bgImage, at: 0)
+        
+        let styler = ViewStyler(ivc: self)
+        for (i,Button) in buttonArr.enumerated() {
+            menuButtonSubtext.append(UILabel())
+//            menuButtonSubtext[i].adjustsFontSizeToFitWidth = true
+            menuButtonProgress.append(UIProgressView())
+            styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
+        }
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
+        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        navigationController?.navigationBar.tintColor = .white
+        
+        
+        let button4frame = view.convert(Button4.frame, from:Stack)
+        //look to see if menu buttons are off the screen
+        if (button4frame.maxY + button4frame.height > view.frame.height) {
+            //conversion for iPhone8
+            //(667-85-145-(4*65))/5
+            let bottomBuffer: CGFloat = 10.0 //was 20.0
+            let numbButtons: CGFloat = 5.0
+            let button0frame = view.convert(Button0.frame, from:Stack)
+            let sP = (view.frame.height - (bottomBuffer+button0frame.height)-button0frame.minY - (numbButtons-1)*button0frame.height)/numbButtons
+            print("adapting stack to fit all buttons with new spacing of \(sP)")
+            Stack.spacing = CGFloat(sP)
+        }
+    }
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
-        setupDevButton()
         
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
         if scaleLevel != nil {
@@ -140,44 +179,6 @@ class MenuViewController: UIViewController {
         }
     }
     
-    override func viewDidLoad() {
-        super.viewDidLoad()
-//        resetData()
-        buttonArr = [Button0,Button1,Button2,Button3,Button4]
-
-        let bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
-        bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
-        self.view.insertSubview(bgImage, at: 0)
-        
-//        self.DevScreenPrint.alpha = 0.0
-        
-        let styler = ViewStyler(ivc: self)
-        for (i,Button) in buttonArr.enumerated() {
-            menuButtonSubtext.append(UILabel())
-            menuButtonProgress.append(UIProgressView())
-            styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
-        }
-        
-        let textAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        navigationController?.navigationBar.tintColor = .white
-        
-        
-        let button4frame = view.convert(Button4.frame, from:Stack)
-        //look to see if menu buttons are off the screen
-        if (button4frame.maxY + button4frame.height > view.frame.height) {
-            //conversion for iPhone8
-            //(667-85-145-(4*65))/5
-            let bottomBuffer: CGFloat = 10.0 //was 20.0
-            let numbButtons: CGFloat = 5.0
-            let button0frame = view.convert(Button0.frame, from:Stack)
-            let sP = (view.frame.height - (bottomBuffer+button0frame.height)-button0frame.minY - (numbButtons-1)*button0frame.height)/numbButtons
-            print("adapting stack to fit all buttons with new spacing of \(sP)")
-            Stack.spacing = CGFloat(sP)
-        }
-    }
-    
     @IBAction func MainMenuButton(_ sender: UIButton) {
         if (!tutorialCompleteStatus && sender.tag > 0 || sender.tag > 1) {
             return
@@ -204,55 +205,62 @@ class MenuViewController: UIViewController {
         }
     }
         
-    func setViewController(iviewControllerStr: String) -> MainViewController {
-        var controller: MainViewController
-        
-        controller = self.storyboard?.instantiateViewController(withIdentifier: iviewControllerStr) as! MainViewController
-        
-        return controller
+    func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
+        return "L\(ilevel+1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
     }
     
-    func presentViewController(iviewController: MainViewController) {
-        iviewController.modalPresentationStyle = .fullScreen
-        present(iviewController, animated: false, completion: nil)
-    }
-        
-    @IBAction func resetData() {
-//        setDevScreenPrintText(itext: "Resetting Data")
-        for (_,str) in userLevelData.stringEquivs.enumerated() {
-            UserDefaults.standard.removeObject(forKey: str)
-        }
+    func setupHiddenButtons() {
+        setupDevButton()
+        setupResetButton()
     }
     
     @objc func toggleDevMode() {
         developmentMode = (developmentMode + 1) % 3
         let devStr = "Dev Mode: \(developmentMode)"
-        print("developmentMode \(developmentMode)")                
-        setDevScreenPrintText(itext: devStr)
+        setHiddenButtonText(itext: devStr, ibutton: devToggleButton)
     }
     
-    func setDevScreenPrintText(itext: String) {
-//        DevScreenPrint.text = itext
-        devToggleButton.setTitle(itext,for: .normal)
-        devToggleButton.alpha = 1.0
+     @objc func resetData() {
+        setHiddenButtonText(itext: "Resetting Data", ibutton: resetDataButton)
+        for (_,str) in userLevelData.stringEquivs.enumerated() {
+            UserDefaults.standard.removeObject(forKey: str)
+        }
+    }
+    
+    func setHiddenButtonText(itext: String, ibutton: UIButton) {
+        ibutton.setTitle(itext,for: .normal)
+        print(itext)
+        UIView.setAnimationsEnabled(true)
+        ibutton.alpha = 1.0
         UIView.animate(withDuration: 3.5, animations: {
-         self.devToggleButton.alpha = 0.0
+         ibutton.alpha = 0.0
         })
-    }
-    
-    func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
-        return "L\(ilevel+1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
     }
     
     func setupDevButton() {
         devToggleButton = UIButton()
-        
+        devToggleButton.frame = returnDevButtonFrame("Dev")
+//        devToggleButton.backgroundColor = UIColor.red
+        devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
+        view.addSubview(devToggleButton)
+    }
+    
+    func setupResetButton() {
+        resetDataButton = UIButton()
+        resetDataButton.frame = returnDevButtonFrame()
+        resetDataButton.addTarget(self, action: #selector(resetData), for: .touchDown)
+        view.addSubview(resetDataButton)
+    }
+    
+    func returnDevButtonFrame(_ itype: String = "ResetData") -> CGRect {
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
         let height:CGFloat = screenHeight*0.1
-        devToggleButton.frame = CGRect(x: 0, y: screenHeight-height, width: screenWidth*0.5, height: height)
-        view.addSubview(devToggleButton)
-        devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
+        if (itype == "ResetData") {
+            return CGRect(x: screenWidth*0.5, y: screenHeight-height, width: screenWidth*0.5, height: height)
+        } else {
+            return CGRect(x: 0, y: screenHeight-height, width: screenWidth*0.5, height: height)
+        }
     }
 }

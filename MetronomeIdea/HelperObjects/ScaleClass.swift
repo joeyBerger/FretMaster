@@ -88,9 +88,7 @@ class ScaleCollection {
         var notePos = 1
         
         let desiredScale = availableScales[iinput]
-        if let vc = vc {
-            print("vc defined")
-        }
+
         vc!.specifiedNoteCollection.removeAll()
         
         //find note index

@@ -87,67 +87,26 @@ class LevelConstruct: UIViewController {
         return Float(subLevels)/Float(totalLevels)
     }
     
-    class nestle {  //TODO: get rid of this
-    
-    }
-    
     let currentLevelName:[String:[String]] = [        
-        "scales" : ["Intro","Pentatonics","Pentatonic Modes","Random Pentatonic","Major/Minor","Modes"],
-        "arpeggios" : ["Intro","Pentatonics","Pentatonic Modes","Random Pentatonic","Major/Minor","Modes"]
+        "scales" : ["Intro","Pentatonics","Major/Minor Modes","Pentatonic And Major/Minor","Previous Up/Down","Previous Up/Down In Time"],
+        "arpeggios" : ["Major/Minor","Major/Minor Seventh","Previous Up","Previous Up/Down","Previous Up In Time","Previous Up/Down In Time"]
     ]
-    
-    
-    
     
     let scale = [
-        
-        
-//        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
-//
-//                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
-//                        ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
-//                                ["MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo","MinorPentatonic_Up_Tempo", "MinorPentatonic_Up_Tempo"],
-        
-        
-                                
-//        ["MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up"],
-//
-//                ["MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up"],
-//                        ["MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up","MinorPentatonic_Up", "MajorPentatonic_Up"],
-//
-//
-//
-//        ["MinorPentatonic_Both_Tempo", "MajorPentatonic_Both_Tempo","Ionian_Both_Tempo", "Aeolian_Both_Tempo"],
-        
         ["MinorPentatonic_Up"],
-        ["MinorPentatonic_Up", "MajorPentatonic_Up"],
-        ["Ionian_Up", "Aeolian_Up"],
-        ["MinorPentatonic_Up", "MajorPentatonic_Up","Ionian_Up", "Aeolian_Up"],
-        ["MinorPentatonic_Both", "MajorPentatonic_Both","Ionian_Both", "Aeolian_Both"],
+        ["MinorPentatonic_Up","MajorPentatonic_Up"],
+        ["Ionian_Up","Aeolian_Up"],
+        ["MinorPentatonic_Up","MajorPentatonic_Up","Ionian_Up","Aeolian_Up"],
+        ["MinorPentatonic_Both","MajorPentatonic_Both","Ionian_Both","Aeolian_Both"],
+        ["MinorPentatonic_Both_Tempo","MajorPentatonic_Both_Tempo","Ionian_Both_Tempo","Aeolian_Both_Tempo"],
     ]
     let arpeggio = [
-        
-         ["MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo"],
-                  ["MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo"],
-                           ["MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo","MajorSeventhArp_Up_Tempo", "MajorSeventhArp_Up_Tempo"],
-        
-        
-        
-        ["MajorArp_Up", "MinorArp_Up"],
-        ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
-        ["MajorArp_Up", "MinorArp_Up","MajorSeventhArp_Up", "MinorSeventhArp_Up"],
-        ["DiminishedArp_Up", "AugmentedArp_Up"],
+        ["MajorArp_Up","MinorArp_Up"],
+        ["MajorSeventhArp_Up","MinorSeventhArp_Up"],
+        ["MajorArp_Up","MinorArp_Up","MajorSeventhArp_Up","MinorSeventhArp_Up"],
+        ["MajorArp_Both","MinorArp_Both","MajorSeventhArp_Both","MinorSeventhArp_Both"],
+        ["MajorArp_Up_Tempo","MinorArp_Up_Tempo","MajorSeventhArp_Up_Tempo","MinorSeventhArp_Up_Tempo"],
+        ["MajorArp_Both_Tempo","MinorArp_Both_Tempo","MajorSeventhArp_Both_Tempo","MinorSeventhArp_Both_Tempo"],
+//        ["DiminishedArp_Up", "AugmentedArp_Up"],
     ]
-    
-//    let scale = [
-//        ["MinorPentatonic", "MajorPentatonic"],
-//        ["Ionian", "Aeolian"],
-//        ["MinorPentatonic", "MajorPentatonic","Ionian", "Aeolian"],
-//    ]
-//    let arpeggio = [
-//        ["MajorArp", "MinorArp"],
-//        ["MajorSeventhArp", "MinorSeventhArp"],
-//        ["MajorArp", "MinorArp","MajorSeventhArp", "MinorSeventhArp"],
-//        ["DiminishedArp", "AugmentedArp"],
-//    ]
 }
