@@ -180,59 +180,9 @@ class MainViewController: UIViewController {
     var dotType = ""
     var clickTone = ""
     
-    override func viewDidAppear(_ animated: Bool) {
-        super.viewDidAppear(animated)
-        
-        if (!sceneHasBeenSetup) {
-            //Add overlays
-            DimOverlay = setupScreenOverlay()
-            DimOverlay.backgroundColor = UIColor.black
-            view.addSubview(DimOverlay)
-            setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
-            
-            ActionOverlay = setupScreenOverlay()
-            ActionOverlay.backgroundColor = UIColor.white
-            view.addSubview(ActionOverlay)
-            setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
-     
-            setupFretBoardImage()
-            setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
-            
-            if !tutorialComplete! {
-                hideAllFretMarkers()
-                wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
-                setupPopupTutorialText()                
-            }
-         }
-        
-        setupToSpecificState()
-        currentState = State.NotesTestShowNotes
-        setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
-        getDynamicAudioVisualData()
-    }
-    
-    override func didMove(toParent parent: UIViewController?) {
-        if developmentMode > 0 {print("Back button pressed")}
-    }
-    
-    override func willMove(toParent parent: UIViewController?) {
-        super.willMove(toParent: parent)
-        UIView.setAnimationsEnabled(false)
-        if let met = met {
-            met.endMetronome()
-        }
-        
-    }
-    
-    @objc func willEnterForeground() {
-        navigationController?.popViewController(animated: false)
-    }
-
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(onSettingsButtonDown))
-        
+                
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
             //initialize objects
@@ -291,12 +241,68 @@ class MainViewController: UIViewController {
         recognizer1.view?.tag = 1
         
         tempoButtonArr = [TempoUpButton, TempoDownButton]
+    }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
         
-//        let textAttributes = [NSAttributedString.Key.foregroundColor:defaultColor.NavBarTitleColor]
-//        navigationController?.navigationBar.titleTextAttributes = textAttributes
+        if (!sceneHasBeenSetup) {
+            //Add overlays
+            DimOverlay = setupScreenOverlay()
+            DimOverlay.backgroundColor = UIColor.black
+            view.addSubview(DimOverlay)
+            setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
+            
+            ActionOverlay = setupScreenOverlay()
+            ActionOverlay.backgroundColor = UIColor.white
+            view.addSubview(ActionOverlay)
+            setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
+     
+            setupFretBoardImage()
+            setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
+            
+            if !tutorialComplete! {
+                hideAllFretMarkers()
+                wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
+                setupPopupTutorialText()                
+            }
+            
+            if developmentMode > 0 {
+                let testButton = UIButton()
+                let screenRect = UIScreen.main.bounds
+                let screenWidth = screenRect.size.width
+                let screenHeight = screenRect.size.height
+                let height:CGFloat = screenHeight*0.1
+                testButton.frame = CGRect(x: FretboardImage.frame.maxX, y: screenHeight-height, width: screenWidth*0.5, height: height)
+                testButton.backgroundColor = UIColor.red
+                testButton.addTarget(self, action: #selector(onTestButtonDown), for: .touchDown)
+                view.addSubview(testButton)
+            }
+         }
+        
+        setupToSpecificState()
+        currentState = State.NotesTestShowNotes
+        setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
+        getDynamicAudioVisualData()
+    }
+    
+    override func didMove(toParent parent: UIViewController?) {
+        if developmentMode > 0 {print("Back button pressed")}
+    }
+    
+    override func willMove(toParent parent: UIViewController?) {
+        super.willMove(toParent: parent)
+        UIView.setAnimationsEnabled(false)
+        if let met = met {
+            met.endMetronome()
+        }
         
     }
     
+    @objc func willEnterForeground() {
+        navigationController?.popViewController(animated: false)
+    }
+
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if developmentMode > 0 {print("tempoButtonLongPressed, state: \(currentState)")}
         if !checkForValidTempoInput() {return}
@@ -1115,7 +1121,7 @@ class MainViewController: UIViewController {
         mainPopover.removeFromSuperview()
         if tutorialActive {
             progressTutorial()
-        } else if (mainPopoverState == "Tutorial") {
+        } else if (mainPopoverState == "TutorialComplete") {
             allMarkersDisplayed = true
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
             pc!.startTestReminder(itime: 20)
@@ -1149,11 +1155,18 @@ class MainViewController: UIViewController {
         if (type == "Tutorial") {
             pc!.tutorialPopup.hide()
             tutorialActive = !tutorialActive
+            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
             mainPopoverTitle.text = "FRET MASTER™"
             mainPopoverBodyText.text = "Welcome To Fret Master™! You will learn and sharpen valuable skiills needed to become a great guitarist! Let get started with a simple tutorial!"
         } else if (type == "LevelComplete") {
+            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(30)
             mainPopoverTitle.text = "LEVEL \(levelPassed) PASSED"
             mainPopoverBodyText.text = "Congratulations- keep working hard!"
+        } else if (type == "TutorialComplete") {
+            tutorialActive = false
+            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(30)
+            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
+            pc!.tutorialPopup.hide()
         }
         
         swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
@@ -1217,9 +1230,9 @@ class MainViewController: UIViewController {
             }
             setLayer(iobject: FretboardImage, ilayer: "Default")
             pc!.tutorialPopup.hide()
-            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(35)
-            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
-            wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
+//            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
+//            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
+            wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
             return
         }
         wt.waitThen(itime: 0.3, itarget: self, imethod: #selector(presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject, "arg2": parentType as AnyObject])
@@ -1446,6 +1459,15 @@ class MainViewController: UIViewController {
         }
         print("layer does not exist")
         return 0
+    }
+    
+    @objc func onTestButtonDown() {
+//        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
+//          setupPopupTutorialText()
+        
+        mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
+        mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
+        wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
     }
     
     func returnStackViewButtonCoordinates(istackViewButton: UIButton, istack: UIStackView, ixoffset: CGFloat = 0.0, iyoffset: CGFloat = 0.0) -> CGRect {
