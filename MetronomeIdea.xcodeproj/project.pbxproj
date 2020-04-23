@@ -113,7 +113,6 @@
 		9E8527DC22C91E7400DFCB26 /* FretBoard3.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527DB22C91E7400DFCB26 /* FretBoard3.png */; };
 		9E8527E022C91F5800DFCB26 /* Fretboard4.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8527DF22C91F5700DFCB26 /* Fretboard4.png */; };
 		9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E919EEF244EBB4C008027EF /* Vibration.swift */; };
-		9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E944D0223B0046B00A8F7A2 /* Playground.swift */; };
 		9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C46E622C483C000B133A9 /* SoundController.swift */; };
 		9E9C46E922C4841700B133A9 /* MenuButtonClick.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */; };
 		9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA49F9424330B8800BF9398 /* SettingsViewController.swift */; };
@@ -258,7 +257,6 @@
 		9E8527DB22C91E7400DFCB26 /* FretBoard3.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoard3.png; sourceTree = "<group>"; };
 		9E8527DF22C91F5700DFCB26 /* Fretboard4.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Fretboard4.png; sourceTree = "<group>"; };
 		9E919EEF244EBB4C008027EF /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
-		9E944D0223B0046B00A8F7A2 /* Playground.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Playground.swift; sourceTree = "<group>"; };
 		9E9C46E622C483C000B133A9 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
 		9E9C46E822C4841700B133A9 /* MenuButtonClick.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = MenuButtonClick.wav; sourceTree = "<group>"; };
 		9EA49F9424330B8800BF9398 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -545,7 +543,6 @@
 				B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */,
 				B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */,
 				B8A6185A20DB9E2B00AF33C5 /* Info.plist */,
-				9E944D0223B0046B00A8F7A2 /* Playground.swift */,
 			);
 			path = MetronomeIdea;
 			sourceTree = "<group>";
@@ -740,7 +737,6 @@
 				9E18282223CA65650001E46F /* MainViewController.swift in Sources */,
 				9EB573412450095C00322305 /* PopupController.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
-				9E944D0323B0046B00A8F7A2 /* Playground.swift in Sources */,
 				9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */,
 				9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */,
 				9E56839C2436FC5C007070C4 /* SettingViewCell.swift in Sources */,

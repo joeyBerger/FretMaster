@@ -464,20 +464,11 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="WbH-SB-Dkq">
-                        <rightBarButtonItems>
-                            <barButtonItem title="Settings" style="plain" id="Kjp-Xs-Fjq">
-                                <connections>
-                                    <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="i8u-2u-Zeg"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem id="Wmg-QU-Ufa"/>
-                            <barButtonItem title="     " id="ytn-5P-tu4">
-                                <connections>
-                                    <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="nVN-li-5nZ"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem title="Item" id="9FD-wI-rJJ"/>
-                        </rightBarButtonItems>
+                        <barButtonItem key="rightBarButtonItem" title="Settings" id="Kjp-Xs-Fjq">
+                            <connections>
+                                <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="i8u-2u-Zeg"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="FretboardDummy" destination="mtX-I4-btC" id="OAb-jK-4sS"/>

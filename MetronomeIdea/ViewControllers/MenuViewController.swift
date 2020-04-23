@@ -66,7 +66,6 @@ class MenuViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.tintColor = .white
         
-        
         let button4frame = view.convert(Button4.frame, from:Stack)
         //look to see if menu buttons are off the screen
         if (button4frame.maxY + button4frame.height > view.frame.height) {

@@ -173,7 +173,6 @@ class MainViewController: UIViewController {
     
     var tutorialComplete: Bool?
     var currentButtonLayer = 0
-//    let digitInput = DigitsInput()
     
     var sceneHasBeenSetup = false
     
@@ -231,6 +230,8 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        navigationItem.rightBarButtonItem = UIBarButtonItem(title: "Add", style: .plain, target: self, action: #selector(onSettingsButtonDown))
         
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
