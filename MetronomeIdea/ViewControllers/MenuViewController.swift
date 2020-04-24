@@ -42,6 +42,8 @@ class MenuViewController: UIViewController {
     var devToggleButton = UIButton()
     var resetDataButton = UIButton()
     
+    var bgImage = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
 
@@ -49,7 +51,7 @@ class MenuViewController: UIViewController {
         
         setupHiddenButtons()
 
-        let bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+        bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(bgImage, at: 0)
@@ -239,8 +241,10 @@ class MenuViewController: UIViewController {
     func setupDevButton() {
         devToggleButton = UIButton()
         devToggleButton.frame = returnDevButtonFrame("Dev")
-//        devToggleButton.backgroundColor = UIColor.red
-        devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
+        devToggleButton.backgroundColor = UIColor.red
+//        devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
+        devToggleButton.addTarget(self, action: #selector(getRandomPhoto), for: .touchDown)
+        
         view.addSubview(devToggleButton)
     }
     
@@ -261,5 +265,44 @@ class MenuViewController: UIViewController {
         } else {
             return CGRect(x: 0, y: screenHeight-height, width: screenWidth*0.5, height: height)
         }
+    }
+    
+    private let flickr = Flickr()
+    @objc func getRandomPhoto() {
+//        flickr.unsplashTry()
+
+//        flickr.unsplashImageDownload()
+        
+        flickr.unsplashTry(for: "guitar") { imageURL in
+            self.flickr.unsplashImageDownload(for: imageURL.full) { image in
+                
+                self.bgImage.image = image
+            }
+        }
+        
+        
+//        self.flickr.unsplashImageDownload(for: "concert") { image in
+//            self.bgImage.image = image
+//        }
+            
+//        flickr.searchFlickrForArray(for: "concert") { searchResults, error in
+//            if error != nil {
+//                print("An error occured downloading images")
+//                return
+//            }
+//
+//            if searchResults!.count == 0 {
+//                DispatchQueue.main.async {
+////                    self.noImagesLabel.isHidden = false
+//                    print("error")
+//                }
+//            } else {
+//                for (i,_) in searchResults!.enumerated() {
+//                    self.flickr.downloadAndReturnImage(imageInfo: searchResults![i]) { image in
+//                        self.bgImage.image = image
+//                    }
+//                  }
+//               }
+//        }
     }
 }
