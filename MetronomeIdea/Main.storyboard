@@ -464,7 +464,7 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="WbH-SB-Dkq">
-                        <barButtonItem key="rightBarButtonItem" title="Settings" id="Kjp-Xs-Fjq">
+                        <barButtonItem key="rightBarButtonItem" image="outline_settings_black_18dp-scaled" id="Kjp-Xs-Fjq">
                             <connections>
                                 <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="i8u-2u-Zeg"/>
                             </connections>
@@ -582,6 +582,7 @@
     </scenes>
     <resources>
         <image name="Fretboard4.png" width="355" height="979"/>
+        <image name="outline_settings_black_18dp-scaled" width="29" height="29"/>
         <image name="xmark" catalog="system" width="64" height="56"/>
     </resources>
 </document>

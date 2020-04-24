@@ -4,7 +4,7 @@ import AVFoundation
 import UIKit
 
 class MainViewController: UIViewController {
-
+    
     //Outlets
     @IBOutlet var ResultsLabel: UILabel!
     @IBOutlet var ResultButton: UIButton!
@@ -13,7 +13,7 @@ class MainViewController: UIViewController {
     @IBOutlet var PeriphButton2: UIButton!
     @IBOutlet var PeriphButton3: UIButton!
     @IBOutlet var PeriphButton4: UIButton!
-
+    
     @IBOutlet var TempoButton: UIButton!
     @IBOutlet var TempoDownButton: UIButton!
     @IBOutlet var TempoUpButton: UIButton!
@@ -23,7 +23,7 @@ class MainViewController: UIViewController {
     @IBOutlet var mainPopoverBodyText: UILabel!
     @IBOutlet var mainPopoverTitle: UILabel!
     @IBOutlet var mainPopoverButton: UIButton!
-
+    
     @IBOutlet weak var FretboardDummy: UIImageView!
     @IBOutlet var PeripheralStackView: UIStackView!
     
@@ -35,14 +35,14 @@ class MainViewController: UIViewController {
     var fretButtonFrame: [String: CGRect] = [:]
     var dotText: [UILabel] = []
     var periphButtonArr: [UIButton] = []
-
+    
     //Timers
     var dotFadeTime: Timer?
     var userInputTime = CFAbsoluteTimeGetCurrent()
     var recordStartTime: CFAbsoluteTime = 0
     var recordStopTime: CFAbsoluteTime = 0
     var previousNote: String?
-
+    
     //Runtime Variables
     
     //Objects
@@ -72,10 +72,10 @@ class MainViewController: UIViewController {
     var tutorialPopupText: [String] = []
     var currentTutorialPopup = 0
     var developmentMode = 0
-
+    
     var specifiedNoteCollection: [String] = []
     let tempScale: [String] = ["A1", "C2", "D2", "E2", "G2"]
-
+    
     var defaultSoundFadeTime = 0.3
     
     var tutorialActive = false
@@ -91,12 +91,12 @@ class MainViewController: UIViewController {
     
     var resultButtonText = ""
     var resultsLabelDefaultText = ""
-        
+    
     let testResultStrDict: [String: String] = [
         "incorrect_notes" : "Notes Played Were Incorrect",
         "incorrect_time" : "Time Was Inaccurate",
     ]
-
+    
     var buttonDict: [Int: String] = [ // this could probably just be an array
         0: "G#1",
         1: "A1",
@@ -129,7 +129,7 @@ class MainViewController: UIViewController {
         28: "B3",
         29: "C4",
     ]
-
+    
     var currentBackgroundPic = ""
     var backgroundPicDict: [String: String] = [  //TODO: need to add states and unify image types
         "scaleLevel": "RockCrowd.png",
@@ -140,7 +140,7 @@ class MainViewController: UIViewController {
     ]
     
     var buttonNote: [String: UILabel] = [:]
-
+    
     let layerArr = [
         "Default",
         "DimOverlay",
@@ -150,7 +150,7 @@ class MainViewController: UIViewController {
         "FretButton",
         "ActionOverlay",
     ]
-
+    
     enum State : String {
         case Idle
         case RecordingIdle
@@ -166,7 +166,7 @@ class MainViewController: UIViewController {
         case NotesTestIdle_Tempo
         case NotesTestShowNotes
     }
-
+    
     var currentState = State.Idle
     var allMarkersDisplayed = false
     var defaultState: State?
@@ -182,19 +182,19 @@ class MainViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-                
+        
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
-            //initialize objects
-            met = Metronome(ivc: self)
-            sCollection = ScaleCollection(ivc: self)
-            et = EarTraining(ivc: self)
-            pc = PopupController(ivc: self)
-            styler = ViewStyler(ivc: self)
-            if developmentMode > 1 {
-                met?.bpm = 350.0
-            }
-
+        //initialize objects
+        met = Metronome(ivc: self)
+        sCollection = ScaleCollection(ivc: self)
+        et = EarTraining(ivc: self)
+        pc = PopupController(ivc: self)
+        styler = ViewStyler(ivc: self)
+        if developmentMode > 1 {
+            met?.bpm = 350.0
+        }
+        
         styler!.setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
         
         ResultsLabel.text = ""
@@ -203,7 +203,7 @@ class MainViewController: UIViewController {
         ResultsLabel?.adjustsFontSizeToFitWidth = true
         ResultsLabel?.backgroundColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0)
         ResultsLabel?.textColor = defaultColor.MenuButtonTextColor
-
+        
         ResultButton.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton.setTitleColor(.black, for: .normal)
         setResultButton()
@@ -214,7 +214,7 @@ class MainViewController: UIViewController {
         ResultButton.titleLabel?.font = UIFont(name: ResultsLabel.font.fontName, size: 20)
         ResultButton.layer.cornerRadius = 20
         giveButtonBackgroundShadow(ibutton: ResultButton)
-
+        
         mainPopover.backgroundColor = defaultColor.MenuButtonColor
         mainPopover.layer.cornerRadius = 10
         mainPopoverCloseButton.tintColor = defaultColor.MenuButtonTextColor
@@ -225,13 +225,13 @@ class MainViewController: UIViewController {
         mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
         mainPopoverButton.setTitleColor(.white, for: .normal)
         mainPopoverButton.backgroundColor = UIColor.red
-
+        
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
         periphButtonArr.append(PeriphButton2)
         periphButtonArr.append(PeriphButton3)
         periphButtonArr.append(PeriphButton4)
-
+        
         // setup long pressed recognizers
         let recognizer0 = UILongPressGestureRecognizer(target: self, action: #selector(tempoButtonLongPressed))
         TempoUpButton.addGestureRecognizer(recognizer0)
@@ -257,7 +257,7 @@ class MainViewController: UIViewController {
             ActionOverlay.backgroundColor = UIColor.white
             view.addSubview(ActionOverlay)
             setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
-     
+            
             setupFretBoardImage()
             setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
             
@@ -278,7 +278,7 @@ class MainViewController: UIViewController {
                 testButton.addTarget(self, action: #selector(onTestButtonDown), for: .touchDown)
                 view.addSubview(testButton)
             }
-         }
+        }
         
         setupToSpecificState()
         currentState = State.NotesTestShowNotes
@@ -302,7 +302,7 @@ class MainViewController: UIViewController {
     @objc func willEnterForeground() {
         navigationController?.popViewController(animated: false)
     }
-
+    
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if developmentMode > 0 {print("tempoButtonLongPressed, state: \(currentState)")}
         if !checkForValidTempoInput() {return}
@@ -314,7 +314,7 @@ class MainViewController: UIViewController {
             wt.waitThen(itime: 0.02, itarget: self, imethod: #selector(tempoButtonUpdater) as Selector, irepeats: true, idict: ["arg1": sender.view!.tag as AnyObject])
         } else if sender.state == .changed {}
     }
-
+    
     let tempoHoldTimeThresholds = [1.2, 3.0, 4.5]
     @objc func tempoButtonUpdater(timer: Timer) {
         tempoUpdaterCycle += 1.0
@@ -322,7 +322,7 @@ class MainViewController: UIViewController {
         let dir = resultObj["arg1"] as! Int == 0 ? 1 : -1
         let tempoUpdaterThrehold = 5
         var mult = 1.0
-
+        
         if tempoUpdaterCycle > 0, Int(tempoUpdaterCycle) % tempoUpdaterThrehold == 0 {
             if tempoUpdaterCycle >= tempoHoldTimeThresholds[tempoHoldTimeThresholds.count - 1] * 50 {
                 mult = 30.0
@@ -354,7 +354,7 @@ class MainViewController: UIViewController {
             TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
         }
     }
-
+    
     func setStateProperties(icurrentLevel: String, ilevelConstruct: [[String]], ilevelKey: String, itutorialComplete: String = "1.0") {
         lc.setLevelVars(icurrentLevel: icurrentLevel, icurrentLevelConstruct: ilevelConstruct, icurrentLevelKey: ilevelKey)
         tutorialComplete = itutorialComplete == "1.0"
@@ -367,7 +367,7 @@ class MainViewController: UIViewController {
             print("ilevelKey \(ilevelKey)")
         }
     }
-
+    
     func setupToSpecificState() {
         if currentState == State.RecordingIdle {
             setButtonState(ibutton: PeriphButton0, ibuttonState: false)
@@ -380,14 +380,14 @@ class MainViewController: UIViewController {
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
         }
-            setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
+        setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
     }
     
     func setupCurrentTaskHelper() {
         setupCurrentTask()
         wt.stopWaitThenOfType(iselector: #selector(setupCurrentTask) as Selector)
     }
-
+    
     @objc func setupCurrentTask() {
         let task = lc.returnCurrentTask()
         let trimmedTask = trimCurrentTask(iinput: task)
@@ -413,11 +413,11 @@ class MainViewController: UIViewController {
             }
         }
         defaultState = currentState
-
+        
         let resultPopoverDirText: String
         var resultPopoverTempoText = "Tempo: "
         resultButtonText = ""
-
+        
         if dir == "Up" {
             resultPopoverDirText = "Play From Low To High Note"
             resultButtonText = "Up"
@@ -428,9 +428,9 @@ class MainViewController: UIViewController {
             resultPopoverDirText = "Play From Low To High To Low"
             resultButtonText = "Up And Down"
         }
-
+        
         resultButtonText += " / "
-
+        
         if !tempoActive {
             resultPopoverTempoText += "None, Play Freely!"
             resultButtonText += "No Tempo"
@@ -439,7 +439,7 @@ class MainViewController: UIViewController {
             resultPopoverTempoText += tempo
             resultButtonText += tempo
         }
-
+        
         pc!.setResultButtonPopupText(itextArr: [ResultsLabel.text!, resultPopoverDirText, resultPopoverTempoText])
         setResultButton(istr: resultButtonText)
     }
@@ -483,11 +483,11 @@ class MainViewController: UIViewController {
     
     func setupBackgroundImage(ibackgroundPic: String) {
         let bgImage = UIImageView(image: UIImage(named: ibackgroundPic))
-         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
-         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
-         self.view.insertSubview(bgImage, at: 0)
+        bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
+        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
+        self.view.insertSubview(bgImage, at: 0)
     }
-
+    
     func trimCurrentTask(iinput: String) -> String {
         let signifiers = ["Up", "Tempo", "Both"]
         var modifiedStr = iinput
@@ -500,7 +500,7 @@ class MainViewController: UIViewController {
         }
         return modifiedStr
     }
-
+    
     func parseTaskDirection(iinput: String) -> String {
         let signifiers = ["Up", "Down", "Both"]
         var dir = ""
@@ -512,11 +512,11 @@ class MainViewController: UIViewController {
         }
         return dir
     }
-
+    
     func parseTempoStatus(iinput: String) -> Bool {
         return iinput.contains("Tempo")
     }
-
+    
     func setupPeripheralButtons(iiconArr: [String]) {
         for (i, button) in periphButtonArr.enumerated() {
             if i < iiconArr.count {
@@ -524,7 +524,7 @@ class MainViewController: UIViewController {
                 button.alpha = 1.0
                 periphButtonArr[i].setTitle("", for: .normal)
                 // control button size
-                 let insets: CGFloat = 10
+                let insets: CGFloat = 10
                 periphButtonArr[i].imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
                 setButtonImage(ibutton: periphButtonArr[i], iimageStr: iiconArr[i])
                 periphButtonArr[i].imageView?.tintColor = defaultColor.AlternateButtonInlayColor
@@ -532,21 +532,21 @@ class MainViewController: UIViewController {
                 periphButtonArr[i].layer.cornerRadius = 25
                 periphButtonArr[i].backgroundColor = defaultColor.MenuButtonColor
                 periphButtonArr[i].imageView?.alpha = 1.0
-    //            giveButtonBackgroundShadow(ibutton: periphButtonArr[i])  //TODO: why isnt this working?
+                //            giveButtonBackgroundShadow(ibutton: periphButtonArr[i])  //TODO: why isnt this working?
             } else {
-//                button.isHidden = true
+                //                button.isHidden = true
                 button.isEnabled = false
                 button.alpha = 0.0
             }
         }
     }
-
+    
     func setPeriphButtonsToDefault(idefaultIcons: [String]) {
         for (i, _) in idefaultIcons.enumerated() {
             setButtonImage(ibutton: periphButtonArr[i], iimageStr: idefaultIcons[i])
         }
     }
-
+    
     func setupTempoButtons(ibuttonsActive: Bool) {
         var buttonColor: UIColor
         var inlayColor: UIColor
@@ -557,13 +557,13 @@ class MainViewController: UIViewController {
             buttonColor = defaultColor.InactiveButton
             inlayColor = defaultColor.InactiveInlay
         }
-
+        
         TempoButton.backgroundColor = buttonColor
         TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
         TempoButton.setTitleColor(inlayColor, for: .normal)
         TempoButton.layer.masksToBounds = true
         TempoButton.layer.cornerRadius = 25
-
+        
         // control button size
         let insets: CGFloat = 10
         setButtonImage(ibutton: TempoDownButton, iimageStr: "outline_expand_more_black_18dp")
@@ -576,7 +576,7 @@ class MainViewController: UIViewController {
         TempoDownButton.layer.masksToBounds = true
         TempoDownButton.layer.cornerRadius = 25
         TempoDownButton.imageView?.alpha = 1.0
-
+        
         setButtonImage(ibutton: TempoUpButton, iimageStr: "outline_expand_less_black_18dp")
         TempoUpButton.contentVerticalAlignment = .fill
         TempoUpButton.contentHorizontalAlignment = .fill
@@ -587,7 +587,7 @@ class MainViewController: UIViewController {
         TempoUpButton.layer.cornerRadius = 25
         TempoDownButton.imageView?.alpha = 1.0
     }
-
+    
     func setupFretMarkerText(ishowAlphabeticalNote: Bool, ishowNumericDegree: Bool, inumericDefaults: [String] = ["b5", "b6"]) {
         for (idx, _) in buttonDict {
             var str = buttonDict[idx]
@@ -606,13 +606,13 @@ class MainViewController: UIViewController {
             dotText[idx].text = note
         }
     }
-
+    
     func setButtonState(ibutton: UIButton, ibuttonState: Bool) {
         let alpha = ibuttonState ? 1.0 : 0.0
         ibutton.isEnabled = ibuttonState
         ibutton.alpha = CGFloat(alpha)
     }
-
+    
     func setButtonImage(ibutton: UIButton, iimageStr: String) {
         let image = UIImage(named: iimageStr)
         ibutton.setImage(image, for: .normal)
@@ -626,24 +626,24 @@ class MainViewController: UIViewController {
         ibutton.layer.shadowRadius = 2
         ibutton.layer.shadowOpacity = 0.6
     }
-
+    
     func setPeripheralButtonsToDefault() {
         for (i, str) in defaultPeripheralIcon.enumerated() {
             setButtonImage(ibutton: periphButtonArr[i], iimageStr: str)
         }
     }
-
+    
     func recordTimeAccuracy() {
         if met!.currentClick >= met!.countInClick || true {
             userInputTime = CFAbsoluteTimeGetCurrent()
-
+            
             if userInputTime - met!.clickTime > 0.5 {
             } else {
                 let timeDelta = abs(userInputTime - met!.clickTime)
                 if timeDelta < 0.05 {
-//                    print("good")
+                    //                    print("good")
                 } else {
-//                    print("late")
+                    //                    print("late")
                 }
                 noteCollectionTestData[noteCollectionTestData.count - 1].time = userInputTime
                 noteCollectionTestData[noteCollectionTestData.count - 1].timeDelta = timeDelta
@@ -655,7 +655,7 @@ class MainViewController: UIViewController {
         if !tempoButtonsActive { return false }
         return !returnValidState(iinputState: currentState, istateArr: [State.NotesTestActive_NoTempo,State.PlayingNotesCollection])
     }
-
+    
     @IBAction func scrollTempo(_ sender: UIButton) {
         if developmentMode > 0 {print("scroll tempo, state: \(currentState)")}
         if !checkForValidTempoInput() {return}
@@ -668,7 +668,7 @@ class MainViewController: UIViewController {
         TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
         tapTime.removeAll()
     }
-
+    
     @IBAction func tempoTapped(_: Any) {
         if developmentMode > 0 {print("tempoTapped, state: \(currentState)")}
         if !checkForValidTempoInput() {return}
@@ -691,28 +691,28 @@ class MainViewController: UIViewController {
             TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
         }
     }
-
+    
     @objc func timeoutTapTempo() {
         tapTime.removeAll()
     }
-
+    
     @IBAction func startMetronome(_: Any) {
         met?.startMetro()
     }
-
+    
     func handleTutorialInput(iwchButton: Int) -> Bool {
         if mainPopoverVisible {
             return false
         }
-
+        
         if tutorialActive, currentTutorialPopup == iwchButton + 1 {
             progressTutorial()
             return false
         }
         return true
     }
-  
-
+    
+    
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
         currentButtonLayer = periphButtonArr[sender.tag].pulsate(ilayer: currentButtonLayer)
@@ -737,7 +737,7 @@ class MainViewController: UIViewController {
             break
         }
     }
-
+    
     // Peripheral Buttons Down
     @IBAction func PeripheralButton0OnButtonDown(_ iwchButton: Int) {
         if !handleTutorialInput(iwchButton: iwchButton) {
@@ -747,7 +747,7 @@ class MainViewController: UIViewController {
         let s = #selector(pc!.enactTestReminder) as Selector
         wt.stopWaitThenOfType(iselector: s)
         pc!.reminderPopup.hide()
-       
+        
         // Scale Test States
         if (returnValidState(iinputState: currentState,
                              istateArr: [
@@ -755,7 +755,7 @@ class MainViewController: UIViewController {
                                 State.NotesTestShowNotes,
                                 State.NotesTestIdle_Tempo,
                                 State.NotesTestShowNotes
-                            ])) {
+        ])) {
             setupCurrentTaskHelper()
             currentState = toggleTestState(icurrentState: defaultState!)
             setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
@@ -771,11 +771,11 @@ class MainViewController: UIViewController {
             }
             return
         } else if (returnValidState(iinputState: currentState,
-                             istateArr: [
-                                State.NotesTestActive_NoTempo,
-                                State.NotesTestActive_Tempo,
-                                State.NotesTestCountIn_Tempo
-                            ])) {
+                                    istateArr: [
+                                        State.NotesTestActive_NoTempo,
+                                        State.NotesTestActive_Tempo,
+                                        State.NotesTestCountIn_Tempo
+        ])) {
             setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: defaultPeripheralIcon[iwchButton])
             currentState = toggleTestState(icurrentState: currentState)
             met!.endMetronome()
@@ -787,12 +787,12 @@ class MainViewController: UIViewController {
             return
         }
     }
-
+    
     @IBAction func PeripheralButton1OnButtonDown(_ iwchButton: Int) {
         if !handleTutorialInput(iwchButton: iwchButton) {
             return
         }
-
+        
         // Notes Test States
         if (returnValidState(iinputState: currentState,
                              istateArr: [
@@ -808,8 +808,8 @@ class MainViewController: UIViewController {
             hideAllFretMarkers()
             return
         } else if (returnValidState(iinputState: currentState,
-                             istateArr: [
-                                State.PlayingNotesCollection,
+                                    istateArr: [
+                                        State.PlayingNotesCollection,
         ])) {
             setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: defaultPeripheralIcon[iwchButton])
             currentState = State.NotesTestIdle_NoTempo
@@ -817,29 +817,29 @@ class MainViewController: UIViewController {
             return
         }
     }
-
+    
     @IBAction func PeripheralButton2OnButtonDown(_ iwchButton: Int) {
         if !handleTutorialInput(iwchButton: iwchButton) {
             return
         }
-
+        
         // Scale/Arpeggio Test States
         if (returnValidState(iinputState: currentState, istateArr: [
-                State.NotesTestIdle_NoTempo,
-                State.NotesTestIdle_Tempo,
+            State.NotesTestIdle_NoTempo,
+            State.NotesTestIdle_Tempo,
         ])) {
-                setupCurrentTaskHelper()
-                currentState = State.NotesTestShowNotes
-                setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
-                displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
-                return
-            } else if currentState == State.NotesTestShowNotes {
-                hideAllFretMarkers()
-                currentState = defaultState!
-                return
-            }
+            setupCurrentTaskHelper()
+            currentState = State.NotesTestShowNotes
+            setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
+            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
+            return
+        } else if currentState == State.NotesTestShowNotes {
+            hideAllFretMarkers()
+            currentState = defaultState!
+            return
+        }
     }
-
+    
     @IBAction func ResultButtonDown(_: Any) {
         if developmentMode > 0 {print("currentState \(currentState)")}
         pc!.showResultButtonPopup()
@@ -855,7 +855,7 @@ class MainViewController: UIViewController {
         let color = istate == "Idle" ? defaultColor.MenuButtonColor : UIColor.red
         navigationController?.navigationBar.barTintColor = color
     }
-
+    
     @IBAction func FretPressed(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
         var tutorialDisplayed = false
@@ -864,7 +864,7 @@ class MainViewController: UIViewController {
             inputNumb -= 100
             tutorialDisplayed = true
         }
-
+        
         if tutorialActive || mainPopoverVisible {
             if currentTutorialPopup < 4, !tutorialDisplayed {
                 return
@@ -876,7 +876,7 @@ class MainViewController: UIViewController {
             }
         }
         if developmentMode > 0 {print("in fret pressed state \(currentState)")}
-
+        
         let validState = returnValidState(iinputState: currentState, istateArr: [
             State.Recording,
             State.Idle,
@@ -895,7 +895,7 @@ class MainViewController: UIViewController {
             if currentState == State.NotesTestShowNotes {
                 currentState = State.NotesTestIdle_NoTempo
             }
-
+            
             var str = buttonDict[inputNumb]!
             str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
             sc.playSound(isoundName: str + "_" + guitarTone, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
@@ -924,7 +924,7 @@ class MainViewController: UIViewController {
                 noteCollectionTestData.append(st)
                 recordTimeAccuracy()
             }
-
+            
             if (currentState == State.NotesTestActive_NoTempo && noteCollectionTestData.count < specifiedNoteCollection.count) {
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
@@ -959,7 +959,7 @@ class MainViewController: UIViewController {
         ResultButton.isEnabled = false
         if (itestPassed) {
             flashActionOverlay(isuccess: true)
-//            Vibration.success.vibrate()
+            //            Vibration.success.vibrate()
         } else if (iflashRed) {
             flashActionOverlay(isuccess: false)
         }
@@ -985,19 +985,19 @@ class MainViewController: UIViewController {
         ibutton.layer.zPosition = 1000 //for dev purposes
         view.bringSubviewToFront(ibutton)  //this will cause issues with the complete button
         ibutton.frame =
-               CGRect(
-                  x: buttonFrame.minX-(buttonFrame.width*enlargementFactor)/2+buttonFrame.width/2,
-                  y: buttonFrame.minY-(buttonFrame.height*enlargementFactor)/2+buttonFrame.height/2,
-                  width: buttonFrame.width*enlargementFactor,
-                  height: buttonFrame.height*enlargementFactor)
+            CGRect(
+                x: buttonFrame.minX-(buttonFrame.width*enlargementFactor)/2+buttonFrame.width/2,
+                y: buttonFrame.minY-(buttonFrame.height*enlargementFactor)/2+buttonFrame.height/2,
+                width: buttonFrame.width*enlargementFactor,
+                height: buttonFrame.height*enlargementFactor)
     }
-
+    
     func resetButtonFrames() {
         for (str,fretButton) in fretButtonDict {
             fretButton.frame = fretButtonFrame[str]!
         }
     }
-
+    
     @objc func presentTestResult(timer: Timer) {
         ResultButton.isEnabled = true
         var testPassed = false
@@ -1005,7 +1005,7 @@ class MainViewController: UIViewController {
         if let test = resultObj["notesCorrect"] {
             testPassed = test as! Bool
         } else {}
-
+        
         let resultsText = testPassed ? "Great!" : "Try Again!  ⓘ"
         setResultButton(istr: resultsText)
         let newLevel = lc.analyzeNewLevel(itestPassed: testPassed,  idevelopmentMode: developmentMode)
@@ -1023,13 +1023,13 @@ class MainViewController: UIViewController {
         }
         currentState = toggleTestState(icurrentState: currentState)
     }
-
+    
     //State Handlers
     func setState(newState: State) {
         if developmentMode > 0 {print("setting \(newState)")}
         currentState = newState
     }
-
+    
     @objc func setStateHelper(timer: Timer) {
         let stateDict = timer.userInfo as! [String: AnyObject]
         setState(newState: stateDict["state"] as! State)
@@ -1043,25 +1043,25 @@ class MainViewController: UIViewController {
         }
         return false
     }
-
+    
     @objc func playSoundHelper(timer: Timer) {
         let noteDict = timer.userInfo as! [String: AnyObject]
         sc.playSound(isoundName: noteDict["Note"] as! String + "_" + guitarTone)
         displaySingleFretMarker(iinputStr: noteDict["Note"] as! String)
     }
-
+    
     func killCurrentDotFade() {
         if dotFadeTime != nil {
             dotFadeTime?.invalidate()
             dotFadeTime = nil
         }
     }
-
+    
     func displayMultipleFretMarkers(iinputArr: [String], ialphaAmount: Float) {
         killCurrentDotFade()
         for (str, _) in dotDict {
             dotDict[str]!.alpha = 0.0
-
+            
             if iinputArr.contains(str) {
                 swoopAlpha(iobject: dotDict[str]!, ialpha: Float(ialphaAmount), iduration: 0.1)
                 swoopScale(iobject: dotDict[str]!, iscaleX: 0, iscaleY: 0, iduration: 0)
@@ -1070,7 +1070,7 @@ class MainViewController: UIViewController {
         }
         allMarkersDisplayed = true
     }
-
+    
     func hideAllFretMarkers() {
         if allMarkersDisplayed {
             killCurrentDotFade()
@@ -1081,26 +1081,26 @@ class MainViewController: UIViewController {
             allMarkersDisplayed = false
         }
     }
-
+    
     func displaySingleFretMarker(iinputStr: String, cascadeFretMarkers: Bool = false) {
         if previousNote != nil, !cascadeFretMarkers {
             dotDict[previousNote!]?.alpha = 0.0
             swoopAlpha(iobject: dotDict[previousNote!]!, ialpha: Float(0.0), iduration: 0.3)
         }
         previousNote = iinputStr
-
+        
         dotDict[iinputStr]!.alpha = 0.0
-
+        
         swoopAlpha(iobject: dotDict[iinputStr]!, ialpha: Float(1.0), iduration: 0.1)
         killCurrentDotFade()
         swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 0, iscaleY: 0, iduration: 0)
         swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 1, iscaleY: 1, iduration: 0.1)
-
+        
         if !cascadeFretMarkers {
             dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": iinputStr], repeats: false)
         }
     }
-
+    
     func displaySelectionDots(inoteSelection: [String], ialphaAmount: Double) {
         for (_, item) in inoteSelection.enumerated() {
             dotDict[item]?.alpha = CGFloat(ialphaAmount)
@@ -1116,7 +1116,7 @@ class MainViewController: UIViewController {
         let argDict = timer.userInfo as! [String: AnyObject]
         setResultButton(istr: argDict["arg1"] as? String)
     }
-
+    
     @IBAction func closeMainPopover(_: Any) {
         mainPopover.removeFromSuperview()
         if tutorialActive {
@@ -1135,7 +1135,7 @@ class MainViewController: UIViewController {
         }
         mainPopoverVisible = false
     }
-
+    
     func flashActionOverlay (isuccess: Bool) {
         if (isuccess) {
             ActionOverlay.backgroundColor! = UIColor.white
@@ -1145,7 +1145,7 @@ class MainViewController: UIViewController {
         swoopAlpha(iobject: ActionOverlay, ialpha: 0.6, iduration: 0.0)
         swoopAlpha(iobject: ActionOverlay, ialpha: 0.0, iduration: 0.5)
     }
-
+    
     @objc func presentMainPopover(timer: Timer) {
         let resultObj = timer.userInfo as! [String: AnyObject]
         let type = resultObj["arg1"] as! String
@@ -1184,10 +1184,10 @@ class MainViewController: UIViewController {
             setLayer(iobject: button, ilayer: "Default")
         }
     }
-
+    
     func progressTutorial() {
         pc!.tutorialPopup.hide()
-
+        
         let peripheralButtonTutorialNumb = defaultPeripheralIcon.count
         if currentTutorialPopup == tutorialPopupText.count {
             swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
@@ -1199,27 +1199,27 @@ class MainViewController: UIViewController {
         for i in 0 ..< peripheralButtonTutorialNumb {
             setLayer(iobject: periphButtonArr[i], ilayer: "Default")
         }
-
+        
         // peripheral button popups
         var parentType = ""
         if currentTutorialPopup < peripheralButtonTutorialNumb {
             setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialFrontLayer0")
             parentType = "PeripheralButton"
-
+            
         } else if currentTutorialPopup < tutorialPopupText.count - 1 {
             // show starting note
             let buttonStr = specifiedNoteCollection[currentTutorialPopup - peripheralButtonTutorialNumb]
-
+            
             for (_, dot) in specifiedNoteCollection.enumerated() {
                 setLayer(iobject: dotDict[dot]!, ilayer: "TutorialFrontLayer1")
             }
             setLayer(iobject: FretboardImage, ilayer: "TutorialFrontLayer0")
             setLayer(iobject: dotDict[buttonStr]!, ilayer: "TutorialFrontLayer1")
             parentType = buttonStr + "Fret"
-
+            
             let button = UIButton()
             button.tag = buttonDict.filter { $1 == buttonStr }.map { $0.0 }[0] + 100
-
+            
             FretPressed(button)
         } else {
             if developmentMode > 1 {
@@ -1230,17 +1230,17 @@ class MainViewController: UIViewController {
             }
             setLayer(iobject: FretboardImage, ilayer: "Default")
             pc!.tutorialPopup.hide()
-//            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
-//            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
+            //            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
+            //            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
             wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
             return
         }
         wt.waitThen(itime: 0.3, itarget: self, imethod: #selector(presentTutorialPopup) as Selector, irepeats: false, idict: ["arg1": currentTutorialPopup as AnyObject, "arg2": parentType as AnyObject])
-
+        
         currentTutorialPopup += 1
         if developmentMode > 0 {print("currentTutorialPopup \(currentTutorialPopup)")}
     }
-
+    
     func setupPopupTutorialText() {
         tutorialPopupText = ["The TEST button will begin the test!",
                              "The PLAY button will play the scale!",
@@ -1258,13 +1258,13 @@ class MainViewController: UIViewController {
                              "This Is The Last Note",
                              "Tutorial Complete!"]
     }
-
+    
     @objc func presentTutorialPopup(timer: Timer) {
         let argDict = timer.userInfo as! [String: AnyObject]
         let wchPopup = argDict["arg1"] as! Int
         let popupObjectParentType = argDict["arg2"] as! String
         if popupObjectParentType == "PeripheralButton" {
-//            let c = returnStackViewButtonCoordinates(istackViewButton: periphButtonArr[wchPopup], istack: PeripheralStackView, iyoffset: -37)
+            //            let c = returnStackViewButtonCoordinates(istackViewButton: periphButtonArr[wchPopup], istack: PeripheralStackView, iyoffset: -37)
             let c = view.convert(periphButtonArr[wchPopup].frame, from:PeripheralStackView)
             pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .left, maxWidth: 200, in: view, from: c)
         } else if popupObjectParentType.contains("Fret") {
@@ -1280,7 +1280,7 @@ class MainViewController: UIViewController {
             pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .none, maxWidth: 700, in: view, from: center.frame)
         }
     }
-
+    
     func setupScreenOverlay() -> UIImageView {
         let overlay = UIImageView()
         let frame = navigationController?.navigationBar.frame
@@ -1288,42 +1288,42 @@ class MainViewController: UIViewController {
         overlay.alpha = 0.0
         return overlay
     }
-
+    
     func setupFretBoardImage() {
         sceneHasBeenSetup = true
         let noteInputStrs = ["G#1", "A1", "A#1", "B1", "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2", "C3", "C#3", "D3", "D#3_0", "D#3_1", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3", "C4"]
         
         let fretMarkerImageOffset : [String:CGFloat] = [
-           "G#1": 1.2,
-           "A1" : 1.2,
-           "A#1":1.2,
-           "B1" :1.2,
-           "C2" :1.2,
-           "C#2":1.0,
-           "D2" :1.0,
-           "D#2":1.0,
-           "E2" :1.0,
-           "F2" :1.0,
-           "F#2":1.0,
-           "G2" :0.9,
-           "G#2":1.0,
-           "A2" :1.0,
-           "A#2":1.0,
-           "B2" :1.0,
-           "C3" :1.0,
-           "C#3":1.0,
-           "D3" :1.0,
-           "D#3_0" :1.0,
-           "D#3_1" :1.0,
-           "E3" :1.0,
-           "F3" :1.0,
-           "F#3" :1.0,
-           "G3" :1.0,
-           "G#3":0.8,
-           "A3" :0.8,
-           "A#3":0.8,
-           "B3" :0.8,
-           "C4" :0.8,
+            "G#1": 1.2,
+            "A1" : 1.2,
+            "A#1":1.2,
+            "B1" :1.2,
+            "C2" :1.2,
+            "C#2":1.0,
+            "D2" :1.0,
+            "D#2":1.0,
+            "E2" :1.0,
+            "F2" :1.0,
+            "F#2":1.0,
+            "G2" :0.9,
+            "G#2":1.0,
+            "A2" :1.0,
+            "A#2":1.0,
+            "B2" :1.0,
+            "C3" :1.0,
+            "C#3":1.0,
+            "D3" :1.0,
+            "D#3_0" :1.0,
+            "D#3_1" :1.0,
+            "E3" :1.0,
+            "F3" :1.0,
+            "F#3" :1.0,
+            "G3" :1.0,
+            "G#3":0.8,
+            "A3" :0.8,
+            "A#3":0.8,
+            "B3" :0.8,
+            "C4" :0.8,
         ]
         
         let image: UIImage = UIImage(named: "Fretboard4")!
@@ -1334,20 +1334,20 @@ class MainViewController: UIViewController {
         let fretboardAspectFit = AVMakeRect(aspectRatio: FretboardDummy.image!.size, insideRect: FretboardDummy.bounds)
         
         FretboardDummy.alpha = 0
-
+        
         var fretboardXLoc = CGFloat(FretboardDummy.frame.minX+fretboardAspectFit.minX)
         let fretboardYLoc = FretboardDummy.frame.minY
         let fretboardWidth = fretboardAspectFit.width
         let fretboardHeight = fretboardAspectFit.height
         
         let iphone11AspectFitWidth = 225.5464759959142
-
+        
         FretboardImage.frame = CGRect(x: fretboardXLoc,
-                                y: fretboardYLoc,
-                                width: fretboardWidth,
-                                height: fretboardHeight)
+                                      y: fretboardYLoc,
+                                      width: fretboardWidth,
+                                      height: fretboardHeight)
         FretboardImage.alpha = 1.0
-
+        
         fretboardXLoc *= FretboardDummy.frame.width/fretboardAspectFit.width
         
         view.addSubview(FretboardImage)
@@ -1355,16 +1355,16 @@ class MainViewController: UIViewController {
         
         let buttonSize: [CGFloat] = [0.03, 0.2, 0.195, 0.18, 0.17, 0.163]
         let buttonWidth: [CGFloat] = [0.18, 0.164, 0.164, 0.164, 0.164, 0.18]
-
-//        let color = [UIColor.blue, UIColor.yellow, UIColor.red, UIColor.green, UIColor.black, UIColor.cyan]
+        
+        //        let color = [UIColor.blue, UIColor.yellow, UIColor.red, UIColor.green, UIColor.black, UIColor.cyan]
         var buttonTag = 0
-
+        
         for string in 0 ... 5 {
             var xOffset: CGFloat = 0
             for k in 0 ..< string {
                 xOffset += FretboardImage.frame.width * buttonWidth[k]
             }
-
+            
             for i in 0 ... 5 {
                 let button = UIButton()
                 let height = FretboardImage.frame.height * buttonSize[i]
@@ -1374,32 +1374,32 @@ class MainViewController: UIViewController {
                         yOffset += FretboardImage.frame.height * buttonSize[j - 1]
                     }
                 }
-
+                
                 let width = FretboardImage.frame.width * buttonWidth[string]
                 button.frame = CGRect(x: fretboardXLoc + xOffset, y: FretboardImage.frame.minY + yOffset, width: width, height: height)
-
+                
                 view.addSubview(button)
-
+                
                 if i > 0 {
                     button.addTarget(self, action: #selector(FretPressed), for: .touchDown)
                     button.tag = buttonTag
-
+                    
                     let image = UIImageView()
                     let imageXOffset: CGFloat = 0
-
+                    
                     let imageSize = 34 * (fretboardAspectFit.width/CGFloat(iphone11AspectFitWidth))
                     image.frame = CGRect(
-                            x: (button.frame.width / 2 * fretMarkerImageOffset[noteInputStrs[buttonTag]]!) - imageSize / 2 - imageXOffset + button.frame.minX,
-                            y: button.frame.height / 2 - 20 + button.frame.minY,
-                            width: imageSize,
-                            height: imageSize)
+                        x: (button.frame.width / 2 * fretMarkerImageOffset[noteInputStrs[buttonTag]]!) - imageSize / 2 - imageXOffset + button.frame.minX,
+                        y: button.frame.height / 2 - 20 + button.frame.minY,
+                        width: imageSize,
+                        height: imageSize)
                     
                     image.backgroundColor = UIColor.red
                     image.layer.masksToBounds = true
                     image.layer.cornerRadius = image.frame.width / 2
-
+                    
                     view.addSubview(image)
-
+                    
                     let noteLabel = UILabel()
                     noteLabel.frame = CGRect(x: 0, y: 0, width: imageSize, height: imageSize)
                     noteLabel.textAlignment = NSTextAlignment.center
@@ -1407,7 +1407,7 @@ class MainViewController: UIViewController {
                     noteLabel.layer.zPosition = 1
                     image.addSubview(noteLabel)
                     dotText.append(noteLabel)
-
+                    
                     fretButtonDict[noteInputStrs[buttonTag]] = button
                     dotDict[noteInputStrs[buttonTag]] = image
                     fretButtonFrame[noteInputStrs[buttonTag]] = button.frame
@@ -1418,7 +1418,7 @@ class MainViewController: UIViewController {
         fretButtonDict["A1"]?.layer.zPosition = 1000
         fretButtonDict["A2"]?.layer.zPosition = 1000
         
-//        setupFretReferenceText() //TODO: do if/when necessary
+        //        setupFretReferenceText() //TODO: do if/when necessary
     }
     
     //Helper functions
@@ -1426,19 +1426,19 @@ class MainViewController: UIViewController {
         let image = timer.userInfo as! [String: AnyObject]
         swoopAlpha(iobject: dotDict[image["ImageId"] as! String]!, ialpha: Float(0.0), iduration: 0.2)
     }
-
+    
     func swoopScale(iobject: UIView, iscaleX: Double, iscaleY: Double, iduration: Double) {
         UIView.animate(withDuration: iduration, animations: { () -> Void in
             iobject.transform = CGAffineTransform(scaleX: CGFloat(iscaleX), y: CGFloat(iscaleY))
         }, completion: nil)
     }
-
+    
     func swoopAlpha(iobject: UIImageView, ialpha: Float, iduration: Float) {
         UIView.animate(withDuration: TimeInterval(iduration), animations: {
             iobject.alpha = CGFloat(ialpha)
         }, completion: nil)
     }
-
+    
     func rand(max: Int) -> Int {
         return Int.random(in: 0 ..< max)
     }
@@ -1451,7 +1451,7 @@ class MainViewController: UIViewController {
             print("Fallback within set Layer")
         }
     }
-
+    
     func getLayer(ilayer: String) -> CGFloat {
         let layer = layerArr.firstIndex(of: ilayer)
         if layer != nil {
@@ -1462,8 +1462,8 @@ class MainViewController: UIViewController {
     }
     
     @objc func onTestButtonDown() {
-//        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
-//          setupPopupTutorialText()
+        //        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
+        //          setupPopupTutorialText()
         
         mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
         mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
@@ -1523,11 +1523,11 @@ class MainViewController: UIViewController {
         currentState = State.Recording
         recordData.removeAll()
     }
-
+    
     @IBAction func stopRecording(_: Any) {
         print("stopRecording\(recordStartTime)")
         currentState = State.Playback
-
+        
         for (i, data) in recordData.enumerated() {
             wt.waitThen(itime: data.time - recordStartTime, itarget: self, imethod: #selector(playSoundHelper) as Selector, irepeats: false, idict: ["Note": data.note as AnyObject])
             if i == recordData.count - 1 {
@@ -1535,7 +1535,7 @@ class MainViewController: UIViewController {
             }
         }
     }
-
+    
     @IBAction func earTrainingPressed(_: Any) {
         let numbNotes = 5
         for _ in 0 ..< numbNotes {
@@ -1546,7 +1546,7 @@ class MainViewController: UIViewController {
         let displayT = 1.0
         
         wt.waitThen(itime: displayT, itarget: self, imethod: #selector(beginEarTrainingHelper) as Selector, irepeats: false, idict: ["NoteSelection": tempScale as AnyObject, "AlphaVal": 0.0 as AnyObject])
-
+        
         displaySelectionDots(inoteSelection: tempScale, ialphaAmount: 0.5)
         dotDict[earTrainCallArr[0]]?.alpha = 1
     }
@@ -1567,7 +1567,7 @@ class MainViewController: UIViewController {
 }
 
 @IBDesignable extension UIButton {
-
+    
     @IBInspectable var borderWidth: CGFloat {
         set {
             layer.borderWidth = newValue
@@ -1576,7 +1576,7 @@ class MainViewController: UIViewController {
             return layer.borderWidth
         }
     }
-
+    
     @IBInspectable var cornerRadius: CGFloat {
         set {
             layer.cornerRadius = newValue
@@ -1585,7 +1585,7 @@ class MainViewController: UIViewController {
             return layer.cornerRadius
         }
     }
-
+    
     @IBInspectable var borderColor: UIColor? {
         set {
             guard let uiColor = newValue else { return }
@@ -1600,10 +1600,10 @@ class MainViewController: UIViewController {
 
 
 extension UIButton {
-    open override func hitTest(_ point: CGPoint, with _: UIEvent?) -> UIView? {
-        return bounds.contains(point) ? self : nil
-    }
-
+//    open override func hitTest(_ point: CGPoint, with _: UIEvent?) -> UIView? {
+//        return bounds.contains(point) ? self : nil
+//    }
+    
     func blink(enabled: Bool = true, duration: CFTimeInterval = 1.0, stopAfter: CFTimeInterval = 0.0) {
         enabled ? UIView.animate(withDuration: duration,
                                  delay: 0.0,
@@ -1616,7 +1616,7 @@ extension UIButton {
             }
         }
     }
-
+    
     func pulsate(ilayer: Int) -> Int {
         let pulse = CASpringAnimation(keyPath: "transform.scale")
         pulse.duration = 0.1
@@ -1626,9 +1626,9 @@ extension UIButton {
         pulse.repeatCount = 0
         pulse.initialVelocity = 10.5
         pulse.damping = 1.0
-
+        
         layer.add(pulse, forKey: nil)
-
+        
         self.layer.zPosition += 1.0
         return (ilayer + 1)
     }
