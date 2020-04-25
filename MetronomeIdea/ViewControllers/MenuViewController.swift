@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 extension UIButton {
 open override var isHighlighted: Bool {
@@ -18,6 +19,7 @@ open override var isHighlighted: Bool {
 var userLevelData = UserLevelData(scaleLevel: "0.0",arpeggioLevel: "0.0",et_singleNotes: "0.0",et_scales: "0.0",et_chords: "0.0",tutorialComplete: "0.0")
 let defaultColor = DefaultColor()
 let backgroundImage = BackgroundImage()
+var globalDataController = DataController(modelName: "ImageModel")
 
 class MenuViewController: UIViewController {
 
@@ -48,6 +50,19 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+//        if (dataController == nil) {
+//            dataController
+//        }
+        
+        globalDataController.load()
+        
+        let fetchRequest:NSFetchRequest<ImageData> = ImageData.fetchRequest()
+        if let results =  try? globalDataController.viewContext.fetch(fetchRequest) {
+            for image in results {
+                backgroundImage.images[image.id!] = UIImage(data: image.backgroundImage!)
+            }
+        }
+        
         buttonArr = [Button0,Button1,Button2,Button3,Button4]
         
         setupHiddenButtons()

@@ -14,6 +14,8 @@
 		9E18282223CA65650001E46F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E18282123CA65650001E46F /* MainViewController.swift */; };
 		9E44D7942453EA8D00911515 /* ImageChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E44D7932453EA8D00911515 /* ImageChooserViewController.swift */; };
 		9E44D7B82453F30300911515 /* BackgroundImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E44D7B72453F30300911515 /* BackgroundImages.swift */; };
+		9E44D7BB2454AD6800911515 /* ImageModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 9E44D7B92454AD6800911515 /* ImageModel.xcdatamodeld */; };
+		9E44D7BD2454C80200911515 /* DataController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E44D7BC2454C80200911515 /* DataController.swift */; };
 		9E56839A2436F65E007070C4 /* SettingsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5683992436F65E007070C4 /* SettingsItemViewController.swift */; };
 		9E56839C2436FC5C007070C4 /* SettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E56839B2436FC5C007070C4 /* SettingViewCell.swift */; };
 		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
@@ -155,6 +157,8 @@
 		9E18282123CA65650001E46F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
 		9E44D7932453EA8D00911515 /* ImageChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageChooserViewController.swift; sourceTree = "<group>"; };
 		9E44D7B72453F30300911515 /* BackgroundImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImages.swift; sourceTree = "<group>"; };
+		9E44D7BA2454AD6800911515 /* ImageModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = ImageModel.xcdatamodel; sourceTree = "<group>"; };
+		9E44D7BC2454C80200911515 /* DataController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DataController.swift; sourceTree = "<group>"; };
 		9E5683992436F65E007070C4 /* SettingsItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemViewController.swift; sourceTree = "<group>"; };
 		9E56839B2436FC5C007070C4 /* SettingViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewCell.swift; sourceTree = "<group>"; };
 		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -454,7 +458,9 @@
 				9EBCF8AC2429D09400074C4C /* LevelHandler.swift */,
 				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
 				9E17C14924529E8100D90CD9 /* UnsplashClient.swift */,
+				9E44D7B92454AD6800911515 /* ImageModel.xcdatamodeld */,
 				9E44D7B72453F30300911515 /* BackgroundImages.swift */,
+				9E44D7BC2454C80200911515 /* DataController.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -523,13 +529,13 @@
 		B8A6184D20DB9E2A00AF33C5 /* MetronomeIdea */ = {
 			isa = PBXGroup;
 			children = (
+				B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */,
 				9EB5733F244FF42000322305 /* Model */,
 				9EB5733E244FF3D700322305 /* ViewControllers */,
 				9EB5733D244FF29300322305 /* View */,
 				9EDC27CE22C980E000387143 /* Sounds */,
 				9ED22C7C23CD8C840051D8A4 /* Images */,
 				9EF8A89C23D54EC20079BE8D /* HelperObjects */,
-				B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */,
 				B8A6186120DB9E7500AF33C5 /* Main.storyboard */,
 				B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */,
 				B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */,
@@ -711,9 +717,11 @@
 			buildActionMask = 2147483647;
 			files = (
 				9E0D26C72435AF1B00595BC9 /* ViewStyler.swift in Sources */,
+				9E44D7BB2454AD6800911515 /* ImageModel.xcdatamodeld in Sources */,
 				9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */,
 				9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */,
 				9E07F7262396B0E600E99444 /* DefaultColor.swift in Sources */,
+				9E44D7BD2454C80200911515 /* DataController.swift in Sources */,
 				9E56839A2436F65E007070C4 /* SettingsItemViewController.swift in Sources */,
 				9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */,
 				9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */,
@@ -929,6 +937,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		9E44D7B92454AD6800911515 /* ImageModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				9E44D7BA2454AD6800911515 /* ImageModel.xcdatamodel */,
+			);
+			currentVersion = 9E44D7BA2454AD6800911515 /* ImageModel.xcdatamodel */;
+			path = ImageModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = B8A6184320DB9E2900AF33C5 /* Project object */;
 }

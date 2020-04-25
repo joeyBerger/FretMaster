@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import CoreData
 
 class ImageChooserViewController: UIViewController {
     
@@ -45,8 +46,7 @@ class ImageChooserViewController: UIViewController {
         activityIndicator.centerYAnchor.constraint(equalTo: view.centerYAnchor).isActive = true
     }
     
-    func setupButtons() {
-        
+    func setupButtons() {        
         let buttons = [changeButton,acceptButton]
         let title = ["CHANGE","ACCEPT"]
         let color = [defaultColor.MenuButtonColor,defaultColor.AcceptColor]
@@ -102,9 +102,31 @@ class ImageChooserViewController: UIViewController {
         }
     }
     
+    func saveImage(data: Data) {
+        let fetchRequest:NSFetchRequest<ImageData> = ImageData.fetchRequest()
+        if let results =  try? globalDataController.viewContext.fetch(fetchRequest) {
+            for image in results {
+                if selectedBackground == image.id! {
+                    globalDataController.viewContext.delete(image)
+                    break
+                }
+            }
+        }
+        
+        let imageInstance = ImageData(context: globalDataController.viewContext)
+        imageInstance.backgroundImage = data
+        imageInstance.id = selectedBackground
+        do {
+            try globalDataController.viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+    }
+    
     @objc func onAcceptButtonDown() {
         if imageChanged {
             backgroundImage.images[selectedBackground] = bgImage.image
+            saveImage(data: bgImage.image!.pngData()!)
         }
         navigationController?.popViewController(animated: false)
     }

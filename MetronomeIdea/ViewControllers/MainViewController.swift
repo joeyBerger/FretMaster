@@ -289,8 +289,8 @@ class MainViewController: UIViewController {
         setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
         getDynamicAudioVisualData()
         let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
-        print("key key \(key)")
         bgImage.image = backgroundImage.returnImage(key)
+        pc!.resultButtonPopup.hide()
     }
     
     override func didMove(toParent parent: UIViewController?) {
