@@ -180,6 +180,8 @@ class MainViewController: UIViewController {
     var dotType = ""
     var clickTone = ""
     
+    var bgImage = UIImageView()
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         
@@ -195,7 +197,9 @@ class MainViewController: UIViewController {
             met?.bpm = 350.0
         }
         
-        styler!.setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
+//        styler!.setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
+        
+        setupBackgroundImage()
         
         ResultsLabel.text = ""
         ResultsLabel.font = UIFont(name: "Helvetica", size: 35)
@@ -284,6 +288,9 @@ class MainViewController: UIViewController {
         currentState = State.NotesTestShowNotes
         setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
         getDynamicAudioVisualData()
+        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
+        print("key key \(key)")
+        bgImage.image = backgroundImage.returnImage(key)
     }
     
     override func didMove(toParent parent: UIViewController?) {
@@ -296,7 +303,6 @@ class MainViewController: UIViewController {
         if let met = met {
             met.endMetronome()
         }
-        
     }
     
     @objc func willEnterForeground() {
@@ -481,8 +487,9 @@ class MainViewController: UIViewController {
         }
     }
     
-    func setupBackgroundImage(ibackgroundPic: String) {
-        let bgImage = UIImageView(image: UIImage(named: ibackgroundPic))
+    func setupBackgroundImage() {
+        bgImage = UIImageView()
+        bgImage.image = backgroundImage.returnImage("arpeggios")
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(bgImage, at: 0)

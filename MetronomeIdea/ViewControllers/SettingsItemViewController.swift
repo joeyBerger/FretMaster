@@ -8,6 +8,7 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     var settingStrings:[String] = []
     var settingsType: String?
     var initialCheckmarkIdx = 0
+    var selectedCell = 0
     let cellReuseIdentifier = "SettingViewCell"
     let sc = SoundController(isubInstances: 10)
     let soundStringDict = [
@@ -32,8 +33,8 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
         if (settingsType == "backgroundPick") {
             setupBackgroundPickButton()
             initialCheckmarkIdx = 0
+            selectedCell = 0
         }
-        
     }
     
     func setupBackgroundPickButton() {
@@ -65,7 +66,8 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let sItem = segue.destination as! ImageChooserViewController
+        let vc = segue.destination as! ImageChooserViewController
+        vc.selectedBackground = settingStrings[selectedCell].lowercased()
 //        sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
     }
     
@@ -113,5 +115,7 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
         if soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]] != nil {
             playSound(isoundName: soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]]!)
         }
+        
+        selectedCell = indexPath.row
     }
 }

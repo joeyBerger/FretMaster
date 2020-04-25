@@ -11,25 +11,31 @@ import UIKit
 class BackgroundImage {
 
     var images: [String:UIImage?] = [
-        "Menu" : nil,
-        "Scales" : nil,
-        "Arpeggios" : nil
+        "menu" : nil,
+        "scales" : nil,
+        "arpeggios" : nil
     ]
     
     var defaultImages = [
-        "Menu" : "AcousticMain.png",
-        "Scales" : "RockCrowd.png",
-        "Arpeggios" : "RockCrowd2.jpg"
+        "menu" : "AcousticMain.png",
+        "scales" : "RockCrowd.png",
+        "arpeggios" : "RockCrowd2.jpg"
     ]
     
-    var searchTypes = [
-        "guitar",
-        "metronome",
-        "rockmusic",
-        "concert",
+//    var searchTypes = [
+//        "guitar",
+//        "metronome",
+//        "rockmusic",
+//        "concert",
+//    ]
+    
+    var searchStrings = [
+        "menu" : ["guitar","concert"],
+        "scales" : ["concert"]
     ]
     
     func returnImage(_ imageStr: String) -> UIImage {
+        print("images[imageStr]! \(images[imageStr]!)")
         if let image = images[imageStr]! {
             let newImage = UIImageView()
             newImage.image = image

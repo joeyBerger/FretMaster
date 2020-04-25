@@ -54,7 +54,7 @@ class MenuViewController: UIViewController {
 
 //        bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
         print("in view did load")
-        bgImage.image = backgroundImage.returnImage("Menu")
+        bgImage.image = backgroundImage.returnImage("menu")
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(bgImage, at: 0)
@@ -87,7 +87,8 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
-        bgImage.image = backgroundImage.returnImage("Menu")
+        bgImage.image = backgroundImage.returnImage("menu")
+        
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
         if scaleLevel != nil {
             print ("restoring data")
@@ -276,7 +277,7 @@ class MenuViewController: UIViewController {
 
 //        flickr.unsplashImageDownload()
         
-        flickr.unsplashTry(for: "guitar") { imageURL in
+        flickr.unsplashSearch(for: "guitar") { imageURL in
             self.flickr.unsplashImageDownload(for: imageURL.full) { image in
                 
                 self.bgImage.image = image

@@ -11,13 +11,16 @@ import UIKit
 class ImageChooserViewController: UIViewController {
     
     var bgImage = UIImageView()
-    var selectedBackground = "Menu"
+    var selectedBackground = "menu"
     let flickr = Flickr()
     let changeButton = UIButton()
     let acceptButton = UIButton()
+    var imageChanged = false
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("view did load \(selectedBackground)")
         
         setupBackground()
         setupButtons()
@@ -27,7 +30,8 @@ class ImageChooserViewController: UIViewController {
         if let image = backgroundImage.images[selectedBackground]! {
             bgImage.image = image
         } else {
-            bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+//            bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+            bgImage.image = backgroundImage.returnImage(selectedBackground)
         }
 
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
@@ -62,7 +66,6 @@ class ImageChooserViewController: UIViewController {
             button.setTitle(title[i], for: .normal)
             button.tintColor = defaultColor.MenuButtonTextColor
             button.titleLabel?.font = .systemFont(ofSize: 18)
-//            button.addTarget(self, action: #selector(functions[i]), for: .touchDown)
             view.addSubview(button)
         }
         buttons[0].addTarget(self, action: #selector(onChangeButtonDown), for: .touchDown)
@@ -71,21 +74,24 @@ class ImageChooserViewController: UIViewController {
     
     @objc func onChangeButtonDown() {
         controlButtonState(false)
-        flickr.unsplashTry(for: "guitar") { imageURL in
+        print("backgroundImage.searchStrings[selectedBackground]?.randomElement() \(backgroundImage.searchStrings[selectedBackground]?.randomElement())")
+        
+        return
+        flickr.unsplashSearch(for: (backgroundImage.searchStrings[selectedBackground]?.randomElement())!) { imageURL in
             self.flickr.unsplashImageDownload(for: imageURL.full) { image in
                 self.bgImage.image = image
                 backgroundImage.images[self.selectedBackground] = image
                 self.controlButtonState(true)
+                self.imageChanged = true
             }
         }
     }
     
     @objc func onAcceptButtonDown() {
-        backgroundImage.images[selectedBackground] = bgImage.image
-
-        print("backgroundImage.images[selectedBackground] \(backgroundImage.images[selectedBackground] )")
+        if imageChanged {
+            backgroundImage.images[selectedBackground] = bgImage.image
+        }
         navigationController?.popViewController(animated: false)
-        
     }
     
     func controlButtonState(_ enabled: Bool) {
