@@ -1,13 +1,3 @@
-//
-//  LevelHandler.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 3/23/20.
-//  Copyright © 2020 ashubin.com. All rights reserved.
-//
-
-//import Foundation
-
 import UIKit
 class LevelConstruct: UIViewController {
     
@@ -88,13 +78,13 @@ class LevelConstruct: UIViewController {
     }
     
     let currentLevelName:[String:[String]] = [        
-        "scales" : ["Intro","Pentatonics","Major/Minor Modes","Pentatonic And Major/Minor","Previous Up/Down","Previous Up/Down In Time"],
+        "scales" : ["Intro","Major Pentatonic","Major/Minor Modes","Pentatonic And Major/Minor","Previous Up/Down","Previous Up/Down In Time"],
         "arpeggios" : ["Major/Minor","Major/Minor Seventh","Previous Up","Previous Up/Down","Previous Up In Time","Previous Up/Down In Time"]
     ]
     
     let scale = [
         ["MinorPentatonic_Up"],
-        ["MinorPentatonic_Up","MajorPentatonic_Up"],
+        ["MajorPentatonic_Up"],
         ["Ionian_Up","Aeolian_Up"],
         ["MinorPentatonic_Up","MajorPentatonic_Up","Ionian_Up","Aeolian_Up"],
         ["MinorPentatonic_Both","MajorPentatonic_Both","Ionian_Both","Aeolian_Both"],

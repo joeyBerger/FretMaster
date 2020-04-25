@@ -30,7 +30,6 @@ class waitThen
     @objc public func nullifyNonRepeatWaitThen(itimer : Timer?) {
         if (itimer != nil) {
             let argDict = itimer?.userInfo as! Dictionary<String, AnyObject>
-            print(argDict)
             let i  = argDict["index"] as! Int
             nullifyWaitThenAtIndex(iindex: i)
         }

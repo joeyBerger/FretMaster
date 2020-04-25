@@ -236,19 +236,17 @@ class MenuViewController: UIViewController {
         ibutton.setTitle(itext,for: .normal)
         print(itext)
         UIView.setAnimationsEnabled(true)
-        ibutton.alpha = 1.0
+        ibutton.titleLabel?.alpha = 1.0
         UIView.animate(withDuration: 3.5, animations: {
-         ibutton.alpha = 0.0
+         ibutton.titleLabel?.alpha = 0.0
         })
     }
     
     func setupDevButton() {
         devToggleButton = UIButton()
         devToggleButton.frame = returnDevButtonFrame("Dev")
-        devToggleButton.backgroundColor = UIColor.red
-//        devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
-        devToggleButton.addTarget(self, action: #selector(getRandomPhoto), for: .touchDown)
-        
+//        devToggleButton.backgroundColor = UIColor.red
+        devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
         view.addSubview(devToggleButton)
     }
     
@@ -269,45 +267,5 @@ class MenuViewController: UIViewController {
         } else {
             return CGRect(x: 0, y: screenHeight-height, width: screenWidth*0.5, height: height)
         }
-    }
-    
-    private let flickr = Flickr()
-    @objc func getRandomPhoto() {
-//        flickr.unsplashTry()
-
-//        flickr.unsplashImageDownload()
-        
-        flickr.unsplashSearch(for: "guitar") { imageURL in
-            self.flickr.unsplashImageDownload(for: imageURL.full) { image in
-                
-                self.bgImage.image = image
-//                self.bgImage.image = "AcousticMain.png"
-            }
-        }
-        
-        
-//        self.flickr.unsplashImageDownload(for: "concert") { image in
-//            self.bgImage.image = image
-//        }
-            
-//        flickr.searchFlickrForArray(for: "concert") { searchResults, error in
-//            if error != nil {
-//                print("An error occured downloading images")
-//                return
-//            }
-//
-//            if searchResults!.count == 0 {
-//                DispatchQueue.main.async {
-////                    self.noImagesLabel.isHidden = false
-//                    print("error")
-//                }
-//            } else {
-//                for (i,_) in searchResults!.enumerated() {
-//                    self.flickr.downloadAndReturnImage(imageInfo: searchResults![i]) { image in
-//                        self.bgImage.image = image
-//                    }
-//                  }
-//               }
-//        }
     }
 }
