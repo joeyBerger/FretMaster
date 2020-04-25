@@ -15,6 +15,8 @@
 		9E17C14F24529FCC00D90CD9 /* FlickrSearchResults.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E17C14C24529FCC00D90CD9 /* FlickrSearchResults.swift */; };
 		9E17C15024529FCC00D90CD9 /* FlickrPhoto.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E17C14D24529FCC00D90CD9 /* FlickrPhoto.swift */; };
 		9E18282223CA65650001E46F /* MainViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E18282123CA65650001E46F /* MainViewController.swift */; };
+		9E44D7942453EA8D00911515 /* ImageChooserViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E44D7932453EA8D00911515 /* ImageChooserViewController.swift */; };
+		9E44D7B82453F30300911515 /* BackgroundImages.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E44D7B72453F30300911515 /* BackgroundImages.swift */; };
 		9E56839A2436F65E007070C4 /* SettingsItemViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5683992436F65E007070C4 /* SettingsItemViewController.swift */; };
 		9E56839C2436FC5C007070C4 /* SettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E56839B2436FC5C007070C4 /* SettingViewCell.swift */; };
 		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
@@ -157,6 +159,8 @@
 		9E17C14C24529FCC00D90CD9 /* FlickrSearchResults.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrSearchResults.swift; sourceTree = "<group>"; };
 		9E17C14D24529FCC00D90CD9 /* FlickrPhoto.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FlickrPhoto.swift; sourceTree = "<group>"; };
 		9E18282123CA65650001E46F /* MainViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MainViewController.swift; sourceTree = "<group>"; };
+		9E44D7932453EA8D00911515 /* ImageChooserViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageChooserViewController.swift; sourceTree = "<group>"; };
+		9E44D7B72453F30300911515 /* BackgroundImages.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = BackgroundImages.swift; sourceTree = "<group>"; };
 		9E5683992436F65E007070C4 /* SettingsItemViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsItemViewController.swift; sourceTree = "<group>"; };
 		9E56839B2436FC5C007070C4 /* SettingViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewCell.swift; sourceTree = "<group>"; };
 		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
@@ -445,6 +449,7 @@
 				9E5683992436F65E007070C4 /* SettingsItemViewController.swift */,
 				9E5FB6E92389F98C0078E980 /* MenuViewController.swift */,
 				9E18282123CA65650001E46F /* MainViewController.swift */,
+				9E44D7932453EA8D00911515 /* ImageChooserViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -458,6 +463,7 @@
 				9E17C14D24529FCC00D90CD9 /* FlickrPhoto.swift */,
 				9E17C14C24529FCC00D90CD9 /* FlickrSearchResults.swift */,
 				9E17C14B24529FCC00D90CD9 /* SearchCriteria.swift */,
+				9E44D7B72453F30300911515 /* BackgroundImages.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -721,10 +727,12 @@
 				9E56839A2436F65E007070C4 /* SettingsItemViewController.swift in Sources */,
 				9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */,
 				9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */,
+				9E44D7B82453F30300911515 /* BackgroundImages.swift in Sources */,
 				9E16FA152381C73600100F65 /* ScaleClass.swift in Sources */,
 				9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */,
 				9E18282223CA65650001E46F /* MainViewController.swift in Sources */,
 				9EB573412450095C00322305 /* PopupController.swift in Sources */,
+				9E44D7942453EA8D00911515 /* ImageChooserViewController.swift in Sources */,
 				9E17C14F24529FCC00D90CD9 /* FlickrSearchResults.swift in Sources */,
 				9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */,
 				9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */,

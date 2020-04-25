@@ -122,7 +122,8 @@ class Flickr {
     }
     
     func unsplashTry(for searchCriteria: String, completion: @escaping (URLs) -> Void) {
-        if let url = URL.with(string: "search/photos?page=1&query=\(searchCriteria)&per_page=100") {
+//        if let url = URL.with(string: "search/photos?page=1&query=\(searchCriteria)&per_page=100") {
+        if let url = URL.with(string: "search/photos?query=\(searchCriteria)&per_page=100") {
             var urlRequest = URLRequest(url: url)
             urlRequest.setValue("Client-ID k9R4gpOPjBryyZP95PslV1W08oWP2W8B7Va8GxgG3bA", forHTTPHeaderField: "Authorization")
             

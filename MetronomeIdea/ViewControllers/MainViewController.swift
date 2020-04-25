@@ -131,7 +131,7 @@ class MainViewController: UIViewController {
     ]
     
     var currentBackgroundPic = ""
-    var backgroundPicDict: [String: String] = [  //TODO: need to add states and unify image types
+    var backgroundPicDict: [String: String] = [  //TODO: need to add states and unify image types, this is now coming from Background Image
         "scaleLevel": "RockCrowd.png",
         "arpeggioLevel": "RockCrowd2.jpg",
         "earTrainingNotes": "RockCrowd.png",

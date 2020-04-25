@@ -17,6 +17,7 @@ open override var isHighlighted: Bool {
 
 var userLevelData = UserLevelData(scaleLevel: "0.0",arpeggioLevel: "0.0",et_singleNotes: "0.0",et_scales: "0.0",et_chords: "0.0",tutorialComplete: "0.0")
 let defaultColor = DefaultColor()
+let backgroundImage = BackgroundImage()
 
 class MenuViewController: UIViewController {
 
@@ -51,7 +52,9 @@ class MenuViewController: UIViewController {
         
         setupHiddenButtons()
 
-        bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+//        bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
+        print("in view did load")
+        bgImage.image = backgroundImage.returnImage("Menu")
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
         self.view.insertSubview(bgImage, at: 0)
@@ -84,7 +87,7 @@ class MenuViewController: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
-        
+        bgImage.image = backgroundImage.returnImage("Menu")
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
         if scaleLevel != nil {
             print ("restoring data")
@@ -277,6 +280,7 @@ class MenuViewController: UIViewController {
             self.flickr.unsplashImageDownload(for: imageURL.full) { image in
                 
                 self.bgImage.image = image
+//                self.bgImage.image = "AcousticMain.png"
             }
         }
         

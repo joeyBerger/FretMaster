@@ -21,6 +21,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var Button0: UIButton!
     @IBOutlet weak var Button1: UIButton!
     @IBOutlet weak var Button2: UIButton!
+    @IBOutlet weak var Button3: UIButton!
     
     var styler: ViewStyler?
     var buttonId = 0
@@ -63,6 +64,13 @@ class SettingsViewController: UIViewController {
             iavailableSettings: ["Digital","Woodblock1","Woodblock2"],
             isettingsType: "clickTone"
         ),
+        buttonText(
+            iheader: "Background Picture".uppercased(),
+            isubtext: "Manage Your Backgrounds",
+            iid: "backgroundPick",
+            iavailableSettings: ["Menu","Scales","Arpeggios"],
+            isettingsType: "backgroundPicker"
+        ),
     ]
     
     override func viewDidLoad() {
@@ -70,7 +78,7 @@ class SettingsViewController: UIViewController {
         
         styler = ViewStyler(ivc: self)
         styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
-        let buttonArr = [Button0,Button1,Button2]
+        let buttonArr = [Button0,Button1,Button2,Button3]
         for (i,button) in buttonArr.enumerated() {
             let subText = UILabel()
             styler!.setupMenuButton(

@@ -155,7 +155,7 @@
                         <autoresizingMask key="autoresizingMask" flexibleMinX="YES" widthSizable="YES" flexibleMaxX="YES" heightSizable="YES" flexibleMaxY="YES"/>
                         <subviews>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="60" translatesAutoresizingMaskIntoConstraints="NO" id="oIi-CX-n4f">
-                                <rect key="frame" x="70.5" y="189" width="273" height="565"/>
+                                <rect key="frame" x="70.5" y="189" width="273" height="690"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Xcu-V4-TKE">
                                         <rect key="frame" x="0.0" y="0.0" width="273" height="65"/>
@@ -205,8 +205,24 @@
                                             <action selector="settingsCategoryButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="ttZ-OS-C7I"/>
                                         </connections>
                                     </button>
-                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNN-6c-e1z">
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="WnJ-Kt-3AD">
                                         <rect key="frame" x="0.0" y="375" width="273" height="65"/>
+                                        <color key="backgroundColor" systemColor="systemIndigoColor" red="0.34509803919999998" green="0.33725490200000002" blue="0.83921568629999999" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="65" id="2QV-qp-3dB"/>
+                                            <constraint firstAttribute="width" constant="273" id="UsX-7Y-Hn4"/>
+                                        </constraints>
+                                        <fontDescription key="fontDescription" type="system" pointSize="20"/>
+                                        <state key="normal" title="SCALES">
+                                            <color key="titleColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                            <color key="titleShadowColor" systemColor="systemBlueColor" red="0.0" green="0.47843137250000001" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        </state>
+                                        <connections>
+                                            <action selector="settingsCategoryButtonDown:" destination="o4J-d1-JWA" eventType="touchUpInside" id="jZb-3T-D7W"/>
+                                        </connections>
+                                    </button>
+                                    <button opaque="NO" tag="3" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="uNN-6c-e1z">
+                                        <rect key="frame" x="0.0" y="500" width="273" height="65"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="Gsf-Hd-pbm"/>
@@ -219,7 +235,7 @@
                                         </state>
                                     </button>
                                     <button opaque="NO" tag="4" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="top" buttonType="roundedRect" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="gge-OU-CzU">
-                                        <rect key="frame" x="0.0" y="500" width="273" height="65"/>
+                                        <rect key="frame" x="0.0" y="625" width="273" height="65"/>
                                         <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                                         <constraints>
                                             <constraint firstAttribute="height" constant="65" id="X1b-8k-fdY"/>
@@ -245,6 +261,7 @@
                         <outlet property="Button0" destination="Xcu-V4-TKE" id="X7X-0U-g44"/>
                         <outlet property="Button1" destination="caZ-3j-IXB" id="7e6-JH-adz"/>
                         <outlet property="Button2" destination="IY1-lN-Nz7" id="rMv-rO-MeO"/>
+                        <outlet property="Button3" destination="WnJ-Kt-3AD" id="wqa-gO-DtR"/>
                         <outlet property="Stack" destination="oIi-CX-n4f" id="KIU-YL-bXk"/>
                         <segue destination="fWq-hg-1S0" kind="show" identifier="SettingsItem" id="fpr-4a-kZr"/>
                     </connections>
@@ -295,11 +312,31 @@
                     <navigationItem key="navigationItem" id="Uvo-hl-mce"/>
                     <connections>
                         <outlet property="tableView" destination="48q-k1-vIZ" id="Mtn-BS-0jJ"/>
+                        <segue destination="csi-0A-RXZ" kind="show" identifier="ImageChooserViewController" id="9ub-It-Wa5"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="Fc7-Y5-Waf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="1381.1594202898552" y="62.946428571428569"/>
+            <point key="canvasLocation" x="1662" y="63"/>
+        </scene>
+        <!--ImageChooserViewController-->
+        <scene sceneID="bYy-jA-3BK">
+            <objects>
+                <viewController storyboardIdentifier="ImageChooserViewController" title="ImageChooserViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="csi-0A-RXZ" customClass="ImageChooserViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="aK0-JB-F3s"/>
+                        <viewControllerLayoutGuide type="bottom" id="Ks1-GW-vas"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="A9s-iN-Vrj">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                    </view>
+                    <navigationItem key="navigationItem" id="q13-8U-RXJ"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ohi-Bq-mOf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="2423" y="55"/>
         </scene>
         <!--Main View Controller-->
         <scene sceneID="NkS-dF-SfY">

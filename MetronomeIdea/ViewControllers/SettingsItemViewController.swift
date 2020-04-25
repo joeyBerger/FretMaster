@@ -18,13 +18,55 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
         "guitarTone_Rock" : "Selection_Rock",
         "guitarTone_Jazz" : "Selection_Jazz"
     ]
+    var changeButton = UIButton()
     
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.tableView.backgroundColor = defaultColor.TableViewBackground
         print("settingsType \(settingsType)")
-        let defaultKey = UserDefaults.standard.object(forKey: settingsType!)
-        initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey! as! String)!
+//        let defaultKey = UserDefaults.standard.object(forKey: settingsType!)
+        
+        if let defaultKey = UserDefaults.standard.object(forKey: settingsType!) {
+            initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey as! String)!
+        }
+        if (settingsType == "backgroundPick") {
+            setupBackgroundPickButton()
+            initialCheckmarkIdx = 0
+        }
+        
+    }
+    
+    func setupBackgroundPickButton() {
+        changeButton = UIButton()
+        let screenRect = UIScreen.main.bounds
+        let screenWidth = screenRect.size.width
+        let screenHeight = screenRect.size.height
+        let width:CGFloat = screenWidth * 0.72
+        let height:CGFloat = 70
+        let yBuffer:CGFloat = 100
+        changeButton.frame = CGRect(x: screenWidth*0.5-width/2, y: screenHeight-height-yBuffer, width: width, height: height)
+        changeButton.backgroundColor = defaultColor.MenuButtonColor
+        changeButton.layer.cornerRadius = 10
+        changeButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
+        changeButton.layer.shadowOffset = CGSize(width: 0.0, height: 2.0)
+        changeButton.layer.shadowOpacity = 1.0
+        changeButton.layer.shadowRadius = 0.0
+        changeButton.layer.masksToBounds = false
+        changeButton.setTitle("CHANGE", for: .normal)
+        changeButton.tintColor = defaultColor.MenuButtonTextColor
+        changeButton.titleLabel?.font = .systemFont(ofSize: 18)
+        changeButton.addTarget(self, action: #selector(onChangeButtonDown), for: .touchDown)
+        view.addSubview(changeButton)
+    }
+    
+    @objc func onChangeButtonDown() {
+//        UIView.setAnimationsEnabled(false)
+        self.performSegue(withIdentifier: "ImageChooserViewController", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        let sItem = segue.destination as! ImageChooserViewController
+//        sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
     }
     
     func setupSettingsCellData(isettingsType: String, isettingStrings: [String]) {
