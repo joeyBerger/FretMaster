@@ -50,10 +50,6 @@ class MenuViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-
-//        if (dataController == nil) {
-//            dataController
-//        }
         
         globalDataController.load()
         
@@ -64,12 +60,18 @@ class MenuViewController: UIViewController {
             }
         }
         
+        for (volumeType,_) in volume.volumeTypes {
+            let vol = UserDefaults.standard.object(forKey: volumeType)
+            if vol != nil {
+                volume.volumeTypes[volumeType] = vol as? Float
+            }
+        }
+       
+        
         buttonArr = [Button0,Button1,Button2,Button3,Button4]
         
         setupHiddenButtons()
 
-//        bgImage = UIImageView(image: UIImage(named: "AcousticMain.png"))
-        print("in view did load")
         bgImage.image = backgroundImage.returnImage("menu")
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
@@ -78,7 +80,6 @@ class MenuViewController: UIViewController {
         let styler = ViewStyler(ivc: self)
         for (i,Button) in buttonArr.enumerated() {
             menuButtonSubtext.append(UILabel())
-//            menuButtonSubtext[i].adjustsFontSizeToFitWidth = true
             menuButtonProgress.append(UIProgressView())
             styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
         }
