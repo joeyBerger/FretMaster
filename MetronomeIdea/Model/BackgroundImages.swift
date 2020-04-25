@@ -22,20 +22,13 @@ class BackgroundImage {
         "arpeggios" : "RockCrowd2.jpg"
     ]
     
-//    var searchTypes = [
-//        "guitar",
-//        "metronome",
-//        "rockmusic",
-//        "concert",
-//    ]
-    
     var searchStrings = [
         "menu" : ["guitar","concert"],
-        "scales" : ["concert"]
+        "scales" : ["concert","music","music+venue"],
+        "arpeggios" : ["concert","music","music+venue"]
     ]
     
     func returnImage(_ imageStr: String) -> UIImage {
-        print("images[imageStr]! \(images[imageStr]!)")
         if let image = images[imageStr]! {
             let newImage = UIImageView()
             newImage.image = image
