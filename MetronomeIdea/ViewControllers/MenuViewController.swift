@@ -20,6 +20,7 @@ var userLevelData = UserLevelData(scaleLevel: "0.0",arpeggioLevel: "0.0",et_sing
 let defaultColor = DefaultColor()
 let backgroundImage = BackgroundImage()
 var globalDataController = DataController(modelName: "ImageModel")
+var volume = Volume()
 
 class MenuViewController: UIViewController {
 
@@ -89,9 +90,7 @@ class MenuViewController: UIViewController {
         let button4frame = view.convert(Button4.frame, from:Stack)
         //look to see if menu buttons are off the screen
         if (button4frame.maxY + button4frame.height > view.frame.height) {
-            //conversion for iPhone8
-            //(667-85-145-(4*65))/5
-            let bottomBuffer: CGFloat = 10.0 //was 20.0
+            let bottomBuffer: CGFloat = 10.0
             let numbButtons: CGFloat = 5.0
             let button0frame = view.convert(Button0.frame, from:Stack)
             let sP = (view.frame.height - (bottomBuffer+button0frame.height)-button0frame.minY - (numbButtons-1)*button0frame.height)/numbButtons
@@ -166,7 +165,6 @@ class MenuViewController: UIViewController {
         )
         var key = "scales"
         buttonTextInfo.append(buttonText(iheader: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogress: progress, iactive: true))
-
 
         key = "arpeggios"
         level = lc.returnConvertedLevel(iinput: userLevelData.arpeggioLevel)

@@ -22,6 +22,7 @@ class SettingsViewController: UIViewController {
     @IBOutlet weak var Button1: UIButton!
     @IBOutlet weak var Button2: UIButton!
     @IBOutlet weak var Button3: UIButton!
+    @IBOutlet weak var Button4: UIButton!
     
     var styler: ViewStyler?
     var buttonId = 0
@@ -71,6 +72,13 @@ class SettingsViewController: UIViewController {
             iavailableSettings: ["Menu","Scales","Arpeggios"],
             isettingsType: "backgroundPicker"
         ),
+        buttonText(
+            iheader: "Volume".uppercased(),
+            isubtext: "Change Volume",
+            iid: "volume",
+            iavailableSettings: [],
+            isettingsType: ""
+        ),
     ]
     
     override func viewDidLoad() {
@@ -78,7 +86,7 @@ class SettingsViewController: UIViewController {
         
         styler = ViewStyler(ivc: self)
         styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
-        let buttonArr = [Button0,Button1,Button2,Button3]
+        let buttonArr = [Button0,Button1,Button2,Button3,Button4]
         for (i,button) in buttonArr.enumerated() {
             let subText = UILabel()
             styler!.setupMenuButton(
@@ -100,11 +108,16 @@ class SettingsViewController: UIViewController {
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
         buttonId = sender.tag
         UIView.setAnimationsEnabled(false)
-        self.performSegue(withIdentifier: "SettingsItem", sender: nil)
+        let view = buttonId < 4 ? "SettingsItem" : "VolumeSettingsViewController"
+        self.performSegue(withIdentifier: view, sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
-        let sItem = segue.destination as! SettingsItemViewController
-        sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
+        if buttonId < 4 {
+            let sItem = segue.destination as! SettingsItemViewController
+            sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
+        } else {
+            
+        }
     }
 }

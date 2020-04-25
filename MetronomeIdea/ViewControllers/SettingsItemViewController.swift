@@ -81,7 +81,7 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     }
     
     func playSound(isoundName: String) {
-        sc.playSound(isoundName: isoundName)
+        sc.playSound(isoundName: isoundName, ivolume: volume.volumeTypes["masterVol"]!)
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {

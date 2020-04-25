@@ -12,9 +12,9 @@ class SoundController: NSObject,AVAudioRecorderDelegate {
         }
     }
 
-    func playSound(isoundName: String, ioneShot: Bool = false, ifadeAllOtherSoundsDuration: Double = -1.0) {
+    func playSound(isoundName: String, ivolume: Float, ioneShot: Bool = false, ifadeAllOtherSoundsDuration: Double = -1.0) {
         if (ioneShot) {scSubIdx = scSubIdx + 1}
-        scSub[scSubIdx%scSub.count].playSound(isoundName: isoundName)
+        scSub[scSubIdx%scSub.count].playSound(isoundName: isoundName, ivolume: ivolume)
         if (ifadeAllOtherSoundsDuration >= 0) {
             for i in 0...scSub.count-1 {
                 if (i != scSubIdx%scSub.count) {
@@ -42,11 +42,12 @@ class SoundControllerSub : NSObject, AVAudioRecorderDelegate  {
     var player: AVAudioPlayer!
     var lastPlayedSound: String!
     
-    func playSound(isoundName: String) {
+    func playSound(isoundName: String, ivolume: Float) {
         let path = Bundle.main.path(forResource: isoundName, ofType : "wav")!
         let url = URL(fileURLWithPath : path)
         do {
             player = try AVAudioPlayer(contentsOf: url)
+            player.setVolume(ivolume, fadeDuration: 0)
             player.play()
             lastPlayedSound = isoundName
         }

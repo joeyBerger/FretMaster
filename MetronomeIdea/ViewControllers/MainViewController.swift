@@ -905,7 +905,7 @@ class MainViewController: UIViewController {
             
             var str = buttonDict[inputNumb]!
             str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
-            sc.playSound(isoundName: str + "_" + guitarTone, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
+            sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]!*volume.volumeTypes["guitarVol"]!, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
             
             displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
             if currentState == State.Recording {
@@ -1053,7 +1053,7 @@ class MainViewController: UIViewController {
     
     @objc func playSoundHelper(timer: Timer) {
         let noteDict = timer.userInfo as! [String: AnyObject]
-        sc.playSound(isoundName: noteDict["Note"] as! String + "_" + guitarTone)
+        sc.playSound(isoundName: noteDict["Note"] as! String + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]!*volume.volumeTypes["guitarVol"]!)
         displaySingleFretMarker(iinputStr: noteDict["Note"] as! String)
     }
     

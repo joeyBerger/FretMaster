@@ -35,8 +35,6 @@ class UserLevelData : NSObject, NSCoding {
         self.tutorialComplete = "0.0"
     }
     
-    
-    
     convenience required init?(coder aDecoder: NSCoder) {
         guard let scaleLevel = aDecoder.decodeObject(forKey: "scaleLevel") as? String,
             let arpeggioLevel = aDecoder.decodeObject(forKey: "arpeggioLevel") as? String,

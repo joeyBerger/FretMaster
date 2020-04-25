@@ -68,7 +68,7 @@ class Metronome {
         let targetTime:Double = 60/bpm
         if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003) {
             if (vc!.currentState == MainViewController.State.PlayingNotesCollection) {
-                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick] + "_" + vc!.guitarTone, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
+                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick] + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]!*volume.volumeTypes["guitarVol"]!, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
                 vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick])
                 if (currentClick == vc!.specifiedNoteCollection.count-1) {
                     endMetronome()
@@ -78,7 +78,7 @@ class Metronome {
                 }
             }
             else if (vc!.currentState == MainViewController.State.EarTrainCall) {
-                vc!.sc.playSound(isoundName: vc!.earTrainCallArr[currentClick])
+                vc!.sc.playSound(isoundName: vc!.earTrainCallArr[currentClick], ivolume: volume.volumeTypes["masterVol"]!*volume.volumeTypes["guitarVol"]!)
                 if (currentClick == vc!.earTrainCallArr.count-1) {
                     endMetronome()
                     vc!.currentState = MainViewController.State.EarTrainResponse
@@ -86,7 +86,7 @@ class Metronome {
             }
             //Scale Test Active
             else {
-                vc!.click.playSound(isoundName: "Click_" + vc!.clickTone)
+                vc!.click.playSound(isoundName: "Click_" + vc!.clickTone, ivolume: volume.volumeTypes["masterVol"]!*volume.volumeTypes["clickVol"]!)
                 clickTime = CFAbsoluteTimeGetCurrent()
                 //                print ("playing something\(clickTime) diff = \(clickTime - userInputTime)")
                 if (currentClick == countInClick-1 && vc!.currentState == MainViewController.State.NotesTestCountIn_Tempo) {
