@@ -2,8 +2,6 @@ import UIKit
 
 class VolumeSettingsViewController : UIViewController {
     
-    @IBOutlet weak var masterVolLabel: UILabel!
-    
     @IBOutlet weak var masterVolSlider: UISlider!
     @IBOutlet weak var guitarVolSlider: UISlider!
     @IBOutlet weak var clickVolSlider: UISlider!
@@ -26,7 +24,6 @@ class VolumeSettingsViewController : UIViewController {
     override func viewWillDisappear(_ animated: Bool) {
         if self.navigationController?.viewControllers.index(of: self) == nil {
             for volStr in volumeTypes {
-                //write to data
                 UserDefaults.standard.set(volume.volumeTypes[volStr], forKey: volStr)
             }
         }

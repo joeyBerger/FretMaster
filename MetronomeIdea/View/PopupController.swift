@@ -1,11 +1,3 @@
-//
-//  PopupController.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 4/21/20.
-//  Copyright © 2020 ashubin.com. All rights reserved.
-//
-
 import Foundation
 import AMPopTip
 
@@ -48,7 +40,8 @@ class PopupController {
     }
 
     @objc func enactTestReminder(timer _: Timer) {
-        let c = vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.periphButtonArr[0], istack: vc!.PeripheralStackView, iyoffset: -25)
+//        let c = vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.periphButtonArr[0], istack: vc!.PeripheralStackView, iyoffset: -25)
+        let c = vc!.view.convert(vc!.periphButtonArr[0].frame, from:vc!.PeripheralStackView)
         reminderPopup.show(text: "Start Test When Ready!", direction: .left, maxWidth: 200, in: vc!.view, from: c)
     }
 

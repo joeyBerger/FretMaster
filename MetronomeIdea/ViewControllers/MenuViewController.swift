@@ -1,11 +1,3 @@
-//
-//  MainMenuViewController.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 11/23/19.
-//  Copyright © 2019 ashubin.com. All rights reserved.
-//
-
 import UIKit
 import CoreData
 
@@ -16,6 +8,7 @@ open override var isHighlighted: Bool {
     }
 }}
 
+//global vars/constants
 var userLevelData = UserLevelData(scaleLevel: "0.0",arpeggioLevel: "0.0",et_singleNotes: "0.0",et_scales: "0.0",et_chords: "0.0",tutorialComplete: "0.0")
 let defaultColor = DefaultColor()
 let backgroundImage = BackgroundImage()
@@ -32,7 +25,6 @@ class MenuViewController: UIViewController {
     var buttonArr: [UIButton] = []
     
     @IBOutlet weak var Stack: UIStackView!
-//    @IBOutlet weak var DevScreenPrint: UILabel!
     
     var menuButtonSubtext:[UILabel] = []
     var menuButtonProgress:[UIProgressView] = []
@@ -67,10 +59,8 @@ class MenuViewController: UIViewController {
             }
         }
        
-        
         buttonArr = [Button0,Button1,Button2,Button3,Button4]
-        
-        setupHiddenButtons()
+//        setupHiddenButtons()
 
         bgImage.image = backgroundImage.returnImage("menu")
         bgImage.frame = CGRect(x: 0, y: 0, width: self.view.bounds.size.width, height: self.view.bounds.size.height)

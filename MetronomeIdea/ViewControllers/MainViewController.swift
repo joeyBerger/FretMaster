@@ -129,16 +129,7 @@ class MainViewController: UIViewController {
         28: "B3",
         29: "C4",
     ]
-    
-    var currentBackgroundPic = ""
-    var backgroundPicDict: [String: String] = [  //TODO: need to add states and unify image types, this is now coming from Background Image
-        "scaleLevel": "RockCrowd.png",
-        "arpeggioLevel": "RockCrowd2.jpg",
-        "earTrainingNotes": "RockCrowd.png",
-        "earTrainingScales": "RockCrowd.png",
-        "FreePlay": "RockCrowd.png",
-    ]
-    
+       
     var buttonNote: [String: UILabel] = [:]
     
     let layerArr = [
@@ -365,7 +356,6 @@ class MainViewController: UIViewController {
         lc.setLevelVars(icurrentLevel: icurrentLevel, icurrentLevelConstruct: ilevelConstruct, icurrentLevelKey: ilevelKey)
         tutorialComplete = itutorialComplete == "1.0"
         if (developmentMode > 1) {tutorialComplete = true}
-        currentBackgroundPic = backgroundPicDict[ilevelKey]!
         
         if developmentMode > 0 {
             print("icurrentLevel \(icurrentLevel)")
@@ -1472,9 +1462,9 @@ class MainViewController: UIViewController {
         //        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
         //          setupPopupTutorialText()
         
-        mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
-        mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
-        wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
+//        mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
+//        mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
+//        wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
     }
     
     func returnStackViewButtonCoordinates(istackViewButton: UIButton, istack: UIStackView, ixoffset: CGFloat = 0.0, iyoffset: CGFloat = 0.0) -> CGRect {

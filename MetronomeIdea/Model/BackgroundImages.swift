@@ -1,11 +1,3 @@
-//
-//  BackgroundImages.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 4/24/20.
-//  Copyright © 2020 ashubin.com. All rights reserved.
-//
-
 import Foundation
 import UIKit
 class BackgroundImage {

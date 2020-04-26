@@ -19,11 +19,10 @@ class Metronome {
     var numbTestClicks = 4
     var currentClick = 0
 
-    //TIMERS
+    //timers
     var metroTimer : Timer?
     var nextTimer : Timer?
 
-    //Metro Features
     var isOn = false
     var bpm = 120.0
     var minBPM = 40.0
@@ -88,7 +87,6 @@ class Metronome {
             else {
                 vc!.click.playSound(isoundName: "Click_" + vc!.clickTone, ivolume: volume.volumeTypes["masterVol"]!*volume.volumeTypes["clickVol"]!)
                 clickTime = CFAbsoluteTimeGetCurrent()
-                //                print ("playing something\(clickTime) diff = \(clickTime - userInputTime)")
                 if (currentClick == countInClick-1 && vc!.currentState == MainViewController.State.NotesTestCountIn_Tempo) {
                     vc!.currentState = MainViewController.State.NotesTestActive_Tempo
                     vc!.ResultsLabel.text = "Count In: " + String(currentClick+1)

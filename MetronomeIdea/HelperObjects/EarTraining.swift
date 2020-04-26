@@ -1,12 +1,5 @@
-//
-//  EarTraining.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 11/14/19.
-//  Copyright © 2019 ashubin.com. All rights reserved.
-//
-
 import Foundation
+
 class EarTraining {
     
     init (ivc:MainViewController) {

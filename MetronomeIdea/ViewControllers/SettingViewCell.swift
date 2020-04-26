@@ -7,5 +7,4 @@ class SettingViewCell: UITableViewCell {
     func setupCell(isettingLabelText: String = "") {
         SettingLabel.text = isettingLabelText
     }
-
 }

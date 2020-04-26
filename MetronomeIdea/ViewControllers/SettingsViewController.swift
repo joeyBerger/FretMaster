@@ -10,7 +10,7 @@ class SettingsViewController: UIViewController {
     
     init(ivc: MainViewController?) {
         self.vc = ivc
-        super.init(nibName: nil, bundle: nil)        //https://stackoverflow.com/questions/26923003/how-do-i-make-a-custom-initializer-for-a-uiviewcontroller-subclass-in-swift
+        super.init(nibName: nil, bundle: nil)   //https://stackoverflow.com/questions/26923003/how-do-i-make-a-custom-initializer-for-a-uiviewcontroller-subclass-in-swift
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -116,8 +116,6 @@ class SettingsViewController: UIViewController {
         if buttonId < 4 {
             let sItem = segue.destination as! SettingsItemViewController
             sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
-        } else {
-            
         }
     }
 }

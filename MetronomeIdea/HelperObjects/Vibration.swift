@@ -1,11 +1,3 @@
-//
-//  Vibration.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 4/20/20.
-//  Copyright © 2020 ashubin.com. All rights reserved.
-//
-
 import UIKit
 import AVFoundation
 

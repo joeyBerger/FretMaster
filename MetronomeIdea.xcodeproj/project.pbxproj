@@ -463,10 +463,10 @@
 				9EBCF8AC2429D09400074C4C /* LevelHandler.swift */,
 				9EE71F35238B8B5B00D87D24 /* UserData.swift */,
 				9E17C14924529E8100D90CD9 /* UnsplashClient.swift */,
-				9E44D7B92454AD6800911515 /* ImageModel.xcdatamodeld */,
 				9E44D7B72453F30300911515 /* BackgroundImages.swift */,
 				9E44D7BC2454C80200911515 /* DataController.swift */,
 				9E44D7C02454F05900911515 /* Volume.swift */,
+				9E44D7B92454AD6800911515 /* ImageModel.xcdatamodeld */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -896,7 +896,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Joey-Berger.Fretmaster";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Debug;
 		};
@@ -919,7 +919,7 @@
 				PRODUCT_BUNDLE_IDENTIFIER = "Joey-Berger.Fretmaster";
 				PRODUCT_NAME = "$(TARGET_NAME)";
 				SWIFT_VERSION = 4.2;
-				TARGETED_DEVICE_FAMILY = "1,2";
+				TARGETED_DEVICE_FAMILY = 1;
 			};
 			name = Release;
 		};

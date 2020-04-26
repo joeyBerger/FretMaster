@@ -1,11 +1,3 @@
-//
-//  ScaleClass.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 11/17/19.
-//  Copyright © 2019 ashubin.com. All rights reserved.
-//
-
 import Foundation
 
 class ScaleCollection {
@@ -33,9 +25,6 @@ class ScaleCollection {
         "b7" : 10,
         "7" : 11
     ]
-    
-//    let distanceToScaleDegreeDict : [Int:String] = [:]
-//    let distanceToScaleDegreeDict : [Int:String] = [:]
     
     let scaleNameDic : [String:String] = [
         "MinorPentatonic" : "Minor Pentatonic",
@@ -95,8 +84,7 @@ class ScaleCollection {
         if (vc!.specifiedNoteCollection.isEmpty)
         {
             for (i, item) in refScale.enumerated() {
-                if (startingNote == item)
-                {
+                if (startingNote == item) {
                     noteIndex = i
                     break
                 }
@@ -104,8 +92,7 @@ class ScaleCollection {
             
             for (i, _) in desiredScale!.enumerated() {
                 let note = scaleDegreeDict[desiredScale![i]]
-                if ((noteIndex+note!) >= refScale.count*notePos)
-                {
+                if ((noteIndex+note!) >= refScale.count*notePos) {
                     notePos = notePos + 1
                 }
                  vc!.specifiedNoteCollection.append(refScale[(noteIndex+note!)%refScale.count] + String(notePos+startingOctave))
@@ -142,8 +129,7 @@ class ScaleCollection {
             } else if (idirection == "Both") {
                 var i = 0
                 for (item) in vc!.specifiedNoteCollection.reversed() {
-                    if (i > 0)
-                    {
+                    if (i > 0) {
                         vc!.specifiedNoteCollection.append(item)
                     }
                     i = i +  1
@@ -154,10 +140,7 @@ class ScaleCollection {
     
     func returnNoteDistance (iinput: String, icomparedNote: String) -> String {
         if let inputIndex = refScale.firstIndex(of: iinput) {
-//            print("inputIndex \(inputIndex)  ")
-//            print("iinput \(iinput)  ")
             if let comparedNoteIndex = refScale.firstIndex(of: icomparedNote) {
-//                print("comparedNoteIndex \(comparedNoteIndex)")
                 let dist = inputIndex < comparedNoteIndex ? (12 + inputIndex) - comparedNoteIndex : inputIndex - comparedNoteIndex
                 return scaleDegreeDict.filter{$1 == dist}.map{$0.0}[0]
             }

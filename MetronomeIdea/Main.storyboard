@@ -447,7 +447,6 @@
                     <connections>
                         <outlet property="clickVolSlider" destination="0Ow-sh-RgQ" id="CUW-Cd-Syd"/>
                         <outlet property="guitarVolSlider" destination="WL4-Be-yoe" id="di5-Al-93c"/>
-                        <outlet property="masterVolLabel" destination="SrI-9u-kkw" id="crJ-Ki-ayl"/>
                         <outlet property="masterVolSlider" destination="ymY-n3-xgf" id="0hf-mM-0QW"/>
                     </connections>
                 </viewController>

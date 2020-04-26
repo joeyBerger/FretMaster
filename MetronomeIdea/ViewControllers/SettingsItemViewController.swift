@@ -24,9 +24,7 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.tableView.backgroundColor = defaultColor.TableViewBackground
-        print("settingsType \(settingsType)")
-//        let defaultKey = UserDefaults.standard.object(forKey: settingsType!)
-        
+
         if let defaultKey = UserDefaults.standard.object(forKey: settingsType!) {
             initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey as! String)!
         }
@@ -61,14 +59,12 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
     }
     
     @objc func onChangeButtonDown() {
-//        UIView.setAnimationsEnabled(false)
         self.performSegue(withIdentifier: "ImageChooserViewController", sender: nil)
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
         let vc = segue.destination as! ImageChooserViewController
         vc.selectedBackground = settingStrings[selectedCell].lowercased()
-//        sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
     }
     
     func setupSettingsCellData(isettingsType: String, isettingStrings: [String]) {

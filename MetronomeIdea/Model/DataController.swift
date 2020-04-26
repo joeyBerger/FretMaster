@@ -10,7 +10,6 @@ class DataController {
     
     init(modelName:String) {
         persistentContainer = NSPersistentContainer(name: modelName)
-        print("persistentContainer is nil: \(persistentContainer == nil)")
     }
 
     func load(completion: (() -> Void)? = nil) {
