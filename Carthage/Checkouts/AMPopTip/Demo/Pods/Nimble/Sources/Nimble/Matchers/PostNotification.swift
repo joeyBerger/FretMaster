@@ -7,12 +7,12 @@ internal class NotificationCollector {
 
     required init(notificationCenter: NotificationCenter) {
         self.notificationCenter = notificationCenter
-        self.observedNotifications = []
+        observedNotifications = []
     }
 
     func startObserving() {
         // swiftlint:disable:next line_length
-        self.token = self.notificationCenter.addObserver(forName: nil, object: nil, queue: nil) { [weak self] notification in
+        token = notificationCenter.addObserver(forName: nil, object: nil, queue: nil) { [weak self] notification in
             // linux-swift gets confused by .append(n)
             self?.observedNotifications.append(notification)
         }
@@ -39,7 +39,7 @@ public func postNotifications(
     return Predicate { actualExpression in
         let collectorNotificationsExpression = Expression(
             memoizedExpression: { _ in
-                return collector.observedNotifications
+                collector.observedNotifications
             },
             location: actualExpression.location,
             withoutCaching: true
@@ -60,7 +60,7 @@ public func postNotifications(
 
         var result = try predicate.satisfies(collectorNotificationsExpression)
         result.message = result.message.replacedExpectation { message in
-            return .expectedCustomValueTo(message.expectedMessage, actualValue)
+            .expectedCustomValueTo(message.expectedMessage, actualValue)
         }
         return result
     }
@@ -68,10 +68,10 @@ public func postNotifications(
 
 public func postNotifications<T>(
     _ notificationsMatcher: T,
-    fromNotificationCenter center: NotificationCenter = .default)
+    fromNotificationCenter center: NotificationCenter = .default
+)
     -> Predicate<Any>
-    where T: Matcher, T.ValueType == [Notification]
-{
+    where T: Matcher, T.ValueType == [Notification] {
     _ = mainThread // Force lazy-loading of this value
     let collector = NotificationCollector(notificationCenter: center)
     collector.startObserving()
@@ -79,8 +79,8 @@ public func postNotifications<T>(
 
     return Predicate { actualExpression in
         let collectorNotificationsExpression = Expression(memoizedExpression: { _ in
-            return collector.observedNotifications
-            }, location: actualExpression.location, withoutCaching: true)
+            collector.observedNotifications
+        }, location: actualExpression.location, withoutCaching: true)
 
         assert(pthread_equal(mainThread, pthread_self()) != 0, "Only expecting closure to be evaluated on main thread.")
         if !once {

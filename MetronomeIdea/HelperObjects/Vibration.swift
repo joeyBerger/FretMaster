@@ -1,5 +1,5 @@
-import UIKit
 import AVFoundation
+import UIKit
 
 enum Vibration {
     case error
@@ -12,38 +12,37 @@ enum Vibration {
     case oldSchool
 
     func vibrate() {
+        switch self {
+        case .error:
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.error)
 
-      switch self {
-      case .error:
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.error)
+        case .success:
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.success)
 
-      case .success:
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.success)
+        case .warning:
+            let generator = UINotificationFeedbackGenerator()
+            generator.notificationOccurred(.warning)
 
-      case .warning:
-        let generator = UINotificationFeedbackGenerator()
-        generator.notificationOccurred(.warning)
+        case .light:
+            let generator = UIImpactFeedbackGenerator(style: .light)
+            generator.impactOccurred()
 
-      case .light:
-        let generator = UIImpactFeedbackGenerator(style: .light)
-        generator.impactOccurred()
+        case .medium:
+            let generator = UIImpactFeedbackGenerator(style: .medium)
+            generator.impactOccurred()
 
-      case .medium:
-        let generator = UIImpactFeedbackGenerator(style: .medium)
-        generator.impactOccurred()
+        case .heavy:
+            let generator = UIImpactFeedbackGenerator(style: .heavy)
+            generator.impactOccurred()
 
-      case .heavy:
-        let generator = UIImpactFeedbackGenerator(style: .heavy)
-        generator.impactOccurred()
+        case .selection:
+            let generator = UISelectionFeedbackGenerator()
+            generator.selectionChanged()
 
-      case .selection:
-        let generator = UISelectionFeedbackGenerator()
-        generator.selectionChanged()
-
-      case .oldSchool:
-        AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
-      }
+        case .oldSchool:
+            AudioServicesPlaySystemSound(SystemSoundID(kSystemSoundID_Vibrate))
+        }
     }
 }

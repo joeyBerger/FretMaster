@@ -17,10 +17,10 @@ public enum ResizeMode {
         case .constrains:
             return ConstraintViewResizer()
 
-        case .block(resizeBlock: let block):
+        case let .block(resizeBlock: block):
             return BlockViewResizer(block: block)
 
-        case .custom(viewResizer: let resizer):
+        case let .custom(viewResizer: resizer):
             return resizer
         }
     }
@@ -38,20 +38,18 @@ struct FrameViewResizer: ViewResizer {
 }
 
 struct BlockViewResizer: ViewResizer {
-
     let resizeBlock: (UIView, CGSize) -> Void
 
     init(block: @escaping (UIView, CGSize) -> Void) {
-        self.resizeBlock = block
+        resizeBlock = block
     }
 
     func resize(view: UIView, for size: CGSize) {
-        self.resizeBlock(view, size)
+        resizeBlock(view, size)
     }
 }
 
 class ConstraintViewResizer: ViewResizer {
-
     typealias SizeConstrainsWrapper = (heightConstrain: NSLayoutConstraint, widthConstrain: NSLayoutConstraint)
 
     func resize(view: UIView, for size: CGSize) {
@@ -65,8 +63,8 @@ class ConstraintViewResizer: ViewResizer {
 
         view.layoutIfNeeded()
 
-        //iOS 9+ BUG: Before the first draw, iOS will not calculate the layout, 
-        // it add a _UITemporaryLayoutWidth equals to its bounds and create a conflict. 
+        // iOS 9+ BUG: Before the first draw, iOS will not calculate the layout,
+        // it add a _UITemporaryLayoutWidth equals to its bounds and create a conflict.
         // So to it do all the layout we create a Window and add it as subview
         if view.bounds.width != size.width || view.bounds.height != size.height {
             let window = UIWindow(frame: CGRect(origin: .zero, size: size))
@@ -85,23 +83,23 @@ class ConstraintViewResizer: ViewResizer {
         var width: NSLayoutConstraint! // swiftlint:disable:this implicitly_unwrapped_optional
 
         #if swift(>=4.2)
-        let heightLayout = NSLayoutConstraint.Attribute.height
-        let widthLayout = NSLayoutConstraint.Attribute.width
-        let equalRelation = NSLayoutConstraint.Relation.equal
+            let heightLayout = NSLayoutConstraint.Attribute.height
+            let widthLayout = NSLayoutConstraint.Attribute.width
+            let equalRelation = NSLayoutConstraint.Relation.equal
         #else
-        let heightLayout = NSLayoutAttribute.height
-        let widthLayout = NSLayoutAttribute.width
-        let equalRelation = NSLayoutRelation.equal
+            let heightLayout = NSLayoutAttribute.height
+            let widthLayout = NSLayoutAttribute.width
+            let equalRelation = NSLayoutRelation.equal
         #endif
 
         for constrain in view.constraints {
-            if constrain.firstAttribute == heightLayout &&
-                constrain.relation == equalRelation && constrain.secondItem == nil {
+            if constrain.firstAttribute == heightLayout,
+                constrain.relation == equalRelation, constrain.secondItem == nil {
                 height = constrain
             }
 
-            if constrain.firstAttribute == widthLayout &&
-                constrain.relation == equalRelation && constrain.secondItem == nil {
+            if constrain.firstAttribute == widthLayout,
+                constrain.relation == equalRelation, constrain.secondItem == nil {
                 width = constrain
             }
         }
@@ -153,16 +151,16 @@ public func haveValidDynamicSizeSnapshot(named name: String? = nil,
                                          tolerance: CGFloat? = nil,
                                          resizeMode: ResizeMode = .frame) -> Predicate<Snapshotable> {
     return Predicate.fromDeprecatedClosure { actualExpression, failureMessage in
-        return performDynamicSizeSnapshotTest(name,
-                                              identifier: identifier,
-                                              sizes: sizes,
-                                              isDeviceAgnostic: isDeviceAgnostic,
-                                              usesDrawRect: usesDrawRect,
-                                              actualExpression: actualExpression,
-                                              failureMessage: failureMessage,
-                                              tolerance: tolerance,
-                                              isRecord: false,
-                                              resizeMode: resizeMode)
+        performDynamicSizeSnapshotTest(name,
+                                       identifier: identifier,
+                                       sizes: sizes,
+                                       isDeviceAgnostic: isDeviceAgnostic,
+                                       usesDrawRect: usesDrawRect,
+                                       actualExpression: actualExpression,
+                                       failureMessage: failureMessage,
+                                       tolerance: tolerance,
+                                       isRecord: false,
+                                       resizeMode: resizeMode)
     }
 }
 
@@ -239,15 +237,15 @@ public func recordDynamicSizeSnapshot(named name: String? = nil,
                                       usesDrawRect: Bool = false,
                                       resizeMode: ResizeMode = .frame) -> Predicate<Snapshotable> {
     return Predicate.fromDeprecatedClosure { actualExpression, failureMessage in
-        return performDynamicSizeSnapshotTest(name,
-                                              identifier: identifier,
-                                              sizes: sizes,
-                                              isDeviceAgnostic: isDeviceAgnostic,
-                                              usesDrawRect: usesDrawRect,
-                                              actualExpression: actualExpression,
-                                              failureMessage: failureMessage,
-                                              isRecord: true,
-                                              resizeMode: resizeMode)
+        performDynamicSizeSnapshotTest(name,
+                                       identifier: identifier,
+                                       sizes: sizes,
+                                       isDeviceAgnostic: isDeviceAgnostic,
+                                       usesDrawRect: usesDrawRect,
+                                       actualExpression: actualExpression,
+                                       failureMessage: failureMessage,
+                                       isRecord: true,
+                                       resizeMode: resizeMode)
     }
 }
 

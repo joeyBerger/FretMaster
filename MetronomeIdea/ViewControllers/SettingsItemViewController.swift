@@ -1,26 +1,25 @@
 import Foundation
 import UIKit
 
-class SettingsItemViewController : UIViewController, UITableViewDataSource, UITableViewDelegate {
+class SettingsItemViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
+    @IBOutlet var tableView: UITableView!
 
-    @IBOutlet weak var tableView: UITableView!
-
-    var settingStrings:[String] = []
+    var settingStrings: [String] = []
     var settingsType: String?
     var initialCheckmarkIdx = 0
     var selectedCell = 0
     let cellReuseIdentifier = "SettingViewCell"
     let sc = SoundController(isubInstances: 10)
     let soundStringDict = [
-        "clickTone_Digital" : "Click_Digital",
-        "clickTone_Woodblock1" : "Click_Woodblock1",
-        "clickTone_Woodblock2" : "Click_Woodblock2",
-        "guitarTone_Acoustic" : "Selection_Acoustic",
-        "guitarTone_Rock" : "Selection_Rock",
-        "guitarTone_Jazz" : "Selection_Jazz"
+        "clickTone_Digital": "Click_Digital",
+        "clickTone_Woodblock1": "Click_Woodblock1",
+        "clickTone_Woodblock2": "Click_Woodblock2",
+        "guitarTone_Acoustic": "Selection_Acoustic",
+        "guitarTone_Rock": "Selection_Rock",
+        "guitarTone_Jazz": "Selection_Jazz",
     ]
     var changeButton = UIButton()
-    
+
     override func viewDidLoad() {
         super.viewDidLoad()
 //        self.tableView.backgroundColor = defaultColor.TableViewBackground
@@ -28,22 +27,22 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
         if let defaultKey = UserDefaults.standard.object(forKey: settingsType!) {
             initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey as! String)!
         }
-        if (settingsType == "backgroundPick") {
+        if settingsType == "backgroundPick" {
             setupBackgroundPickButton()
             initialCheckmarkIdx = 0
             selectedCell = 0
         }
     }
-    
+
     func setupBackgroundPickButton() {
         changeButton = UIButton()
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
-        let width:CGFloat = screenWidth * 0.72
-        let height:CGFloat = 70
-        let yBuffer:CGFloat = 100
-        changeButton.frame = CGRect(x: screenWidth*0.5-width/2, y: screenHeight-height-yBuffer, width: width, height: height)
+        let width: CGFloat = screenWidth * 0.72
+        let height: CGFloat = 70
+        let yBuffer: CGFloat = 100
+        changeButton.frame = CGRect(x: screenWidth * 0.5 - width / 2, y: screenHeight - height - yBuffer, width: width, height: height)
         changeButton.backgroundColor = defaultColor.MenuButtonColor
         changeButton.layer.cornerRadius = 10
         changeButton.layer.shadowColor = UIColor(red: 0, green: 0, blue: 0, alpha: 0.25).cgColor
@@ -57,51 +56,51 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
         changeButton.addTarget(self, action: #selector(onChangeButtonDown), for: .touchDown)
         view.addSubview(changeButton)
     }
-    
+
     @objc func onChangeButtonDown() {
-        self.performSegue(withIdentifier: "ImageChooserViewController", sender: nil)
+        performSegue(withIdentifier: "ImageChooserViewController", sender: nil)
     }
-    
-    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
         let vc = segue.destination as! ImageChooserViewController
         vc.selectedBackground = settingStrings[selectedCell].lowercased()
     }
-    
+
     func setupSettingsCellData(isettingsType: String, isettingStrings: [String]) {
         settingsType = isettingsType
         settingStrings = isettingStrings
     }
-    
-    func tableView(_ tableView: UITableView, numberOfRowsInSection section: Int) -> Int {
-        return self.settingStrings.count;
+
+    func tableView(_: UITableView, numberOfRowsInSection _: Int) -> Int {
+        return settingStrings.count
     }
-    
+
     func playSound(isoundName: String) {
         sc.playSound(isoundName: isoundName, ivolume: volume.volumeTypes["masterVol"]!)
     }
-    
+
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: self.cellReuseIdentifier)! as! SettingViewCell
-        let labelStr = self.settingStrings[(indexPath as NSIndexPath).row]
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
+        let labelStr = settingStrings[(indexPath as NSIndexPath).row]
 //        cell.setupCell(isettingLabelText: labelStr)
         cell.textLabel?.text = labelStr
         tableView.tableFooterView = UIView(frame: .zero)
-        
-        if (indexPath.row == self.initialCheckmarkIdx) {
+
+        if indexPath.row == initialCheckmarkIdx {
             cell.accessoryType = .checkmark
         }
-        
+
         return cell
     }
-    
-    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+
+    func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt _: IndexPath) {
 //        cell.backgroundColor = defaultColor.TableViewBackground
     }
-    
+
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         UserDefaults.standard.set(settingStrings[indexPath.row], forKey: settingsType!)
-        //https://www.youtube.com/watch?time_continue=397&v=5MZ-WJuSdpg&feature=emb_logo
-        for row in 0..<tableView.numberOfRows(inSection: indexPath.section) {
+        // https://www.youtube.com/watch?time_continue=397&v=5MZ-WJuSdpg&feature=emb_logo
+        for row in 0 ..< tableView.numberOfRows(inSection: indexPath.section) {
             if let cell = tableView.cellForRow(at: IndexPath(row: row, section: indexPath.section)) {
                 cell.accessoryType = row == indexPath.row ? .checkmark : .none
             }
@@ -111,7 +110,7 @@ class SettingsItemViewController : UIViewController, UITableViewDataSource, UITa
         if soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]] != nil {
             playSound(isoundName: soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]]!)
         }
-        
+
         selectedCell = indexPath.row
     }
 }

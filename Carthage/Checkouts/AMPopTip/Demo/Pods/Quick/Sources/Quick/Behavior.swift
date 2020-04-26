@@ -3,10 +3,9 @@
  */
 
 open class Behavior<Context> {
-
     /**
      Override this variable if you want to provide custom name for this example group.
-    */
+     */
     open class var name: String { return String(describing: self) }
 
     /**
@@ -16,6 +15,6 @@ open class Behavior<Context> {
      and `afterEach` closures, as well as any number of examples (defined using `it`).
 
      - parameter aContext: A closure that, when evaluated, returns a `Context` instance that provide the information on the subject.
-    */
-    open class func spec(_ aContext: @escaping () -> Context) {}
+     */
+    open class func spec(_: @escaping () -> Context) {}
 }

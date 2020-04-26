@@ -13,7 +13,7 @@ public final class CurrentTestCaseTracker: NSObject, XCTestObservation {
     }
 
     @objc
-    public func testCaseDidFinish(_ testCase: XCTestCase) {
+    public func testCaseDidFinish(_: XCTestCase) {
         currentTestCase = nil
     }
 }

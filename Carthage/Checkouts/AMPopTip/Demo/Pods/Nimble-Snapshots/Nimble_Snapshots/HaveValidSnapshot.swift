@@ -10,8 +10,8 @@ import UIKit
 
 extension UIViewController: Snapshotable {
     public var snapshotObject: UIView? {
-        self.beginAppearanceTransition(true, animated: false)
-        self.endAppearanceTransition()
+        beginAppearanceTransition(true, animated: false)
+        endAppearanceTransition()
         return view
     }
 }
@@ -24,7 +24,6 @@ extension UIView: Snapshotable {
 
 @objc
 public class FBSnapshotTest: NSObject {
-
     var referenceImagesDirectory: String?
     var tolerance: CGFloat = 0
 
@@ -44,7 +43,6 @@ public class FBSnapshotTest: NSObject {
                                tolerance: CGFloat,
                                filename: String,
                                identifier: String? = nil) -> Bool {
-
         let testName = parseFilename(filename: filename)
         let snapshotController: FBSnapshotTestController = FBSnapshotTestController(test: self)
         snapshotController.folderName = testName
@@ -59,7 +57,7 @@ public class FBSnapshotTest: NSObject {
         snapshotController.usesDrawViewHierarchyInRect = usesDrawRect
 
         let reason = "Missing value for referenceImagesDirectory - " +
-                     "Call FBSnapshotTest.setReferenceImagesDirectory(FB_REFERENCE_IMAGE_DIR)"
+            "Call FBSnapshotTest.setReferenceImagesDirectory(FB_REFERENCE_IMAGE_DIR)"
         assert(snapshotController.referenceImagesDirectory != nil, reason)
 
         guard let snapshotObject = instance.snapshotObject else {
@@ -74,7 +72,7 @@ public class FBSnapshotTest: NSObject {
 
             let image = try snapshotController.referenceImage(for: Selector(snapshot), identifier: identifier)
             attach(image: image, named: "Reference_\(snapshot)")
-        } catch let error {
+        } catch {
             let info = (error as NSError).userInfo
             if let ref = info[FBReferenceImageKey] as? UIImage {
                 attach(image: ref, named: "Reference_\(snapshot)")
@@ -127,15 +125,15 @@ func getDefaultReferenceDirectory(_ sourceFileName: String) -> String {
 
     // Find the directory in the path that ends with a test suffix.
     let testPath = pathComponents.first { component -> Bool in
-        return !testFolderSuffixes.filter {
+        !testFolderSuffixes.filter {
             (component as AnyObject).lowercased.hasSuffix($0)
         }.isEmpty
     }
 
     guard let testDirectory = testPath else {
         fatalError("Could not infer reference image folder – You should provide a reference dir using " +
-                   "FBSnapshotTest.setReferenceImagesDirectory(FB_REFERENCE_IMAGE_DIR) " +
-                   "or by setting the FB_REFERENCE_IMAGE_DIR environment variable")
+            "FBSnapshotTest.setReferenceImagesDirectory(FB_REFERENCE_IMAGE_DIR) " +
+            "or by setting the FB_REFERENCE_IMAGE_DIR environment variable")
     }
 
     // Recombine the path components and append our own image directory.
@@ -163,9 +161,9 @@ private func parseFilename(filename: String) -> String {
 }
 
 func sanitizedTestName(_ name: String?) -> String {
-	guard let testName = currentTestName() else {
-		fatalError("Test matchers must be called from inside a test block")
-	}
+    guard let testName = currentTestName() else {
+        fatalError("Test matchers must be called from inside a test block")
+    }
 
     var filename = name ?? testName
     filename = filename.replacingOccurrences(of: "root example group, ", with: "")
@@ -261,7 +259,6 @@ public func haveValidSnapshot(named name: String? = nil,
                               identifier: String? = nil,
                               usesDrawRect: Bool = false,
                               tolerance: CGFloat? = nil) -> Predicate<Snapshotable> {
-
     return Predicate.fromDeprecatedClosure { actualExpression, failureMessage in
         if switchChecksWithRecords {
             return recordSnapshot(name,
@@ -284,7 +281,6 @@ public func haveValidDeviceAgnosticSnapshot(named name: String? = nil,
                                             identifier: String? = nil,
                                             usesDrawRect: Bool = false,
                                             tolerance: CGFloat? = nil) -> Predicate<Snapshotable> {
-
     return Predicate.fromDeprecatedClosure { actualExpression, failureMessage in
         if switchChecksWithRecords {
             return recordSnapshot(name, identifier: identifier, isDeviceAgnostic: true, usesDrawRect: usesDrawRect,
@@ -300,19 +296,17 @@ public func haveValidDeviceAgnosticSnapshot(named name: String? = nil,
 public func recordSnapshot(named name: String? = nil,
                            identifier: String? = nil,
                            usesDrawRect: Bool = false) -> Predicate<Snapshotable> {
-
     return Predicate.fromDeprecatedClosure { actualExpression, failureMessage in
-        return recordSnapshot(name, identifier: identifier, usesDrawRect: usesDrawRect,
-                              actualExpression: actualExpression, failureMessage: failureMessage)
+        recordSnapshot(name, identifier: identifier, usesDrawRect: usesDrawRect,
+                       actualExpression: actualExpression, failureMessage: failureMessage)
     }
 }
 
 public func recordDeviceAgnosticSnapshot(named name: String? = nil,
                                          identifier: String? = nil,
                                          usesDrawRect: Bool = false) -> Predicate<Snapshotable> {
-
     return Predicate.fromDeprecatedClosure { actualExpression, failureMessage in
-        return recordSnapshot(name, identifier: identifier, isDeviceAgnostic: true, usesDrawRect: usesDrawRect,
-                              actualExpression: actualExpression, failureMessage: failureMessage)
+        recordSnapshot(name, identifier: identifier, isDeviceAgnostic: true, usesDrawRect: usesDrawRect,
+                       actualExpression: actualExpression, failureMessage: failureMessage)
     }
 }

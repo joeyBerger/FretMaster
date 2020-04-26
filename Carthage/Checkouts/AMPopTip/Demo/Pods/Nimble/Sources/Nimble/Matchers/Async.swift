@@ -17,9 +17,10 @@ private func async<T>(style: ExpectationStyle, predicate: Predicate<T>, timeout:
             timeoutInterval: timeout,
             file: actualExpression.location.file,
             line: actualExpression.location.line,
-            fnName: fnName) {
-                lastPredicateResult = try predicate.satisfies(uncachedExpression)
-                return lastPredicateResult!.toBoolean(expectation: style)
+            fnName: fnName
+        ) {
+            lastPredicateResult = try predicate.satisfies(uncachedExpression)
+            return lastPredicateResult!.toBoolean(expectation: style)
         }
         switch result {
         case .completed: return lastPredicateResult!
@@ -43,9 +44,9 @@ private func async<T>(style: ExpectationStyle, predicate: Predicate<T>, timeout:
 
 private let toEventuallyRequiresClosureError = FailureMessage(
     stringValue: """
-        expect(...).toEventually(...) requires an explicit closure (eg - expect { ... }.toEventually(...) )
-        Swift 1.2 @autoclosure behavior has changed in an incompatible way for Nimble to function
-        """
+    expect(...).toEventually(...) requires an explicit closure (eg - expect { ... }.toEventually(...) )
+    Swift 1.2 @autoclosure behavior has changed in an incompatible way for Nimble to function
+    """
 )
 
 extension Expectation {

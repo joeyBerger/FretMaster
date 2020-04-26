@@ -12,7 +12,7 @@ internal func expressionDoesNotMatch<T, U>(_ expression: Expression<T>, matcher:
             msg.actualValue = "<\(stringify(try expression.evaluate()))>"
         }
         return (pass, msg)
-    } catch let error {
+    } catch {
         msg.stringValue = "unexpected error thrown: <\(error)>"
         return (false, msg)
     }
@@ -30,7 +30,7 @@ internal func execute<T>(_ expression: Expression<T>, _ style: ExpectationStyle,
                 msg.actualValue = "<\(stringify(try expression.evaluate()))>"
             }
             return (result.toBoolean(expectation: style), msg)
-        } catch let error {
+        } catch {
             msg.stringValue = "unexpected error thrown: <\(error)>"
             return (false, msg)
         }
@@ -54,7 +54,6 @@ internal func execute<T>(_ expression: Expression<T>, _ style: ExpectationStyle,
 }
 
 public struct Expectation<T> {
-
     public let expression: Expression<T>
 
     public init(expression: Expression<T>) {
@@ -66,20 +65,20 @@ public struct Expectation<T> {
         handler.assert(pass, message: message, location: expression.location)
     }
 
-    ////////////////// OLD API /////////////////////
+    /// /////////////// OLD API /////////////////////
 
     /// DEPRECATED: Tests the actual value using a matcher to match.
     public func to<U>(_ matcher: U, description: String? = nil)
         where U: Matcher, U.ValueType == T {
-            let (pass, msg) = execute(
-                expression,
-                .toMatch,
-                matcher.predicate,
-                to: "to",
-                description: description,
-                captureExceptions: false
-            )
-            verify(pass, msg)
+        let (pass, msg) = execute(
+            expression,
+            .toMatch,
+            matcher.predicate,
+            to: "to",
+            description: description,
+            captureExceptions: false
+        )
+        verify(pass, msg)
     }
 
     /// DEPRECATED: Tests the actual value using a matcher to not match.
@@ -98,7 +97,7 @@ public struct Expectation<T> {
         toNot(matcher, description: description)
     }
 
-    ////////////////// NEW API /////////////////////
+    /// /////////////// NEW API /////////////////////
 
     /// Tests the actual value using a matcher to match.
     public func to(_ predicate: Predicate<T>, description: String? = nil) {

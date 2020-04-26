@@ -7,7 +7,7 @@ public func allContentSizeCategories() -> [UIContentSizeCategory] {
         .large, .extraLarge, .extraExtraLarge,
         .extraExtraExtraLarge, .accessibilityMedium,
         .accessibilityLarge, .accessibilityExtraLarge,
-        .accessibilityExtraExtraLarge, .accessibilityExtraExtraExtraLarge
+        .accessibilityExtraExtraLarge, .accessibilityExtraExtraExtraLarge,
     ]
 }
 
@@ -122,9 +122,9 @@ private func updateTraitCollection(on element: Snapshotable) {
             view.subviews.forEach(updateTraitCollection(on:))
         } else if let vc = environment as? UIViewController {
             #if swift(>=4.2)
-            vc.children.forEach(updateTraitCollection(on:))
+                vc.children.forEach(updateTraitCollection(on:))
             #else
-            vc.childViewControllers.forEach(updateTraitCollection(on:))
+                vc.childViewControllers.forEach(updateTraitCollection(on:))
             #endif
 
             if vc.isViewLoaded {
