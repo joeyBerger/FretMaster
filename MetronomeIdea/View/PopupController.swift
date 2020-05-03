@@ -40,14 +40,14 @@ class PopupController {
     }
 
     @objc func enactTestReminder(timer _: Timer) {
-//        let c = vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.periphButtonArr[0], istack: vc!.PeripheralStackView, iyoffset: -25)
         let c = vc!.view.convert(vc!.periphButtonArr[0].frame, from: vc!.PeripheralStackView)
         reminderPopup.show(text: "Start Test When Ready!", direction: .left, maxWidth: 200, in: vc!.view, from: c)
     }
 
     func setResultButtonPopupText(itextArr: [String]) {
         let textSpacing = 30
-        let popoverSize = (vc!.returnStackViewButtonCoordinates(istackViewButton: vc!.PeriphButton0, istack: vc!.PeripheralStackView).maxX - vc!.TempoDownButton.frame.maxX) * 0.72
+        let c = vc!.view.convert(vc!.periphButtonArr[0].frame, from: vc!.PeripheralStackView)
+        let popoverSize = (c.maxX - vc!.TempoDownButton.frame.maxX) * 0.72
         resultButtonView?.removeFromSuperview()
         resultButtonView = UIView(frame: CGRect(x: 0, y: 0, width: Int(popoverSize), height: itextArr.count * textSpacing))
 

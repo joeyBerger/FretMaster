@@ -128,6 +128,7 @@ class ImageChooserViewController: UIViewController {
 
     func handleError() {
         activityIndicator.stopAnimating()
+        controlButtonState(true )
     }
 
     func displayAlert() {

@@ -10,6 +10,12 @@ class Unsplash {
             urlRequest.setValue("Client-ID \(apiKey)", forHTTPHeaderField: "Authorization")
 
             URLSession.shared.dataTask(with: urlRequest) { data, _, error in
+                if let err = error {
+                   DispatchQueue.main.async {
+                       completion(nil, err)
+                       return
+                   }
+                }
                 if let data = data {
                     do {
                         let resultsDictionary = try JSONSerialization.jsonObject(with: data) as? [String: AnyObject]

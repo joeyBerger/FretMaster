@@ -163,9 +163,12 @@ class MenuViewController: UIViewController {
         progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.arpeggio)
         buttonTextInfo.append(buttonText(iheader: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogress: progress, iactive: tutorialCompleteStatus))
 
+        key = "intervals"
         level = lc.returnConvertedLevel(iinput: userLevelData.et_singleNotes)
         subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.et_singleNotes)
-        buttonTextInfo.append(buttonText(iheader: "EAR TRAINING: NOTES", isubtext: "Coming Soon", iprogress: 0.0, iactive: false))
+        progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.intervals)
+        
+        buttonTextInfo.append(buttonText(iheader: "EAR TRAINING: INTERVALS", isubtext:returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogress: progress, iactive: tutorialCompleteStatus))
 
         level = lc.returnConvertedLevel(iinput: userLevelData.et_scales)
         subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.et_scales)
@@ -189,7 +192,7 @@ class MenuViewController: UIViewController {
     }
 
     @IBAction func MainMenuButton(_ sender: UIButton) {
-        if !tutorialCompleteStatus && sender.tag > 0 || sender.tag > 1 {
+        if !tutorialCompleteStatus && sender.tag > 0 || sender.tag > 2 {
             return
         }
         buttonId = sender.tag

@@ -174,6 +174,9 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        
+        print("in viewDidLoad")
+        
 
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
@@ -234,13 +237,29 @@ class MainViewController: UIViewController {
         TempoDownButton.addGestureRecognizer(recognizer1)
         recognizer1.view?.tag = 1
 
-        tempoButtonArr = [TempoUpButton, TempoDownButton]
+
+    }
+    
+    override func loadView() {
+        super.loadView()
+//        tempoButtonArr = [TempoUpButton, TempoDownButton]
+//        for btn in periphButtonArr {
+//            btn.alpha = 0.0
+//        }
+//        TempoUpButton.alpha = 0.0
+//        TempoDownButton.alpha = 0.0
+    }
+    
+    override func viewWillAppear(_ animated: Bool) {
+        super.viewWillAppear(animated)
+        setAlphaOnDefualtImages(0.0)
     }
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
 
         if !sceneHasBeenSetup {
+            print("settting up scene")
             // Add overlays
             DimOverlay = setupScreenOverlay()
             DimOverlay.backgroundColor = UIColor.black
@@ -254,6 +273,7 @@ class MainViewController: UIViewController {
 
             setupFretBoardImage()
             setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
+            setAlphaOnDefualtImages(1.0)
 
             if !tutorialComplete! {
                 hideAllFretMarkers()
@@ -278,8 +298,11 @@ class MainViewController: UIViewController {
         currentState = State.NotesTestShowNotes
         setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
         getDynamicAudioVisualData()
-        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
-        bgImage.image = backgroundImage.returnImage(key)
+//        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
+//        bgImage.image = backgroundImage.returnImage(key)
+//        bgImage.image! = bgImage.image!.darkened()!
+//        let c: CGFloat = 0.5
+//        bgImage.tintColor = UIColor(red: c, green: c, blue: c, alpha: 0.5)
         pc!.resultButtonPopup.hide()
     }
 
@@ -478,7 +501,9 @@ class MainViewController: UIViewController {
 
     func setupBackgroundImage() {
         bgImage = UIImageView()
-        bgImage.image = backgroundImage.returnImage("arpeggios")
+//        bgImage.image = backgroundImage.returnImage("arpeggios")
+        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
+        bgImage.image = backgroundImage.returnImage(key)
         bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
         bgImage.contentMode = UIView.ContentMode.scaleAspectFill
         view.insertSubview(bgImage, at: 0)
@@ -610,8 +635,8 @@ class MainViewController: UIViewController {
     }
 
     func setButtonImage(ibutton: UIButton, iimageStr: String) {
-        let image = UIImage(named: iimageStr)
-        ibutton.setImage(image, for: .normal)
+        let image = UIImage(named: iimageStr)!
+        ibutton.setImage(image.withRenderingMode(UIImage.RenderingMode.alwaysTemplate), for: .normal)
         ibutton.imageView?.tintColor = defaultColor.MenuButtonTextColor
         ibutton.imageView?.alpha = 1.0
     }
@@ -1258,7 +1283,6 @@ class MainViewController: UIViewController {
         let wchPopup = argDict["arg1"] as! Int
         let popupObjectParentType = argDict["arg2"] as! String
         if popupObjectParentType == "PeripheralButton" {
-            //            let c = returnStackViewButtonCoordinates(istackViewButton: periphButtonArr[wchPopup], istack: PeripheralStackView, iyoffset: -37)
             let c = view.convert(periphButtonArr[wchPopup].frame, from: PeripheralStackView)
             pc!.tutorialPopup.show(text: tutorialPopupText[wchPopup], direction: .left, maxWidth: 200, in: view, from: c)
         } else if popupObjectParentType.contains("Fret") {
@@ -1281,6 +1305,17 @@ class MainViewController: UIViewController {
         overlay.frame = CGRect(x: (frame?.minX)!, y: (frame?.minY)! + (frame?.height)!, width: view.frame.width, height: view.frame.height)
         overlay.alpha = 0.0
         return overlay
+    }
+    
+    func setAlphaOnDefualtImages(_ alpha: CGFloat) {
+        tempoButtonArr = [TempoUpButton, TempoDownButton]
+        for btn in periphButtonArr {
+            btn.alpha = alpha
+        }
+        TempoUpButton.alpha = alpha
+        TempoDownButton.alpha = alpha
+        TempoButton.alpha = alpha
+        FretboardDummy.alpha = alpha
     }
 
     func setupFretBoardImage() {
@@ -1465,16 +1500,6 @@ class MainViewController: UIViewController {
 //        wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
     }
 
-    func returnStackViewButtonCoordinates(istackViewButton: UIButton, istack: UIStackView, ixoffset: CGFloat = 0.0, iyoffset: CGFloat = 0.0) -> CGRect {
-        let spacing = istack.arrangedSubviews[1].frame.minY - istack.arrangedSubviews[0].frame.minY
-        let minX = istack.frame.minX + ixoffset
-        let minY = istack.frame.minY - CGFloat(spacing) + istackViewButton.frame.height / 2 + istackViewButton.frame.minY + iyoffset
-        let width = istack.frame.width
-        let height = istack.frame.height
-        let view1 = UIView(frame: CGRect(x: minX, y: minY, width: width, height: height))
-        return view1.frame
-    }
-
     // Testing
     @objc func randomButtonTest() {
         let randNumb = rand(max: 4)
@@ -1623,5 +1648,27 @@ extension UIButton {
 
         layer.zPosition += 1.0
         return (ilayer + 1)
+    }
+}
+
+extension UIImage {
+    func darkened() -> UIImage? {
+        UIGraphicsBeginImageContextWithOptions(size, false, 0)
+        defer { UIGraphicsEndImageContext() }
+
+        guard let ctx = UIGraphicsGetCurrentContext(), let cgImage = cgImage else {
+            return nil
+        }
+
+        // flip the image, or result appears flipped
+        ctx.scaleBy(x: 1.0, y: -1.0)
+        ctx.translateBy(x: 0, y: -size.height)
+
+        let rect = CGRect(origin: .zero, size: size)
+        ctx.draw(cgImage, in: rect)
+        UIColor(white: 0, alpha: 0.35).setFill()
+        ctx.fill(rect)
+
+        return UIGraphicsGetImageFromCurrentImageContext()
     }
 }

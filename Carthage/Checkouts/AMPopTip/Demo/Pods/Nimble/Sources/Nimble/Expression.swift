@@ -43,9 +43,9 @@ public struct Expression<T> {
     ///                  flexibility if @autoclosure behavior changes between
     ///                  Swift versions. Nimble internals always sets this true.
     public init(expression: @escaping () throws -> T?, location: SourceLocation, isClosure: Bool = true) {
-        _expression = memoizedClosure(expression)
+        self._expression = memoizedClosure(expression)
         self.location = location
-        _withoutCaching = false
+        self._withoutCaching = false
         self.isClosure = isClosure
     }
 
@@ -64,9 +64,9 @@ public struct Expression<T> {
     ///                  flexibility if @autoclosure behavior changes between
     ///                  Swift versions. Nimble internals always sets this true.
     public init(memoizedExpression: @escaping (Bool) throws -> T?, location: SourceLocation, withoutCaching: Bool, isClosure: Bool = true) {
-        _expression = memoizedExpression
+        self._expression = memoizedExpression
         self.location = location
-        _withoutCaching = withoutCaching
+        self._withoutCaching = withoutCaching
         self.isClosure = isClosure
     }
 
@@ -81,18 +81,18 @@ public struct Expression<T> {
     public func cast<U>(_ block: @escaping (T?) throws -> U?) -> Expression<U> {
         return Expression<U>(
             expression: ({ try block(self.evaluate()) }),
-            location: location,
-            isClosure: isClosure
+            location: self.location,
+            isClosure: self.isClosure
         )
     }
 
     public func evaluate() throws -> T? {
-        return try _expression(_withoutCaching)
+        return try self._expression(_withoutCaching)
     }
 
     public func withoutCaching() -> Expression<T> {
         return Expression(
-            memoizedExpression: _expression,
+            memoizedExpression: self._expression,
             location: location,
             withoutCaching: true,
             isClosure: isClosure

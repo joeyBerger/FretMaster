@@ -80,6 +80,7 @@ class LevelConstruct: UIViewController {
     let currentLevelName: [String: [String]] = [
         "scales": ["Intro", "Major Pentatonic", "Major/Minor Modes", "Pentatonic And Major/Minor", "Previous Up/Down", "Previous Up/Down In Time"],
         "arpeggios": ["Major/Minor", "Major/Minor Seventh", "Previous Up", "Previous Up/Down", "Previous Up In Time", "Previous Up/Down In Time"],
+        "intervals": ["Maj 2, Perfect 5th","2","3","4"]
     ]
 
     let scale = [
@@ -98,5 +99,10 @@ class LevelConstruct: UIViewController {
         ["MajorArp_Up_Tempo", "MinorArp_Up_Tempo", "MajorSeventhArp_Up_Tempo", "MinorSeventhArp_Up_Tempo"],
         ["MajorArp_Both_Tempo", "MinorArp_Both_Tempo", "MajorSeventhArp_Both_Tempo", "MinorSeventhArp_Both_Tempo"],
 //        ["DiminishedArp_Up", "AugmentedArp_Up"],
+    ]
+    let intervals = [
+        ["Up_2,5","Up_3,5"],
+        ["Up_2,5","Up_3,5"],
+        ["Up_2,5","Up_3,5"],
     ]
 }

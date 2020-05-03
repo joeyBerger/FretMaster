@@ -4,7 +4,7 @@ This project is the culmination of my experience teaching music at the universit
 
 ## Starting
 
-Download the provided .zip and run in Xcode. This app was primarily tested on an iPhone 11.
+Download the provided .zip, install and run `carthage update --platform iOS` and run in Xcode. This app was primarily tested on an iPhone 11.
 
 ## Using the application
 
