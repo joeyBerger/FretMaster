@@ -10,7 +10,7 @@ extension UIButton {
 }
 
 // global vars/constants
-var userLevelData = UserLevelData(scaleLevel: "0.0", arpeggioLevel: "0.0", et_singleNotes: "0.0", et_scales: "0.0", et_chords: "0.0", tutorialComplete: "0.0")
+var userLevelData = UserLevelData(scaleLevel: "0.0", arpeggioLevel: "0.0", intervalLevel: "0.0", et_scales: "0.0", et_chords: "0.0", tutorialComplete: "0.0")
 let defaultColor = DefaultColor()
 let backgroundImage = BackgroundImage()
 var globalDataController = DataController(modelName: "ImageModel")
@@ -29,7 +29,7 @@ class MenuViewController: UIViewController {
     var menuButtonSubtext: [UILabel] = []
     var menuButtonProgress: [UIProgressView] = []
 
-    var developmentMode = 0
+    var developmentMode = 1
 
     var tutorialCompleteStatus = true
     var levelArr: [Int] = []
@@ -60,7 +60,7 @@ class MenuViewController: UIViewController {
         }
 
         buttonArr = [Button0, Button1, Button2, Button3, Button4]
-//        setupHiddenButtons()
+        setupHiddenButtons()
 
         bgImage.image = backgroundImage.returnImage("menu")
         bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
@@ -100,13 +100,13 @@ class MenuViewController: UIViewController {
             let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
             if let scaleLevel = scaleLevel {
                 let arpeggioLevel = UserDefaults.standard.object(forKey: "arpeggioLevel")
-                let et_singleNotes = UserDefaults.standard.object(forKey: "et_singleNotes")
+                let intervalLevel = UserDefaults.standard.object(forKey: "intervalLevel")
                 let et_scales = UserDefaults.standard.object(forKey: "et_scales")
                 let et_chords = UserDefaults.standard.object(forKey: "et_chords")
                 let tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
                 userLevelData.scaleLevel = scaleLevel as! String
                 userLevelData.arpeggioLevel = arpeggioLevel as! String
-                userLevelData.et_singleNotes = et_singleNotes as! String
+                userLevelData.intervalLevel = intervalLevel as! String
                 userLevelData.et_scales = et_scales as! String
                 userLevelData.et_chords = et_chords as! String
 
@@ -164,9 +164,9 @@ class MenuViewController: UIViewController {
         buttonTextInfo.append(buttonText(iheader: key.uppercased(), isubtext: returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogress: progress, iactive: tutorialCompleteStatus))
 
         key = "intervals"
-        level = lc.returnConvertedLevel(iinput: userLevelData.et_singleNotes)
-        subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.et_singleNotes)
-        progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.intervals)
+        level = lc.returnConvertedLevel(iinput: userLevelData.intervalLevel)
+        subLevel = lc.returnConvertedSubLevel(iinput: userLevelData.intervalLevel)
+        progress = lc.returnTotalProgress(ilevel: level, isubLevel: subLevel, ilevelConstruct: lc.interval)
         
         buttonTextInfo.append(buttonText(iheader: "EAR TRAINING: INTERVALS", isubtext:returnLevelStr(ilc: lc, ikey: key, ilevel: level), iprogress: progress, iactive: tutorialCompleteStatus))
 
@@ -206,14 +206,19 @@ class MenuViewController: UIViewController {
 
         vc.developmentMode = developmentMode
 
-        // Scale Test No Tempo
+        // Scales
         if buttonId == 0 {
             vc.setStateProperties(icurrentLevel: userLevelData.scaleLevel, ilevelConstruct: lc.scale, ilevelKey: "scaleLevel", itutorialComplete: userLevelData.tutorialComplete)
         }
 
-        // Arpeggio Test No Tempo
+        // Arpeggios
         if buttonId == 1 {
             vc.setStateProperties(icurrentLevel: userLevelData.arpeggioLevel, ilevelConstruct: lc.arpeggio, ilevelKey: "arpeggioLevel")
+        }
+        
+        // Intervals
+        if buttonId == 2 {
+            vc.setStateProperties(icurrentLevel: userLevelData.intervalLevel, ilevelConstruct: lc.interval, ilevelKey: "intervalLevel")
         }
     }
 

@@ -68,27 +68,50 @@ class ScaleCollection {
 
     var startingOctave = 0
     var scaleOctaves = 2
+    
+    func parseIntervalNotes(_ istartingNote: String,_ istartingOctave: Int,_ iavailableNotes: [String]) -> [String] {
+        var returnArr : [String] = []
+        returnArr.append(istartingNote+String(istartingOctave))
+        if let inputIndex = refScale.firstIndex(of: istartingNote) {
+            for noteInfo in iavailableNotes {
+                let distance = noteInfo.replacingOccurrences(of: "Up_", with: "").replacingOccurrences(of: "Down_", with: "")
+                var newNoteIdx = noteInfo.contains("Up") ? inputIndex + scaleDegreeDict[distance]! : inputIndex - scaleDegreeDict[distance]!
+                let octave = newNoteIdx > refScale.count ? istartingOctave + 1 : newNoteIdx < 0 ? istartingOctave - 1 : istartingOctave
+                if newNoteIdx < 0 {
+                    newNoteIdx = refScale.count + newNoteIdx                    
+                    print("newNoteIdx \(newNoteIdx) \(startingOctave)")
+                }
+                returnArr.append(refScale[newNoteIdx%refScale.count]+String(octave))
+            }
+        }
+        return returnArr
+    }
 
-    func setupSpecifiedScale(iinput: String, idirection: String) {
-        let startingNote = "A"
+    func setupSpecifiedNoteCollection(iinput: String, idirection: String, istartingNote: String = "A", itype: String = "standard", idata: [String:Any] = [:]) {
+        let startingNote = istartingNote.rangeOfCharacter(from: .decimalDigits) == nil ? istartingNote : parseCoreNote(istartingNote)
         var noteIndex = 0
         var notePos = 1
 
-        let desiredScale = availableScales[iinput]
-
         vc!.specifiedNoteCollection.removeAll()
 
-        // find note index
-        if vc!.specifiedNoteCollection.isEmpty {
-            for (i, item) in refScale.enumerated() {
-                if startingNote == item {
-                    noteIndex = i
-                    break
-                }
+        for (i, item) in refScale.enumerated() {
+            if startingNote == item {
+                noteIndex = i
+                break
             }
-
-            for (i, _) in desiredScale!.enumerated() {
-                let note = scaleDegreeDict[desiredScale![i]]
+        }
+        
+        if itype == "interval" {
+            vc!.specifiedNoteCollection = parseIntervalNotes(startingNote, parseNoteOctave(istartingNote), idata["intervalsToTest"] as! [String])
+            print("final specified notes \(vc!.specifiedNoteCollection)")            
+        }
+        
+        // find note index
+        else if itype == "standard" {
+            let desiredNoteCollection = availableScales[iinput]
+            
+            for (i, _) in desiredNoteCollection!.enumerated() {
+                let note = scaleDegreeDict[desiredNoteCollection![i]]
                 if (noteIndex + note!) >= refScale.count * notePos {
                     notePos = notePos + 1
                 }
@@ -131,6 +154,7 @@ class ScaleCollection {
                 }
             }
         }
+        print(vc!.specifiedNoteCollection)
     }
 
     func returnNoteDistance(iinput: String, icomparedNote: String) -> String {
@@ -157,5 +181,13 @@ class ScaleCollection {
             }
         }
         return true
+    }
+    
+    func parseCoreNote(_ iinput: String ) -> String {
+        return String(iinput.dropLast())
+    }
+    
+    func parseNoteOctave(_ iinput: String) -> Int {
+        return Int(iinput.components(separatedBy: CharacterSet.decimalDigits.inverted).joined())!
     }
 }

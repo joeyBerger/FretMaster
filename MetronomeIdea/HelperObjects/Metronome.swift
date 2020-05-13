@@ -63,6 +63,7 @@ class Metronome {
     @objc func tick(timer _: Timer) {
         let elapsedTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent() - previousClick
         let targetTime: Double = 60 / bpm
+//        print("in metronome \(MainViewController.currentState)")
         if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003) {
             if vc!.currentState == MainViewController.State.PlayingNotesCollection {
                 vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick] + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
@@ -73,11 +74,12 @@ class Metronome {
 
                     vc!.setPeriphButtonsToDefault(idefaultIcons: vc!.defaultPeripheralIcon)
                 }
-            } else if vc!.currentState == MainViewController.State.EarTrainCall {
-                vc!.sc.playSound(isoundName: vc!.earTrainCallArr[currentClick], ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
+            } else if vc!.currentState == MainViewController.State.EarTrainingCall {
+                print("in metronome 2")
+                vc!.sc.playSound(isoundName: vc!.earTrainCallArr[currentClick] + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
                 if currentClick == vc!.earTrainCallArr.count - 1 {
                     endMetronome()
-                    vc!.currentState = MainViewController.State.EarTrainResponse
+                    vc!.currentState = MainViewController.State.EarTrainingResponse
                 }
             }
             // Scale Test Active

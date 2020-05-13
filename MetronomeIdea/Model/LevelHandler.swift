@@ -15,8 +15,18 @@ class LevelConstruct: UIViewController {
         }
         var level = returnConvertedLevel(iinput: currentLevel!)
         var subLevel = returnConvertedSubLevel(iinput: currentLevel!) + 1
+        
+        var subLevelMax = 0
+        if (currentLevelKey!.contains("interval")) {
+            subLevelMax = Int(parseEarTrainingData(returnCurrentTask())["Total"] as! String)!
+//            if (subLevel < subLevelMax) {
+//                subLevel = 0
+//            }
+        } else {
+            subLevelMax = currentLevelConstruct[level].count
+        }
 
-        if subLevel == currentLevelConstruct[level].count {
+        if subLevel == subLevelMax {
             returnDict["LevelIncremented"] = true
             // upgrade level
             let levelLength = currentLevelKey!.contains("scale") ? scale.count : arpeggio.count
@@ -42,8 +52,23 @@ class LevelConstruct: UIViewController {
 
     func returnCurrentTask() -> String {
         let level = returnConvertedLevel(iinput: currentLevel!)
-        let subLevel = returnConvertedSubLevel(iinput: currentLevel!)
+        var subLevel = returnConvertedSubLevel(iinput: currentLevel!)
 
+        
+        if (currentLevelKey!.contains("interval")) {
+            for (i,_) in currentLevelConstruct[level].enumerated() {
+                let maxSubLevels = Int(parseEarTrainingData(currentLevelConstruct[level][i])["Total"] as! String)!
+                if subLevel < maxSubLevels {
+                    print("found sublevel \(subLevel)")
+                    subLevel = i
+                    break;
+               }
+               subLevel = subLevel - maxSubLevels
+            }
+            print("return sublevel of \(subLevel)")
+            return currentLevelConstruct[level][subLevel]
+        }
+        
         // make sure the current level/sublevel is not out of range
         if currentLevelConstruct[level].count > subLevel {
             return currentLevelConstruct[level][subLevel]
@@ -51,6 +76,21 @@ class LevelConstruct: UIViewController {
 
         // level/sublevel is out of range, return last task in construct
         return currentLevelConstruct[level][currentLevelConstruct[level].count - 1]
+    }
+    
+    func returnCurrentEarTrainingIndex() -> Int {
+        
+        let level = returnConvertedLevel(iinput: currentLevel!)
+        var subLevel = returnConvertedSubLevel(iinput: currentLevel!)
+        
+        for (i,_) in currentLevelConstruct[level].enumerated() {
+            let maxSubLevels = Int(parseEarTrainingData(currentLevelConstruct[level][i])["Total"] as! String)!
+            if subLevel < maxSubLevels {
+                return subLevel
+           }
+           subLevel = subLevel - maxSubLevels
+        }
+        return 0
     }
 
     func returnConvertedLevel(iinput: String) -> Int {
@@ -76,6 +116,47 @@ class LevelConstruct: UIViewController {
         }
         return Float(subLevels) / Float(totalLevels)
     }
+    
+    func parseEarTrainingData(_ input:String) -> [String:Any] {
+        var returnDict: [String:Any] = [:]
+        let outsideSplitChar = "!", insideSplitChar = ":"
+        let splitArr = input.components(separatedBy: outsideSplitChar)
+        print(splitArr)
+        let ids = ["Direction","Total","StartingNote","Tempo"]
+        
+        for info in splitArr {
+            for id in ids {
+                if info.contains(id) {
+                    let splitInfo = info.components(separatedBy: insideSplitChar)
+                    returnDict[id] = splitInfo[1]
+                }
+            }
+        }
+        return returnDict
+    }
+    
+    func parseIntervalDirection(_ input:String) -> [String] {
+        var returnArr:[String] = []
+        let collectionSplitChar = ","
+        let directions = ["Up_","Down_","Both_"]
+        
+        for direction in directions {
+            if input.contains(direction) {
+                let collection = input.replacingOccurrences(of: direction, with: "")
+                let collectionArr = collection.components(separatedBy: collectionSplitChar)
+                for item in collectionArr {
+                    if direction.contains("Both_") {
+                        returnArr.append("Up_" + item)
+                        returnArr.append("Down_" + item)
+                    } else {
+                        returnArr.append(direction + item)
+                    }
+                }
+            }
+        }
+        
+        return returnArr
+    }
 
     let currentLevelName: [String: [String]] = [
         "scales": ["Intro", "Major Pentatonic", "Major/Minor Modes", "Pentatonic And Major/Minor", "Previous Up/Down", "Previous Up/Down In Time"],
@@ -100,9 +181,47 @@ class LevelConstruct: UIViewController {
         ["MajorArp_Both_Tempo", "MinorArp_Both_Tempo", "MajorSeventhArp_Both_Tempo", "MinorSeventhArp_Both_Tempo"],
 //        ["DiminishedArp_Up", "AugmentedArp_Up"],
     ]
-    let intervals = [
-        ["Up_2,5","Up_3,5"],
-        ["Up_2,5","Up_3,5"],
-        ["Up_2,5","Up_3,5"],
+    let interval = [
+        ["!Direction:Up_2,5!Total:10!StartingNote:A2!Tempo:120",
+         
+         
+         "A2_Up_3,5!Tempo:180"],
+        
+        ["A2_Up_2,5","A2_Up_3,5"],
+        ["A2_Up_2,5","A2_Up_3,5"],
     ]
+    
+    func returnRandomizedArray(_ ilength: Int,_ iArray: [String]) -> [String] {
+        var returnArr: [String] = []
+        var parityTracker = 1.0
+        
+        for _ in 0..<100 {
+            var inputTracker: [Int] = []
+            var strArr: [String] = []
+            
+            for _ in 0 ..< iArray.count {
+                inputTracker.append(0)
+            }
+            
+            for _ in 0 ..< ilength {
+                let rand = Int.random(in: 0 ..< iArray.count)
+                strArr.append(iArray[rand])
+                inputTracker[rand] += 1
+            }
+
+            inputTracker = inputTracker.sorted(by: >)
+            
+            var parity = Double(inputTracker[0])/Double(ilength)
+            for i in 1 ..< inputTracker.count {
+               parity -= Double(inputTracker[i])/Double(ilength)
+            }
+            
+            if parity < parityTracker {
+                parityTracker = parity
+                returnArr = strArr
+            }
+        }
+        
+        return returnArr
+    }
 }
