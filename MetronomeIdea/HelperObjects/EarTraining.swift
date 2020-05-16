@@ -10,38 +10,48 @@ class EarTraining {
 //    var earTrainResponseArr: [String] = []
 
     func earTrainingSetup(_ iinput: String) {
-        
         let note = vc!.sCollection!.parseCoreNote(vc!.startingEarTrainingNote)
         let octave = vc!.sCollection!.parseNoteOctave(vc!.startingEarTrainingNote)
         let noteCollection = vc!.sCollection!.parseIntervalNotes(note,octave,[iinput])
         vc!.earTrainCallArr = noteCollection
         vc!.earTrainResponseArr.removeAll()
 
-        print("vc!.earTrainCallArr \(vc!.earTrainCallArr)")
         vc!.currentState = MainViewController.State.EarTrainingCall
         vc!.met!.currentClick = 0
         let displayT = 0.2
-        _ = Timer.scheduledTimer(timeInterval: TimeInterval(displayT), target: self, selector: #selector(beginEarTrainingHelper), userInfo: ["NoteSelection": vc!.tempScale, "AlphaVal": 0.0], repeats: false)
+        
+        vc!.wt.waitThen(itime: displayT, itarget: self, imethod: #selector(beginEarTrainingHelper) as Selector, irepeats: false, idict: ["NoteSelection": vc!.tempScale as AnyObject, "AlphaVal": 0.0 as AnyObject])
 
         vc!.displaySelectionDots(inoteSelection: [vc!.earTrainCallArr[0]], ialphaAmount: 1.0)
+        vc!.setColorOnFretMarkers(vc!.earTrainCallArr, defaultColor.FretMarkerStandard)
     }
 
     func presentEarTrainResults() {
-       
         var testPassed = false
-        var resultTextArr = ["Wrong Intercal Played", "You Played a 5th, instead of a 2nd."]
+       
+        var resultTextArr:[String] = []
         if vc!.earTrainCallArr == vc!.earTrainResponseArr {
             testPassed = true
-            resultTextArr = ["Great! You Correctly Played a 5th."]
+            let interval = vc!.sCollection!.returnInterval(vc!.earTrainCallArr[0],vc!.earTrainCallArr[1])
+            resultTextArr = ["Great! You Correctly Played a \(interval)."]
+            print(resultTextArr)
+        } else {
+            if vc!.earTrainResponseArr[0] != vc!.earTrainCallArr[0] {
+                resultTextArr = ["Wrong Starting Note Played", "Start On Highlighted Note"]
+            } else {
+                let correctInterval = vc!.sCollection!.returnInterval(vc!.earTrainCallArr[0],vc!.earTrainCallArr[1])
+                let wrongInterval = vc!.sCollection!.returnInterval(vc!.earTrainResponseArr[0],vc!.earTrainResponseArr[1])
+                resultTextArr = ["Wrong Interval Played", "You Played \(wrongInterval.contains("Octave") ? "an" : "a") \(wrongInterval)", "Correct answer is a \(correctInterval)"]
+            }
         }
         
         vc!.onTestComplete(itestPassed: testPassed)
-        vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": testPassed as AnyObject, "testResultStrs": resultTextArr as AnyObject])
+        let waitTime = 0.5
+        vc!.wt.waitThen(itime: waitTime, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": testPassed as AnyObject, "testResultStrs": resultTextArr as AnyObject])
+        vc!.wt.waitThen(itime: waitTime, itarget: vc!, imethod: #selector(vc!.presentEarTrainingFretMarkers) as Selector, irepeats: false, idict: ["notesCorrect": testPassed as AnyObject])
     }
 
     @objc func beginEarTrainingHelper(timer: Timer) {
-        let argDict = timer.userInfo as! [String: AnyObject]
-//        vc!.displaySelectionDots(inoteSelection: argDict["NoteSelection"] as! [String], ialphaAmount: argDict["AlphaVal"] as! Double)
         vc!.startMetronome(self)
     }
 }

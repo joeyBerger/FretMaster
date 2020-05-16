@@ -60,6 +60,7 @@ class PopupController {
             popoverText.textColor = UIColor.white
             resultButtonView!.addSubview(popoverText)
         }
+        resultButtonPopup.hide()
     }
 
     func showResultButtonPopup() {

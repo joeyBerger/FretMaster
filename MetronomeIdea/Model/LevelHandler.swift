@@ -9,7 +9,9 @@ class LevelConstruct: UIViewController {
         var returnDict: [String: Bool] = [
             "SubLevelIncremented": false,
             "LevelIncremented": false,
+            "SubLevelMaxReached" : false
         ]
+        
         if !itestPassed, idevelopmentMode < 2 {
             return returnDict
         }
@@ -18,10 +20,10 @@ class LevelConstruct: UIViewController {
         
         var subLevelMax = 0
         if (currentLevelKey!.contains("interval")) {
-            subLevelMax = Int(parseEarTrainingData(returnCurrentTask())["Total"] as! String)!
-//            if (subLevel < subLevelMax) {
-//                subLevel = 0
-//            }
+            subLevelMax = returnEarTrainingLevelTotalSubLevelAmount(level)
+            if returnCurrentEarTrainingIndex()+1 == Int(parseEarTrainingData(returnCurrentTask())["Total"] as! String)! {
+                returnDict["SubLevelMaxReached"] = true
+            }
         } else {
             subLevelMax = currentLevelConstruct[level].count
         }
@@ -50,22 +52,27 @@ class LevelConstruct: UIViewController {
         currentLevelKey = icurrentLevelKey
     }
 
+    func returnEarTrainingLevelTotalSubLevelAmount(_ ilevel: Int) -> Int {
+        var maxSubLevels = 0;
+        for (i,_) in currentLevelConstruct[ilevel].enumerated() {
+            maxSubLevels += Int(parseEarTrainingData(currentLevelConstruct[ilevel][i])["Total"] as! String)!
+        }
+        return maxSubLevels
+    }
+    
     func returnCurrentTask() -> String {
         let level = returnConvertedLevel(iinput: currentLevel!)
         var subLevel = returnConvertedSubLevel(iinput: currentLevel!)
 
-        
         if (currentLevelKey!.contains("interval")) {
             for (i,_) in currentLevelConstruct[level].enumerated() {
                 let maxSubLevels = Int(parseEarTrainingData(currentLevelConstruct[level][i])["Total"] as! String)!
                 if subLevel < maxSubLevels {
-                    print("found sublevel \(subLevel)")
                     subLevel = i
                     break;
                }
                subLevel = subLevel - maxSubLevels
             }
-            print("return sublevel of \(subLevel)")
             return currentLevelConstruct[level][subLevel]
         }
         
@@ -79,7 +86,6 @@ class LevelConstruct: UIViewController {
     }
     
     func returnCurrentEarTrainingIndex() -> Int {
-        
         let level = returnConvertedLevel(iinput: currentLevel!)
         var subLevel = returnConvertedSubLevel(iinput: currentLevel!)
         
@@ -121,9 +127,7 @@ class LevelConstruct: UIViewController {
         var returnDict: [String:Any] = [:]
         let outsideSplitChar = "!", insideSplitChar = ":"
         let splitArr = input.components(separatedBy: outsideSplitChar)
-        print(splitArr)
         let ids = ["Direction","Total","StartingNote","Tempo"]
-        
         for info in splitArr {
             for id in ids {
                 if info.contains(id) {
@@ -182,13 +186,17 @@ class LevelConstruct: UIViewController {
 //        ["DiminishedArp_Up", "AugmentedArp_Up"],
     ]
     let interval = [
-        ["!Direction:Up_2,5!Total:10!StartingNote:A2!Tempo:120",
-         
-         
-         "A2_Up_3,5!Tempo:180"],
+        ["!Direction:Up_2,5!Total:3!StartingNote:A2!Tempo:120",
+         "!Direction:Up_2,3!Total:3!StartingNote:A2!Tempo:120",
+         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:120",],
         
-        ["A2_Up_2,5","A2_Up_3,5"],
-        ["A2_Up_2,5","A2_Up_3,5"],
+        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
+         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
+         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
+        
+        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
+         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
+         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
     ]
     
     func returnRandomizedArray(_ ilength: Int,_ iArray: [String]) -> [String] {

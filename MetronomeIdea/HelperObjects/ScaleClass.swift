@@ -24,6 +24,38 @@ class ScaleCollection {
         "b7": 10,
         "7": 11,
     ]
+    
+    let intervals: [String] = [
+        "Unison",
+        "b2",
+        "2",
+        "b3",
+        "3",
+        "4",
+        "b5",
+        "5",
+        "b6",
+        "6",
+        "b7",
+        "7",
+        "Octave",
+        "b9",
+        "9",
+        "b10",
+        "10",
+        "11",
+        "b12",
+        "12",
+        "b13",
+        "13",
+        "b14",
+        "14",
+        "Octave",
+        "b16",
+        "16",
+        "b17",
+        "17",
+    ]
 
     let scaleNameDic: [String: String] = [
         "MinorPentatonic": "Minor Pentatonic",
@@ -76,7 +108,7 @@ class ScaleCollection {
             for noteInfo in iavailableNotes {
                 let distance = noteInfo.replacingOccurrences(of: "Up_", with: "").replacingOccurrences(of: "Down_", with: "")
                 var newNoteIdx = noteInfo.contains("Up") ? inputIndex + scaleDegreeDict[distance]! : inputIndex - scaleDegreeDict[distance]!
-                let octave = newNoteIdx > refScale.count ? istartingOctave + 1 : newNoteIdx < 0 ? istartingOctave - 1 : istartingOctave
+                let octave = newNoteIdx >= refScale.count ? istartingOctave + 1 : newNoteIdx < 0 ? istartingOctave - 1 : istartingOctave
                 if newNoteIdx < 0 {
                     newNoteIdx = refScale.count + newNoteIdx                    
                     print("newNoteIdx \(newNoteIdx) \(startingOctave)")
@@ -85,6 +117,53 @@ class ScaleCollection {
             }
         }
         return returnArr
+    }
+    
+    func returnInterval(_ note0: String, _ note1: String, _ includeLinguisticNumberEquivalent: Bool = true) -> String {
+        let coreNote0 = parseCoreNote(note0)
+        let coreOctaveNote0 = parseNoteOctave(note0)
+        let coreNote1 = parseCoreNote(note1)
+        let coreOctaveNote1 = parseNoteOctave(note1)
+        
+        var interval = ""
+        let note0Idx = refScale.firstIndex(of: coreNote0)
+        let note1Idx = refScale.firstIndex(of: coreNote1)
+        
+        let convertedNote0 = note0Idx!+12*coreOctaveNote0
+        let convertedNote1 = note1Idx!+12*coreOctaveNote1
+        let distance = abs(convertedNote0 - convertedNote1)
+        //let distance = abs(note0Idx!+12*coreOctaveNote0 - note1Idx!+12*coreOctaveNote1)
+        
+        interval = intervals[distance]
+        if includeLinguisticNumberEquivalent {interval += returnLinguisticNumberEquivalent(interval)}
+        if coreOctaveNote0 > coreOctaveNote1 {
+            interval += " Down"
+        } else if coreOctaveNote0 == coreOctaveNote1 {
+            if note0Idx! > note1Idx! {
+                interval += " Down"
+            } else {
+                interval += " Up"
+            }
+        } else {
+            interval += " Up"
+        }
+//        interval += coreOctaveNote0 > coreOctaveNote1 ? " Down" : " Up"
+        return interval
+        
+//        if let note0Idx = refScale.firstIndex(of: coreNote0) {
+//            if let note1Idx = refScale.firstIndex(of: coreNote1) {
+//                if note0Idx < note1Idx {
+//                    if coreOctaveNote0 == coreOctaveNote1 {
+//                        interval = scaleDegreeDict.keysForValue(value: note1Idx - note0Idx)[0]
+//                    } else if coreOctaveNote0 < coreOctaveNote1 {
+//                        interval = scaleDegreeDict.keysForValue(value: note1Idx - note0Idx)[0]
+//                    }
+//                } else {
+//
+//                }
+//            }
+//        }
+        print("interval \(interval)")
     }
 
     func setupSpecifiedNoteCollection(iinput: String, idirection: String, istartingNote: String = "A", itype: String = "standard", idata: [String:Any] = [:]) {
@@ -181,6 +260,17 @@ class ScaleCollection {
             }
         }
         return true
+    }
+    
+    func returnLinguisticNumberEquivalent(_ iinput:String) -> String {
+        if iinput.contains("2") {
+            return "nd"
+        } else if iinput.contains("3") {
+            return "rd"
+        } else if iinput.contains("Unison") || iinput.contains("Octave") {
+            return ""
+        }
+        return "th"
     }
     
     func parseCoreNote(_ iinput: String ) -> String {

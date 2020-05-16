@@ -1,6 +1,7 @@
 import UIKit
 
 struct DefaultColor {
+    
     let MenuButtonColor = UIColor(red: 53 / 255, green: 0 / 255, blue: 211 / 255, alpha: 1.0)
     let BackgroundColor = UIColor(red: 12 / 255, green: 0 / 255, blue: 50 / 255, alpha: 1.0)
     let MenuButtonTextColor = UIColor.white
@@ -13,4 +14,15 @@ struct DefaultColor {
     let ProgressTrackColor = UIColor(red: 53 / 255, green: 0 / 255, blue: 211 / 255, alpha: 1.0)
     let TableViewBackground = UIColor(red: 221 / 255, green: 160 / 255, blue: 221 / 255, alpha: 1.0)
     let AcceptColor = UIColor(red: 42 / 255, green: 181 / 255, blue: 118 / 255, alpha: 1.0)
+    
+    
+//    let FretMarkerSuccess = convertRGBToUIColor().convert(75,181,67)
+    let FretMarkerStandard = convertRGBToUIColor().convert(256,0,0)
+    let FretMarkerSuccess = convertRGBToUIColor().convert(80,180,74)
+}
+
+class convertRGBToUIColor {
+    func convert(_ r:Double, _ g:Double, _ b:Double, _ a:Double = 1.0) -> UIColor {
+        return UIColor(red: CGFloat(r / 255), green: CGFloat(g / 255), blue: CGFloat(b / 255), alpha: 1.0)
+    }
 }

@@ -182,9 +182,6 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        
-        print("in viewDidLoad")
-        
 
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
 
@@ -267,7 +264,6 @@ class MainViewController: UIViewController {
         super.viewDidAppear(animated)
 
         if !sceneHasBeenSetup {
-            print("settting up scene")
             // Add overlays
             DimOverlay = setupScreenOverlay()
             DimOverlay.backgroundColor = UIColor.black
@@ -296,15 +292,19 @@ class MainViewController: UIViewController {
                 let screenHeight = screenRect.size.height
                 let height: CGFloat = screenHeight * 0.1
                 testButton.frame = CGRect(x: FretboardImage.frame.maxX, y: screenHeight - height, width: screenWidth * 0.5, height: height)
-                testButton.backgroundColor = UIColor.red
+//                testButton.backgroundColor = UIColor.red
                 testButton.addTarget(self, action: #selector(onTestButtonDown), for: .touchDown)
                 view.addSubview(testButton)
             }
         }
 
         setupToSpecificState()
-        if (!lc.currentLevelKey!.contains("interval")) {currentState = State.NotesTestShowNotes}
-        setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
+        
+        if (!lc.currentLevelKey!.contains("interval")) {
+            currentState = State.NotesTestShowNotes
+            setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
+        }
+        
         getDynamicAudioVisualData()
 //        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
 //        bgImage.image = backgroundImage.returnImage(key)
@@ -386,11 +386,12 @@ class MainViewController: UIViewController {
         lc.setLevelVars(icurrentLevel: icurrentLevel, icurrentLevelConstruct: ilevelConstruct, icurrentLevelKey: ilevelKey)
         
         tutorialComplete = itutorialComplete == "1.0"
-        if developmentMode > 1 {
+        if developmentMode > 0 {
             tutorialComplete = true
 //            var tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
-//            tutorialComplete = "1.0"
+//            tutorialComplete = tutorialComplete as! String == "0.0" ? "1.0" : "2.0"
 //            UserDefaults.standard.set(tutorialComplete, forKey: "tutorialComplete")
+//            UserDefaults.standard.set("1.0", forKey: "scaleLevel")
         }
 
         if developmentMode > 0 {
@@ -414,12 +415,9 @@ class MainViewController: UIViewController {
         } else {
             setupEarTrainingData()
             setupCurrentTask()
-            defaultPeripheralIcon = ["outline_play_arrow_black_18dp", "outline_volume_up_black_18dp", "outline_info_black_18dp"]
-            activePeripheralIcon = ["outline_stop_black_18dp", "outline_volume_off_black_18dp", "outline_undo_black_18dp"]
+            defaultPeripheralIcon = ["outline_play_arrow_black_18dp"]
+            activePeripheralIcon = ["outline_stop_black_18dp"]
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
-//            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 0.75)
-//            swoopAlpha(iobject: dotDict[specifiedNoteCollection[0]]!, ialpha: Float(1.0), iduration: 0.1)
-//            earTrainingIdx = 0
         }
         setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
     }
@@ -448,144 +446,113 @@ class MainViewController: UIViewController {
             startingNote = data["StartingNote"] as! String
             startingEarTrainingNote = startingNote
             let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
-            earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
             
-
+            if earTrainingLevelData.count == 0 {
+                print("updating earTrainingLevelData")
+                earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
+            }
+            
             additionalData["intervalsToTest"] = intervalsToTest
-            tempoActive = true
-            tempoButtonsActive = !tempoActive
-            met!.bpm = Double(Int(data["Tempo"] as! String)!)
-            setupTempoButtons(ibuttonsActive: tempoButtonsActive)
-            
             type = "interval"
-            resultsLabelDefaultText = "Intervals"
+            
             currentState = State.EarTrainingIdle
             
             earTrainingIdx = lc.returnCurrentEarTrainingIndex()
             
+            resultsLabelDefaultText = "Intervals \(earTrainingIdx+1)/\(earTrainingLevelData.count)"
+            
             sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
             
-            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 0.75)
+            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 0.5)
+            setColorOnFretMarkers(specifiedNoteCollection, defaultColor.FretMarkerStandard)
             swoopAlpha(iobject: dotDict[specifiedNoteCollection[0]]!, ialpha: Float(1.0), iduration: 0.1)
             
-            // bit hacky here!!  doing this method twice:: sCollection!.setupSpecifiedNoteCollection
+            var testedIntervals: [String] = []
+            for i in 0..<specifiedNoteCollection.count-1 {
+                testedIntervals.append(
+                    sCollection!.returnInterval(specifiedNoteCollection[0],specifiedNoteCollection[i+1])
+                )
+            }
             
-            
-            print("earTrainingLevelData \(earTrainingLevelData)")
-            print("earTrainingIdx \(earTrainingIdx)")
+            pc!.setResultButtonPopupText(itextArr: ["Intervals Tested:"] + testedIntervals)
+            resultButtonText = "Click For Info  ⓘ"
+            setResultButton(istr: resultButtonText)
         } else {
             resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
             tempoActive = parseTempoStatus(iinput: task)
             tempoButtonsActive = !tempoActive
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
+            sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
+            
+            //set State for scales / arpeggios
+            if lc.currentLevelKey!.contains("scale") {
+                if tempoActive {
+                    currentState = State.NotesTestIdle_Tempo
+                } else {
+                    currentState = State.NotesTestIdle_NoTempo
+                }
+            } else if lc.currentLevelKey!.contains("arpeggio") {
+                if tempoActive {
+                    currentState = State.NotesTestIdle_Tempo
+                } else {
+                    currentState = State.NotesTestIdle_NoTempo
+                }
+            }
         }
         
-        sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
+//        sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
         
         
-        
+        defaultState = currentState
         ResultsLabel.text = resultsLabelDefaultText
 
-        if lc.currentLevelKey!.contains("scale") {
-            if tempoActive {
-                currentState = State.NotesTestIdle_Tempo
+
+        
+
+        
+        //result button text for scales / arpeggios
+        if lc.currentLevelKey?.contains("interval") == false {
+            let resultPopoverDirText: String
+            var resultPopoverTempoText = "Tempo: "
+            resultButtonText = ""
+
+            if dir == "Up" {
+                resultPopoverDirText = "Play From Low To High Note"
+                resultButtonText = "Up"
+            } else if dir == "Down" {
+                resultPopoverDirText = "Play From High To Low Note"
+                resultButtonText = "Down"
             } else {
-                currentState = State.NotesTestIdle_NoTempo
+                resultPopoverDirText = "Play From Low To High To Low"
+                resultButtonText = "Up And Down"
             }
-        } else if lc.currentLevelKey!.contains("arpeggio") {
-            if tempoActive {
-                currentState = State.NotesTestIdle_Tempo
+
+            resultButtonText += " / "
+
+            if !tempoActive {
+                resultPopoverTempoText += "None, Play Freely!"
+                resultButtonText += "No Tempo"
             } else {
-                currentState = State.NotesTestIdle_NoTempo
+                let tempo = String(Int(met!.bpm)) + " BPM"
+                resultPopoverTempoText += tempo
+                resultButtonText += tempo
             }
+
+            pc!.setResultButtonPopupText(itextArr: [ResultsLabel.text!, resultPopoverDirText, resultPopoverTempoText])
+            setResultButton(istr: resultButtonText)
         }
-        defaultState = currentState
-
-        let resultPopoverDirText: String
-        var resultPopoverTempoText = "Tempo: "
-        resultButtonText = ""
-
-        if dir == "Up" {
-            resultPopoverDirText = "Play From Low To High Note"
-            resultButtonText = "Up"
-        } else if dir == "Down" {
-            resultPopoverDirText = "Play From High To Low Note"
-            resultButtonText = "Down"
-        } else {
-            resultPopoverDirText = "Play From Low To High To Low"
-            resultButtonText = "Up And Down"
-        }
-
-        resultButtonText += " / "
-
-        if !tempoActive {
-            resultPopoverTempoText += "None, Play Freely!"
-            resultButtonText += "No Tempo"
-        } else {
-            let tempo = String(Int(met!.bpm)) + " BPM"
-            resultPopoverTempoText += tempo
-            resultButtonText += tempo
-        }
-
-        pc!.setResultButtonPopupText(itextArr: [ResultsLabel.text!, resultPopoverDirText, resultPopoverTempoText])
-        setResultButton(istr: resultButtonText)
     }
     
     func setupEarTrainingData() {
-        return
         let task = lc.returnCurrentTask()
         let data = lc.parseEarTrainingData(task)
-        
-        //could be random, not persistent
-        let startingNote = data["StartingNote"] as! String
-        
         let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
-        
-        //persistent
         earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
-        
-        var additionalData : [String:Any] = [:]  //this is a little hacky
-        additionalData["intervalsToTest"] = intervalsToTest
-        
-        //persistent
         tempoActive = true
         tempoButtonsActive = !tempoActive
         met!.bpm = Double(Int(data["Tempo"] as! String)!)
         setupTempoButtons(ibuttonsActive: tempoButtonsActive)
-        
-        let type = "interval"
-        
-        //need to update in setupCurrentTask to reflect
-        resultsLabelDefaultText = "Intervals"
-        
-        //put in setupCurrentTask
-        currentState = State.EarTrainingIdle
-        
-        print(earTrainingLevelData)
     }
-       
-//    func parseIntervalDirection(_ input:String) -> [String] {
-//        var returnArr:[String] = []
-//        let collectionSplitChar = ","
-//        let directions = ["Up_","Down_","Both_"]
-//
-//        for direction in directions {
-//            if input.contains(direction) {
-//                let collection = input.replacingOccurrences(of: direction, with: "")
-//                let collectionArr = collection.components(separatedBy: collectionSplitChar)
-//                for item in collectionArr {
-//                    if direction.contains("Both_") {
-//                        returnArr.append("Up_" + item)
-//                        returnArr.append("Down_" + item)
-//                    } else {
-//                        returnArr.append(direction + item)
-//                    }
-//                }
-//            }
-//        }
-//
-//        return returnArr
-//    }
 
     func getDynamicAudioVisualData() {
         let dataStrTypes = [
@@ -660,7 +627,6 @@ class MainViewController: UIViewController {
     }
 
     func parseTempoStatus(iinput: String) -> Bool {
-        print(lc.currentLevelKey)
         return iinput.contains("Tempo") && !(lc.currentLevelKey?.contains("interval"))!
     }
 
@@ -894,7 +860,7 @@ class MainViewController: UIViewController {
         wt.stopWaitThenOfType(iselector: s)
         pc!.reminderPopup.hide()
 
-        // Scale Test States
+        // Scale Test States - enable test
         if returnValidState(iinputState: currentState,
                             istateArr: [
                                 State.NotesTestIdle_NoTempo,
@@ -916,7 +882,9 @@ class MainViewController: UIViewController {
                 met?.startMetro()
             }
             return
-        } else if returnValidState(iinputState: currentState,
+        }
+        // Scale Test States - disable test
+        else if returnValidState(iinputState: currentState,
                                    istateArr: [
                                        State.NotesTestActive_NoTempo,
                                        State.NotesTestActive_Tempo,
@@ -931,23 +899,26 @@ class MainViewController: UIViewController {
             setNavBarColor()
             resetButtonFrames()
             return
-        } else if returnValidState(iinputState: currentState, istateArr: [State.EarTrainingIdle]) {
+        }
+        // Ear Training - enable test
+        else if returnValidState(iinputState: currentState, istateArr: [State.EarTrainingIdle]) {
             setupCurrentTaskHelper()
             currentState = toggleTestState(icurrentState: currentState)
             setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
             hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             et!.earTrainingSetup(earTrainingLevelData[earTrainingIdx])
-            print("going to call ear training")
             return
-            
-            
-            //play first note, play 2nd note in time
-            //set state to response
-            //await player input
-            //evaluate player input
-            //advance level or reset level
-            //increase earTrainingIdx
+        }
+        // Ear Training - disable test
+        else if returnValidState(iinputState: currentState, istateArr: [State.EarTrainingCall,State.EarTrainingResponse]) {
+            wt.stopWaitThenOfType(iselector: #selector(et!.beginEarTrainingHelper) as Selector)
+            currentState = State.EarTrainingIdle
+            setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: defaultPeripheralIcon[iwchButton])
+            met!.endMetronome()
+            setNavBarColor()
+            earTrainingLevelData = randomizeEarTrainingData()
+            setupCurrentTask()
         }
     }
 
@@ -1073,7 +1044,6 @@ class MainViewController: UIViewController {
                 recordData.append(r)
             } else if currentState == State.EarTrainingResponse {
                 earTrainResponseArr.append(buttonDict[inputNumb]!)
-                print("here here")
                 if earTrainResponseArr.count == earTrainCallArr.count {
 //                    presentEarTrainResults()
                     et!.presentEarTrainResults()
@@ -1192,9 +1162,35 @@ class MainViewController: UIViewController {
                 let level = lc.returnConvertedLevel(iinput: lc.currentLevel!)
                 wt.waitThen(itime: 0.1, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "LevelComplete" as AnyObject, "arg2": level as AnyObject])
             }
+            if newLevel["SubLevelMaxReached"]! {
+                earTrainingLevelData = []
+            }
             wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
         }
         currentState = toggleTestState(icurrentState: currentState)
+    }
+    
+    @objc func presentEarTrainingFretMarkers(timer: Timer) {
+        var testPassed = false
+        let resultObj = timer.userInfo as! [String: AnyObject]
+        if let test = resultObj["notesCorrect"] {
+            testPassed = test as! Bool
+            if !testPassed {
+                displayMultipleFretMarkers(iinputArr: earTrainResponseArr, ialphaAmount: 0.5)
+                setColorOnFretMarkers(earTrainResponseArr, defaultColor.FretMarkerStandard)
+                
+                //if wrong answer, mix up available test objects
+                earTrainingLevelData = randomizeEarTrainingData()
+            }
+            displayMultipleFretMarkers(iinputArr: earTrainCallArr, ialphaAmount: 1, ikillAllFretMarkers: false)
+            setColorOnFretMarkers(earTrainCallArr, defaultColor.FretMarkerSuccess)
+            currentState = State.EarTrainingIdle
+        }
+    }
+    
+    func randomizeEarTrainingData() -> [String] {
+        let data = lc.parseEarTrainingData(lc.returnCurrentTask())
+        return lc.returnRandomizedArray(Int(data["Total"] as! String)!, lc.parseIntervalDirection(data["Direction"] as! String))
     }
 
     // State Handlers
@@ -1230,11 +1226,12 @@ class MainViewController: UIViewController {
         }
     }
 
-    func displayMultipleFretMarkers(iinputArr: [String], ialphaAmount: Float) {
+    func displayMultipleFretMarkers(iinputArr: [String], ialphaAmount: Float, ikillAllFretMarkers: Bool = true) {
         killCurrentDotFade()
         for (str, _) in dotDict {
-            dotDict[str]!.alpha = 0.0
-
+            if ikillAllFretMarkers {
+                dotDict[str]!.alpha = 0.0
+            }
             if iinputArr.contains(str) {
                 swoopAlpha(iobject: dotDict[str]!, ialpha: Float(ialphaAmount), iduration: 0.1)
                 swoopScale(iobject: dotDict[str]!, iscaleX: 0, iscaleY: 0, iduration: 0)
@@ -1247,7 +1244,10 @@ class MainViewController: UIViewController {
     func hideAllFretMarkers() {
         if allMarkersDisplayed {
             killCurrentDotFade()
-            setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
+            if defaultPeripheralIcon.indices.contains(2) {
+                setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
+            }
+            
             for (str, _) in dotDict {
                 dotDict[str]!.alpha = 0.0
             }
@@ -1273,8 +1273,15 @@ class MainViewController: UIViewController {
             dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": iinputStr], repeats: false)
         }
     }
+    
+    func setColorOnFretMarkers(_ inoteSelection: [String], _ icolor: UIColor) {
+        for (_, item) in inoteSelection.enumerated() {
+            dotDict[item]?.backgroundColor = icolor
+        }
+    }
 
     func displaySelectionDots(inoteSelection: [String], ialphaAmount: Double) {
+        return
         for (_, item) in inoteSelection.enumerated() {
             dotDict[item]?.alpha = CGFloat(ialphaAmount)
         }
@@ -1578,7 +1585,7 @@ class MainViewController: UIViewController {
                         height: imageSize
                     )
 
-                    image.backgroundColor = UIColor.red
+                    image.backgroundColor = defaultColor.FretMarkerStandard
                     image.layer.masksToBounds = true
                     image.layer.cornerRadius = image.frame.width / 2
 
@@ -1653,8 +1660,10 @@ class MainViewController: UIViewController {
 //        mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
 //        wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
         
-        print (lc.returnRandomizedArray(5,["2","3","4"]))
+//        print (lc.returnRandomizedArray(5,["2","3","4"]))
         
+        
+
     }
 
     // Testing
@@ -1827,5 +1836,20 @@ extension UIImage {
         ctx.fill(rect)
 
         return UIGraphicsGetImageFromCurrentImageContext()
+    }
+}
+
+extension Dictionary where Value: Equatable {
+    /// Returns all keys mapped to the specified value.
+    /// ```
+    /// let dict = ["A": 1, "B": 2, "C": 3]
+    /// let keys = dict.keysForValue(2)
+    /// assert(keys == ["B"])
+    /// assert(dict["B"] == 2)
+    /// ```
+    func keysForValue(value: Value) -> [Key] {
+        return compactMap { (key: Key, val: Value) -> Key? in
+            value == val ? key : nil
+        }
     }
 }

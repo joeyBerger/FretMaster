@@ -104,6 +104,7 @@ class MenuViewController: UIViewController {
                 let et_scales = UserDefaults.standard.object(forKey: "et_scales")
                 let et_chords = UserDefaults.standard.object(forKey: "et_chords")
                 let tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
+                
                 userLevelData.scaleLevel = scaleLevel as! String
                 userLevelData.arpeggioLevel = arpeggioLevel as! String
                 userLevelData.intervalLevel = intervalLevel as! String
@@ -143,7 +144,7 @@ class MenuViewController: UIViewController {
             }
         }
 
-        tutorialCompleteStatus = userLevelData.tutorialComplete == "1.0"
+        tutorialCompleteStatus = userLevelData.tutorialComplete == "1.0" || developmentMode > 0
 
         var buttonTextInfo: [buttonText] = []
 
