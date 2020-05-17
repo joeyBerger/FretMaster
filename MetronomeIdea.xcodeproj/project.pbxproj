@@ -29,6 +29,8 @@
 		9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAD3C0D237E825F004467B1 /* EarTraining.swift */; };
 		9EB573412450095C00322305 /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB573402450095C00322305 /* PopupController.swift */; };
 		9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBCF8AC2429D09400074C4C /* LevelHandler.swift */; };
+		9ED2BC692470FF6C00D409DD /* SCLAlertView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */; };
+		9ED2BC6A2470FF6C00D409DD /* SCLAlertView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE71F35238B8B5B00D87D24 /* UserData.swift */; };
 		9EE8612B245157CA00CCEA37 /* Click_Woodblock1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EE861162451578A00CCEA37 /* Click_Woodblock1.wav */; };
 		9EE8612C245157CA00CCEA37 /* Click_Digital.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EE8611A2451579600CCEA37 /* Click_Digital.wav */; };
@@ -145,6 +147,7 @@
 			dstSubfolderSpec = 10;
 			files = (
 				9EEF76B323AFE4AB00F00010 /* AMPopTip.framework in Embed Frameworks */,
+				9ED2BC6A2470FF6C00D409DD /* SCLAlertView.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -174,6 +177,7 @@
 		9EAD3C0D237E825F004467B1 /* EarTraining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarTraining.swift; sourceTree = "<group>"; };
 		9EB573402450095C00322305 /* PopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupController.swift; sourceTree = "<group>"; };
 		9EBCF8AC2429D09400074C4C /* LevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHandler.swift; sourceTree = "<group>"; };
+		9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SCLAlertView.framework; path = Carthage/Build/iOS/SCLAlertView.framework; sourceTree = "<group>"; };
 		9EE71F35238B8B5B00D87D24 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		9EE861012451573F00CCEA37 /* E2_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = E2_Acoustic.wav; path = Acoustic/E2_Acoustic.wav; sourceTree = SOURCE_ROOT; };
 		9EE861022451574200CCEA37 /* D2_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = D2_Acoustic.wav; path = Acoustic/D2_Acoustic.wav; sourceTree = SOURCE_ROOT; };
@@ -289,6 +293,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				9EEF76B223AFE4AB00F00010 /* AMPopTip.framework in Frameworks */,
+				9ED2BC692470FF6C00D409DD /* SCLAlertView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -497,6 +502,7 @@
 		9EEF76AA23AFE2FF00F00010 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */,
 				9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */,
 			);
 			name = Frameworks;

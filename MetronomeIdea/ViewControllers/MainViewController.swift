@@ -2,6 +2,7 @@
 import AVFoundation
 import Foundation
 import UIKit
+import SCLAlertView
 
 class MainViewController: UIViewController {
     // Outlets
@@ -184,6 +185,14 @@ class MainViewController: UIViewController {
         super.viewDidLoad()
 
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
+        
+//        var alertViewResponder: SCLAlertViewResponder = SCLAlertView().showSuccess("Hello World", subTitle: "This is a more descriptive text.")
+//
+//            // Upon displaying, change/close view
+//        alertViewResponder.setTitle("New Title") // Rename title
+//        alertViewResponder.setSubTitle("New description") // Rename subtitle
+        
 
         // initialize objects
         met = Metronome(ivc: self)
@@ -1700,6 +1709,17 @@ class MainViewController: UIViewController {
     }
 
     @objc func onTestButtonDown() {
+        
+//        var newFrame = mainPopover.frame
+//
+//        newFrame.size.width = 350
+//        newFrame.size.height = 500
+//        mainPopover.frame = newFrame
+        
+//        mainPopover.sizeToFit()
+        
+        
+        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
         //        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
         //          setupPopupTutorialText()
 
