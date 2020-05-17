@@ -120,10 +120,14 @@ class ScaleCollection {
     }
     
     func returnInterval(_ note0: String, _ note1: String, _ includeLinguisticNumberEquivalent: Bool = true) -> String {
-        let coreNote0 = parseCoreNote(note0)
-        let coreOctaveNote0 = parseNoteOctave(note0)
-        let coreNote1 = parseCoreNote(note1)
-        let coreOctaveNote1 = parseNoteOctave(note1)
+        
+        let cleanNote0 = note0.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
+        let cleanNote1 = note1.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
+        
+        let coreNote0 = parseCoreNote(cleanNote0)
+        let coreOctaveNote0 = parseNoteOctave(cleanNote0)
+        let coreNote1 = parseCoreNote(cleanNote1)
+        let coreOctaveNote1 = parseNoteOctave(cleanNote1)
         
         var interval = ""
         let note0Idx = refScale.firstIndex(of: coreNote0)

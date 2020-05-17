@@ -247,17 +247,12 @@ class MainViewController: UIViewController {
     
     override func loadView() {
         super.loadView()
-//        tempoButtonArr = [TempoUpButton, TempoDownButton]
-//        for btn in periphButtonArr {
-//            btn.alpha = 0.0
-//        }
-//        TempoUpButton.alpha = 0.0
-//        TempoDownButton.alpha = 0.0
     }
     
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setAlphaOnDefualtImages(0.0)
+        print("setAlphaOnDefualtImages 0.0")
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -277,7 +272,6 @@ class MainViewController: UIViewController {
 
             setupFretBoardImage()
             setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
-            setAlphaOnDefualtImages(1.0)
 
             if !tutorialComplete! {
                 hideAllFretMarkers()
@@ -297,7 +291,11 @@ class MainViewController: UIViewController {
                 view.addSubview(testButton)
             }
         }
-
+        
+//        setupTempoButtons()
+        
+        setAlphaOnDefualtImages(1.0)
+        
         setupToSpecificState()
         
         if (!lc.currentLevelKey!.contains("interval")) {
@@ -414,20 +412,29 @@ class MainViewController: UIViewController {
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
         } else {
             setupEarTrainingData()
-            setupCurrentTask()
             defaultPeripheralIcon = ["outline_play_arrow_black_18dp"]
             activePeripheralIcon = ["outline_stop_black_18dp"]
+            setupCurrentTask()
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
         }
         setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
     }
 
     func setupCurrentTaskHelper() {
-        setupCurrentTask()
+        setupCurrentTask(nil)
         wt.stopWaitThenOfType(iselector: #selector(setupCurrentTask) as Selector)
     }
 
-    @objc func setupCurrentTask() {
+    @objc func setupCurrentTask(_ timer: Timer? = nil) {
+        var automaticallyStartTest = false
+        if timer != nil {
+            let resultObj = timer?.userInfo as! [String: AnyObject]
+            if let start = resultObj["automaticallyStartTest"] {
+               automaticallyStartTest = start as! Bool
+            }
+        }
+
+        
         let task = lc.returnCurrentTask()
         let trimmedTask = trimCurrentTask(iinput: task)
         let dir = parseTaskDirection(iinput: task)
@@ -447,9 +454,11 @@ class MainViewController: UIViewController {
             startingEarTrainingNote = startingNote
             let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
             
+//            var automaticallyStartTest = true
             if earTrainingLevelData.count == 0 {
                 print("updating earTrainingLevelData")
                 earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
+                automaticallyStartTest = false
             }
             
             additionalData["intervalsToTest"] = intervalsToTest
@@ -477,6 +486,10 @@ class MainViewController: UIViewController {
             pc!.setResultButtonPopupText(itextArr: ["Intervals Tested:"] + testedIntervals)
             resultButtonText = "Click For Info  ⓘ"
             setResultButton(istr: resultButtonText)
+
+            if automaticallyStartTest {
+                PeripheralButton0OnButtonDown(0,true)
+            }
         } else {
             resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
             tempoActive = parseTempoStatus(iinput: task)
@@ -501,15 +514,10 @@ class MainViewController: UIViewController {
         }
         
 //        sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
-        
-        
+                
         defaultState = currentState
         ResultsLabel.text = resultsLabelDefaultText
 
-
-        
-
-        
         //result button text for scales / arpeggios
         if lc.currentLevelKey?.contains("interval") == false {
             let resultPopoverDirText: String
@@ -546,8 +554,8 @@ class MainViewController: UIViewController {
     func setupEarTrainingData() {
         let task = lc.returnCurrentTask()
         let data = lc.parseEarTrainingData(task)
-        let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
-        earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
+//        let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
+//        earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
         tempoActive = true
         tempoButtonsActive = !tempoActive
         met!.bpm = Double(Int(data["Tempo"] as! String)!)
@@ -698,7 +706,7 @@ class MainViewController: UIViewController {
         TempoUpButton.imageView?.tintColor = inlayColor
         TempoUpButton.layer.masksToBounds = true
         TempoUpButton.layer.cornerRadius = 25
-        TempoDownButton.imageView?.alpha = 1.0
+        TempoUpButton.imageView?.alpha = 1.0
     }
 
     func setupFretMarkerText(ishowAlphabeticalNote: Bool, ishowNumericDegree: Bool, inumericDefaults: [String] = ["b5", "b6"]) {
@@ -851,7 +859,7 @@ class MainViewController: UIViewController {
     }
 
     // Peripheral Buttons Down
-    @IBAction func PeripheralButton0OnButtonDown(_ iwchButton: Int) {
+    @IBAction func PeripheralButton0OnButtonDown(_ iwchButton: Int,_ automaticallyStartTest: Bool = false) {
         if !handleTutorialInput(iwchButton: iwchButton) {
             return
         }
@@ -902,7 +910,12 @@ class MainViewController: UIViewController {
         }
         // Ear Training - enable test
         else if returnValidState(iinputState: currentState, istateArr: [State.EarTrainingIdle]) {
-            setupCurrentTaskHelper()
+            
+            if !automaticallyStartTest {
+                setupCurrentTaskHelper()
+            }//
+            wt.stopWaitThenOfType(iselector: #selector(setResultButtonHelper) as Selector)
+            wt.stopWaitThenOfType(iselector: #selector(setupCurrentTask) as Selector)
             currentState = toggleTestState(icurrentState: currentState)
             setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
             hideAllFretMarkers()
@@ -980,6 +993,8 @@ class MainViewController: UIViewController {
 
     @IBAction func onSettingsButtonDown(_: Any) {
         met!.endMetronome()
+        setNavBarColor()
+        wt.stopWaitThenOfType(iselector: #selector(et!.beginEarTrainingHelper) as Selector)
         UIView.setAnimationsEnabled(false)
         performSegue(withIdentifier: "SettingsView", sender: nil)
     }
@@ -1013,7 +1028,6 @@ class MainViewController: UIViewController {
         let validState = returnValidState(iinputState: currentState, istateArr: [
             State.Recording,
             State.Idle,
-            State.EarTrainingResponse,
             State.NotesTestActive_NoTempo,
             State.NotesTestIdle_NoTempo,
             State.NotesTestIdle_Tempo,
@@ -1021,19 +1035,49 @@ class MainViewController: UIViewController {
             State.NotesTestActive_Tempo,
             State.NotesTestShowNotes,
             State.NotesTestActive_Tempo,
+            
+            State.EarTrainingResponse,
+            State.EarTrainingIdle,
         ])
         if validState {
-            hideAllFretMarkers()
-
-            if currentState == State.NotesTestShowNotes {
-                currentState = State.NotesTestIdle_NoTempo
-            }
+//            if currentState != State.EarTrainingIdle {
+//                hideAllFretMarkers()
+//            }
+//
+//            if currentState == State.NotesTestShowNotes {
+//                currentState = State.NotesTestIdle_NoTempo
+//            }
 
             var str = buttonDict[inputNumb]!
             str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
             sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
 
             displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
+            
+            if currentState != State.EarTrainingIdle {
+                hideAllFretMarkers()
+            } else {
+                for note in specifiedNoteCollection {
+                    if str == note {
+                        killCurrentDotFade()
+                        let alpha = str as AnyObject === String(startingEarTrainingNote) as AnyObject ? 1.0 : 0.5
+                        dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": str, "Alpha": alpha], repeats: false)
+                        previousNote = nil
+                        break
+                    }
+                }
+                for (i,otherNotes) in specifiedNoteCollection.enumerated() {
+                    if otherNotes != str {
+                        dotDict[otherNotes]!.alpha = i == 0 ? 1.0 : 0.5
+                    }
+                }
+            }
+            
+            if currentState == State.NotesTestShowNotes {
+                currentState = State.NotesTestIdle_NoTempo
+            }
+            
+
             if currentState == State.Recording {
                 if recordStartTime == 0 {
                     recordStartTime = CFAbsoluteTimeGetCurrent()
@@ -1045,7 +1089,6 @@ class MainViewController: UIViewController {
             } else if currentState == State.EarTrainingResponse {
                 earTrainResponseArr.append(buttonDict[inputNumb]!)
                 if earTrainResponseArr.count == earTrainCallArr.count {
-//                    presentEarTrainResults()
                     et!.presentEarTrainResults()
                 }
             }
@@ -1165,7 +1208,7 @@ class MainViewController: UIViewController {
             if newLevel["SubLevelMaxReached"]! {
                 earTrainingLevelData = []
             }
-            wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["arg1": 0 as AnyObject])
+            wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["automaticallyStartTest": (earTrainingLevelData != []) as AnyObject])
         }
         currentState = toggleTestState(icurrentState: currentState)
     }
@@ -1615,7 +1658,11 @@ class MainViewController: UIViewController {
     // Helper functions
     @objc func alphaSwoopImage(timer: Timer) {
         let image = timer.userInfo as! [String: AnyObject]
-        swoopAlpha(iobject: dotDict[image["ImageId"] as! String]!, ialpha: Float(0.0), iduration: 0.2)
+        var alpha = 0.0
+        if let a = image["Alpha"] {
+            alpha = a as! Double
+        }
+        swoopAlpha(iobject: dotDict[image["ImageId"] as! String]!, ialpha: Float(alpha), iduration: 0.2)
     }
 
     func swoopScale(iobject: UIView, iscaleX: Double, iscaleY: Double, iduration: Double) {
