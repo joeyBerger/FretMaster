@@ -636,7 +636,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7A7-cn-DNj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
                 <view contentMode="scaleToFill" id="Lkq-Ib-07l" userLabel="Main Popover">
-                    <rect key="frame" x="0.0" y="0.0" width="382" height="355"/>
+                    <rect key="frame" x="0.0" y="0.0" width="376" height="355"/>
                     <autoresizingMask key="autoresizingMask" flexibleMaxX="YES" flexibleMaxY="YES"/>
                     <subviews>
                         <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="kTQ-z6-t8X" userLabel="MainPopoverXButton">

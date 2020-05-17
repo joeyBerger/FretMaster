@@ -81,7 +81,8 @@ class MenuViewController: UIViewController {
         let button4frame = view.convert(Button4.frame, from: Stack)
         // look to see if menu buttons are off the screen
         if button4frame.maxY + button4frame.height > view.frame.height {
-            let bottomBuffer: CGFloat = 10.0
+            Stack.frame = CGRect(x: Stack.frame.minX, y: Stack.frame.minY + 50, width: Stack.frame.width, height: Stack.frame.height)
+            let bottomBuffer: CGFloat = -50.0
             let numbButtons: CGFloat = 5.0
             let button0frame = view.convert(Button0.frame, from: Stack)
             let sP = (view.frame.height - (bottomBuffer + button0frame.height) - button0frame.minY - (numbButtons - 1) * button0frame.height) / numbButtons

@@ -313,11 +313,11 @@ class MainViewController: UIViewController {
         }
         
         getDynamicAudioVisualData()
-//        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
-//        bgImage.image = backgroundImage.returnImage(key)
-//        bgImage.image! = bgImage.image!.darkened()!
-//        let c: CGFloat = 0.5
-//        bgImage.tintColor = UIColor(red: c, green: c, blue: c, alpha: 0.5)
+        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
+        bgImage.image = backgroundImage.returnImage(key)
+        bgImage.image! = bgImage.image!.darkened()!
+        let c: CGFloat = 0.5
+        bgImage.tintColor = UIColor(red: c, green: c, blue: c, alpha: 0.5)
         pc!.resultButtonPopup.hide()
     }
 
@@ -1718,6 +1718,9 @@ class MainViewController: UIViewController {
         
 //        mainPopover.sizeToFit()
         
+//        mainPopover.frame = CGRect(x: 0, y: 106, width: 350, height: 355)
+
+        print(mainPopover.frame)
         
         wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
         //        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
