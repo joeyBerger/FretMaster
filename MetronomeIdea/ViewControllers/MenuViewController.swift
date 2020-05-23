@@ -24,7 +24,7 @@ class MenuViewController: UIViewController {
     @IBOutlet var Button4: UIButton!
     var buttonArr: [UIButton] = []
 
-    @IBOutlet var Stack: UIStackView!
+
 
     var menuButtonSubtext: [UILabel] = []
     var menuButtonProgress: [UIProgressView] = []
@@ -78,17 +78,36 @@ class MenuViewController: UIViewController {
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.tintColor = .white
 
-        let button4frame = view.convert(Button4.frame, from: Stack)
-        // look to see if menu buttons are off the screen
-        if button4frame.maxY + button4frame.height > view.frame.height {
-            Stack.frame = CGRect(x: Stack.frame.minX, y: Stack.frame.minY + 50, width: Stack.frame.width, height: Stack.frame.height)
-            let bottomBuffer: CGFloat = -50.0
-            let numbButtons: CGFloat = 5.0
-            let button0frame = view.convert(Button0.frame, from: Stack)
-            let sP = (view.frame.height - (bottomBuffer + button0frame.height) - button0frame.minY - (numbButtons - 1) * button0frame.height) / numbButtons
-            print("adapting stack to fit all buttons with new spacing of \(sP)")
-            Stack.spacing = CGFloat(sP)
+//        let button4frame = view.convert(Button4.frame, from: Stack)
+//        // look to see if menu buttons are off the screen
+//        if button4frame.maxY + button4frame.height > view.frame.height {
+//            Stack.frame = CGRect(x: Stack.frame.minX, y: Stack.frame.minY + 50, width: Stack.frame.width, height: Stack.frame.height)
+//            let bottomBuffer: CGFloat = -50.0
+//            let numbButtons: CGFloat = 5.0
+//            let button0frame = view.convert(Button0.frame, from: Stack)
+//            let sP = (view.frame.height - (bottomBuffer + button0frame.height) - button0frame.minY - (numbButtons - 1) * button0frame.height) / numbButtons
+//            print("adapting stack to fit all buttons with new spacing of \(sP)")
+//            Stack.spacing = CGFloat(sP)
+//        }
+        
+        let screenRect = UIScreen.main.bounds
+        let screenWidth = screenRect.size.width
+        let screenHeight = screenRect.size.height
+        
+        let buffer:CGFloat = returnButtonBuffer(screenHeight - (navigationController?.navigationBar.frame.maxY)!)
+        let availableScreenHeight = screenHeight - (navigationController?.navigationBar.frame.maxY)! - (buffer*2)
+        
+        let spacing:CGFloat = availableScreenHeight/5
+        print("spacing",spacing)
+        print ("screenHeight",screenHeight)
+        print("availableScreenHeight",availableScreenHeight)
+        
+        for (i,button) in buttonArr.enumerated() {
+            let y = ((navigationController?.navigationBar.frame.maxY)! + buffer + button.frame.height/2 - 12) + (spacing) * CGFloat(i)
+            button.frame = CGRect(x: screenWidth/2-button.frame.width/2, y: y, width: button.frame.width, height: button.frame.height)
         }
+        
+        print(Button0.frame)
     }
 
     override func viewDidAppear(_: Bool) {
@@ -226,6 +245,16 @@ class MenuViewController: UIViewController {
 
     func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
         return "L\(ilevel + 1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
+    }
+    
+    func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
+        print("iscreenSpace",iscreenSpace)
+        if iscreenSpace > 650 {
+            return 110.0
+        } else if iscreenSpace > 600 {
+            return 60.0
+        }
+        return 15.0
     }
 
     func setupHiddenButtons() {

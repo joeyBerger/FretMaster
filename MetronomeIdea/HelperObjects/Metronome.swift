@@ -67,7 +67,7 @@ class Metronome {
         if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003) {
             if vc!.currentState == MainViewController.State.PlayingNotesCollection {
                 vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick] + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
-                vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick])
+                vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick],cascadeFretMarkers: false,fretAnim: "displayFret")
                 if currentClick == vc!.specifiedNoteCollection.count - 1 {
                     endMetronome()
                     vc!.currentState = vc!.tempoActive ? MainViewController.State.NotesTestIdle_Tempo : MainViewController.State.NotesTestIdle_NoTempo

@@ -30,7 +30,7 @@ class MainViewController: UIViewController {
     var FretboardImage: UIImageView!
     var DimOverlay: UIImageView!
     var ActionOverlay: UIImageView!
-    var dotDict: [String: UIImageView] = [:]
+    var dotDict: [String: SpringImageView] = [:]
     var fretButtonDict: [String: UIButton] = [:]
     var fretButtonFrame: [String: CGRect] = [:]
     var dotText: [UILabel] = []
@@ -313,11 +313,11 @@ class MainViewController: UIViewController {
         }
         
         getDynamicAudioVisualData()
-        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
-        bgImage.image = backgroundImage.returnImage(key)
-        bgImage.image! = bgImage.image!.darkened()!
-        let c: CGFloat = 0.5
-        bgImage.tintColor = UIColor(red: c, green: c, blue: c, alpha: 0.5)
+//        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
+//        bgImage.image = backgroundImage.returnImage(key)
+//        bgImage.image! = bgImage.image!.darkened()!
+//        let c: CGFloat = 0.5
+//        bgImage.tintColor = UIColor(red: c, green: c, blue: c, alpha: 0.5)
         pc!.resultButtonPopup.hide()
     }
 
@@ -443,7 +443,6 @@ class MainViewController: UIViewController {
             }
         }
 
-        
         let task = lc.returnCurrentTask()
         let trimmedTask = trimCurrentTask(iinput: task)
         let dir = parseTaskDirection(iinput: task)
@@ -505,6 +504,8 @@ class MainViewController: UIViewController {
             tempoButtonsActive = !tempoActive
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
+            
+            hideAllFretMarkers(true)
             
             //set State for scales / arpeggios
             if lc.currentLevelKey!.contains("scale") {
@@ -1127,7 +1128,10 @@ class MainViewController: UIViewController {
                     let notesCorrect = sCollection!.analyzeNotes(iscaleTestData: noteCollectionTestData)
                     onTestComplete(itestPassed: notesCorrect)
                     var testResultStrs: [String] = []
-                    if !notesCorrect { testResultStrs.append(testResultStrDict["incorrect_notes"]!)
+                    if !notesCorrect {
+                        testResultStrs.append(testResultStrDict["incorrect_notes"]!)
+                    } else {
+                        setupUpDelayedNoteCollectionView(specifiedNoteCollection.uniques,"postSuccess");
                     }
                     wt.waitThen(itime: 0.5, itarget: self, imethod: #selector(presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
                 } else {
@@ -1293,8 +1297,8 @@ class MainViewController: UIViewController {
         allMarkersDisplayed = true
     }
 
-    func hideAllFretMarkers() {
-        if allMarkersDisplayed {
+    func hideAllFretMarkers(_ overrideAllMarkersFlag: Bool = false) {
+        if allMarkersDisplayed || overrideAllMarkersFlag {
             killCurrentDotFade()
             if defaultPeripheralIcon.indices.contains(2) {
                 setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
@@ -1307,19 +1311,19 @@ class MainViewController: UIViewController {
         }
     }
 
-    func displaySingleFretMarker(iinputStr: String, cascadeFretMarkers: Bool = false) {
+    func displaySingleFretMarker(iinputStr: String, cascadeFretMarkers: Bool = false, fretAnim: String = "userFretPress") {
         if previousNote != nil, !cascadeFretMarkers {
             dotDict[previousNote!]?.alpha = 0.0
             swoopAlpha(iobject: dotDict[previousNote!]!, ialpha: Float(0.0), iduration: 0.3)
         }
         previousNote = iinputStr
-
-        dotDict[iinputStr]!.alpha = 0.0
-
-        swoopAlpha(iobject: dotDict[iinputStr]!, ialpha: Float(1.0), iduration: 0.1)
+        
+//        dotDict[iinputStr]!.alpha = 0.0
+//        swoopAlpha(iobject: dotDict[iinputStr]!, ialpha: Float(1.0), iduration: 0.1)
         killCurrentDotFade()
-        swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 0, iscaleY: 0, iduration: 0)
-        swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 1, iscaleY: 1, iduration: 0.1)
+//        swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 0, iscaleY: 0, iduration: 0)
+//        swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 1, iscaleY: 1, iduration: 0.1)
+        dotDict[iinputStr]!.setAndPlayAnim(fretAnim)
 
         if !cascadeFretMarkers {
             dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": iinputStr], repeats: false)
@@ -1626,7 +1630,8 @@ class MainViewController: UIViewController {
                     button.addTarget(self, action: #selector(FretPressed), for: .touchDown)
                     button.tag = buttonTag
 
-                    let image = UIImageView()
+                    let image = SpringImageView()
+                    image.setAndPlayAnim()
                     let imageXOffset: CGFloat = 0
 
                     let imageSize = 34 * (fretboardAspectFit.width / CGFloat(iphone11AspectFitWidth))
@@ -1720,9 +1725,9 @@ class MainViewController: UIViewController {
         
 //        mainPopover.frame = CGRect(x: 0, y: 106, width: 350, height: 355)
 
-        print(mainPopover.frame)
+//        print(mainPopover.frame)
         
-        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
+//        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
         //        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
         //          setupPopupTutorialText()
 
@@ -1732,8 +1737,21 @@ class MainViewController: UIViewController {
         
 //        print (lc.returnRandomizedArray(5,["2","3","4"]))
         
+//        let force = 5.0, duration = 2.0, curve = "easeOutSine", repeatCount = 1.0, delay = 0.0
+//        let animation = CAKeyframeAnimation()
+//        animation.keyPath = "transform.scale"
+//        animation.values = [0, 0.2*force, -0.2*force, 0.2*force, 0]
+//        animation.keyTimes = [0, 0.2, 0.4, 0.6, 0.8, 1]
+//        animation.timingFunction = getTimingFunction(curve: curve)
+//        animation.duration = CFTimeInterval(duration)
+//        animation.isAdditive = true
+//        animation.repeatCount = Float(repeatCount)
+//        animation.beginTime = CACurrentMediaTime() + CFTimeInterval(delay)
+//        FretboardImage.layer.add(animation, forKey: "pop")
         
+//        FretboardImage.pop()
 
+        setupUpDelayedNoteCollectionView(specifiedNoteCollection,"postSuccess");
     }
 
     // Testing
@@ -1819,6 +1837,93 @@ class MainViewController: UIViewController {
         earTrainResponseArr.removeAll()
         currentState = State.Idle
     }
+    
+    func setupUpDelayedNoteCollectionView(_ inoteCollection: [String], _ itype: String) {
+        let waitTime = 0.03
+        for (i,_) in inoteCollection.enumerated() {
+            wt.waitThen(itime: Double(i)*waitTime, itarget: self, imethod: #selector(displaySingleFretMarkerWrapper) as Selector, irepeats: false, idict: ["arg1": inoteCollection[i] as AnyObject,"arg2": true as AnyObject, "arg3": itype as AnyObject])
+        }
+    }
+    
+    @objc func displaySingleFretMarkerWrapper(timer: Timer) {
+        let resultObj = timer.userInfo as! [String: AnyObject]
+        let input = resultObj["arg1"] as! String
+        let cascadeFretMarkers = resultObj["arg2"] as! Bool
+        let animType = resultObj["arg3"] as! String
+//        let levelPassed = resultObj["arg2"] as! Int
+        displaySingleFretMarker(iinputStr: input as! String, cascadeFretMarkers: cascadeFretMarkers as! Bool, fretAnim: animType as! String)
+        
+    }
+    
+    func getTimingFunction(curve: String) -> CAMediaTimingFunction {
+        if let curve = AnimationCurve(rawValue: curve) {
+            switch curve {
+            case .EaseIn: return CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeIn)
+            case .EaseOut: return CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeOut)
+            case .EaseInOut: return CAMediaTimingFunction(name: CAMediaTimingFunctionName.easeInEaseOut)
+            case .Linear: return CAMediaTimingFunction(name: CAMediaTimingFunctionName.linear)
+//            case .Spring: return CAMediaTimingFunction(controlPoints: 0.5, 1.1+Float(force/3), 1, 1)
+            case .Spring: return CAMediaTimingFunction(controlPoints: 0.5, 1.1+Float(3/3), 1, 1)
+            case .EaseInSine: return CAMediaTimingFunction(controlPoints: 0.47, 0, 0.745, 0.715)
+            case .EaseOutSine: return CAMediaTimingFunction(controlPoints: 0.39, 0.575, 0.565, 1)
+            case .EaseInOutSine: return CAMediaTimingFunction(controlPoints: 0.445, 0.05, 0.55, 0.95)
+            case .EaseInQuad: return CAMediaTimingFunction(controlPoints: 0.55, 0.085, 0.68, 0.53)
+            case .EaseOutQuad: return CAMediaTimingFunction(controlPoints: 0.25, 0.46, 0.45, 0.94)
+            case .EaseInOutQuad: return CAMediaTimingFunction(controlPoints: 0.455, 0.03, 0.515, 0.955)
+            case .EaseInCubic: return CAMediaTimingFunction(controlPoints: 0.55, 0.055, 0.675, 0.19)
+            case .EaseOutCubic: return CAMediaTimingFunction(controlPoints: 0.215, 0.61, 0.355, 1)
+            case .EaseInOutCubic: return CAMediaTimingFunction(controlPoints: 0.645, 0.045, 0.355, 1)
+            case .EaseInQuart: return CAMediaTimingFunction(controlPoints: 0.895, 0.03, 0.685, 0.22)
+            case .EaseOutQuart: return CAMediaTimingFunction(controlPoints: 0.165, 0.84, 0.44, 1)
+            case .EaseInOutQuart: return CAMediaTimingFunction(controlPoints: 0.77, 0, 0.175, 1)
+            case .EaseInQuint: return CAMediaTimingFunction(controlPoints: 0.755, 0.05, 0.855, 0.06)
+            case .EaseOutQuint: return CAMediaTimingFunction(controlPoints: 0.23, 1, 0.32, 1)
+            case .EaseInOutQuint: return CAMediaTimingFunction(controlPoints: 0.86, 0, 0.07, 1)
+            case .EaseInExpo: return CAMediaTimingFunction(controlPoints: 0.95, 0.05, 0.795, 0.035)
+            case .EaseOutExpo: return CAMediaTimingFunction(controlPoints: 0.19, 1, 0.22, 1)
+            case .EaseInOutExpo: return CAMediaTimingFunction(controlPoints: 1, 0, 0, 1)
+            case .EaseInCirc: return CAMediaTimingFunction(controlPoints: 0.6, 0.04, 0.98, 0.335)
+            case .EaseOutCirc: return CAMediaTimingFunction(controlPoints: 0.075, 0.82, 0.165, 1)
+            case .EaseInOutCirc: return CAMediaTimingFunction(controlPoints: 0.785, 0.135, 0.15, 0.86)
+            case .EaseInBack: return CAMediaTimingFunction(controlPoints: 0.6, -0.28, 0.735, 0.045)
+            case .EaseOutBack: return CAMediaTimingFunction(controlPoints: 0.175, 0.885, 0.32, 1.275)
+            case .EaseInOutBack: return CAMediaTimingFunction(controlPoints: 0.68, -0.55, 0.265, 1.55)
+            }
+        }
+        return CAMediaTimingFunction(name: CAMediaTimingFunctionName.default)
+    }
+    
+    public enum AnimationCurve: String {
+        case EaseIn = "easeIn"
+        case EaseOut = "easeOut"
+        case EaseInOut = "easeInOut"
+        case Linear = "linear"
+        case Spring = "spring"
+        case EaseInSine = "easeInSine"
+        case EaseOutSine = "easeOutSine"
+        case EaseInOutSine = "easeInOutSine"
+        case EaseInQuad = "easeInQuad"
+        case EaseOutQuad = "easeOutQuad"
+        case EaseInOutQuad = "easeInOutQuad"
+        case EaseInCubic = "easeInCubic"
+        case EaseOutCubic = "easeOutCubic"
+        case EaseInOutCubic = "easeInOutCubic"
+        case EaseInQuart = "easeInQuart"
+        case EaseOutQuart = "easeOutQuart"
+        case EaseInOutQuart = "easeInOutQuart"
+        case EaseInQuint = "easeInQuint"
+        case EaseOutQuint = "easeOutQuint"
+        case EaseInOutQuint = "easeInOutQuint"
+        case EaseInExpo = "easeInExpo"
+        case EaseOutExpo = "easeOutExpo"
+        case EaseInOutExpo = "easeInOutExpo"
+        case EaseInCirc = "easeInCirc"
+        case EaseOutCirc = "easeOutCirc"
+        case EaseInOutCirc = "easeInOutCirc"
+        case EaseInBack = "easeInBack"
+        case EaseOutBack = "easeOutBack"
+        case EaseInOutBack = "easeInOutBack"
+    }
 }
 
 @IBDesignable extension UIButton {
@@ -1849,6 +1954,48 @@ class MainViewController: UIViewController {
             guard let color = layer.borderColor else { return nil }
             return UIColor(cgColor: color)
         }
+    }
+}
+
+extension UIImageView {
+    func pulsate() {
+        let pulse = CASpringAnimation(keyPath: "transform.scale")
+        pulse.duration = 2.0
+        pulse.fromValue = 0.95
+        pulse.toValue = 1.3
+        pulse.autoreverses = true
+        pulse.repeatCount = 0
+        pulse.initialVelocity = 10.5
+        pulse.damping = 1.0
+    }
+}
+
+extension SpringImageView {
+    public func setAndPlayAnim(_ itype: String = "userFretPress") {
+        switch itype {
+        case "userFretPress":
+            self.animation = "zoomIn"
+            self.curve = "easeOut"
+            self.force = 1.0
+            self.duration = 0.4
+            self.delay = 0.0
+        case "displayFret":
+            self.animation = "fadeIn"
+            self.curve = "easeOut"
+            self.force = 1.0
+            self.duration = 0.1
+            self.delay = 0.0
+        case "postSuccess":
+            self.animation = "zoomIn"
+            self.curve = "easeOut"
+            self.force = 0.5
+            self.duration = 0.4
+            self.delay = 0.0
+        default:
+            return
+        }
+        UIView.setAnimationsEnabled(true)
+        self.animate()
     }
 }
 
