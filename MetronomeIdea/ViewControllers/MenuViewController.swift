@@ -90,24 +90,23 @@ class MenuViewController: UIViewController {
 //            Stack.spacing = CGFloat(sP)
 //        }
         
-        let screenRect = UIScreen.main.bounds
-        let screenWidth = screenRect.size.width
-        let screenHeight = screenRect.size.height
+//        let screenRect = UIScreen.main.bounds
+//        let screenWidth = screenRect.size.width
+//        let screenHeight = screenRect.size.height
+//
+//        let buffer:CGFloat = returnButtonBuffer(screenHeight - (navigationController?.navigationBar.frame.maxY)!)
+//        let availableScreenHeight = screenHeight - (navigationController?.navigationBar.frame.maxY)! - (buffer*2)
+//
+//        let spacing:CGFloat = availableScreenHeight/5
+//
+//        for (i,button) in buttonArr.enumerated() {
+//            let y = ((navigationController?.navigationBar.frame.maxY)! + buffer + button.frame.height/2 - 12) + (spacing) * CGFloat(i)
+//            button.frame = CGRect(x: screenWidth/2-button.frame.width/2, y: y, width: button.frame.width, height: button.frame.height)
+//        }
+//
+//        print(Button0.frame)
         
-        let buffer:CGFloat = returnButtonBuffer(screenHeight - (navigationController?.navigationBar.frame.maxY)!)
-        let availableScreenHeight = screenHeight - (navigationController?.navigationBar.frame.maxY)! - (buffer*2)
-        
-        let spacing:CGFloat = availableScreenHeight/5
-        print("spacing",spacing)
-        print ("screenHeight",screenHeight)
-        print("availableScreenHeight",availableScreenHeight)
-        
-        for (i,button) in buttonArr.enumerated() {
-            let y = ((navigationController?.navigationBar.frame.maxY)! + buffer + button.frame.height/2 - 12) + (spacing) * CGFloat(i)
-            button.frame = CGRect(x: screenWidth/2-button.frame.width/2, y: y, width: button.frame.width, height: button.frame.height)
-        }
-        
-        print(Button0.frame)
+        styler.spaceButtons(buttonArr,navigationController!)
     }
 
     override func viewDidAppear(_: Bool) {
@@ -247,15 +246,15 @@ class MenuViewController: UIViewController {
         return "L\(ilevel + 1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
     }
     
-    func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
-        print("iscreenSpace",iscreenSpace)
-        if iscreenSpace > 650 {
-            return 110.0
-        } else if iscreenSpace > 600 {
-            return 60.0
-        }
-        return 15.0
-    }
+//    func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
+//        print("iscreenSpace",iscreenSpace)
+//        if iscreenSpace > 650 {
+//            return 110.0
+//        } else if iscreenSpace > 600 {
+//            return 60.0
+//        }
+//        return 15.0
+//    }
 
     func setupHiddenButtons() {
         setupDevButton()

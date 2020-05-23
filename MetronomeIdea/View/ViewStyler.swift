@@ -79,6 +79,34 @@ class ViewStyler: UIViewController {
             ibutton.addSubview(progressBar)
         }
     }
+    
+    func spaceButtons(_ ibuttonArr: [UIButton],_ inavigationConroller: UINavigationController) {
+         let screenRect = UIScreen.main.bounds
+         let screenWidth = screenRect.size.width
+         let screenHeight = screenRect.size.height
+        
+         let navigationHeight = inavigationConroller.navigationBar.frame.maxY
+        
+         let buffer:CGFloat = returnButtonBuffer(screenHeight - navigationHeight)
+         let availableScreenHeight = screenHeight - (inavigationConroller.navigationBar.frame.maxY) - (buffer*2)
+         
+         let spacing:CGFloat = availableScreenHeight/5
+        
+         for (i,button) in ibuttonArr.enumerated() {
+             let y = (inavigationConroller.navigationBar.frame.maxY + buffer + button.frame.height/2 - 12) + (spacing) * CGFloat(i)
+             button.frame = CGRect(x: screenWidth/2-button.frame.width/2, y: y, width: button.frame.width, height: button.frame.height)
+         }
+    }
+    
+    func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
+        print("iscreenSpace",iscreenSpace)
+        if iscreenSpace > 650 {
+            return 110.0
+        } else if iscreenSpace > 600 {
+            return 60.0
+        }
+        return 15.0
+    }
 
     func setupMenuButtonAttributes(ibutton: UIButton, isubText: UILabel, iprogressBar: UIProgressView? = nil, ibuttonActive: Bool, ibuttonStr: String, isubTextStr: String, iprogressAmount: Float) {
         var buttonColor: UIColor
