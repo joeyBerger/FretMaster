@@ -17,7 +17,7 @@ class SettingsViewController: UIViewController {
         super.init(coder: aDecoder)
     }
 
-    @IBOutlet var Stack: UIStackView!
+//    @IBOutlet var Stack: UIStackView!
     @IBOutlet var Button0: UIButton!
     @IBOutlet var Button1: UIButton!
     @IBOutlet var Button2: UIButton!
@@ -27,6 +27,10 @@ class SettingsViewController: UIViewController {
     var styler: ViewStyler?
     var buttonId = 0
 
+    var buttonArr: [UIButton] = []
+    
+    var backgroundImageID = 0
+    
     struct buttonText {
         var header: String
         var subtext: String
@@ -65,13 +69,13 @@ class SettingsViewController: UIViewController {
             iavailableSettings: ["Digital", "Woodblock1", "Woodblock2"],
             isettingsType: "clickTone"
         ),
-        buttonText(
-            iheader: "Background Picture".uppercased(),
-            isubtext: "Manage Your Backgrounds",
-            iid: "backgroundPick",
-            iavailableSettings: ["Menu", "Scales", "Arpeggios"],
-            isettingsType: "backgroundPicker"
-        ),
+//        buttonText(
+//            iheader: "Background Picture".uppercased(),
+//            isubtext: "Manage Your Backgrounds",
+//            iid: "backgroundPick",
+//            iavailableSettings: ["Menu", "Scales", "Arpeggios"],
+//            isettingsType: "backgroundPicker"
+//        ),
         buttonText(
             iheader: "Volume".uppercased(),
             isubtext: "Change Volume",
@@ -85,16 +89,21 @@ class SettingsViewController: UIViewController {
         super.viewDidLoad()
 
         styler = ViewStyler(ivc: self)
-        styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
-        let buttonArr = [Button0, Button1, Button2, Button3, Button4]
+        
+        backgroundImageID = Int.random(in: 0 ..< 3)
+        styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
+        
+//        buttonArr = [Button0, Button1, Button2, Button3, Button4]
+        buttonArr = [Button0, Button1, Button2, Button4]
+        styler!.spaceButtons(buttonArr,navigationController!)
         for (i, button) in buttonArr.enumerated() {
             let subText = UILabel()
             styler!.setupMenuButton(
-                ibutton: button!,
+                ibutton: button,
                 isubText: subText
             )
             styler!.setupMenuButtonAttributes(
-                ibutton: button!,
+                ibutton: button,
                 isubText: subText,
                 iprogressBar: nil,
                 ibuttonActive: true,
@@ -104,17 +113,7 @@ class SettingsViewController: UIViewController {
             )
         }
         
-        let button4frame = view.convert(Button4.frame, from: Stack)
-        // look to see if menu buttons are off the screen
-        if button4frame.maxY + button4frame.height > view.frame.height {
-            Stack.frame = CGRect(x: Stack.frame.minX, y: Stack.frame.minY + 50, width: Stack.frame.width, height: Stack.frame.height)
-            let bottomBuffer: CGFloat = -50.0
-            let numbButtons: CGFloat = 5.0
-            let button0frame = view.convert(Button0.frame, from: Stack)
-            let sP = (view.frame.height - (bottomBuffer + button0frame.height) - button0frame.minY - (numbButtons - 1) * button0frame.height) / numbButtons
-            print("adapting stack to fit all buttons with new spacing of \(sP)")
-            Stack.spacing = CGFloat(sP)
-        }
+        Button3.isHidden = true
     }
 
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
@@ -128,6 +127,10 @@ class SettingsViewController: UIViewController {
         if buttonId < 4 {
             let sItem = segue.destination as! SettingsItemViewController
             sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
+            sItem.backgroundImageID = backgroundImageID
+        } else {
+            let sItem = segue.destination as! VolumeSettingsViewController
+            sItem.backgroundImageID = backgroundImageID
         }
     }
 }

@@ -19,10 +19,11 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         "guitarTone_Jazz": "Selection_Jazz",
     ]
     var changeButton = UIButton()
-
+    var backgroundImageID = 0
+    
     override func viewDidLoad() {
         super.viewDidLoad()
-//        self.tableView.backgroundColor = defaultColor.TableViewBackground
+        self.tableView.backgroundColor = UIColor.clear
 
         if let defaultKey = UserDefaults.standard.object(forKey: settingsType!) {
             initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey as! String)!
@@ -32,6 +33,11 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
             initialCheckmarkIdx = 0
             selectedCell = 0
         }
+        
+        var styler: ViewStyler?
+        styler = ViewStyler(ivc: self)
+//        styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
+        styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
     }
 
     func setupBackgroundPickButton() {
@@ -85,7 +91,10 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
 //        cell.setupCell(isettingLabelText: labelStr)
         cell.textLabel?.text = labelStr
         tableView.tableFooterView = UIView(frame: .zero)
-
+        
+        cell.tintColor = UIColor.black
+        
+//        cell.accessoryType.
         if indexPath.row == initialCheckmarkIdx {
             cell.accessoryType = .checkmark
         }
@@ -93,8 +102,8 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         return cell
     }
 
-    func tableView(_: UITableView, willDisplay _: UITableViewCell, forRowAt _: IndexPath) {
-//        cell.backgroundColor = defaultColor.TableViewBackground
+    func tableView(_ cell: UITableView, willDisplay _: UITableViewCell, forRowAt _: IndexPath) {
+//        cell.backgroundColor = UIColor.blue
     }
 
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
@@ -112,5 +121,6 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         }
 
         selectedCell = indexPath.row
+        
     }
 }

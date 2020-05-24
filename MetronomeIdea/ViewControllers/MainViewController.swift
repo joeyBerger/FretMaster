@@ -610,13 +610,13 @@ class MainViewController: UIViewController {
     }
 
     func setupBackgroundImage() {
-        bgImage = UIImageView()
-//        bgImage.image = backgroundImage.returnImage("arpeggios")
-        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
-        bgImage.image = backgroundImage.returnImage(key)
-        bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
-        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
-        view.insertSubview(bgImage, at: 0)
+//        bgImage = UIImageView()
+//        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
+//        bgImage.image = backgroundImage.returnImage(key)
+//        bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
+//        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
+//        view.insertSubview(bgImage, at: 0)
+        styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(Int.random(in: 0 ..< 5)).jpg")
     }
 
     func trimCurrentTask(iinput: String) -> String {
@@ -1572,7 +1572,7 @@ class MainViewController: UIViewController {
             "C4": 0.8,
         ]
 
-        let image: UIImage = UIImage(named: "Fretboard4")!
+        let image: UIImage = UIImage(named: "Fretboard5")!
         FretboardImage = UIImageView()
         FretboardImage.image = image
         setLayer(iobject: FretboardImage, ilayer: "Default")

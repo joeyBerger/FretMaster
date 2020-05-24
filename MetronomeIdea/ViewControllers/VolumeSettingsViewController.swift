@@ -6,6 +6,7 @@ class VolumeSettingsViewController: UIViewController {
     @IBOutlet var clickVolSlider: UISlider!
 
     let volumeTypes = ["masterVol", "guitarVol", "clickVol"]
+    var backgroundImageID = 0
 
     @IBAction func onSliderChange(_ sender: UISlider) {
         volume.volumeTypes[volumeTypes[sender.tag]] = sender.value
@@ -16,8 +17,17 @@ class VolumeSettingsViewController: UIViewController {
 
         let sliders = [masterVolSlider, guitarVolSlider, clickVolSlider]
         for (i, slider) in sliders.enumerated() {
-            slider?.setValue(volume.volumeTypes[volumeTypes[i]]!, animated: true)
+            slider?.setValue(volume.volumeTypes[volumeTypes[i]]!, animated: true)            
+            //main color
+            slider?.thumbTintColor = defaultColor.ProgressTrackColor
+            slider?.minimumTrackTintColor = defaultColor.ProgressTrackColor
+            //other color
+            slider?.maximumTrackTintColor = defaultColor.ProgressBarColor
         }
+        
+        var styler: ViewStyler?
+        styler = ViewStyler(ivc: self)
+        styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
     }
 
     override func viewWillDisappear(_ animated: Bool) {

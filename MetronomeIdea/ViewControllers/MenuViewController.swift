@@ -43,14 +43,14 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-        globalDataController.load()
-
-        let fetchRequest: NSFetchRequest<ImageData> = ImageData.fetchRequest()
-        if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
-            for image in results {
-                backgroundImage.images[image.id!] = UIImage(data: image.backgroundImage!)
-            }
-        }
+//        globalDataController.load()
+//
+//        let fetchRequest: NSFetchRequest<ImageData> = ImageData.fetchRequest()
+//        if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
+//            for image in results {
+//                backgroundImage.images[image.id!] = UIImage(data: image.backgroundImage!)
+//            }
+//        }
 
         for (volumeType, _) in volume.volumeTypes {
             let vol = UserDefaults.standard.object(forKey: volumeType)
@@ -62,10 +62,10 @@ class MenuViewController: UIViewController {
         buttonArr = [Button0, Button1, Button2, Button3, Button4]
         setupHiddenButtons()
 
-        bgImage.image = backgroundImage.returnImage("menu")
-        bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
-        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
-        view.insertSubview(bgImage, at: 0)
+//        bgImage.image = backgroundImage.returnImage("menu")
+//        bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
+//        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
+//        view.insertSubview(bgImage, at: 0)
 
         let styler = ViewStyler(ivc: self)
         for (i, Button) in buttonArr.enumerated() {
@@ -73,6 +73,8 @@ class MenuViewController: UIViewController {
             menuButtonProgress.append(UIProgressView())
             styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
         }
+        
+        styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(Int.random(in: 0 ..< 7)).jpg")
 
         let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
