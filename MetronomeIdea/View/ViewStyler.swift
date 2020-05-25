@@ -61,13 +61,18 @@ class ViewStyler: UIViewController {
 
     func setupMenuButton(ibutton: UIButton, isubText: UILabel, iprogressBar: UIProgressView? = nil) {
         ibutton.layer.shadowColor = UIColor.black.cgColor
-        ibutton.layer.shadowOffset = CGSize(width: 2, height: 2)
+        ibutton.layer.shadowOffset = CGSize(width: 2, height: 5)
         ibutton.layer.shadowRadius = 2
         ibutton.layer.shadowOpacity = 0.6
+        ibutton.layer.cornerRadius = 8
+        
+        ibutton.contentHorizontalAlignment = .center
+        ibutton.contentVerticalAlignment = .top
+        ibutton.titleEdgeInsets = UIEdgeInsets(top: 8, left: 0, bottom: 0.0, right: 0.0)
 
         let width = ibutton.frame.width * 0.94
         let x = (ibutton.frame.width - width) / 2
-        isubText.frame = CGRect(x: x, y: 0, width: width, height: ibutton.frame.height + 30)
+        isubText.frame = CGRect(x: x, y: 0+8, width: width, height: ibutton.frame.height + 30)
         isubText.textAlignment = NSTextAlignment.center
         isubText.adjustsFontSizeToFitWidth = true
 
@@ -75,9 +80,40 @@ class ViewStyler: UIViewController {
         ibutton.addSubview(isubText)
 
         if let progressBar = iprogressBar {
-            progressBar.frame = CGRect(x: (width - (width * 0.85)) / 2.0, y: 75, width: width * 0.85, height: 62)
+            progressBar.frame = CGRect(x: (width - (width * 0.85)) / 2.0, y: 75+15, width: width * 0.85, height: 62)
             ibutton.addSubview(progressBar)
         }
+    }
+    
+    func setupVolumeControls(_ isliders: [UISlider?],_ itext: [UILabel?], _ volumeTypes: [String],_ inavigationController: UINavigationController) {
+            let topBuffer:CGFloat = 70
+            let startY = (inavigationController.navigationBar.frame.maxY) + topBuffer
+            let screenRect = UIScreen.main.bounds
+            let screenWidth = screenRect.size.width
+            let containerBuffer:CGFloat = 130
+            let sliderHeightBuffer:CGFloat = 40
+        
+            for (i, slider) in isliders.enumerated() {
+                slider?.setValue(volume.volumeTypes[volumeTypes[i]]!, animated: true)
+                //main color
+                slider?.thumbTintColor = defaultColor.ProgressTrackColor
+                slider?.minimumTrackTintColor = defaultColor.ProgressTrackColor
+                //other color
+                slider?.maximumTrackTintColor = defaultColor.ProgressBarColor
+
+                itext[i]?.frame = CGRect(x: (screenWidth-screenWidth*0.8)/2, y: startY + CGFloat(i) * containerBuffer, width: screenWidth*0.8, height: 100)
+                slider?.frame = CGRect(x: (screenWidth-screenWidth*0.9)/2, y: (itext[i]?.frame.minY)!+sliderHeightBuffer, width: screenWidth*0.9, height: (100))
+                
+                itext[i]?.font = UIFont(name: (itext[i]?.font.fontName)!, size: 23)
+                itext[i]?.text = itext[i]?.text!.uppercased()
+                itext[i]?.textColor = defaultColor.MenuButtonTextColor
+                
+                itext[i]?.layer.shadowColor = UIColor.black.cgColor
+                itext[i]?.layer.shadowRadius = 3.0
+                itext[i]?.layer.shadowOpacity = 1.0
+                itext[i]?.layer.shadowOffset = CGSize(width: 4, height: 10)
+                itext[i]?.layer.masksToBounds = false
+            }
     }
     
     func spaceButtons(_ ibuttonArr: [UIButton],_ inavigationConroller: UINavigationController) {
@@ -103,7 +139,7 @@ class ViewStyler: UIViewController {
         if iscreenSpace > 650 {
             return 110.0
         } else if iscreenSpace > 600 {
-            return 60.0
+            return 30.0
         }
         return 15.0
     }

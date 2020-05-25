@@ -25,7 +25,6 @@ class MenuViewController: UIViewController {
     var buttonArr: [UIButton] = []
 
 
-
     var menuButtonSubtext: [UILabel] = []
     var menuButtonProgress: [UIProgressView] = []
 
@@ -74,7 +73,9 @@ class MenuViewController: UIViewController {
             styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
         }
         
-        styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(Int.random(in: 0 ..< 7)).jpg")
+        let randNumb = Int.random(in: 0 ..< 5)
+        print("randNumb randNumb randNumb",randNumb)
+        styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(randNumb).jpg")
 
         let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor]
         navigationController?.navigationBar.titleTextAttributes = textAttributes

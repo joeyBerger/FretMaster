@@ -63,18 +63,17 @@
 		9EDC0F84247B277600257CFE /* SettingsImage0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0F83247B277600257CFE /* SettingsImage0.jpg */; };
 		9EDC0F87247B27A200257CFE /* SettingsImage1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0F85247B27A100257CFE /* SettingsImage1.jpg */; };
 		9EDC0F88247B27A200257CFE /* SettingsImage2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0F86247B27A100257CFE /* SettingsImage2.jpg */; };
-		9EDC0FA5247B291800257CFE /* MenuImage4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0F9E247B291800257CFE /* MenuImage4.jpg */; };
-		9EDC0FA6247B291800257CFE /* MenuImage6.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0F9F247B291800257CFE /* MenuImage6.jpg */; };
-		9EDC0FA7247B291800257CFE /* MenuImage2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FA0247B291800257CFE /* MenuImage2.jpg */; };
-		9EDC0FA8247B291800257CFE /* MenuImage0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FA1247B291800257CFE /* MenuImage0.jpg */; };
-		9EDC0FA9247B291800257CFE /* MenuImage3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FA2247B291800257CFE /* MenuImage3.jpg */; };
-		9EDC0FAA247B291800257CFE /* MenuImage5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FA3247B291800257CFE /* MenuImage5.jpg */; };
-		9EDC0FAB247B291800257CFE /* MenuImage1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FA4247B291800257CFE /* MenuImage1.jpg */; };
 		9EDC0FB2247B2A1500257CFE /* MainImage1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FAD247B2A1400257CFE /* MainImage1.jpg */; };
 		9EDC0FB3247B2A1500257CFE /* MainImage0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FAE247B2A1400257CFE /* MainImage0.jpg */; };
 		9EDC0FB4247B2A1500257CFE /* MainImage2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FAF247B2A1400257CFE /* MainImage2.jpg */; };
 		9EDC0FB5247B2A1500257CFE /* MainImage3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FB0247B2A1400257CFE /* MainImage3.jpg */; };
 		9EDC0FB6247B2A1500257CFE /* MainImage4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FB1247B2A1500257CFE /* MainImage4.jpg */; };
+		9EDC0FBD247C385200257CFE /* MenuImage1.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FB7247C385000257CFE /* MenuImage1.jpg */; };
+		9EDC0FBE247C385200257CFE /* MenuImage0.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FB8247C385100257CFE /* MenuImage0.jpg */; };
+		9EDC0FBF247C385200257CFE /* MenuImage3.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FB9247C385100257CFE /* MenuImage3.jpg */; };
+		9EDC0FC0247C385200257CFE /* MenuImage5.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FBA247C385100257CFE /* MenuImage5.jpg */; };
+		9EDC0FC1247C385200257CFE /* MenuImage4.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FBB247C385200257CFE /* MenuImage4.jpg */; };
+		9EDC0FC2247C385200257CFE /* MenuImage2.jpg in Resources */ = {isa = PBXBuildFile; fileRef = 9EDC0FBC247C385200257CFE /* MenuImage2.jpg */; };
 		9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE71F35238B8B5B00D87D24 /* UserData.swift */; };
 		9EE8612B245157CA00CCEA37 /* Click_Woodblock1.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EE861162451578A00CCEA37 /* Click_Woodblock1.wav */; };
 		9EE8612C245157CA00CCEA37 /* Click_Digital.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EE8611A2451579600CCEA37 /* Click_Digital.wav */; };
@@ -258,18 +257,17 @@
 		9EDC0F8A247B27B400257CFE /* SettingsImage0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = SettingsImage0.jpg; sourceTree = "<group>"; };
 		9EDC0F8B247B27B500257CFE /* SettingsImage1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = SettingsImage1.jpg; sourceTree = "<group>"; };
 		9EDC0F8C247B27B500257CFE /* SettingsImage2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = SettingsImage2.jpg; sourceTree = "<group>"; };
-		9EDC0F9E247B291800257CFE /* MenuImage4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MenuImage4.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MenuImage/MenuImage4.jpg; sourceTree = "<group>"; };
-		9EDC0F9F247B291800257CFE /* MenuImage6.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MenuImage6.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MenuImage/MenuImage6.jpg; sourceTree = "<group>"; };
-		9EDC0FA0247B291800257CFE /* MenuImage2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MenuImage2.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MenuImage/MenuImage2.jpg; sourceTree = "<group>"; };
-		9EDC0FA1247B291800257CFE /* MenuImage0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MenuImage0.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MenuImage/MenuImage0.jpg; sourceTree = "<group>"; };
-		9EDC0FA2247B291800257CFE /* MenuImage3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MenuImage3.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MenuImage/MenuImage3.jpg; sourceTree = "<group>"; };
-		9EDC0FA3247B291800257CFE /* MenuImage5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MenuImage5.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MenuImage/MenuImage5.jpg; sourceTree = "<group>"; };
-		9EDC0FA4247B291800257CFE /* MenuImage1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MenuImage1.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MenuImage/MenuImage1.jpg; sourceTree = "<group>"; };
 		9EDC0FAD247B2A1400257CFE /* MainImage1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MainImage1.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MainInterfaceImage/MainImage1.jpg; sourceTree = "<group>"; };
 		9EDC0FAE247B2A1400257CFE /* MainImage0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MainImage0.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MainInterfaceImage/MainImage0.jpg; sourceTree = "<group>"; };
 		9EDC0FAF247B2A1400257CFE /* MainImage2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MainImage2.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MainInterfaceImage/MainImage2.jpg; sourceTree = "<group>"; };
 		9EDC0FB0247B2A1400257CFE /* MainImage3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MainImage3.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MainInterfaceImage/MainImage3.jpg; sourceTree = "<group>"; };
 		9EDC0FB1247B2A1500257CFE /* MainImage4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; name = MainImage4.jpg; path = ../../../../../../Downloads/UnsplashImages/Renaming/MainInterfaceImage/MainImage4.jpg; sourceTree = "<group>"; };
+		9EDC0FB7247C385000257CFE /* MenuImage1.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MenuImage1.jpg; sourceTree = "<group>"; };
+		9EDC0FB8247C385100257CFE /* MenuImage0.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MenuImage0.jpg; sourceTree = "<group>"; };
+		9EDC0FB9247C385100257CFE /* MenuImage3.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MenuImage3.jpg; sourceTree = "<group>"; };
+		9EDC0FBA247C385100257CFE /* MenuImage5.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MenuImage5.jpg; sourceTree = "<group>"; };
+		9EDC0FBB247C385200257CFE /* MenuImage4.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MenuImage4.jpg; sourceTree = "<group>"; };
+		9EDC0FBC247C385200257CFE /* MenuImage2.jpg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = MenuImage2.jpg; sourceTree = "<group>"; };
 		9EE71F35238B8B5B00D87D24 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		9EE861012451573F00CCEA37 /* E2_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = E2_Acoustic.wav; path = Acoustic/E2_Acoustic.wav; sourceTree = SOURCE_ROOT; };
 		9EE861022451574200CCEA37 /* D2_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; name = D2_Acoustic.wav; path = Acoustic/D2_Acoustic.wav; sourceTree = SOURCE_ROOT; };
@@ -637,13 +635,12 @@
 		9EDC0F8D247B283700257CFE /* MenuImage */ = {
 			isa = PBXGroup;
 			children = (
-				9EDC0FA1247B291800257CFE /* MenuImage0.jpg */,
-				9EDC0FA4247B291800257CFE /* MenuImage1.jpg */,
-				9EDC0FA0247B291800257CFE /* MenuImage2.jpg */,
-				9EDC0FA2247B291800257CFE /* MenuImage3.jpg */,
-				9EDC0F9E247B291800257CFE /* MenuImage4.jpg */,
-				9EDC0FA3247B291800257CFE /* MenuImage5.jpg */,
-				9EDC0F9F247B291800257CFE /* MenuImage6.jpg */,
+				9EDC0FB8247C385100257CFE /* MenuImage0.jpg */,
+				9EDC0FB7247C385000257CFE /* MenuImage1.jpg */,
+				9EDC0FBC247C385200257CFE /* MenuImage2.jpg */,
+				9EDC0FB9247C385100257CFE /* MenuImage3.jpg */,
+				9EDC0FBB247C385200257CFE /* MenuImage4.jpg */,
+				9EDC0FBA247C385100257CFE /* MenuImage5.jpg */,
 			);
 			path = MenuImage;
 			sourceTree = "<group>";
@@ -797,6 +794,7 @@
 				9EE8617E2451586F00CCEA37 /* F#3_Rock.wav in Resources */,
 				9EE861A32451587800CCEA37 /* A1_Jazz.wav in Resources */,
 				9EE861882451586F00CCEA37 /* C#3_Rock.wav in Resources */,
+				9EDC0FC1247C385200257CFE /* MenuImage4.jpg in Resources */,
 				9EE861542451583B00CCEA37 /* F#3_Acoustic.wav in Resources */,
 				9EE8612C245157CA00CCEA37 /* Click_Digital.wav in Resources */,
 				9EE861642451583B00CCEA37 /* D#3_Acoustic.wav in Resources */,
@@ -819,6 +817,7 @@
 				9EE861602451583B00CCEA37 /* G#1_Acoustic.wav in Resources */,
 				9EE861992451586F00CCEA37 /* G#1_Rock.wav in Resources */,
 				B8A6186420DB9E7500AF33C5 /* Main.storyboard in Resources */,
+				9EDC0FBE247C385200257CFE /* MenuImage0.jpg in Resources */,
 				9EE861B32451587800CCEA37 /* E3_Jazz.wav in Resources */,
 				9EE861A42451587800CCEA37 /* E2_Jazz.wav in Resources */,
 				9EE861632451583B00CCEA37 /* G#3_Acoustic.wav in Resources */,
@@ -830,21 +829,16 @@
 				9EF8A8A523D55E820079BE8D /* RockCrowd.png in Resources */,
 				9EE861982451586F00CCEA37 /* C3_Rock.wav in Resources */,
 				9EE861832451586F00CCEA37 /* E2_Rock.wav in Resources */,
-				9EDC0FA9247B291800257CFE /* MenuImage3.jpg in Resources */,
 				9EE8619E2451587800CCEA37 /* F2_Jazz.wav in Resources */,
 				9EE861962451586F00CCEA37 /* A#1_Rock.wav in Resources */,
 				9EE8615C2451583B00CCEA37 /* A#3_Acoustic.wav in Resources */,
 				9EE861A12451587800CCEA37 /* A#1_Jazz.wav in Resources */,
 				9EE861892451586F00CCEA37 /* C4_Rock.wav in Resources */,
-				9EDC0FA5247B291800257CFE /* MenuImage4.jpg in Resources */,
 				9EDC0F88247B27A200257CFE /* SettingsImage2.jpg in Resources */,
 				9EE8612E245157CA00CCEA37 /* Selection_Acoustic.wav in Resources */,
 				9EE8618D2451586F00CCEA37 /* B3_Rock.wav in Resources */,
-				9EDC0FA8247B291800257CFE /* MenuImage0.jpg in Resources */,
 				9EE861812451586F00CCEA37 /* A2_Rock.wav in Resources */,
 				9EE861AD2451587800CCEA37 /* G#2_Jazz.wav in Resources */,
-				9EDC0FA6247B291800257CFE /* MenuImage6.jpg in Resources */,
-				9EDC0FAB247B291800257CFE /* MenuImage1.jpg in Resources */,
 				9EDC0F412479D2D900257CFE /* LoadingView.xib in Resources */,
 				9EE861B02451587800CCEA37 /* D#2_Jazz.wav in Resources */,
 				9EDC0FB3247B2A1500257CFE /* MainImage0.jpg in Resources */,
@@ -862,6 +856,7 @@
 				9EE861B22451587800CCEA37 /* F#3_Jazz.wav in Resources */,
 				9EE8612F245157CA00CCEA37 /* Selection_Rock.wav in Resources */,
 				9EE8619A2451586F00CCEA37 /* D#3_Rock.wav in Resources */,
+				9EDC0FC2247C385200257CFE /* MenuImage2.jpg in Resources */,
 				9EE861B82451587800CCEA37 /* G#3_Jazz.wav in Resources */,
 				9EE8618B2451586F00CCEA37 /* B1_Rock.wav in Resources */,
 				9EE861612451583B00CCEA37 /* B3_Acoustic.wav in Resources */,
@@ -886,6 +881,7 @@
 				B8A6185620DB9E2B00AF33C5 /* Assets.xcassets in Resources */,
 				9EE861682451583B00CCEA37 /* C2_Acoustic.wav in Resources */,
 				9EE8615B2451583B00CCEA37 /* A#1_Acoustic.wav in Resources */,
+				9EDC0FBF247C385200257CFE /* MenuImage3.jpg in Resources */,
 				9EE861902451586F00CCEA37 /* F2_Rock.wav in Resources */,
 				9EDC0F61247A211500257CFE /* Fretboard5.png in Resources */,
 				9EE861B92451587800CCEA37 /* G3_Jazz.wav in Resources */,
@@ -893,8 +889,8 @@
 				9EF8A8A623D55E820079BE8D /* RockCrowd2.jpg in Resources */,
 				9EE861AC2451587800CCEA37 /* B2_Jazz.wav in Resources */,
 				9EE861572451583B00CCEA37 /* G2_Acoustic.wav in Resources */,
+				9EDC0FC0247C385200257CFE /* MenuImage5.jpg in Resources */,
 				9EE8617F2451586F00CCEA37 /* F#2_Rock.wav in Resources */,
-				9EDC0FA7247B291800257CFE /* MenuImage2.jpg in Resources */,
 				9EE861B52451587800CCEA37 /* F3_Jazz.wav in Resources */,
 				9EE861862451586F00CCEA37 /* G#2_Rock.wav in Resources */,
 				9EE861552451583B00CCEA37 /* C3_Acoustic.wav in Resources */,
@@ -903,8 +899,8 @@
 				9EE861A52451587800CCEA37 /* C3_Jazz.wav in Resources */,
 				9EE861B42451587800CCEA37 /* D#3_Jazz.wav in Resources */,
 				9EE861932451586F00CCEA37 /* G2_Rock.wav in Resources */,
-				9EDC0FAA247B291800257CFE /* MenuImage5.jpg in Resources */,
 				9EE861A92451587800CCEA37 /* A3_Jazz.wav in Resources */,
+				9EDC0FBD247C385200257CFE /* MenuImage1.jpg in Resources */,
 				9EDC0FB5247B2A1500257CFE /* MainImage3.jpg in Resources */,
 				9EE8618F2451586F00CCEA37 /* G3_Rock.wav in Resources */,
 			);
