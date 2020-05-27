@@ -18,16 +18,14 @@ class PopupController {
         tutorialPopup.shouldDismissOnTapOutside = false
         tutorialPopup.animationOut = 0.15
 
-//        vc!.setLayer(iobject: tutorialPopup, ilayer: "PopOverLayer")
         tutorialPopup.layer.zPosition = vc!.getLayer(ilayer: "PopOverLayer")
 
         reminderPopup.textColor = UIColor.white
-        reminderPopup.bubbleColor = UIColor.red
+        reminderPopup.bubbleColor = defaultColor.ResultBubbleColor
 
         resultButtonPopup.textColor = UIColor.white
         resultButtonPopup.bubbleColor = defaultColor.ResultBubbleColor //UIColor.red
 
-//        vc!.setLayer(iobject: resultButtonPopup, ilayer: "PopOverLayer")
         resultButtonPopup.layer.zPosition = vc!.getLayer(ilayer: "PopOverLayer")
         resultButtonPopup.dismissHandler = { _ in
             self.resultButtonPopupVisible = false

@@ -80,8 +80,6 @@ class MainViewController: UIViewController {
     var defaultSoundFadeTime = 0.3
 
     var tutorialActive = false
-//    var popover?.mainPopoverVisible = false
-//    var popover?.mainPopoverState = ""
 
     var tempoButtonsActive = false
     var tempoActive = false
@@ -399,10 +397,6 @@ class MainViewController: UIViewController {
         tutorialComplete = itutorialComplete == "1.0"
         if developmentMode > 0 {
             tutorialComplete = true
-//            var tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
-//            tutorialComplete = tutorialComplete as! String == "0.0" ? "1.0" : "2.0"
-//            UserDefaults.standard.set(tutorialComplete, forKey: "tutorialComplete")
-//            UserDefaults.standard.set("1.0", forKey: "scaleLevel")
         }
 
         if developmentMode > 0 {
@@ -1027,7 +1021,7 @@ class MainViewController: UIViewController {
             tutorialDisplayed = true
         }
 
-        if tutorialActive || ((popover?.mainPopoverVisible) != nil) {
+        if tutorialActive || popover!.mainPopoverVisible {
             if currentTutorialPopup < 4, !tutorialDisplayed {
                 return
             } else if !tutorialDisplayed {
@@ -1054,14 +1048,6 @@ class MainViewController: UIViewController {
             State.EarTrainingIdle,
         ])
         if validState {
-//            if currentState != State.EarTrainingIdle {
-//                hideAllFretMarkers()
-//            }
-//
-//            if currentState == State.NotesTestShowNotes {
-//                currentState = State.NotesTestIdle_NoTempo
-//            }
-
             var str = buttonDict[inputNumb]!
             str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
             sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
@@ -1070,6 +1056,9 @@ class MainViewController: UIViewController {
             
             if currentState != State.EarTrainingIdle {
                 hideAllFretMarkers()
+                if !tutorialDisplayed {
+                    displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
+                }
             } else {
                 for note in specifiedNoteCollection {
                     if str == note {
@@ -1366,7 +1355,7 @@ class MainViewController: UIViewController {
         } else if popover?.mainPopoverState == "TutorialComplete" {
             allMarkersDisplayed = true
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
-            pc!.startTestReminder(itime: 20)
+            pc!.startTestReminder(itime: 1)
             var tutorialComplete = UserDefaults.standard.object(forKey: "tutorialComplete")
             tutorialComplete = tutorialComplete as! String == "0.0" ? "1.0" : "2.0"
             UserDefaults.standard.set(tutorialComplete, forKey: "tutorialComplete")
@@ -1405,13 +1394,12 @@ class MainViewController: UIViewController {
             tutorialActive = !tutorialActive
             popover?.setupPopoverText(isubtitle: "Welcome To Fret Master™!", isubText: ["✅ Learn and sharpen valuable skills!", "🎸 Level up to become a great guitarist!","👍 Let get started with a simple tutorial!"])
         } else if type == "LevelComplete" {
-//            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(30)
-//            mainPopoverTitle.text = "LEVEL \(levelPassed) PASSED"
-//            mainPopoverBodyText.text = "Congratulations- keep working hard!"
-            popover?.setupPopoverText(isubtitle: "Level Complete!", isubText: ["✅ Level \(levelPassed) Passed!", "🎸 Level \(levelPassed+1) is Next!","🎵 Play ascending, descending and in time!"])
+            let key = (lc.currentLevelKey?.replacingOccurrences(of: "Level", with: ""))! + "s" //this is a bit hacky!!
+            let nextLevelContents = lc.currentLevelName[key]![lc.returnConvertedLevel(iinput: lc.currentLevel!)]            
+            popover?.setupPopoverText(isubtitle: "Level Complete!", isubText: ["✅ Level \(levelPassed) Passed!", "🎸 Level \(levelPassed+1) is Next!","🎵 \(nextLevelContents)"])
         } else if type == "TutorialComplete" {
             tutorialActive = false
-            popover?.setupPopoverText(isubtitle: "Tutorial Complete!", isubText: ["✅ Complete levels to advance", "🕹 Levels will increase in difficulty!","🎵 Play ascending, descending and in time!"])
+            popover?.setupPopoverText(isubtitle: "Tutorial Complete!", isubText: ["✅ Complete levels to advance", "🕹 Levels will increase in difficulty!","🎵 Let's try Minor Pentatonic by yourself!"])
             pc!.tutorialPopup.hide()
         }
         
@@ -1436,7 +1424,7 @@ class MainViewController: UIViewController {
             swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
             tutorialActive = false
             periphButtonArr[defaultPeripheralIcon.count - 1].layer.zPosition = getLayer(ilayer: "Default")
-            pc!.startTestReminder(itime: 20)
+//            pc!.startTestReminder(itime: 1)
             return
         }
         for i in 0 ..< peripheralButtonTutorialNumb {
@@ -1447,7 +1435,6 @@ class MainViewController: UIViewController {
         // peripheral button popups
         var parentType = ""
         if currentTutorialPopup < peripheralButtonTutorialNumb {
-//            setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialFrontLayer0")
             periphButtonArr[currentTutorialPopup].layer.zPosition = getLayer(ilayer: "TutorialFrontLayer0")
             parentType = "PeripheralButton"
 
@@ -1456,11 +1443,8 @@ class MainViewController: UIViewController {
             let buttonStr = specifiedNoteCollection[currentTutorialPopup - peripheralButtonTutorialNumb]
 
             for (_, dot) in specifiedNoteCollection.enumerated() {
-//                setLayer(iobject: dotDict[dot]!, ilayer: "TutorialFrontLayer1")
                 dotDict[dot]!.layer.zPosition = getLayer(ilayer: "TutorialFrontLayer1")
             }
-//            setLayer(iobject: FretboardImage, ilayer: "TutorialFrontLayer0")
-//            setLayer(iobject: dotDict[buttonStr]!, ilayer: "TutorialFrontLayer1")
             FretboardImage.layer.zPosition = getLayer(ilayer: "TutorialFrontLayer0")
             dotDict[buttonStr]!.layer.zPosition = getLayer(ilayer: "TutorialFrontLayer1")
             parentType = buttonStr + "Fret"
