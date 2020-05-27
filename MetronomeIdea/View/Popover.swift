@@ -19,6 +19,9 @@ class Popover: UIViewController {
     var subText = [UILabel()]
     var xButton = UIButton()
     
+    var mainPopoverVisible = false
+    var mainPopoverState = ""
+    
     convenience init() {
         self.init(ivc: nil)
     }
@@ -33,6 +36,7 @@ class Popover: UIViewController {
     }
     
     func setupPopover(_ inavigationController: UINavigationController) {
+        
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
@@ -44,9 +48,9 @@ class Popover: UIViewController {
         background.layer.zPosition = 500
         background.backgroundColor = defaultColor.MenuButtonColor
         background.layer.cornerRadius = 20
-        vc!.view.addSubview(background)
+//        vc!.view.addSubview(background)
         
-        let buttonHeight:CGFloat = 65, buttonBuffer:CGFloat = 50, buttonWidth:CGFloat = background.frame.width*0.7
+        let buttonHeight:CGFloat = 65, buttonBuffer:CGFloat = 20, buttonWidth:CGFloat = background.frame.width*0.7
         mainButton.frame = CGRect(x: (background.frame.width-buttonWidth)/2, y: background.frame.maxY - buttonHeight - buttonBuffer , width: buttonWidth, height: buttonHeight)
         mainButton.layer.zPosition = 501
         mainButton.backgroundColor = defaultColor.FretMarkerSuccess
@@ -58,8 +62,8 @@ class Popover: UIViewController {
         mainButton.layer.cornerRadius = 8
         mainButton.addTarget(self, action: #selector(handleButtonPress), for: .touchDown)
         
-        vc!.view.addSubview(mainButton)
-        vc!.view.insertSubview(mainButton, at: 500)
+//        vc!.view.addSubview(mainButton)
+//        vc!.view.insertSubview(mainButton, at: 500)
         
         buttonText = UILabel()
         buttonText.frame = mainButton.frame
@@ -68,16 +72,16 @@ class Popover: UIViewController {
         buttonText.textAlignment = .center
         buttonText.font = buttonText.font.withSize(25)
         buttonText.textColor = defaultColor.MenuButtonTextColor
-        vc!.view.addSubview(buttonText)
+//        vc!.view.addSubview(buttonText)
         
         titleText = UILabel()
         titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+10,width: background.frame.width, height: 65)
-        titleText.text = "FRET MASTER"
+        titleText.text = "FRET MASTER™"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
         titleText.font = buttonText.font.withSize(35)
-        titleText.textColor = defaultColor.MenuButtonTextColor
-        vc!.view.addSubview(titleText)
+        titleText.textColor = defaultColor.FretMarkerStandard
+//        vc!.view.addSubview(titleText)
         
         subTitleText = UILabel()
         subTitleText.frame = CGRect(x: background.frame.minX,y: titleText.frame.maxY,width: background.frame.width, height: 100)
@@ -86,7 +90,7 @@ class Popover: UIViewController {
         subTitleText.textAlignment = .center
         subTitleText.font = buttonText.font.withSize(30)
         subTitleText.textColor = defaultColor.MenuButtonTextColor
-        vc!.view.addSubview(subTitleText)
+//        vc!.view.addSubview(subTitleText)
         
         let subTextHeight:CGFloat = 50, subTextWidth:CGFloat = width * 0.95, subTextBuffer:CGFloat = 50
         for i in 0..<3 {
@@ -98,7 +102,7 @@ class Popover: UIViewController {
             subText[i].textAlignment = .center
             subText[i].font = subText[i].font.withSize(20)
             subText[i].textColor = defaultColor.MenuButtonTextColor
-            vc!.view.addSubview(subText[i])
+//            vc!.view.addSubview(subText[i])
         }
         
         xButton = UIButton()
@@ -141,6 +145,16 @@ class Popover: UIViewController {
         vc!.view.addSubview(xButton)
         for text in subText {
             vc!.view.addSubview(text)
+        }
+    }
+    
+    func setupPopoverText(isubtitle: String, isubText: [String]) {
+        subTitleText.text = isubtitle
+        for text in subText {
+            text.text = ""
+        }
+        for (i,subtext) in isubText.enumerated() {
+            subText[i].text = subtext
         }
     }
 }

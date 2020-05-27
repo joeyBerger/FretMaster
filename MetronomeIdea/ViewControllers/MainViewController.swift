@@ -80,8 +80,8 @@ class MainViewController: UIViewController {
     var defaultSoundFadeTime = 0.3
 
     var tutorialActive = false
-    var mainPopoverVisible = false
-    var mainPopoverState = ""
+//    var popover?.mainPopoverVisible = false
+//    var popover?.mainPopoverState = ""
 
     var tempoButtonsActive = false
     var tempoActive = false
@@ -228,17 +228,16 @@ class MainViewController: UIViewController {
         ResultButton.layer.cornerRadius = 20
         giveButtonBackgroundShadow(ibutton: ResultButton)
 
-        mainPopover.backgroundColor = defaultColor.MenuButtonColor
-        mainPopover.layer.cornerRadius = 10
-        mainPopoverCloseButton.tintColor = defaultColor.MenuButtonTextColor
-        mainPopoverBodyText.textColor = defaultColor.MenuButtonTextColor
-        mainPopoverBodyText.contentMode = .scaleToFill
-        mainPopoverBodyText.numberOfLines = 0
-//        setLayer(iobject: mainPopover, ilayer: "PopOverLayer")
-        mainPopover.layer.zPosition = getLayer(ilayer: "PopOverLayer")
-        mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
-        mainPopoverButton.setTitleColor(.white, for: .normal)
-        mainPopoverButton.backgroundColor = UIColor.red
+//        mainPopover.backgroundColor = defaultColor.MenuButtonColor
+//        mainPopover.layer.cornerRadius = 10
+//        mainPopoverCloseButton.tintColor = defaultColor.MenuButtonTextColor
+//        mainPopoverBodyText.textColor = defaultColor.MenuButtonTextColor
+//        mainPopoverBodyText.contentMode = .scaleToFill
+//        mainPopoverBodyText.numberOfLines = 0
+//        mainPopover.layer.zPosition = getLayer(ilayer: "PopOverLayer")
+//        mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
+//        mainPopoverButton.setTitleColor(.white, for: .normal)
+//        mainPopoverButton.backgroundColor = UIColor.red
 
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
@@ -837,7 +836,7 @@ class MainViewController: UIViewController {
     }
 
     func handleTutorialInput(iwchButton: Int) -> Bool {
-        if mainPopoverVisible {
+        if popover!.mainPopoverVisible {
             return false
         }
 
@@ -1028,7 +1027,7 @@ class MainViewController: UIViewController {
             tutorialDisplayed = true
         }
 
-        if tutorialActive || mainPopoverVisible {
+        if tutorialActive || ((popover?.mainPopoverVisible) != nil) {
             if currentTutorialPopup < 4, !tutorialDisplayed {
                 return
             } else if !tutorialDisplayed {
@@ -1360,10 +1359,11 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func closeMainPopover(_: Any) {
-        mainPopover.removeFromSuperview()
+//        mainPopover.removeFromSuperview()
+        popover?.removeFromView()
         if tutorialActive {
             progressTutorial()
-        } else if mainPopoverState == "TutorialComplete" {
+        } else if popover?.mainPopoverState == "TutorialComplete" {
             allMarkersDisplayed = true
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
             pc!.startTestReminder(itime: 20)
@@ -1371,11 +1371,11 @@ class MainViewController: UIViewController {
             tutorialComplete = tutorialComplete as! String == "0.0" ? "1.0" : "2.0"
             UserDefaults.standard.set(tutorialComplete, forKey: "tutorialComplete")
             UserDefaults.standard.set("1.0", forKey: "scaleLevel")
-        } else if mainPopoverState == "LevelComplete" {
+        } else if popover?.mainPopoverState == "LevelComplete" {
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
             setupCurrentTaskHelper()
         }
-        mainPopoverVisible = false
+        popover?.mainPopoverVisible = false
     }
 
     func flashActionOverlay(isuccess: Bool) {
@@ -1397,32 +1397,27 @@ class MainViewController: UIViewController {
         let resultObj = timer.userInfo as! [String: AnyObject]
         let type = resultObj["arg1"] as! String
         let levelPassed = resultObj["arg2"] as! Int
-        mainPopoverState = type
+        popover?.mainPopoverState = type
         // https://www.youtube.com/watch?v=qS21yjo822Y
         
         if type == "Tutorial" {
             pc!.tutorialPopup.hide()
             tutorialActive = !tutorialActive
-            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
-            mainPopoverTitle.text = "FRET MASTER™"
-            mainPopoverBodyText.text = "Welcome To Fret Master™! You will learn and sharpen valuable skiills needed to become a great guitarist! Let get started with a simple tutorial!"
+            popover?.setupPopoverText(isubtitle: "Welcome To Fret Master™!", isubText: ["✅ Learn and sharpen valuable skills!", "🎸 Level up to become a great guitarist!","👍 Let get started with a simple tutorial!"])
         } else if type == "LevelComplete" {
-            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(30)
-            mainPopoverTitle.text = "LEVEL \(levelPassed) PASSED"
-            mainPopoverBodyText.text = "Congratulations- keep working hard!"
+//            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(30)
+//            mainPopoverTitle.text = "LEVEL \(levelPassed) PASSED"
+//            mainPopoverBodyText.text = "Congratulations- keep working hard!"
+            popover?.setupPopoverText(isubtitle: "Level Complete!", isubText: ["✅ Level \(levelPassed) Passed!", "🎸 Level \(levelPassed+1) is Next!","🎵 Play ascending, descending and in time!"])
         } else if type == "TutorialComplete" {
             tutorialActive = false
-            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(30)
-            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
+            popover?.setupPopoverText(isubtitle: "Tutorial Complete!", isubText: ["✅ Complete levels to advance", "🕹 Levels will increase in difficulty!","🎵 Play ascending, descending and in time!"])
             pc!.tutorialPopup.hide()
         }
-
+        
+        popover?.addToView()
         swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
-        view.addSubview(mainPopover)
-        mainPopover.center = view.center
-        mainPopover.center.y -= 50
-        mainPopoverVisible = true
-        view.bringSubviewToFront(mainPopoverButton)
+        
 
         // reset tempo/peripheral button layer orders
         for button in tempoButtonArr! {
@@ -1622,7 +1617,7 @@ class MainViewController: UIViewController {
         let buttonSize: [CGFloat] = [0.03, 0.2, 0.195, 0.18, 0.17, 0.163]
         let buttonWidth: [CGFloat] = [0.18, 0.164, 0.164, 0.164, 0.164, 0.18]
 
-        //        let color = [UIColor.blue, UIColor.yellow, UIColor.red, UIColor.green, UIColor.black, UIColor.cyan]
+        let color = [UIColor.blue, UIColor.yellow, UIColor.red, UIColor.green, UIColor.black, UIColor.cyan]
         var buttonTag = 0
 
         for string in 0 ... 5 {
@@ -1649,6 +1644,7 @@ class MainViewController: UIViewController {
                 if i > 0 {
                     button.addTarget(self, action: #selector(FretPressed), for: .touchDown)
                     button.tag = buttonTag
+//                    button.backgroundColor = color[i%color.count]
 
                     let image = SpringImageView()
                     image.setAndPlayAnim()
@@ -1776,7 +1772,10 @@ class MainViewController: UIViewController {
         
 //        flashActionOverlay(isuccess: false)
         
-        popover?.addToView()
+//        popover?.addToView()
+        
+        print("test button on ")
+        fretButtonDict["A1"]?.layer.zPosition = 500
     }
 
     // Testing
