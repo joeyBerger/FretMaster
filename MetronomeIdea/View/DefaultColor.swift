@@ -16,13 +16,17 @@ struct DefaultColor {
     let AcceptColor = UIColor(red: 42 / 255, green: 181 / 255, blue: 118 / 255, alpha: 1.0)
     
     
-//    let FretMarkerSuccess = convertRGBToUIColor().convert(75,181,67)
+
     let FretMarkerStandard = convertRGBToUIColor().convert(256,0,0)
+//    let FretMarkerStandard = convertRGBToUIColor().convert(233,62,32)    
     let FretMarkerSuccess = convertRGBToUIColor().convert(80,180,74)
+    
+    let ResultBubbleColor = convertRGBToUIColor().convert(80,180,74) //UIColor(red: 13 / 255, green: 255 / 255, blue: 0 / 255, alpha: 1.0) //convertRGBToUIColor().convert(53*convertRGBToUIColor().colorPulse, 0, convertRGBToUIColor().colorPulse*211)
 }
 
 class convertRGBToUIColor {
     func convert(_ r:Double, _ g:Double, _ b:Double, _ a:Double = 1.0) -> UIColor {
         return UIColor(red: CGFloat(r / 255), green: CGFloat(g / 255), blue: CGFloat(b / 255), alpha: 1.0)
     }
+    let colorPulse = 1.6
 }

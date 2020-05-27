@@ -42,79 +42,35 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
-//        globalDataController.load()
-//
-//        let fetchRequest: NSFetchRequest<ImageData> = ImageData.fetchRequest()
-//        if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
-//            for image in results {
-//                backgroundImage.images[image.id!] = UIImage(data: image.backgroundImage!)
-//            }
-//        }
-
         for (volumeType, _) in volume.volumeTypes {
             let vol = UserDefaults.standard.object(forKey: volumeType)
             if vol != nil {
                 volume.volumeTypes[volumeType] = vol as? Float
             }
         }
-
-        buttonArr = [Button0, Button1, Button2, Button3, Button4]
+        
         setupHiddenButtons()
 
-//        bgImage.image = backgroundImage.returnImage("menu")
-//        bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
-//        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
-//        view.insertSubview(bgImage, at: 0)
-
         let styler = ViewStyler(ivc: self)
+        buttonArr = [Button0, Button1, Button2, Button3, Button4]
         for (i, Button) in buttonArr.enumerated() {
             menuButtonSubtext.append(UILabel())
             menuButtonProgress.append(UIProgressView())
             styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
         }
         
-        let randNumb = Int.random(in: 0 ..< 5)
-        print("randNumb randNumb randNumb",randNumb)
-        styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(randNumb).jpg")
+        styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(Int.random(in: 0 ..< 7)).jpg")
 
         let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor]
         navigationController?.navigationBar.titleTextAttributes = textAttributes
         navigationController?.navigationBar.tintColor = .white
-
-//        let button4frame = view.convert(Button4.frame, from: Stack)
-//        // look to see if menu buttons are off the screen
-//        if button4frame.maxY + button4frame.height > view.frame.height {
-//            Stack.frame = CGRect(x: Stack.frame.minX, y: Stack.frame.minY + 50, width: Stack.frame.width, height: Stack.frame.height)
-//            let bottomBuffer: CGFloat = -50.0
-//            let numbButtons: CGFloat = 5.0
-//            let button0frame = view.convert(Button0.frame, from: Stack)
-//            let sP = (view.frame.height - (bottomBuffer + button0frame.height) - button0frame.minY - (numbButtons - 1) * button0frame.height) / numbButtons
-//            print("adapting stack to fit all buttons with new spacing of \(sP)")
-//            Stack.spacing = CGFloat(sP)
-//        }
-        
-//        let screenRect = UIScreen.main.bounds
-//        let screenWidth = screenRect.size.width
-//        let screenHeight = screenRect.size.height
-//
-//        let buffer:CGFloat = returnButtonBuffer(screenHeight - (navigationController?.navigationBar.frame.maxY)!)
-//        let availableScreenHeight = screenHeight - (navigationController?.navigationBar.frame.maxY)! - (buffer*2)
-//
-//        let spacing:CGFloat = availableScreenHeight/5
-//
-//        for (i,button) in buttonArr.enumerated() {
-//            let y = ((navigationController?.navigationBar.frame.maxY)! + buffer + button.frame.height/2 - 12) + (spacing) * CGFloat(i)
-//            button.frame = CGRect(x: screenWidth/2-button.frame.width/2, y: y, width: button.frame.width, height: button.frame.height)
-//        }
-//
-//        print(Button0.frame)
         
         styler.spaceButtons(buttonArr,navigationController!)
     }
 
     override func viewDidAppear(_: Bool) {
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
-        bgImage.image = backgroundImage.returnImage("menu")
+//        bgImage.image = backgroundImage.returnImage("menu")
 
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
         if scaleLevel != nil {

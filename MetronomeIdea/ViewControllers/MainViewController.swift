@@ -56,6 +56,7 @@ class MainViewController: UIViewController {
     let lc = LevelConstruct() // TODO: change name
     var settingsMenu = SettingsViewController()
     var wt = waitThen()
+    var popover: Popover?
 
     class InputData {
         var time: CFAbsoluteTime = 0
@@ -200,11 +201,12 @@ class MainViewController: UIViewController {
         et = EarTraining(ivc: self)
         pc = PopupController(ivc: self)
         styler = ViewStyler(ivc: self)
+        popover = Popover(ivc: self)
+        popover?.setupPopover(navigationController!)
+        
         if developmentMode > 1 {
             met?.bpm = 350.0
         }
-
-//        styler!.setupBackgroundImage(ibackgroundPic: currentBackgroundPic)
 
         setupBackgroundImage()
 
@@ -220,7 +222,7 @@ class MainViewController: UIViewController {
         setResultButton()
         ResultButton.titleLabel?.adjustsFontSizeToFitWidth = true
         ResultButton.titleLabel?.minimumScaleFactor = 0.5
-        ResultButton.backgroundColor = defaultColor.ResultsButtonColor
+        ResultButton.backgroundColor = defaultColor.MenuButtonColor
         ResultButton.setTitleColor(.white, for: .normal)
         ResultButton.titleLabel?.font = UIFont(name: ResultsLabel.font.fontName, size: 20)
         ResultButton.layer.cornerRadius = 20
@@ -232,7 +234,8 @@ class MainViewController: UIViewController {
         mainPopoverBodyText.textColor = defaultColor.MenuButtonTextColor
         mainPopoverBodyText.contentMode = .scaleToFill
         mainPopoverBodyText.numberOfLines = 0
-        setLayer(iobject: mainPopover, ilayer: "PopOverLayer")
+//        setLayer(iobject: mainPopover, ilayer: "PopOverLayer")
+        mainPopover.layer.zPosition = getLayer(ilayer: "PopOverLayer")
         mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
         mainPopoverButton.setTitleColor(.white, for: .normal)
         mainPopoverButton.backgroundColor = UIColor.red
@@ -251,7 +254,7 @@ class MainViewController: UIViewController {
         TempoDownButton.addGestureRecognizer(recognizer1)
         recognizer1.view?.tag = 1
 
-
+        
     }
     
     override func loadView() {
@@ -272,12 +275,14 @@ class MainViewController: UIViewController {
             DimOverlay = setupScreenOverlay()
             DimOverlay.backgroundColor = UIColor.black
             view.addSubview(DimOverlay)
-            setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
+//            setLayer(iobject: DimOverlay, ilayer: "DimOverlay")
+            DimOverlay.layer.zPosition = getLayer(ilayer: "DimOverlay")
 
             ActionOverlay = setupScreenOverlay()
             ActionOverlay.backgroundColor = UIColor.white
             view.addSubview(ActionOverlay)
-            setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
+//            setLayer(iobject: ActionOverlay, ilayer: "ActionOverlay")
+            ActionOverlay.layer.zPosition = getLayer(ilayer: "ActionOverlay")
 
             setupFretBoardImage()
             setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
@@ -1131,6 +1136,7 @@ class MainViewController: UIViewController {
                     if !notesCorrect {
                         testResultStrs.append(testResultStrDict["incorrect_notes"]!)
                     } else {
+                        killCurrentDotFade()
                         setupUpDelayedNoteCollectionView(specifiedNoteCollection.uniques,"postSuccess");
                     }
                     wt.waitThen(itime: 0.5, itarget: self, imethod: #selector(presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
@@ -1373,13 +1379,18 @@ class MainViewController: UIViewController {
     }
 
     func flashActionOverlay(isuccess: Bool) {
+        if #available(iOS 13.0, *) {}
+        else {
+            self.view.bringSubviewToFront(ActionOverlay)
+        }
+        
         if isuccess {
             ActionOverlay.backgroundColor! = UIColor.white
         } else {
             ActionOverlay.backgroundColor! = UIColor.red
         }
-        swoopAlpha(iobject: ActionOverlay, ialpha: 0.6, iduration: 0.0)
-        swoopAlpha(iobject: ActionOverlay, ialpha: 0.0, iduration: 0.5)
+        swoopAlpha(iobject: ActionOverlay, ialpha: 0.5, iduration: 0.0)
+        swoopAlpha(iobject: ActionOverlay, ialpha: 0.0, iduration: 0.35)
     }
 
     @objc func presentMainPopover(timer: Timer) {
@@ -1388,6 +1399,7 @@ class MainViewController: UIViewController {
         let levelPassed = resultObj["arg2"] as! Int
         mainPopoverState = type
         // https://www.youtube.com/watch?v=qS21yjo822Y
+        
         if type == "Tutorial" {
             pc!.tutorialPopup.hide()
             tutorialActive = !tutorialActive
@@ -1414,10 +1426,10 @@ class MainViewController: UIViewController {
 
         // reset tempo/peripheral button layer orders
         for button in tempoButtonArr! {
-            setLayer(iobject: button, ilayer: "Default")
+            button.layer.zPosition = getLayer(ilayer: "Default")
         }
         for button in periphButtonArr {
-            setLayer(iobject: button, ilayer: "Default")
+            button.layer.zPosition = getLayer(ilayer: "Default")
         }
     }
 
@@ -1433,13 +1445,15 @@ class MainViewController: UIViewController {
             return
         }
         for i in 0 ..< peripheralButtonTutorialNumb {
-            setLayer(iobject: periphButtonArr[i], ilayer: "Default")
+//            setLayer(iobject: periphButtonArr[i], ilayer: "Default")
+            periphButtonArr[i].layer.zPosition = getLayer(ilayer: "Default")
         }
 
         // peripheral button popups
         var parentType = ""
         if currentTutorialPopup < peripheralButtonTutorialNumb {
-            setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialFrontLayer0")
+//            setLayer(iobject: periphButtonArr[currentTutorialPopup], ilayer: "TutorialFrontLayer0")
+            periphButtonArr[currentTutorialPopup].layer.zPosition = getLayer(ilayer: "TutorialFrontLayer0")
             parentType = "PeripheralButton"
 
         } else if currentTutorialPopup < tutorialPopupText.count - 1 {
@@ -1447,10 +1461,13 @@ class MainViewController: UIViewController {
             let buttonStr = specifiedNoteCollection[currentTutorialPopup - peripheralButtonTutorialNumb]
 
             for (_, dot) in specifiedNoteCollection.enumerated() {
-                setLayer(iobject: dotDict[dot]!, ilayer: "TutorialFrontLayer1")
+//                setLayer(iobject: dotDict[dot]!, ilayer: "TutorialFrontLayer1")
+                dotDict[dot]!.layer.zPosition = getLayer(ilayer: "TutorialFrontLayer1")
             }
-            setLayer(iobject: FretboardImage, ilayer: "TutorialFrontLayer0")
-            setLayer(iobject: dotDict[buttonStr]!, ilayer: "TutorialFrontLayer1")
+//            setLayer(iobject: FretboardImage, ilayer: "TutorialFrontLayer0")
+//            setLayer(iobject: dotDict[buttonStr]!, ilayer: "TutorialFrontLayer1")
+            FretboardImage.layer.zPosition = getLayer(ilayer: "TutorialFrontLayer0")
+            dotDict[buttonStr]!.layer.zPosition = getLayer(ilayer: "TutorialFrontLayer1")
             parentType = buttonStr + "Fret"
 
             let button = UIButton()
@@ -1462,9 +1479,11 @@ class MainViewController: UIViewController {
                 pc!.tutorialPopup.hide()
             }
             for (_, dot) in specifiedNoteCollection.enumerated() {
-                setLayer(iobject: dotDict[dot]!, ilayer: "Default")
+//                setLayer(iobject: dotDict[dot]!, ilayer: "Default")
+                dotDict[dot]!.layer.zPosition = getLayer(ilayer: "Default")
             }
-            setLayer(iobject: FretboardImage, ilayer: "Default")
+//            setLayer(iobject: FretboardImage, ilayer: "Default")
+            FretboardImage.layer.zPosition = getLayer(ilayer: "Default")
             pc!.tutorialPopup.hide()
             //            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
             //            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
@@ -1575,7 +1594,8 @@ class MainViewController: UIViewController {
         let image: UIImage = UIImage(named: "Fretboard5")!
         FretboardImage = UIImageView()
         FretboardImage.image = image
-        setLayer(iobject: FretboardImage, ilayer: "Default")
+//        setLayer(iobject: FretboardImage, ilayer: "Default")
+        FretboardImage.layer.zPosition = getLayer(ilayer: "Default")
 
         let fretboardAspectFit = AVMakeRect(aspectRatio: FretboardDummy.image!.size, insideRect: FretboardDummy.bounds)
 
@@ -1751,7 +1771,12 @@ class MainViewController: UIViewController {
         
 //        FretboardImage.pop()
 
-        setupUpDelayedNoteCollectionView(specifiedNoteCollection,"postSuccess");
+//        setupUpDelayedNoteCollectionView(specifiedNoteCollection,"postSuccess");
+        
+        
+//        flashActionOverlay(isuccess: false)
+        
+        popover?.addToView()
     }
 
     // Testing
@@ -1851,7 +1876,7 @@ class MainViewController: UIViewController {
         let cascadeFretMarkers = resultObj["arg2"] as! Bool
         let animType = resultObj["arg3"] as! String
 //        let levelPassed = resultObj["arg2"] as! Int
-        displaySingleFretMarker(iinputStr: input as! String, cascadeFretMarkers: cascadeFretMarkers as! Bool, fretAnim: animType as! String)
+        displaySingleFretMarker(iinputStr: input, cascadeFretMarkers: cascadeFretMarkers, fretAnim: animType)
         
     }
     
@@ -2000,9 +2025,6 @@ extension SpringImageView {
 }
 
 extension UIButton {
-//    open override func hitTest(_ point: CGPoint, with _: UIEvent?) -> UIView? {
-//        return bounds.contains(point) ? self : nil
-//    }
 
     func blink(enabled: Bool = true, duration: CFTimeInterval = 1.0, stopAfter: CFTimeInterval = 0.0) {
         enabled ? UIView.animate(withDuration: duration,
