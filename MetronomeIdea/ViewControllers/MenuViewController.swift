@@ -24,7 +24,6 @@ class MenuViewController: UIViewController {
     @IBOutlet var Button4: UIButton!
     var buttonArr: [UIButton] = []
 
-
     var menuButtonSubtext: [UILabel] = []
     var menuButtonProgress: [UIProgressView] = []
 
@@ -41,7 +40,8 @@ class MenuViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.extendedLayoutIncludesOpaqueBars = true
+        
         for (volumeType, _) in volume.volumeTypes {
             let vol = UserDefaults.standard.object(forKey: volumeType)
             if vol != nil {
@@ -49,7 +49,8 @@ class MenuViewController: UIViewController {
             }
         }
         
-        setupHiddenButtons()
+//        setupHiddenButtons()
+//        resetData()
 
         let styler = ViewStyler(ivc: self)
         buttonArr = [Button0, Button1, Button2, Button3, Button4]
@@ -67,10 +68,14 @@ class MenuViewController: UIViewController {
         
         styler.spaceButtons(buttonArr,navigationController!)
     }
+    
 
     override func viewDidAppear(_: Bool) {
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
-//        bgImage.image = backgroundImage.returnImage("menu")
+        navigationController?.navigationBar.barStyle = UIBarStyle.blackOpaque
+        navigationController?.navigationBar.isTranslucent = false
+        
+        //        bgImage.image = backgroundImage.returnImage("menu")
 
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
         if scaleLevel != nil {
@@ -169,7 +174,17 @@ class MenuViewController: UIViewController {
             )
         }
     }
-
+    @IBAction func PlaygroundButton(_ sender: Any) {
+        print("got playground")
+        if !tutorialCompleteStatus {
+            //maybe add popup
+            return
+        }
+        buttonId = -1
+        UIView.setAnimationsEnabled(false)
+        performSegue(withIdentifier: "FretPlayground", sender: nil)
+    }
+    
     @IBAction func MainMenuButton(_ sender: UIButton) {
         if !tutorialCompleteStatus && sender.tag > 0 || sender.tag > 2 {
             return
@@ -184,6 +199,17 @@ class MenuViewController: UIViewController {
         let lc = LevelConstruct()
 
         vc.developmentMode = developmentMode
+        
+        // Scales
+        if buttonId == -1 {
+//            var freePlayNoteCollection = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
+//            if freePlayNoteCollection == nil {
+//                UserDefaults.standard.set("MinorPentatonic", forKey: "freePlayNoteCollection")
+//                freePlayNoteCollection = "MinorPentatonic"
+//            }
+            vc.setStateProperties(icurrentLevel: "0.0", ilevelConstruct: lc.scale, ilevelKey: "freePlay", itutorialComplete: userLevelData.tutorialComplete)
+//            vc.freePlayNoteCollection = freePlayNoteCollection as! String
+        }
 
         // Scales
         if buttonId == 0 {
@@ -246,7 +272,7 @@ class MenuViewController: UIViewController {
     func setupDevButton() {
         devToggleButton = UIButton()
         devToggleButton.frame = returnDevButtonFrame("Dev")
-//        devToggleButton.backgroundColor = UIColor.red
+        devToggleButton.backgroundColor = UIColor.red
         devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
         view.addSubview(devToggleButton)
     }

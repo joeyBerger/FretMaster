@@ -12,12 +12,12 @@ class VolumeSettingsViewController: UIViewController {
     var backgroundImageID = 0
 
     @IBAction func onSliderChange(_ sender: UISlider) {
-        print("onSliderChange =",sender.value)
         volume.volumeTypes[volumeTypes[sender.tag]] = sender.value
     }
 
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.extendedLayoutIncludesOpaqueBars = true
         var styler: ViewStyler?
         styler = ViewStyler(ivc: self)
         styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")

@@ -104,7 +104,8 @@ class ViewStyler: UIViewController {
                 itext[i]?.frame = CGRect(x: (screenWidth-screenWidth*0.8)/2, y: startY + CGFloat(i) * containerBuffer, width: screenWidth*0.8, height: 100)
                 slider?.frame = CGRect(x: (screenWidth-screenWidth*0.9)/2, y: (itext[i]?.frame.minY)!+sliderHeightBuffer, width: screenWidth*0.9, height: (100))
                 
-                itext[i]?.font = UIFont(name: (itext[i]?.font.fontName)!, size: 23)
+                print("itext[i]?.font.fontName",itext[i]?.font.fontName)
+                itext[i]?.font = UIFont(name: "Helvetica Neue", size: 23)
                 itext[i]?.text = itext[i]?.text!.uppercased()
                 itext[i]?.textColor = defaultColor.MenuButtonTextColor
                 
@@ -128,10 +129,20 @@ class ViewStyler: UIViewController {
          
          let spacing:CGFloat = availableScreenHeight/5
         
+//         let
+        
          for (i,button) in ibuttonArr.enumerated() {
              let y = (inavigationConroller.navigationBar.frame.maxY + buffer + button.frame.height/2 - 12) + (spacing) * CGFloat(i)
              button.frame = CGRect(x: screenWidth/2-button.frame.width/2, y: y, width: button.frame.width, height: button.frame.height)
          }
+    }
+    
+    func addStandardLabelShadow(_ iUILabel: UILabel) {
+        iUILabel.layer.shadowColor = UIColor.black.cgColor
+        iUILabel.layer.shadowRadius = 1.0
+        iUILabel.layer.shadowOpacity = 1.0
+        iUILabel.layer.shadowOffset = CGSize(width: 2, height: 2)
+        iUILabel.layer.masksToBounds = false
     }
     
     func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {

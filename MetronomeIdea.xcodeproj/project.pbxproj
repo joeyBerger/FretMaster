@@ -36,6 +36,7 @@
 		9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E919EEF244EBB4C008027EF /* Vibration.swift */; };
 		9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C46E622C483C000B133A9 /* SoundController.swift */; };
 		9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA49F9424330B8800BF9398 /* SettingsViewController.swift */; };
+		9EA722D42480D3A5003C7356 /* NoteCollectionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA722D32480D3A5003C7356 /* NoteCollectionPickerViewController.swift */; };
 		9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAD3C0D237E825F004467B1 /* EarTraining.swift */; };
 		9EB573412450095C00322305 /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB573402450095C00322305 /* PopupController.swift */; };
 		9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBCF8AC2429D09400074C4C /* LevelHandler.swift */; };
@@ -224,6 +225,7 @@
 		9E919EEF244EBB4C008027EF /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		9E9C46E622C483C000B133A9 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
 		9EA49F9424330B8800BF9398 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
+		9EA722D32480D3A5003C7356 /* NoteCollectionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCollectionPickerViewController.swift; sourceTree = "<group>"; };
 		9EAD3C0D237E825F004467B1 /* EarTraining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarTraining.swift; sourceTree = "<group>"; };
 		9EB573402450095C00322305 /* PopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupController.swift; sourceTree = "<group>"; };
 		9EBCF8AC2429D09400074C4C /* LevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHandler.swift; sourceTree = "<group>"; };
@@ -540,6 +542,7 @@
 				9E18282123CA65650001E46F /* MainViewController.swift */,
 				9E44D7932453EA8D00911515 /* ImageChooserViewController.swift */,
 				9E44D7BE2454EA0F00911515 /* VolumeSettingsViewController.swift */,
+				9EA722D32480D3A5003C7356 /* NoteCollectionPickerViewController.swift */,
 			);
 			path = ViewControllers;
 			sourceTree = "<group>";
@@ -943,6 +946,7 @@
 				9EDC0F3E2479D2D900257CFE /* DesignableTabBarController.swift in Sources */,
 				B8A6186320DB9E7500AF33C5 /* Metronome.swift in Sources */,
 				9EDC0F4D2479D2D900257CFE /* SpringImageView.swift in Sources */,
+				9EA722D42480D3A5003C7356 /* NoteCollectionPickerViewController.swift in Sources */,
 				B8A6184F20DB9E2A00AF33C5 /* AppDelegate.swift in Sources */,
 				9E17C14A24529E8100D90CD9 /* UnsplashClient.swift in Sources */,
 				9EDC0F422479D2D900257CFE /* TransitionZoom.swift in Sources */,

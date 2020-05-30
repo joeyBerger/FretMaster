@@ -57,7 +57,7 @@ class ScaleCollection {
         "17",
     ]
 
-    let scaleNameDic: [String: String] = [
+    let scaleNameDict: [String: String] = [
         "MinorPentatonic": "Minor Pentatonic",
         "MajorPentatonic": "Major Pentatonic",
         "Ionian": "Ionian",
@@ -151,23 +151,7 @@ class ScaleCollection {
         } else {
             interval += " Up"
         }
-//        interval += coreOctaveNote0 > coreOctaveNote1 ? " Down" : " Up"
         return interval
-        
-//        if let note0Idx = refScale.firstIndex(of: coreNote0) {
-//            if let note1Idx = refScale.firstIndex(of: coreNote1) {
-//                if note0Idx < note1Idx {
-//                    if coreOctaveNote0 == coreOctaveNote1 {
-//                        interval = scaleDegreeDict.keysForValue(value: note1Idx - note0Idx)[0]
-//                    } else if coreOctaveNote0 < coreOctaveNote1 {
-//                        interval = scaleDegreeDict.keysForValue(value: note1Idx - note0Idx)[0]
-//                    }
-//                } else {
-//
-//                }
-//            }
-//        }
-        print("interval \(interval)")
     }
 
     func setupSpecifiedNoteCollection(iinput: String, idirection: String, istartingNote: String = "A", itype: String = "standard", idata: [String:Any] = [:]) {
@@ -251,7 +235,7 @@ class ScaleCollection {
     }
 
     func returnReadableScaleName(iinput: String) -> String {
-        return scaleNameDic[iinput]!
+        return scaleNameDict[iinput]!
     }
 
     func analyzeNotes(iscaleTestData: [MainViewController.InputData]) -> Bool {

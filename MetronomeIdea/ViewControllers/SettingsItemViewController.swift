@@ -3,7 +3,7 @@ import UIKit
 
 class SettingsItemViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
     @IBOutlet var tableView: UITableView!
-
+    
     var settingStrings: [String] = []
     var settingsType: String?
     var initialCheckmarkIdx = 0
@@ -23,6 +23,7 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        self.extendedLayoutIncludesOpaqueBars = true
         self.tableView.backgroundColor = UIColor.clear
 
         if let defaultKey = UserDefaults.standard.object(forKey: settingsType!) {
@@ -94,7 +95,6 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         
         cell.tintColor = UIColor.black
         
-//        cell.accessoryType.
         if indexPath.row == initialCheckmarkIdx {
             cell.accessoryType = .checkmark
         }
@@ -121,6 +121,5 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         }
 
         selectedCell = indexPath.row
-        
     }
 }

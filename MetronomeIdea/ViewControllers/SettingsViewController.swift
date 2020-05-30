@@ -87,7 +87,8 @@ class SettingsViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.extendedLayoutIncludesOpaqueBars = true
+        
         styler = ViewStyler(ivc: self)
         backgroundImageID = Int.random(in: 0 ..< 3)
         styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")

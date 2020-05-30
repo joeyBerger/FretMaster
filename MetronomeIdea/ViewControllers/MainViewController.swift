@@ -26,7 +26,8 @@ class MainViewController: UIViewController {
 
     @IBOutlet var FretboardDummy: UIImageView!
     @IBOutlet var PeripheralStackView: UIStackView!
-
+    @IBOutlet weak var leftBarButtonItem: UIBarButtonItem!
+    
     var FretboardImage: UIImageView!
     var DimOverlay: UIImageView!
     var ActionOverlay: UIImageView!
@@ -95,6 +96,9 @@ class MainViewController: UIViewController {
         "incorrect_notes": "Notes Played Were Incorrect",
         "incorrect_time": "Time Was Inaccurate",
     ]
+    
+    var freePlayNoteCollection = ""
+    var backgroundImage = 0
 
     var buttonDict: [Int: String] = [ // this could probably just be an array
         0: "G#1",
@@ -158,6 +162,10 @@ class MainViewController: UIViewController {
         case NotesTestActive_Tempo
         case NotesTestIdle_Tempo
         case NotesTestShowNotes
+        
+        case PlaygroundIdle
+        case PlaygroundShowNotes
+        case PlaygroundPlayingNotesCollection
     }
 
     var currentState = State.Idle
@@ -182,7 +190,8 @@ class MainViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
-
+        self.extendedLayoutIncludesOpaqueBars = true
+        
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
         
         
@@ -201,6 +210,8 @@ class MainViewController: UIViewController {
         styler = ViewStyler(ivc: self)
         popover = Popover(ivc: self)
         popover?.setupPopover(navigationController!)
+        
+        
         
         if developmentMode > 1 {
             met?.bpm = 350.0
@@ -236,6 +247,9 @@ class MainViewController: UIViewController {
 //        mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
 //        mainPopoverButton.setTitleColor(.white, for: .normal)
 //        mainPopoverButton.backgroundColor = UIColor.red
+        
+        leftBarButtonItem?.isEnabled = false
+        leftBarButtonItem?.tintColor = UIColor.clear
 
         periphButtonArr.append(PeriphButton0)
         periphButtonArr.append(PeriphButton1)
@@ -251,7 +265,6 @@ class MainViewController: UIViewController {
         TempoDownButton.addGestureRecognizer(recognizer1)
         recognizer1.view?.tag = 1
 
-        
     }
     
     override func loadView() {
@@ -297,7 +310,7 @@ class MainViewController: UIViewController {
                 let screenHeight = screenRect.size.height
                 let height: CGFloat = screenHeight * 0.1
                 testButton.frame = CGRect(x: FretboardImage.frame.maxX, y: screenHeight - height, width: screenWidth * 0.5, height: height)
-//                testButton.backgroundColor = UIColor.red
+                testButton.backgroundColor = UIColor.red
                 testButton.addTarget(self, action: #selector(onTestButtonDown), for: .touchDown)
                 view.addSubview(testButton)
             }
@@ -306,20 +319,15 @@ class MainViewController: UIViewController {
 //        setupTempoButtons()
         
         setAlphaOnDefualtImages(1.0)
-        
         setupToSpecificState()
         
         if (!lc.currentLevelKey!.contains("interval")) {
+            let idx = lc.currentLevelKey!.contains("freePlay") ? 1 : 2
             currentState = State.NotesTestShowNotes
-            setButtonImage(ibutton: periphButtonArr[2], iimageStr: activePeripheralIcon[2])
+            setButtonImage(ibutton: periphButtonArr[idx], iimageStr: activePeripheralIcon[idx])
         }
         
         getDynamicAudioVisualData()
-//        let key = lc.currentLevelKey!.replacingOccurrences(of: "Level", with: "") + "s"
-//        bgImage.image = backgroundImage.returnImage(key)
-//        bgImage.image! = bgImage.image!.darkened()!
-//        let c: CGFloat = 0.5
-//        bgImage.tintColor = UIColor(red: c, green: c, blue: c, alpha: 0.5)
         pc!.resultButtonPopup.hide()
     }
 
@@ -342,6 +350,7 @@ class MainViewController: UIViewController {
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if developmentMode > 0 { print("tempoButtonLongPressed, state: \(currentState)") }
         if !checkForValidTempoInput() { return }
+        if popover!.mainPopoverVisible {return}
         if sender.state == .ended {
             wt.stopWaitThenOfType(iselector: #selector(tempoButtonUpdater) as Selector)
             tempoUpdaterCycle = 0.0
@@ -410,6 +419,7 @@ class MainViewController: UIViewController {
         if currentState == State.RecordingIdle {
             setButtonState(ibutton: PeriphButton0, ibuttonState: false)
         }
+
         // Scale/Arpeggio test
         if lc.currentLevelKey!.contains("scale") || lc.currentLevelKey!.contains("arpeggio") {
             setupCurrentTask()
@@ -417,12 +427,19 @@ class MainViewController: UIViewController {
             activePeripheralIcon = ["outline_stop_black_18dp", "outline_volume_off_black_18dp", "outline_undo_black_18dp"]
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
-        } else {
+        } else if lc.currentLevelKey == "intervalLevel" {
             setupEarTrainingData()
             defaultPeripheralIcon = ["outline_play_arrow_black_18dp"]
             activePeripheralIcon = ["outline_stop_black_18dp"]
             setupCurrentTask()
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
+        } else {
+            defaultPeripheralIcon = ["outline_volume_up_black_18dp", "outline_info_black_18dp"]
+            activePeripheralIcon = ["outline_volume_off_black_18dp", "outline_undo_black_18dp"]
+            setupCurrentTask()
+            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
+            leftBarButtonItem?.isEnabled = true
+            leftBarButtonItem?.tintColor = defaultColor.MenuButtonTextColor
         }
         setupPeripheralButtons(iiconArr: defaultPeripheralIcon)
     }
@@ -444,13 +461,8 @@ class MainViewController: UIViewController {
         let task = lc.returnCurrentTask()
         let trimmedTask = trimCurrentTask(iinput: task)
         let dir = parseTaskDirection(iinput: task)
-//        tempoActive = parseTempoStatus(iinput: task)
-//        tempoButtonsActive = !tempoActive
-//        setupTempoButtons(ibuttonsActive: tempoButtonsActive)
-        
         var startingNote = "A"
         var type = "standard"
-        
         var additionalData : [String:Any] = [:]  //this is a little hacky
         
         if (lc.currentLevelKey?.contains("interval"))! {
@@ -460,7 +472,6 @@ class MainViewController: UIViewController {
             startingEarTrainingNote = startingNote
             let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
             
-//            var automaticallyStartTest = true
             if earTrainingLevelData.count == 0 {
                 print("updating earTrainingLevelData")
                 earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
@@ -496,7 +507,7 @@ class MainViewController: UIViewController {
             if automaticallyStartTest {
                 PeripheralButton0OnButtonDown(0,true)
             }
-        } else {
+        } else if lc.currentLevelKey!.contains("scale") || lc.currentLevelKey!.contains("arpeggio") {
             resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
             tempoActive = parseTempoStatus(iinput: task)
             tempoButtonsActive = !tempoActive
@@ -519,6 +530,39 @@ class MainViewController: UIViewController {
                     currentState = State.NotesTestIdle_NoTempo
                 }
             }
+        } else {
+            tempoActive = false
+            tempoButtonsActive = !tempoActive
+            
+            var freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
+            if freePlayUserDefault == nil {
+                UserDefaults.standard.set("MinorPentatonic", forKey: "freePlayNoteCollection")
+                freePlayUserDefault = "MinorPentatonic"
+            }
+            freePlayNoteCollection = freePlayUserDefault as! String
+            resultsLabelDefaultText = sCollection?.returnReadableScaleName(iinput: freePlayNoteCollection) as! String
+          
+            let availableTypes = [lc.scale,lc.arpeggio]
+            var typeIdx = -1
+            for (i,typesArr) in availableTypes.enumerated() {
+                if typeIdx == -1 {
+                    for type in typesArr {
+                        if type.contains(freePlayNoteCollection) {
+                            typeIdx = i
+                            break
+                        }
+                    }
+                }
+            }
+            let type = typeIdx == 0 ? "Scale: " : "Arpeggio: "
+            
+            pc!.setResultButtonPopupText(itextArr: ["Free Play!",type + resultsLabelDefaultText])
+            resultButtonText = "Click For Info  ⓘ"
+            setResultButton(istr: resultButtonText)
+            
+            sCollection!.setupSpecifiedNoteCollection(iinput: freePlayNoteCollection, idirection: "Both", istartingNote: startingNote)
+            setupTempoButtons(ibuttonsActive: tempoButtonsActive)
+            currentState = State.NotesTestIdle_NoTempo
         }
         
 //        sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
@@ -527,7 +571,7 @@ class MainViewController: UIViewController {
         ResultsLabel.text = resultsLabelDefaultText
 
         //result button text for scales / arpeggios
-        if lc.currentLevelKey?.contains("interval") == false {
+        if lc.currentLevelKey?.contains("interval") == false && lc.currentLevelKey?.contains("freePlay") == false {
             let resultPopoverDirText: String
             var resultPopoverTempoText = "Tempo: "
             resultButtonText = ""
@@ -614,7 +658,8 @@ class MainViewController: UIViewController {
 //        bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
 //        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
 //        view.insertSubview(bgImage, at: 0)
-        styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(Int.random(in: 0 ..< 5)).jpg")
+        backgroundImage = Int.random(in: 0 ..< 5)
+        styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(backgroundImage).jpg")
     }
 
     func trimCurrentTask(iinput: String) -> String {
@@ -788,6 +833,7 @@ class MainViewController: UIViewController {
     @IBAction func scrollTempo(_ sender: UIButton) {
         if developmentMode > 0 { print("scroll tempo, state: \(currentState)") }
         if !checkForValidTempoInput() { return }
+        if popover!.mainPopoverVisible {return}
         pc!.resultButtonPopup.hide()
         let dir = sender.tag == 0 ? 1.0 : -1.0
         if met!.bpm + dir >= met!.minBPM, met!.bpm + dir <= met!.maxBPM {
@@ -801,6 +847,7 @@ class MainViewController: UIViewController {
     @IBAction func tempoTapped(_: Any) {
         if developmentMode > 0 { print("tempoTapped, state: \(currentState)") }
         if !checkForValidTempoInput() { return }
+        if popover!.mainPopoverVisible {return}
         currentButtonLayer = TempoButton!.pulsate(ilayer: currentButtonLayer)
         wt.stopWaitThenOfType(iselector: #selector(timeoutTapTempo) as Selector)
         // this caps the low tempo at 40 bpm
@@ -840,9 +887,24 @@ class MainViewController: UIViewController {
         }
         return true
     }
+    
+    @IBAction func FreePlayChooseNoteCollection(_ sender: Any) {
+        UIView.setAnimationsEnabled(false)
+        performSegue(withIdentifier: "NoteCollectionPicker", sender: nil)
+    }
+    
+    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+//        let nc = segue.destination as! NoteCollectionPickerViewController
+//        nc.initialNoteCollectionId = freePlayNoteCollection
+        
+        let controller = self.storyboard?.instantiateViewController(withIdentifier: "scalePicker") as! NoteCollectionPickerViewController
+        controller.backgroundImageID = backgroundImage
+//        print(controller.)
+    }
 
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
+        if popover!.mainPopoverVisible {return}
         currentButtonLayer = periphButtonArr[sender.tag].pulsate(ilayer: currentButtonLayer)
         if !returnValidState(iinputState: currentState, istateArr: [
             State.NotesTestCountIn_Tempo,
@@ -851,19 +913,37 @@ class MainViewController: UIViewController {
         }
         UIView.setAnimationsEnabled(true)
         if developmentMode > 0 { print("PeripheralButtonButtonDown \(currentState)") }
-        switch sender.tag {
-        case 0:
-            PeripheralButton0OnButtonDown(sender.tag)
-        case 1:
-            PeripheralButton1OnButtonDown(sender.tag)
-        case 2:
-            PeripheralButton2OnButtonDown(sender.tag)
-        case 3:
-            //            PeripheralButton3OnButtonDown()
-            break
-        default:
-            break
+        
+        if !(lc.currentLevelKey?.contains("freePlay"))! {
+            switch sender.tag {
+            case 0:
+                PeripheralButton0OnButtonDown(sender.tag)
+            case 1:
+                PeripheralButton1OnButtonDown(sender.tag)
+            case 2:
+                PeripheralButton2OnButtonDown(sender.tag)
+            case 3:
+                //            PeripheralButton3OnButtonDown()
+                break
+            default:
+                break
+            }
+        } else {
+            switch sender.tag {
+            case 0:
+                PeripheralButton1OnButtonDown(0)
+            case 1:
+                PeripheralButton2OnButtonDown(1)
+            case 2:
+                PeripheralButton2OnButtonDown(sender.tag)
+            case 3:
+                //            PeripheralButton3OnButtonDown()
+                break
+            default:
+                break
+            }
         }
+
     }
 
     // Peripheral Buttons Down
@@ -872,8 +952,8 @@ class MainViewController: UIViewController {
             return
         }
 
-        let s = #selector(pc!.enactTestReminder) as Selector
-        wt.stopWaitThenOfType(iselector: s)
+//        let s = #selector(pc!.enactTestReminder) as Selector
+        wt.stopWaitThenOfType(iselector: #selector(pc!.enactTestReminder) as Selector)
         pc!.reminderPopup.hide()
 
         // Scale Test States - enable test
@@ -996,6 +1076,7 @@ class MainViewController: UIViewController {
 
     @IBAction func ResultButtonDown(_: Any) {
         if developmentMode > 0 { print("currentState \(currentState)") }
+        if popover!.mainPopoverVisible {return}
         pc!.showResultButtonPopup()
     }
 
@@ -1031,6 +1112,9 @@ class MainViewController: UIViewController {
                 progressTutorial()
             }
         }
+        
+        if popover!.mainPopoverVisible {return}
+        
         if developmentMode > 0 { print("in fret pressed state \(currentState)") }
 
         let validState = returnValidState(iinputState: currentState, istateArr: [
@@ -1046,6 +1130,8 @@ class MainViewController: UIViewController {
             
             State.EarTrainingResponse,
             State.EarTrainingIdle,
+            
+
         ])
         if validState {
             var str = buttonDict[inputNumb]!
@@ -1294,8 +1380,10 @@ class MainViewController: UIViewController {
     func hideAllFretMarkers(_ overrideAllMarkersFlag: Bool = false) {
         if allMarkersDisplayed || overrideAllMarkersFlag {
             killCurrentDotFade()
-            if defaultPeripheralIcon.indices.contains(2) {
-                setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
+            
+            let idx = lc.currentLevelKey!.contains("freePlay") ? 1 : 2
+            if defaultPeripheralIcon.indices.contains(idx) {
+                setButtonImage(ibutton: periphButtonArr[idx], iimageStr: defaultPeripheralIcon[idx])
             }
             
             for (str, _) in dotDict {
@@ -1758,8 +1846,10 @@ class MainViewController: UIViewController {
         
 //        popover?.addToView()
         
-        print("test button on ")
-        fretButtonDict["A1"]?.layer.zPosition = 500
+//        print("test button on ")
+//        fretButtonDict["A1"]?.layer.zPosition = 500
+        
+        popover?.addToView()
     }
 
     // Testing
@@ -1999,6 +2089,72 @@ extension SpringImageView {
             self.force = 0.5
             self.duration = 0.4
             self.delay = 0.0
+        case "tutorialSlideIn":
+            self.animation = "slideRight"
+            self.curve = "easeInOut"
+            self.force = 5.0
+            self.duration = 0.6
+        case "fadeOnPopoverDismiss":
+            self.animation = "fadeOut"
+            self.curve = "easeIn"
+            self.force = 1.0
+            self.duration = 0.4
+        default:
+            return
+        }
+        UIView.setAnimationsEnabled(true)
+        self.animate()
+    }
+}
+
+extension SpringLabel {
+    public func setAndPlayAnim(_ itype: String = "titleTextIntro") {
+        switch itype {
+        case "titleTextIntro":
+            self.animation = "slideRight"
+            self.curve = "easeInOut"
+            self.force = 5.0
+            self.duration = 0.6
+        case "subTitleTextIntro":
+            self.animation = "squeezeUp"
+            self.curve = "easeIn"
+            self.force = 1.0
+            self.duration = 0.4
+//            self.rotate = 0.7
+//            self.scaleX = 1.7
+//            self.scaleY = 1.7
+        case "subTextIntro" :
+            self.animation = "slideLeft"
+            self.curve = "spring"
+            self.force = 1.0
+            self.duration = 0.6
+        case "buttonTextIntro" :
+            self.animation = "fadeIn"
+            self.curve = "easeIn"
+            self.force = 1.0
+            self.duration = 1.6
+        default:
+            return
+        }
+        UIView.setAnimationsEnabled(true)
+        self.animate()
+    }
+}
+
+extension SpringButton {
+    public func setAndPlayAnim(_ itype: String = "slamButton") {
+        switch itype {
+        case "slamButton":
+            self.animation = "zoomIn"
+            self.curve = "easeOut"
+            self.force = 1.0
+            self.duration = 0.4
+            self.delay = 0.0
+        case "xButtonIntro" :
+            self.animation = "fadeIn"
+            self.curve = "easeIn"
+            self.force = 1.0
+            self.duration = 1.6
         default:
             return
         }

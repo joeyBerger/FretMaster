@@ -103,7 +103,16 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Fret Master" id="r7I-vH-J5p"/>
+                    <navigationItem key="navigationItem" title="Fret Master" id="r7I-vH-J5p">
+                        <rightBarButtonItems>
+                            <barButtonItem title="Item" image="outline_settings_black_18dp-scaled" id="fRg-aU-yVs"/>
+                            <barButtonItem title="Item" image="icons8-guitar-strings-50" id="CCm-rx-QBx">
+                                <connections>
+                                    <action selector="PlaygroundButton:" destination="PUF-EH-UAq" id="V7g-Ih-eaD"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
+                    </navigationItem>
                     <connections>
                         <outlet property="Button0" destination="zQH-vp-XLQ" id="mn5-3c-wFG"/>
                         <outlet property="Button1" destination="M5K-Dk-y4l" id="ZPy-MQ-9Ag"/>
@@ -116,6 +125,122 @@
                 <placeholder placeholderIdentifier="IBFirstResponder" id="OSm-hb-dHi" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
             <point key="canvasLocation" x="-662.31884057971024" y="54.910714285714285"/>
+        </scene>
+        <!--Item 2-->
+        <scene sceneID="RhW-1Y-Thg">
+            <objects>
+                <viewController storyboardIdentifier="arpeggioPicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kdb-tQ-JfV" customClass="NoteCollectionPickerViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="3wL-np-JLY"/>
+                        <viewControllerLayoutGuide type="bottom" id="BL0-cm-nUv"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="FIj-JE-aby">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="D8G-J7-AFQ">
+                                <rect key="frame" x="0.0" y="44" width="414" height="643"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ArpeggioPickerViewCell" id="ugC-jw-6cF" customClass="SettingViewCell" customModule="MetronomeIdea" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ugC-jw-6cF" id="deP-73-OrS">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="kdb-tQ-JfV" id="Sl3-I1-1qI"/>
+                                    <outlet property="delegate" destination="kdb-tQ-JfV" id="od4-Jv-2i1"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="D8G-J7-AFQ" secondAttribute="trailing" id="Ltl-eM-sKr"/>
+                            <constraint firstItem="BL0-cm-nUv" firstAttribute="top" secondItem="D8G-J7-AFQ" secondAttribute="bottom" id="U5W-73-OJ7"/>
+                            <constraint firstItem="D8G-J7-AFQ" firstAttribute="leading" secondItem="FIj-JE-aby" secondAttribute="leading" id="hLL-qI-EeR"/>
+                            <constraint firstItem="D8G-J7-AFQ" firstAttribute="top" secondItem="3wL-np-JLY" secondAttribute="bottom" id="oM8-Q8-KMB"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 2" id="Ez1-L1-eDG"/>
+                    <connections>
+                        <outlet property="arpeggioTableView" destination="D8G-J7-AFQ" id="NkR-Id-AS2"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="ysr-oY-Sud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="866.66666666666674" y="-644.02173913043487"/>
+        </scene>
+        <!--Item 1-->
+        <scene sceneID="QxP-aW-gJa">
+            <objects>
+                <viewController storyboardIdentifier="scalePicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oCh-v3-kbN" customClass="NoteCollectionPickerViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="2Qp-5C-baz"/>
+                        <viewControllerLayoutGuide type="bottom" id="Dto-zZ-tYO"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="ysT-rW-DIC">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="singleLineEtched" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="uPN-Fh-V2f">
+                                <rect key="frame" x="0.0" y="44" width="414" height="643"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ScalePickerViewCell" id="KNm-8v-ihZ" customClass="SettingViewCell" customModule="MetronomeIdea" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KNm-8v-ihZ" id="8h9-E1-tyo">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.91598278634007124" green="0.95686274509803915" blue="0.93641429128388465" alpha="0.50347816780821919" colorSpace="custom" customColorSpace="sRGB"/>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="oCh-v3-kbN" id="Oqb-06-CSo"/>
+                                    <outlet property="delegate" destination="oCh-v3-kbN" id="gjp-Dk-hx1"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstAttribute="trailing" secondItem="uPN-Fh-V2f" secondAttribute="trailing" id="57N-wU-vPx"/>
+                            <constraint firstItem="uPN-Fh-V2f" firstAttribute="leading" secondItem="ysT-rW-DIC" secondAttribute="leading" id="ErZ-nk-ian"/>
+                            <constraint firstItem="Dto-zZ-tYO" firstAttribute="top" secondItem="uPN-Fh-V2f" secondAttribute="bottom" id="coB-oy-X8d"/>
+                            <constraint firstItem="uPN-Fh-V2f" firstAttribute="top" secondItem="2Qp-5C-baz" secondAttribute="bottom" id="ooX-cJ-rXE"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Item 1" id="EKR-gw-Qan"/>
+                    <connections>
+                        <outlet property="scaleTableView" destination="uPN-Fh-V2f" id="dyd-N6-UgU"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="VMg-c0-jKP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="866.66666666666674" y="-1305.163043478261"/>
+        </scene>
+        <!--Tab Bar Controller-->
+        <scene sceneID="Tah-zq-EsB">
+            <objects>
+                <tabBarController id="xL7-hD-R2g" sceneMemberID="viewController">
+                    <navigationItem key="navigationItem" id="zH1-t0-QBp"/>
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Mwu-Tw-xqP">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="oCh-v3-kbN" kind="relationship" relationship="viewControllers" id="6vy-vE-Iq1"/>
+                        <segue destination="kdb-tQ-JfV" kind="relationship" relationship="viewControllers" id="TKY-KF-oaj"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="eLH-rA-KmQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-52" y="-974"/>
         </scene>
         <!--SettingsViewController-->
         <scene sceneID="Y5e-jA-XrR">
@@ -364,13 +489,13 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Label" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VS-lo-sbu">
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="dfafasdfsda" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="4VS-lo-sbu">
                                 <rect key="frame" x="78" y="64" width="255" height="43"/>
                                 <color key="backgroundColor" systemColor="systemRedColor" red="1" green="0.23137254900000001" blue="0.18823529410000001" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="Rxq-83-9t3"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" type="system" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -515,11 +640,18 @@
                         </constraints>
                     </view>
                     <navigationItem key="navigationItem" id="WbH-SB-Dkq">
-                        <barButtonItem key="rightBarButtonItem" image="outline_settings_black_18dp-scaled" id="Kjp-Xs-Fjq">
-                            <connections>
-                                <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="i8u-2u-Zeg"/>
-                            </connections>
-                        </barButtonItem>
+                        <rightBarButtonItems>
+                            <barButtonItem image="outline_settings_black_18dp-scaled" id="Kjp-Xs-Fjq">
+                                <connections>
+                                    <action selector="onSettingsButtonDown:" destination="enO-xU-PLA" id="i8u-2u-Zeg"/>
+                                </connections>
+                            </barButtonItem>
+                            <barButtonItem title="Item" image="icons8-guitar-strings-50" id="3xA-NC-XPa">
+                                <connections>
+                                    <action selector="FreePlayChooseNoteCollection:" destination="enO-xU-PLA" id="cbO-iI-GHD"/>
+                                </connections>
+                            </barButtonItem>
+                        </rightBarButtonItems>
                     </navigationItem>
                     <connections>
                         <outlet property="FretboardDummy" destination="mtX-I4-btC" id="OAb-jK-4sS"/>
@@ -534,12 +666,14 @@
                         <outlet property="TempoButton" destination="Eky-Jw-yq4" id="Qyd-eA-5Ic"/>
                         <outlet property="TempoDownButton" destination="SkT-sf-s6T" id="gWj-rG-6YP"/>
                         <outlet property="TempoUpButton" destination="817-bu-dhS" id="6Jc-cR-S1D"/>
+                        <outlet property="leftBarButtonItem" destination="3xA-NC-XPa" id="2Mo-Sv-ONj"/>
                         <outlet property="mainPopover" destination="Lkq-Ib-07l" id="LJe-O9-cJV"/>
                         <outlet property="mainPopoverBodyText" destination="b2G-Eb-z8v" id="YaT-6n-0GU"/>
                         <outlet property="mainPopoverButton" destination="DgC-Vr-t5a" id="E2O-GK-cai"/>
                         <outlet property="mainPopoverCloseButton" destination="kTQ-z6-t8X" id="zlt-b0-Sgd"/>
                         <outlet property="mainPopoverTitle" destination="MGT-zX-jv3" id="eqC-2U-oln"/>
                         <segue destination="o4J-d1-JWA" kind="show" identifier="SettingsView" id="FIG-8u-KQM"/>
+                        <segue destination="xL7-hD-R2g" kind="show" identifier="NoteCollectionPicker" id="ecr-RV-pel"/>
                     </connections>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="7A7-cn-DNj" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
@@ -633,6 +767,7 @@
     </scenes>
     <resources>
         <image name="Fretboard4.png" width="355" height="979"/>
+        <image name="icons8-guitar-strings-50" width="50" height="50"/>
         <image name="outline_settings_black_18dp-scaled" width="29" height="29"/>
         <image name="xmark" catalog="system" width="128" height="113"/>
     </resources>
