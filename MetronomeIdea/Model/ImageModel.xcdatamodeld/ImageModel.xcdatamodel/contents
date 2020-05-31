@@ -1,10 +1,24 @@
 <?xml version="1.0" encoding="UTF-8" standalone="yes"?>
-<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="15702" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="16119" systemVersion="19D76" minimumToolsVersion="Automatic" sourceLanguage="Swift" userDefinedModelVersionIdentifier="">
     <entity name="ImageData" representedClassName="ImageData" syncable="YES" codeGenerationType="class">
         <attribute name="backgroundImage" optional="YES" attributeType="Binary"/>
         <attribute name="id" optional="YES" attributeType="String"/>
     </entity>
+    <entity name="RecordingData" representedClassName="RecordingData" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String" customClassName="[String]"/>
+        <attribute name="notes" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="time" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+        <attribute name="timeDelta" optional="YES" attributeType="Transformable" valueTransformerName="NSSecureUnarchiveFromData" customClassName="[String]"/>
+    </entity>
+    <entity name="RecordingDataStrs" representedClassName="RecordingDataStrs" syncable="YES" codeGenerationType="class">
+        <attribute name="id" optional="YES" attributeType="String"/>
+        <attribute name="notes" optional="YES" attributeType="String"/>
+        <attribute name="time" optional="YES" attributeType="String"/>
+        <attribute name="timeDelta" optional="YES" attributeType="String"/>
+    </entity>
     <elements>
-        <element name="ImageData" positionX="-63" positionY="-18" width="128" height="28"/>
+        <element name="ImageData" positionX="-63" positionY="-18" width="128" height="73"/>
+        <element name="RecordingData" positionX="-63" positionY="-27" width="128" height="103"/>
+        <element name="RecordingDataStrs" positionX="-54" positionY="9" width="128" height="103"/>
     </elements>
 </model>

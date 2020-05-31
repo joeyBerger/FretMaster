@@ -15,6 +15,7 @@ let defaultColor = DefaultColor()
 let backgroundImage = BackgroundImage()
 var globalDataController = DataController(modelName: "ImageModel")
 var volume = Volume()
+var currentRecordingId = ""
 
 class MenuViewController: UIViewController {
     @IBOutlet var Button0: UIButton!
@@ -48,6 +49,8 @@ class MenuViewController: UIViewController {
                 volume.volumeTypes[volumeType] = vol as? Float
             }
         }
+        
+        globalDataController.load()
         
 //        setupHiddenButtons()
 //        resetData()

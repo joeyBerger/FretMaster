@@ -1,23 +1,44 @@
 import UIKit
+import CoreData
 
 class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UITableViewDataSource, UITableViewDelegate {
+    
     @IBOutlet weak var scaleTableView: UITableView!
     @IBOutlet weak var arpeggioTableView: UITableView!
+    @IBOutlet weak var recordingTableView: UITableView!
     
     var cellReuseIdentifier = "ScalePickerViewCell"
-    var pickerList:[String] = [""]
-    var selectedCell = 0
+    var pickerList:[String] = []
+    var selectedCell = -1
     var backgroundImageID = 0
+    var recordingInfo: [String] = []
     
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
-        let tableView = self.restorationIdentifier == "scalePicker" ? scaleTableView : arpeggioTableView
         
-        //icons8-musical-50
-//        myTabBar?.tintColor = UIColor.white
-//        tabBarItem.title = ""
+        var tableView = scaleTableView
+        if self.restorationIdentifier == "arpeggioPicker" {
+            tableView = arpeggioTableView
+        } else if self.restorationIdentifier == "recordingPicker" {
+            tableView = recordingTableView
+            let fetchRequest: NSFetchRequest<RecordingData> = RecordingData.fetchRequest()
+            if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
+                for result in results {
+                    pickerList.append(result.id!)
+                }
+                pickerList.reverse()
+                print("picker list",pickerList)
+                for (i,id) in pickerList.enumerated() {
+                    if id == currentRecordingId {
+                        selectedCell = i
+                        break
+                    }
+                }
+            }
+        }
         
+        print("backgroundImageID ", backgroundImageID)
         
         UITabBar.appearance().tintColor = UIColor.white
         tableView!.backgroundColor = UIColor.clear
@@ -25,46 +46,38 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         UITabBar.appearance().barTintColor = defaultColor.MenuButtonColor
         tabBarController?.tabBar.barStyle = UIBarStyle.blackOpaque
         tabBarController?.tabBar.isTranslucent = false
-        
-        
-//        let myTabBarItem1 = (self.tabBarController?.tabBar.items?[0])! as UITabBarItem
-//        myTabBarItem1.image = UIImage(named: "icons8-musical-50")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
-////        myTabBarItem1.image.f
-//        myTabBarItem1.selectedImage = UIImage(named: "icons8-musical-50 ")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
-//        myTabBarItem1.title = "Scales"
-//        let size:CGFloat = 8
-//        myTabBarItem1.imageInsets = UIEdgeInsets(top: 0, left: size, bottom: 0, right: size)
-        
-        
+       
         let fontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19.0)]
         UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
-//        UITabBarItem.appearance().title = "Scales"
         
-        
-        pickerList.removeAll()
-        let noteCollection = self.restorationIdentifier == "scalePicker" ? LevelConstruct().scale : LevelConstruct().arpeggio
-        for exerciseArr in noteCollection {
-            for exercise in exerciseArr {
-                pickerList.append(exercise)
+        if !self.restorationIdentifier!.contains("record") {
+            pickerList.removeAll()
+            let noteCollection = self.restorationIdentifier == "scalePicker" ? LevelConstruct().scale : LevelConstruct().arpeggio
+            for exerciseArr in noteCollection {
+                for exercise in exerciseArr {
+                    pickerList.append(exercise)
+                }
             }
-        }
-        let stringsToRemove = ["_","Up","Both","Tempo"]
-        for (i,_) in pickerList.enumerated() {
-            for str in stringsToRemove {
-                pickerList[i] = pickerList[i].replacingOccurrences(of: str, with: "")
+            let stringsToRemove = ["_","Up","Both","Tempo"]
+            for (i,_) in pickerList.enumerated() {
+                for str in stringsToRemove {
+                    pickerList[i] = pickerList[i].replacingOccurrences(of: str, with: "")
+                }
             }
-        }
-        pickerList = pickerList.uniques
-        
-        let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
-        selectedCell = -1
-        for (i,item) in pickerList.enumerated() {
-            if item == freePlayUserDefault as! String {
-                selectedCell = i
-                break
+            pickerList = pickerList.uniques
+            
+            let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
+            selectedCell = -1
+            for (i,item) in pickerList.enumerated() {
+                if item == freePlayUserDefault as! String {
+                    selectedCell = i
+                    break
+                }
             }
+        } else {
+            //sort time list?
         }
-        
+
         var styler: ViewStyler?
         styler = ViewStyler(ivc: self)
         styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(backgroundImageID).jpg")
@@ -75,8 +88,10 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     }
     
     override func viewWillDisappear(_ animated: Bool) {
-        if navigationController?.viewControllers.index(of: self) == nil && selectedCell > -1 {
+        if navigationController?.viewControllers.index(of: self) == nil && selectedCell > -1 && !self.restorationIdentifier!.contains("record") {
             UserDefaults.standard.set(pickerList[selectedCell], forKey: "freePlayNoteCollection")
+        } else if self.restorationIdentifier!.contains("record") && selectedCell > -1 {
+            currentRecordingId = pickerList[selectedCell]
         }
         super.viewWillDisappear(animated)
     }
@@ -86,9 +101,18 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
+        
         cellReuseIdentifier = self.restorationIdentifier == "scalePicker" ? "ScalePickerViewCell" : "ArpeggioPickerViewCell"
+        if self.restorationIdentifier == "scalePicker" {
+            cellReuseIdentifier = "ScalePickerViewCell"
+        } else if self.restorationIdentifier == "arpeggioPicker" {
+            cellReuseIdentifier = "ArpeggioPickerViewCell"
+        } else {
+            cellReuseIdentifier = "RecordingPickerViewCell"
+        }
+        
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
-        let labelStr = ScaleCollection(ivc: MainViewController()).returnReadableScaleName(iinput: pickerList[(indexPath as NSIndexPath).row])
+        let labelStr = !cellReuseIdentifier.contains("Record") ? ScaleCollection(ivc: MainViewController()).returnReadableScaleName(iinput: pickerList[(indexPath as NSIndexPath).row]) : pickerList[(indexPath as NSIndexPath).row]
         cell.textLabel?.text = labelStr
 //        cell.textLabel?.textColor = defaultColor.MenuButtonTextColor
         tableView.tableFooterView = UIView(frame: .zero)

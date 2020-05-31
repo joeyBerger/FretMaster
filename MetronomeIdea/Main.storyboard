@@ -177,7 +177,55 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ysr-oY-Sud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="866.66666666666674" y="-644.02173913043487"/>
+            <point key="canvasLocation" x="716" y="-1603"/>
+        </scene>
+        <!--Recordings-->
+        <scene sceneID="Bff-gf-5NQ">
+            <objects>
+                <viewController storyboardIdentifier="recordingPicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5J6-lY-Xvr" customClass="NoteCollectionPickerViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                    <layoutGuides>
+                        <viewControllerLayoutGuide type="top" id="iai-vs-r7X"/>
+                        <viewControllerLayoutGuide type="bottom" id="CHa-UZ-Nbq"/>
+                    </layoutGuides>
+                    <view key="view" contentMode="scaleToFill" id="6C9-Id-vmL">
+                        <rect key="frame" x="0.0" y="0.0" width="414" height="736"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <subviews>
+                            <tableView clipsSubviews="YES" contentMode="scaleToFill" alwaysBounceVertical="YES" dataMode="prototypes" style="plain" separatorStyle="default" rowHeight="-1" estimatedRowHeight="-1" sectionHeaderHeight="28" sectionFooterHeight="28" translatesAutoresizingMaskIntoConstraints="NO" id="X3n-zh-qQr">
+                                <rect key="frame" x="0.0" y="44" width="414" height="643"/>
+                                <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                                <prototypes>
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RecordingPickerViewCell" id="ShO-Qg-LMf" customClass="SettingViewCell" customModule="MetronomeIdea" customModuleProvider="target">
+                                        <rect key="frame" x="0.0" y="28" width="414" height="43.666667938232422"/>
+                                        <autoresizingMask key="autoresizingMask"/>
+                                        <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ShO-Qg-LMf" id="m0q-5c-CFd">
+                                            <rect key="frame" x="0.0" y="0.0" width="414" height="43.666667938232422"/>
+                                            <autoresizingMask key="autoresizingMask"/>
+                                        </tableViewCellContentView>
+                                    </tableViewCell>
+                                </prototypes>
+                                <connections>
+                                    <outlet property="dataSource" destination="5J6-lY-Xvr" id="yhX-JZ-9wR"/>
+                                    <outlet property="delegate" destination="5J6-lY-Xvr" id="iKN-Te-Nfr"/>
+                                </connections>
+                            </tableView>
+                        </subviews>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <constraints>
+                            <constraint firstItem="X3n-zh-qQr" firstAttribute="leading" secondItem="6C9-Id-vmL" secondAttribute="leading" id="1WD-EY-Vmw"/>
+                            <constraint firstAttribute="trailing" secondItem="X3n-zh-qQr" secondAttribute="trailing" id="2nH-9W-dSm"/>
+                            <constraint firstItem="CHa-UZ-Nbq" firstAttribute="top" secondItem="X3n-zh-qQr" secondAttribute="bottom" id="KZh-BC-2Ln"/>
+                            <constraint firstItem="X3n-zh-qQr" firstAttribute="top" secondItem="iai-vs-r7X" secondAttribute="bottom" id="xZy-JF-LUl"/>
+                        </constraints>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="Recordings" id="Z4e-7W-Cq6"/>
+                    <connections>
+                        <outlet property="recordingTableView" destination="X3n-zh-qQr" id="F63-pY-gec"/>
+                    </connections>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="c02-RW-NS4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="688.40579710144937" y="-849.45652173913049"/>
         </scene>
         <!--Scales-->
         <scene sceneID="QxP-aW-gJa">
@@ -228,7 +276,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VMg-c0-jKP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="866.66666666666674" y="-1305.163043478261"/>
+            <point key="canvasLocation" x="716" y="-2270"/>
         </scene>
         <!--Tab Bar Controller-->
         <scene sceneID="Tah-zq-EsB">
@@ -243,11 +291,12 @@
                     <connections>
                         <segue destination="oCh-v3-kbN" kind="relationship" relationship="viewControllers" id="6vy-vE-Iq1"/>
                         <segue destination="kdb-tQ-JfV" kind="relationship" relationship="viewControllers" id="TKY-KF-oaj"/>
+                        <segue destination="5J6-lY-Xvr" kind="relationship" relationship="viewControllers" id="TQP-zn-4xH"/>
                     </connections>
                 </tabBarController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="eLH-rA-KmQ" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="-52" y="-974"/>
+            <point key="canvasLocation" x="-520" y="-1517"/>
         </scene>
         <!--SettingsViewController-->
         <scene sceneID="Y5e-jA-XrR">

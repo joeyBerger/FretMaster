@@ -3,6 +3,7 @@ import AVFoundation
 import Foundation
 import UIKit
 import SCLAlertView
+import CoreData
 
 class MainViewController: UIViewController {
     // Outlets
@@ -542,6 +543,15 @@ class MainViewController: UIViewController {
             freePlayNoteCollection = freePlayUserDefault as! String
             resultsLabelDefaultText = sCollection?.returnReadableScaleName(iinput: freePlayNoteCollection) as! String
           
+            if currentRecordingId == "" {
+                let fetchRequest: NSFetchRequest<RecordingData> = RecordingData.fetchRequest()
+                if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
+                    if results.count > 0 {
+                        currentRecordingId = results[results.count-1].id!
+                    }
+                }
+            }
+            
             let availableTypes = [lc.scale,lc.arpeggio]
             var typeIdx = -1
             for (i,typesArr) in availableTypes.enumerated() {
@@ -891,17 +901,31 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func FreePlayChooseNoteCollection(_ sender: Any) {
-        UIView.setAnimationsEnabled(false)
-        performSegue(withIdentifier: "NoteCollectionPicker", sender: nil)
+        if returnValidState(iinputState: currentState, istateArr: [
+            State.NotesTestShowNotes,
+            State.NotesTestIdle_NoTempo,
+        ]) {
+            UIView.setAnimationsEnabled(false)
+            performSegue(withIdentifier: "NoteCollectionPicker", sender: nil)
+        }
     }
     
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
 //        let nc = segue.destination as! NoteCollectionPickerViewController
 //        nc.initialNoteCollectionId = freePlayNoteCollection
         
-        let controller = self.storyboard?.instantiateViewController(withIdentifier: "scalePicker") as! NoteCollectionPickerViewController
-        controller.backgroundImageID = backgroundImage
+//        let controller = self.storyboard?.instantiateViewController(withIdentifier: "scalePicker") as! NoteCollectionPickerViewController
+//        controller.backgroundImageID = 5
 //        print(controller.)
+        
+//        let navVC = tabBarController?.viewControllers![1] as! UINavigationController
+//        let cartTableViewController = navVC.topViewController as! NoteCollectionPickerViewController
+        
+//        let navController = self.tabBarController!.viewControllers![0] as! UINavigationController
+//        let vc = self.tabBarController!.viewControllers![0] as! NoteCollectionPickerViewController
+//        let vc = navController.topViewController as! NoteCollectionPickerViewController
+//        vc.backgroundImageID = 1
+//        vc.templateForCell = templates
     }
 
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
@@ -1059,8 +1083,8 @@ class MainViewController: UIViewController {
             return
         }
 
+        //Recording State
         if (lc.currentLevelKey?.contains("freePlay"))! && iwchButton != 1 {
-            //Recording State
             if returnValidState(iinputState: currentState, istateArr: [
                 State.NotesTestShowNotes,
                 State.NotesTestIdle_NoTempo,
@@ -1080,8 +1104,11 @@ class MainViewController: UIViewController {
                 setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: defaultPeripheralIcon[iwchButton])
                 currentState = State.NotesTestIdle_NoTempo
                 setNavBarColor()
-                playRecording()
-                setButtonImage(ibutton: periphButtonArr[3], iimageStr: activePeripheralIcon[3])
+                if recordData.count > 0 {
+                    saveRecording()
+                    playRecording()
+                    setButtonImage(ibutton: periphButtonArr[3], iimageStr: activePeripheralIcon[3])
+                }
                 return
             }
         }
@@ -1105,9 +1132,9 @@ class MainViewController: UIViewController {
 
     @IBAction func PeripheralButton3OnButtonDown(_ iwchButton: Int) {
 
-        if recordData.count == 0 {return}
+//        if recordData.count == 0 {return}
 
-        if (lc.currentLevelKey?.contains("freePlay"))! {
+        if (lc.currentLevelKey?.contains("freePlay"))! && currentRecordingId != "" {
             //Recording State
             if returnValidState(iinputState: currentState, istateArr: [
                 State.NotesTestShowNotes,
@@ -1140,6 +1167,14 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func onSettingsButtonDown(_: Any) {
+        if (lc.currentLevelKey?.contains("freePlay"))! {
+            if !returnValidState(iinputState: currentState, istateArr: [
+                State.NotesTestShowNotes,
+                State.NotesTestIdle_NoTempo,
+            ]) {
+                return
+            }
+        }
         met!.endMetronome()
         setNavBarColor()
         wt.stopWaitThenOfType(iselector: #selector(et!.beginEarTrainingHelper) as Selector)
@@ -1229,6 +1264,7 @@ class MainViewController: UIViewController {
                 }
                 let r = InputData()
                 r.time = CFAbsoluteTimeGetCurrent()
+                print(r.time)
                 r.note = buttonDict[inputNumb]!
                 recordData.append(r)
                 print(recordData)
@@ -1911,7 +1947,17 @@ class MainViewController: UIViewController {
 //        print("test button on ")
 //        fretButtonDict["A1"]?.layer.zPosition = 500
         
-        popover?.addToView()
+//        popover?.addToView()
+        
+//        let date = Date()
+//        let calendar = Calendar.current
+//
+//        let hour = calendar.component(.hour, from: date)
+//        let minutes = calendar.component(.minute, from: date)
+//        let seconds = calendar.component(.second, from: date)
+//        print("hours = \(hour):\(minutes):\(seconds)")
+        
+        print(generateTimeStamp())
     }
 
     // Testing
@@ -1957,12 +2003,66 @@ class MainViewController: UIViewController {
         recordData.removeAll()
     }
     
+    func setupPlayRecordingData() -> [InputData] {
+        var recordedData: [InputData] = []
+        let fetchRequest: NSFetchRequest<RecordingData> = RecordingData.fetchRequest()
+        if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
+            for result in results {
+                if result.id == currentRecordingId {
+                    for (i,_) in result.notes!.enumerated() {
+                        let input = InputData()
+                        input.note = result.notes![i]
+                        input.time = Double(result.time![i])!
+                        recordedData.append(input)
+                    }
+                }
+            }
+        }
+        return recordedData
+    }
+    
     func playRecording() {
         currentState = State.RecordingPlayback
+        recordData = setupPlayRecordingData()
+        recordStartTime = recordData[0].time
         for (i, data) in recordData.enumerated() {
             let lastNote = i == recordData.count - 1
             wt.waitThen(itime: data.time - recordStartTime, itarget: self, imethod: #selector(playSoundHelper) as Selector, irepeats: false, idict: ["Note": data.note as AnyObject,"LastNote": lastNote as AnyObject])
         }
+    }
+    
+    func saveRecording() {
+        if recordData.count == 0 {return}
+        let recordingInstance = RecordingData(context: globalDataController.viewContext)
+        var notes: [String] = []
+        var time: [String] = []
+        for data in recordData {
+            notes.append(data.note)
+            time.append(String(data.time))
+        }
+        let currentTime = generateTimeStamp()
+        recordingInstance.timeDelta = [""]
+        recordingInstance.id = currentTime
+        recordingInstance.notes = notes
+        recordingInstance.time = time
+        do {
+            try globalDataController.viewContext.save()
+        } catch {
+            print(error.localizedDescription)
+        }
+        currentRecordingId = currentTime
+    }
+    
+    func generateTimeStamp() -> String {
+        let today = Date()
+//        let formatter2 = DateFormatter()
+//        formatter2.timeStyle = .medium
+        
+        let formatter3 = DateFormatter()
+//        formatter3.dateFormat = "HH:mm E, d MMM y"
+        formatter3.dateFormat = "HH:mm:ss E, d MMM y"
+        print("time",formatter3.string(from: today))
+        return formatter3.string(from: today)
     }
 
     @IBAction func earTrainingPressed(_: Any) {
