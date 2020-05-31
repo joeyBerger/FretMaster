@@ -149,7 +149,7 @@ class MainViewController: UIViewController {
         case Idle
         case RecordingIdle
         case Recording
-        case Playback
+        case RecordingPlayback
         
         case EarTrainingIdle
         case EarTrainingCall
@@ -416,9 +416,9 @@ class MainViewController: UIViewController {
     }
 
     func setupToSpecificState() {
-        if currentState == State.RecordingIdle {
-            setButtonState(ibutton: PeriphButton0, ibuttonState: false)
-        }
+//        if currentState == State.RecordingIdle {
+//            setButtonState(ibutton: PeriphButton0, ibuttonState: false)
+//        }
 
         // Scale/Arpeggio test
         if lc.currentLevelKey!.contains("scale") || lc.currentLevelKey!.contains("arpeggio") {
@@ -434,8 +434,8 @@ class MainViewController: UIViewController {
             setupCurrentTask()
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
         } else {
-            defaultPeripheralIcon = ["outline_volume_up_black_18dp", "outline_info_black_18dp"]
-            activePeripheralIcon = ["outline_volume_off_black_18dp", "outline_undo_black_18dp"]
+            defaultPeripheralIcon = ["outline_volume_up_black_18dp", "outline_info_black_18dp","icons8-microphone-50","outline_play_arrow_black_18dp"]
+            activePeripheralIcon = ["outline_volume_off_black_18dp", "outline_undo_black_18dp","outline_stop_black_18dp","outline_stop_black_18dp"]
             setupCurrentTask()
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
             leftBarButtonItem?.isEnabled = true
@@ -546,10 +546,12 @@ class MainViewController: UIViewController {
             var typeIdx = -1
             for (i,typesArr) in availableTypes.enumerated() {
                 if typeIdx == -1 {
-                    for type in typesArr {
-                        if type.contains(freePlayNoteCollection) {
-                            typeIdx = i
-                            break
+                    for typeArr in typesArr {
+                        for type in typeArr {
+                            if type.contains(freePlayNoteCollection) {
+                                typeIdx = i
+                                break
+                            }
                         }
                     }
                 }
@@ -937,7 +939,7 @@ class MainViewController: UIViewController {
             case 2:
                 PeripheralButton2OnButtonDown(sender.tag)
             case 3:
-                //            PeripheralButton3OnButtonDown()
+                PeripheralButton3OnButtonDown(sender.tag)
                 break
             default:
                 break
@@ -1057,6 +1059,33 @@ class MainViewController: UIViewController {
             return
         }
 
+        if (lc.currentLevelKey?.contains("freePlay"))! && iwchButton != 1 {
+            //Recording State
+            if returnValidState(iinputState: currentState, istateArr: [
+                State.NotesTestShowNotes,
+                State.NotesTestIdle_NoTempo,
+            ]) {
+                setupCurrentTaskHelper()
+                setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
+                currentState = State.Recording
+                setNavBarColor(istate: "Recording")
+                recordStartTime = 0;
+                recordData.removeAll()
+                hideAllFretMarkers()
+                return
+            } else if returnValidState(iinputState: currentState, istateArr: [
+                State.Recording,
+            ]) {
+                setupCurrentTaskHelper()
+                setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: defaultPeripheralIcon[iwchButton])
+                currentState = State.NotesTestIdle_NoTempo
+                setNavBarColor()
+                playRecording()
+                setButtonImage(ibutton: periphButtonArr[3], iimageStr: activePeripheralIcon[3])
+                return
+            }
+        }
+        
         // Scale/Arpeggio Test States
         if returnValidState(iinputState: currentState, istateArr: [
             State.NotesTestIdle_NoTempo,
@@ -1074,6 +1103,36 @@ class MainViewController: UIViewController {
         }
     }
 
+    @IBAction func PeripheralButton3OnButtonDown(_ iwchButton: Int) {
+
+        if recordData.count == 0 {return}
+
+        if (lc.currentLevelKey?.contains("freePlay"))! {
+            //Recording State
+            if returnValidState(iinputState: currentState, istateArr: [
+                State.NotesTestShowNotes,
+                State.NotesTestIdle_NoTempo,
+            ]) {
+                setupCurrentTaskHelper()
+                hideAllFretMarkers()
+                currentState = State.RecordingPlayback
+                setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
+                playRecording()
+                return
+            } else if returnValidState(iinputState: currentState, istateArr: [
+                State.RecordingPlayback,
+            ]) {
+                setupCurrentTaskHelper()
+                setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: defaultPeripheralIcon[iwchButton])
+                currentState = State.NotesTestIdle_NoTempo
+                setNavBarColor()
+                setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: defaultPeripheralIcon[iwchButton])
+                wt.stopWaitThenOfType(iselector: #selector(playSoundHelper) as Selector)
+                return
+            }
+        }
+    }
+    
     @IBAction func ResultButtonDown(_: Any) {
         if developmentMode > 0 { print("currentState \(currentState)") }
         if popover!.mainPopoverVisible {return}
@@ -1127,11 +1186,8 @@ class MainViewController: UIViewController {
             State.NotesTestActive_Tempo,
             State.NotesTestShowNotes,
             State.NotesTestActive_Tempo,
-            
             State.EarTrainingResponse,
             State.EarTrainingIdle,
-            
-
         ])
         if validState {
             var str = buttonDict[inputNumb]!
@@ -1175,6 +1231,7 @@ class MainViewController: UIViewController {
                 r.time = CFAbsoluteTimeGetCurrent()
                 r.note = buttonDict[inputNumb]!
                 recordData.append(r)
+                print(recordData)
             } else if currentState == State.EarTrainingResponse {
                 earTrainResponseArr.append(buttonDict[inputNumb]!)
                 if earTrainResponseArr.count == earTrainCallArr.count {
@@ -1350,9 +1407,14 @@ class MainViewController: UIViewController {
     }
 
     @objc func playSoundHelper(timer: Timer) {
-        let noteDict = timer.userInfo as! [String: AnyObject]
-        sc.playSound(isoundName: noteDict["Note"] as! String + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
-        displaySingleFretMarker(iinputStr: noteDict["Note"] as! String)
+        let objDict = timer.userInfo as! [String: AnyObject]
+        sc.playSound(isoundName: objDict["Note"] as! String + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
+        displaySingleFretMarker(iinputStr: objDict["Note"] as! String)
+        print("objDict[] as! Bool ", objDict["LastNote"] as! Bool )
+        if objDict["LastNote"] as! Bool && currentState == State.RecordingPlayback {
+            currentState = State.NotesTestIdle_NoTempo
+            setButtonImage(ibutton: periphButtonArr[3], iimageStr: defaultPeripheralIcon[3])
+        }
     }
 
     func killCurrentDotFade() {
@@ -1894,16 +1956,12 @@ class MainViewController: UIViewController {
         currentState = State.Recording
         recordData.removeAll()
     }
-
-    @IBAction func stopRecording(_: Any) {
-        print("stopRecording\(recordStartTime)")
-        currentState = State.Playback
-
+    
+    func playRecording() {
+        currentState = State.RecordingPlayback
         for (i, data) in recordData.enumerated() {
-            wt.waitThen(itime: data.time - recordStartTime, itarget: self, imethod: #selector(playSoundHelper) as Selector, irepeats: false, idict: ["Note": data.note as AnyObject])
-            if i == recordData.count - 1 {
-                setState(newState: State.Idle)
-            }
+            let lastNote = i == recordData.count - 1
+            wt.waitThen(itime: data.time - recordStartTime, itarget: self, imethod: #selector(playSoundHelper) as Selector, irepeats: false, idict: ["Note": data.note as AnyObject,"LastNote": lastNote as AnyObject])
         }
     }
 

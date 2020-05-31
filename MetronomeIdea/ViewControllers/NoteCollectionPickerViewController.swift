@@ -13,11 +13,33 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
         let tableView = self.restorationIdentifier == "scalePicker" ? scaleTableView : arpeggioTableView
+        
+        //icons8-musical-50
+//        myTabBar?.tintColor = UIColor.white
+//        tabBarItem.title = ""
+        
+        
+        UITabBar.appearance().tintColor = UIColor.white
         tableView!.backgroundColor = UIColor.clear
         
         UITabBar.appearance().barTintColor = defaultColor.MenuButtonColor
         tabBarController?.tabBar.barStyle = UIBarStyle.blackOpaque
         tabBarController?.tabBar.isTranslucent = false
+        
+        
+//        let myTabBarItem1 = (self.tabBarController?.tabBar.items?[0])! as UITabBarItem
+//        myTabBarItem1.image = UIImage(named: "icons8-musical-50")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+////        myTabBarItem1.image.f
+//        myTabBarItem1.selectedImage = UIImage(named: "icons8-musical-50 ")?.withRenderingMode(UIImage.RenderingMode.alwaysOriginal)
+//        myTabBarItem1.title = "Scales"
+//        let size:CGFloat = 8
+//        myTabBarItem1.imageInsets = UIEdgeInsets(top: 0, left: size, bottom: 0, right: size)
+        
+        
+        let fontAttributes = [NSAttributedString.Key.font: UIFont.systemFont(ofSize: 19.0)]
+        UITabBarItem.appearance().setTitleTextAttributes(fontAttributes, for: .normal)
+//        UITabBarItem.appearance().title = "Scales"
+        
         
         pickerList.removeAll()
         let noteCollection = self.restorationIdentifier == "scalePicker" ? LevelConstruct().scale : LevelConstruct().arpeggio
@@ -68,6 +90,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
         let labelStr = ScaleCollection(ivc: MainViewController()).returnReadableScaleName(iinput: pickerList[(indexPath as NSIndexPath).row])
         cell.textLabel?.text = labelStr
+//        cell.textLabel?.textColor = defaultColor.MenuButtonTextColor
         tableView.tableFooterView = UIView(frame: .zero)
         cell.tintColor = UIColor.black
         if indexPath.row == selectedCell {
@@ -84,5 +107,9 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         }
         tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
         selectedCell = indexPath.row
+    }
+    
+    func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
+//        cell.contentView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
     }
 }

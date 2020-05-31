@@ -185,30 +185,32 @@ class MenuViewController: UIViewController {
         performSegue(withIdentifier: "FretPlayground", sender: nil)
     }
     
+    @IBAction func HandleSettingsButtonDwon(_ sender: Any) {
+        buttonId = 10
+        performSegue(withIdentifier: "SettingsViewFromMenu", sender: nil)
+    }
+    
     @IBAction func MainMenuButton(_ sender: UIButton) {
         if !tutorialCompleteStatus && sender.tag > 0 || sender.tag > 2 {
             return
         }
         buttonId = sender.tag
-        UIView.setAnimationsEnabled(false)
         performSegue(withIdentifier: "FretPlayground", sender: nil)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
+        UIView.setAnimationsEnabled(false)
+        
+        if buttonId == 10 {return}
+        
         let vc = segue.destination as! MainViewController
         let lc = LevelConstruct()
 
         vc.developmentMode = developmentMode
         
-        // Scales
+        // Free Play
         if buttonId == -1 {
-//            var freePlayNoteCollection = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
-//            if freePlayNoteCollection == nil {
-//                UserDefaults.standard.set("MinorPentatonic", forKey: "freePlayNoteCollection")
-//                freePlayNoteCollection = "MinorPentatonic"
-//            }
             vc.setStateProperties(icurrentLevel: "0.0", ilevelConstruct: lc.scale, ilevelKey: "freePlay", itutorialComplete: userLevelData.tutorialComplete)
-//            vc.freePlayNoteCollection = freePlayNoteCollection as! String
         }
 
         // Scales
@@ -230,16 +232,6 @@ class MenuViewController: UIViewController {
     func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
         return "L\(ilevel + 1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
     }
-    
-//    func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
-//        print("iscreenSpace",iscreenSpace)
-//        if iscreenSpace > 650 {
-//            return 110.0
-//        } else if iscreenSpace > 600 {
-//            return 60.0
-//        }
-//        return 15.0
-//    }
 
     func setupHiddenButtons() {
         setupDevButton()
