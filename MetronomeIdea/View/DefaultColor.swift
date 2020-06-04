@@ -15,7 +15,7 @@ struct DefaultColor {
     let TableViewBackground = UIColor(red: 221 / 255, green: 160 / 255, blue: 221 / 255, alpha: 1.0)
     let AcceptColor = UIColor(red: 42 / 255, green: 181 / 255, blue: 118 / 255, alpha: 1.0)
     
-    
+     let FretPositionLabelBackground = UIColor(red: 53 / 255, green: 0 / 255, blue: 211 / 255, alpha: 0.8)
 
     let FretMarkerStandard = convertRGBToUIColor().convert(256,0,0)
 //    let FretMarkerStandard = convertRGBToUIColor().convert(233,62,32)    

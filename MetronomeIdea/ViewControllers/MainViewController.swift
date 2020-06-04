@@ -100,6 +100,9 @@ class MainViewController: UIViewController {
     
     var freePlayNoteCollection = ""
     var backgroundImage = 0
+    var currentRecordingId = ""
+    var prepareScene = ""
+    var lastPickedFreePlayMenuIndex = 0
 
     var buttonDict: [Int: String] = [ // this could probably just be an array
         0: "G#1",
@@ -186,6 +189,7 @@ class MainViewController: UIViewController {
     var guitarTone = ""
     var dotType = ""
     var clickTone = ""
+    var fretOffset = 0
 
     var bgImage = UIImageView()
 
@@ -275,7 +279,6 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setAlphaOnDefualtImages(0.0)
-        print("setAlphaOnDefualtImages 0.0")
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -327,7 +330,7 @@ class MainViewController: UIViewController {
             currentState = State.NotesTestShowNotes
             setButtonImage(ibutton: periphButtonArr[idx], iimageStr: activePeripheralIcon[idx])
         }
-        
+        prepareScene = ""
         getDynamicAudioVisualData()
         pc!.resultButtonPopup.hide()
     }
@@ -488,7 +491,7 @@ class MainViewController: UIViewController {
             
             resultsLabelDefaultText = "Intervals \(earTrainingIdx+1)/\(earTrainingLevelData.count)"
             
-            sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
+            specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
             
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 0.5)
             setColorOnFretMarkers(specifiedNoteCollection, defaultColor.FretMarkerStandard)
@@ -513,7 +516,7 @@ class MainViewController: UIViewController {
             tempoActive = parseTempoStatus(iinput: task)
             tempoButtonsActive = !tempoActive
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
-            sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
+            specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
             
             hideAllFretMarkers(true)
             
@@ -572,7 +575,7 @@ class MainViewController: UIViewController {
             resultButtonText = "Click For Info  ⓘ"
             setResultButton(istr: resultButtonText)
             
-            sCollection!.setupSpecifiedNoteCollection(iinput: freePlayNoteCollection, idirection: "Both", istartingNote: startingNote)
+            specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: freePlayNoteCollection, idirection: "Both", istartingNote: startingNote)
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             currentState = State.NotesTestIdle_NoTempo
         }
@@ -906,26 +909,21 @@ class MainViewController: UIViewController {
             State.NotesTestIdle_NoTempo,
         ]) {
             UIView.setAnimationsEnabled(false)
+            prepareScene = "freePlay"
             performSegue(withIdentifier: "NoteCollectionPicker", sender: nil)
         }
     }
     
-    override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-//        let nc = segue.destination as! NoteCollectionPickerViewController
-//        nc.initialNoteCollectionId = freePlayNoteCollection
-        
-//        let controller = self.storyboard?.instantiateViewController(withIdentifier: "scalePicker") as! NoteCollectionPickerViewController
-//        controller.backgroundImageID = 5
-//        print(controller.)
-        
-//        let navVC = tabBarController?.viewControllers![1] as! UINavigationController
-//        let cartTableViewController = navVC.topViewController as! NoteCollectionPickerViewController
-        
-//        let navController = self.tabBarController!.viewControllers![0] as! UINavigationController
-//        let vc = self.tabBarController!.viewControllers![0] as! NoteCollectionPickerViewController
-//        let vc = navController.topViewController as! NoteCollectionPickerViewController
-//        vc.backgroundImageID = 1
-//        vc.templateForCell = templates
+    override func prepare(for segue: UIStoryboardSegue, sender: Any?) {
+        if prepareScene == "freePlay" {
+            let barViewControllers = segue.destination as! UITabBarController
+            for i in 0..<3 {
+                let destinationViewController = barViewControllers.viewControllers?[i] as! NoteCollectionPickerViewController
+                destinationViewController.vc = self
+            }
+            barViewControllers.selectedIndex = lastPickedFreePlayMenuIndex
+        }
+//        destinationViewController.backgroundImageID = 1
     }
 
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
@@ -1226,7 +1224,7 @@ class MainViewController: UIViewController {
         ])
         if validState {
             var str = buttonDict[inputNumb]!
-            str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
+//            str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
             sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
 
             displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
@@ -1257,17 +1255,14 @@ class MainViewController: UIViewController {
                 currentState = State.NotesTestIdle_NoTempo
             }
             
-
             if currentState == State.Recording {
                 if recordStartTime == 0 {
                     recordStartTime = CFAbsoluteTimeGetCurrent()
                 }
                 let r = InputData()
                 r.time = CFAbsoluteTimeGetCurrent()
-                print(r.time)
                 r.note = buttonDict[inputNumb]!
                 recordData.append(r)
-                print(recordData)
             } else if currentState == State.EarTrainingResponse {
                 earTrainResponseArr.append(buttonDict[inputNumb]!)
                 if earTrainResponseArr.count == earTrainCallArr.count {
@@ -1446,7 +1441,6 @@ class MainViewController: UIViewController {
         let objDict = timer.userInfo as! [String: AnyObject]
         sc.playSound(isoundName: objDict["Note"] as! String + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
         displaySingleFretMarker(iinputStr: objDict["Note"] as! String)
-        print("objDict[] as! Bool ", objDict["LastNote"] as! Bool )
         if objDict["LastNote"] as! Bool && currentState == State.RecordingPlayback {
             currentState = State.NotesTestIdle_NoTempo
             setButtonImage(ibutton: periphButtonArr[3], iimageStr: defaultPeripheralIcon[3])
@@ -1845,14 +1839,13 @@ class MainViewController: UIViewController {
                     fretButtonDict[noteInputStrs[buttonTag]] = button
                     dotDict[noteInputStrs[buttonTag]] = image
                     fretButtonFrame[noteInputStrs[buttonTag]] = button.frame
-                    buttonTag += 1
-                }
+                    buttonTag += 1                }
             }
         }
         fretButtonDict["A1"]?.layer.zPosition = 1000
         fretButtonDict["A2"]?.layer.zPosition = 1000
 
-        //        setupFretReferenceText() //TODO: do if/when necessary
+        setupFretReferenceText() //TODO: do if/when necessary
     }
 
     // Helper functions
@@ -1882,12 +1875,13 @@ class MainViewController: UIViewController {
     }
 
     func setLayer(iobject: AnyObject, ilayer: String) {
-        if #available(iOS 13.0, *) {
-            iobject.layer.zPosition = getLayer(ilayer: ilayer)
-        } else {
-            // Fallback on earlier versions
-            print("Fallback within set Layer")
-        }
+        return
+//        if #available(iOS 13.0, *) {
+//            iobject.layer.zPosition = getLayer(ilayer: ilayer)
+//        } else {
+//            // Fallback on earlier versions
+//            print("Fallback within set Layer")
+//        }
     }
 
     func getLayer(ilayer: String) -> CGFloat {
@@ -1900,64 +1894,8 @@ class MainViewController: UIViewController {
     }
 
     @objc func onTestButtonDown() {
-        
-//        var newFrame = mainPopover.frame
-//
-//        newFrame.size.width = 350
-//        newFrame.size.height = 500
-//        mainPopover.frame = newFrame
-        
-//        mainPopover.sizeToFit()
-        
-//        mainPopover.frame = CGRect(x: 0, y: 106, width: 350, height: 355)
-
-//        print(mainPopover.frame)
-        
-//        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
-        //        wt.waitThen(itime: 0.2, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "Tutorial" as AnyObject, "arg2": 0 as AnyObject])
-        //          setupPopupTutorialText()
-
-//        mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
-//        mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
-//        wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
-        
-//        print (lc.returnRandomizedArray(5,["2","3","4"]))
-        
-//        let force = 5.0, duration = 2.0, curve = "easeOutSine", repeatCount = 1.0, delay = 0.0
-//        let animation = CAKeyframeAnimation()
-//        animation.keyPath = "transform.scale"
-//        animation.values = [0, 0.2*force, -0.2*force, 0.2*force, 0]
-//        animation.keyTimes = [0, 0.2, 0.4, 0.6, 0.8, 1]
-//        animation.timingFunction = getTimingFunction(curve: curve)
-//        animation.duration = CFTimeInterval(duration)
-//        animation.isAdditive = true
-//        animation.repeatCount = Float(repeatCount)
-//        animation.beginTime = CACurrentMediaTime() + CFTimeInterval(delay)
-//        FretboardImage.layer.add(animation, forKey: "pop")
-        
-//        FretboardImage.pop()
-
-//        setupUpDelayedNoteCollectionView(specifiedNoteCollection,"postSuccess");
-        
-        
-//        flashActionOverlay(isuccess: false)
-        
-//        popover?.addToView()
-        
-//        print("test button on ")
-//        fretButtonDict["A1"]?.layer.zPosition = 500
-        
-//        popover?.addToView()
-        
-//        let date = Date()
-//        let calendar = Calendar.current
-//
-//        let hour = calendar.component(.hour, from: date)
-//        let minutes = calendar.component(.minute, from: date)
-//        let seconds = calendar.component(.second, from: date)
-//        print("hours = \(hour):\(minutes):\(seconds)")
-        
-        print(generateTimeStamp())
+        fretOffset -= 2
+        print("fretOffset",fretOffset)
     }
 
     // Testing
@@ -1991,9 +1929,18 @@ class MainViewController: UIViewController {
         fretRefText.text = "5th Fret"
         let a1ButtonFrame = fretButtonFrame["A1"]!
         let width: CGFloat = 100.0, height: CGFloat = 100.0
-        let xPos = a1ButtonFrame.minX / 2 - width / 4
-        fretRefText.frame = CGRect(x: xPos, y: a1ButtonFrame.minY - height / 2 + a1ButtonFrame.height / 2, width: width, height: height)
-        fretRefText.textColor = defaultColor.MenuButtonColor
+//        let xPos = a1ButtonFrame.minX / 2 - width / 4
+        let xPos = 0.0 //FretboardImage.frame.minX/2
+        fretRefText.textAlignment = NSTextAlignment.center
+        
+//        fretRefText.frame = CGRect(x: xPos, y: a1ButtonFrame.minY - height / 2 + a1ButtonFrame.height / 2, width: width, height: height)
+        
+        print("dotDict[].frame.height",dotDict["A1"]?.frame.height)
+        fretRefText.frame = CGRect(x: 0, y: (dotDict["A1"]?.frame.minY)!, width: FretboardImage.frame.minX, height: 30)
+        
+        fretRefText.textColor = defaultColor.FretMarkerStandard
+//        fretRefText.backgroundColor = defaultColor.FretPositionLabelBackground
+        
         view.addSubview(fretRefText)
     }
 
@@ -2003,6 +1950,15 @@ class MainViewController: UIViewController {
         recordData.removeAll()
     }
     
+    func setupMenuNoteCollectionPlayback(iinput: String) {
+        let notes = sCollection?.setupSpecifiedNoteCollection(iinput: iinput, idirection: "Up")
+        let waitTime = 0.2
+        for (i,note) in notes!.enumerated() {
+            let lastNote = i == notes!.count-1
+            wt.waitThen(itime: waitTime*Double(i), itarget: self, imethod: #selector(playSoundHelper) as Selector, irepeats: false, idict: ["Note": note as AnyObject,"LastNote": lastNote as AnyObject])
+        }
+    }
+        
     func setupPlayRecordingData() -> [InputData] {
         var recordedData: [InputData] = []
         let fetchRequest: NSFetchRequest<RecordingData> = RecordingData.fetchRequest()
@@ -2055,13 +2011,8 @@ class MainViewController: UIViewController {
     
     func generateTimeStamp() -> String {
         let today = Date()
-//        let formatter2 = DateFormatter()
-//        formatter2.timeStyle = .medium
-        
         let formatter3 = DateFormatter()
-//        formatter3.dateFormat = "HH:mm E, d MMM y"
         formatter3.dateFormat = "HH:mm:ss E, d MMM y"
-        print("time",formatter3.string(from: today))
         return formatter3.string(from: today)
     }
 

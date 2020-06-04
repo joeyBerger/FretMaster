@@ -12,6 +12,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     var selectedCell = -1
     var backgroundImageID = 0
     var recordingInfo: [String] = []
+    var vc: MainViewController?
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -28,17 +29,14 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                     pickerList.append(result.id!)
                 }
                 pickerList.reverse()
-                print("picker list",pickerList)
                 for (i,id) in pickerList.enumerated() {
-                    if id == currentRecordingId {
+                    if id == vc?.currentRecordingId {
                         selectedCell = i
                         break
                     }
                 }
             }
         }
-        
-        print("backgroundImageID ", backgroundImageID)
         
         UITabBar.appearance().tintColor = UIColor.white
         tableView!.backgroundColor = UIColor.clear
@@ -91,8 +89,17 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         if navigationController?.viewControllers.index(of: self) == nil && selectedCell > -1 && !self.restorationIdentifier!.contains("record") {
             UserDefaults.standard.set(pickerList[selectedCell], forKey: "freePlayNoteCollection")
         } else if self.restorationIdentifier!.contains("record") && selectedCell > -1 {
-            currentRecordingId = pickerList[selectedCell]
         }
+        switch self.restorationIdentifier! {
+        case "scalePicker":
+            vc?.lastPickedFreePlayMenuIndex = 0
+        case "arpeggioPicker":
+            vc?.lastPickedFreePlayMenuIndex = 1
+        default:
+            vc?.lastPickedFreePlayMenuIndex = 2
+        }
+        vc?.wt.stopWaitThenOfType(iselector: #selector(vc?.playSoundHelper) as Selector)
+        UIView.setAnimationsEnabled(false)
         super.viewWillDisappear(animated)
     }
 
@@ -131,6 +138,17 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         }
         tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
         selectedCell = indexPath.row
+        
+        //play sound upon press
+        vc?.wt.stopWaitThenOfType(iselector: #selector(vc?.playSoundHelper) as Selector)
+        if self.restorationIdentifier == "scalePicker" || self.restorationIdentifier == "arpeggioPicker"  {
+            vc?.setupMenuNoteCollectionPlayback(iinput: pickerList[indexPath.row])
+        } else {
+            vc?.currentRecordingId = pickerList[selectedCell]
+            if vc?.currentRecordingId != "" {
+                vc?.playRecording()
+            }
+        }
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {

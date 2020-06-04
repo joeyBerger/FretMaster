@@ -11,10 +11,14 @@ class SoundController: NSObject, AVAudioRecorderDelegate {
             scSubIdx = 0
         }
     }
+    
+    func validateInputStr(_ iinput: String) -> String {
+        return iinput.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
+    }
 
     func playSound(isoundName: String, ivolume: Float, ioneShot: Bool = false, ifadeAllOtherSoundsDuration: Double = -1.0) {
         if ioneShot { scSubIdx = scSubIdx + 1 }
-        scSub[scSubIdx % scSub.count].playSound(isoundName: isoundName, ivolume: ivolume)
+        scSub[scSubIdx % scSub.count].playSound(isoundName: validateInputStr(isoundName), ivolume: ivolume)
         if ifadeAllOtherSoundsDuration >= 0 {
             for i in 0 ... scSub.count - 1 {
                 if i != scSubIdx % scSub.count {

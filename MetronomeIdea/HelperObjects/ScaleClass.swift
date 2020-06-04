@@ -154,12 +154,13 @@ class ScaleCollection {
         return interval
     }
 
-    func setupSpecifiedNoteCollection(iinput: String, idirection: String, istartingNote: String = "A", itype: String = "standard", idata: [String:Any] = [:]) {
+    func setupSpecifiedNoteCollection(iinput: String, idirection: String, istartingNote: String = "A", itype: String = "standard", idata: [String:Any] = [:]) -> [String] {
         let startingNote = istartingNote.rangeOfCharacter(from: .decimalDigits) == nil ? istartingNote : parseCoreNote(istartingNote)
         var noteIndex = 0
         var notePos = 1
 
-        vc!.specifiedNoteCollection.removeAll()
+//        vc!.specifiedNoteCollection.removeAll()
+        var newNoteCollection: [String] = []
 
         for (i, item) in refScale.enumerated() {
             if startingNote == item {
@@ -169,8 +170,8 @@ class ScaleCollection {
         }
         
         if itype == "interval" {
-            vc!.specifiedNoteCollection = parseIntervalNotes(startingNote, parseNoteOctave(istartingNote), idata["intervalsToTest"] as! [String])
-            print("final specified notes \(vc!.specifiedNoteCollection)")            
+            newNoteCollection = parseIntervalNotes(startingNote, parseNoteOctave(istartingNote), idata["intervalsToTest"] as! [String])
+            print("final specified notes \(newNoteCollection)")
         }
         
         // find note index
@@ -182,46 +183,46 @@ class ScaleCollection {
                 if (noteIndex + note!) >= refScale.count * notePos {
                     notePos = notePos + 1
                 }
-                vc!.specifiedNoteCollection.append(refScale[(noteIndex + note!) % refScale.count] + String(notePos + startingOctave))
+                newNoteCollection.append(refScale[(noteIndex + note!) % refScale.count] + String(notePos + startingOctave))
             }
 
             if scaleOctaves > 1 {
-                for item in vc!.specifiedNoteCollection {
+                for item in newNoteCollection {
                     let noteName = item.count == 2 ? item.prefix(1) : item.prefix(2)
                     let pitch = Int(item.suffix(1))! + 1
                     let newNote = noteName + String(pitch)
-                    vc!.specifiedNoteCollection.append(String(newNote))
+                    newNoteCollection.append(String(newNote))
                 }
             } else if startingOctave > 0 {
-                let tempArr = vc!.specifiedNoteCollection
-                vc!.specifiedNoteCollection.removeAll()
+                let tempArr = newNoteCollection
+                newNoteCollection.removeAll()
                 for item in tempArr {
                     let noteName = item.count == 2 ? item.prefix(1) : item.prefix(2)
                     let pitch = Int(item.suffix(1))! + 1
                     let newNote = noteName + String(pitch)
-                    vc!.specifiedNoteCollection.append(String(newNote))
+                    newNoteCollection.append(String(newNote))
                 }
             }
 
             // add last octave
-            let noteName = vc!.specifiedNoteCollection[0].count == 2 ? vc!.specifiedNoteCollection[0].prefix(1) : vc!.specifiedNoteCollection[0].prefix(2)
-            let pitch = Int(vc!.specifiedNoteCollection[0].suffix(1))! + scaleOctaves
+            let noteName = newNoteCollection[0].count == 2 ? newNoteCollection[0].prefix(1) : newNoteCollection[0].prefix(2)
+            let pitch = Int(newNoteCollection[0].suffix(1))! + scaleOctaves
             let newNote = noteName + String(pitch)
-            vc!.specifiedNoteCollection.append(String(newNote))
+            newNoteCollection.append(String(newNote))
 
             if idirection == "Down" {
-                vc!.specifiedNoteCollection = vc!.specifiedNoteCollection.reversed()
+                newNoteCollection = newNoteCollection.reversed()
             } else if idirection == "Both" {
                 var i = 0
-                for item in vc!.specifiedNoteCollection.reversed() {
+                for item in newNoteCollection.reversed() {
                     if i > 0 {
-                        vc!.specifiedNoteCollection.append(item)
+                        newNoteCollection.append(item)
                     }
                     i = i + 1
                 }
             }
         }
-        print(vc!.specifiedNoteCollection)
+        return newNoteCollection
     }
 
     func returnNoteDistance(iinput: String, icomparedNote: String) -> String {

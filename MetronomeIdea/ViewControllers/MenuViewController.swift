@@ -15,7 +15,7 @@ let defaultColor = DefaultColor()
 let backgroundImage = BackgroundImage()
 var globalDataController = DataController(modelName: "ImageModel")
 var volume = Volume()
-var currentRecordingId = ""
+//var currentRecordingId = ""
 
 class MenuViewController: UIViewController {
     @IBOutlet var Button0: UIButton!

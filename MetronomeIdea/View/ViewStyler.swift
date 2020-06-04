@@ -104,7 +104,6 @@ class ViewStyler: UIViewController {
                 itext[i]?.frame = CGRect(x: (screenWidth-screenWidth*0.8)/2, y: startY + CGFloat(i) * containerBuffer, width: screenWidth*0.8, height: 100)
                 slider?.frame = CGRect(x: (screenWidth-screenWidth*0.9)/2, y: (itext[i]?.frame.minY)!+sliderHeightBuffer, width: screenWidth*0.9, height: (100))
                 
-                print("itext[i]?.font.fontName",itext[i]?.font.fontName)
                 itext[i]?.font = UIFont(name: "Helvetica Neue", size: 23)
                 itext[i]?.text = itext[i]?.text!.uppercased()
                 itext[i]?.textColor = defaultColor.MenuButtonTextColor
