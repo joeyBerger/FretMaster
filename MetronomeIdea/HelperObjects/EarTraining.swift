@@ -22,7 +22,7 @@ class EarTraining {
         
         vc!.wt.waitThen(itime: displayT, itarget: self, imethod: #selector(beginEarTrainingHelper) as Selector, irepeats: false, idict: ["NoteSelection": vc!.tempScale as AnyObject, "AlphaVal": 0.0 as AnyObject])
 
-        vc!.displaySelectionDots(inoteSelection: [vc!.earTrainCallArr[0]], ialphaAmount: 1.0)
+//        vc!.displaySelectionDots(inoteSelection: [vc!.earTrainCallArr[0]], ialphaAmount: 1.0)
         vc!.setColorOnFretMarkers(vc!.earTrainCallArr, defaultColor.FretMarkerStandard)
     }
 

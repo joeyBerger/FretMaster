@@ -97,6 +97,31 @@ class ScaleCollection {
 
         "Chromatic": ["1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "b7", "7"],
     ]
+    
+    let fretPositionAccidentalInheritence: [PositionType] = [
+        PositionType.Sharp,
+        PositionType.Flat,
+        PositionType.Sharp,
+        PositionType.Flat,
+        PositionType.Flat,
+        PositionType.Sharp,
+        PositionType.Flat,
+        PositionType.Sharp,
+        PositionType.Sharp,
+        PositionType.Sharp,
+        PositionType.Sharp,
+        PositionType.Flat,
+        PositionType.Sharp,
+    ]
+    
+    let flatEquivalent: [String:String] = [
+        "C" : "C", "C#" : "Db", "D" : "D", "D#" : "Eb", "E" : "E", "F" : "F", "F#" : "Gb", "G" : "G", "G#" : "Ab", "A" : "A", "A#" : "Bb", "B" : "B"
+    ]
+    
+    enum PositionType: String {
+        case Sharp
+        case Flat
+    }
 
     var startingOctave = 0
     var scaleOctaves = 2
@@ -262,12 +287,39 @@ class ScaleCollection {
         return "th"
     }
     
+    func stripNoteQualifier(_ iinput: String) -> String {
+        return iinput.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
+    }
+    
+    func returnOffsetFretNote(_ iinput: String, _ ifretOffest: Int) -> String {
+        if ifretOffest == 0 {
+            return iinput
+        }
+        var octave = parseNoteOctave(stripNoteQualifier(iinput))
+        let convertedNote = parseCoreNote(stripNoteQualifier(iinput))
+        var idx = refScale.firstIndex(of: convertedNote)
+        let qualifier = iinput.contains("_") ? iinput.contains("0") ? "_0" : "_1" : ""
+        idx = (idx! + ifretOffest)
+        if idx! < 0 {
+            idx = refScale.count + idx!
+            octave -= 1
+        } else if idx! >= refScale.count {
+            idx = idx!%refScale.count
+            octave += 1
+        }
+        if idx == 12 {
+            print("")
+        }
+        return "\(refScale[idx!])\(octave)\(qualifier)"
+    }
+    
     func parseCoreNote(_ iinput: String ) -> String {
         return String(iinput.dropLast())
     }
     
     func parseNoteOctave(_ iinput: String) -> Int {
-        return Int(iinput.components(separatedBy: CharacterSet.decimalDigits.inverted).joined())!
+        let strippedNote = stripNoteQualifier(iinput)
+        return Int(strippedNote.components(separatedBy: CharacterSet.decimalDigits.inverted).joined())!
     }
 }
 

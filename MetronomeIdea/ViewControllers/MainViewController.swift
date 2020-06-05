@@ -30,6 +30,7 @@ class MainViewController: UIViewController {
     @IBOutlet weak var leftBarButtonItem: UIBarButtonItem!
     
     var FretboardImage: UIImageView!
+    var FretRefText = UILabel()
     var DimOverlay: UIImageView!
     var ActionOverlay: UIImageView!
     var dotDict: [String: SpringImageView] = [:]
@@ -215,8 +216,6 @@ class MainViewController: UIViewController {
         styler = ViewStyler(ivc: self)
         popover = Popover(ivc: self)
         popover?.setupPopover(navigationController!)
-        
-        
         
         if developmentMode > 1 {
             met?.bpm = 350.0
@@ -632,17 +631,20 @@ class MainViewController: UIViewController {
     func getDynamicAudioVisualData() {
         let dataStrTypes = [
             "guitarTone",
-            "fretDot",
             "clickTone",
+            "fretOffset",
+            "fretDot",
         ]
         for dataStr in dataStrTypes {
             let data = UserDefaults.standard.object(forKey: dataStr)
             if data == nil {
                 let defaultVal = [
                     "guitarTone": "Acoustic",
-                    "fretDot": "Scale Degree",
                     "clickTone": "Digital",
+                    "fretOffset": "0",
+                    "fretDot": "Scale Degree",
                 ]
+                print("have nil data")
                 UserDefaults.standard.set(defaultVal[dataStr], forKey: dataStr)
                 setDynamicAudioVisualVars(iinputType: dataStr, iinput: defaultVal[dataStr]!)
             } else {
@@ -661,6 +663,9 @@ class MainViewController: UIViewController {
             let alphaNote = dotType == "Note Name"
             let degree = dotType == "Scale Degree"
             setupFretMarkerText(ishowAlphabeticalNote: alphaNote, ishowNumericDegree: degree)
+        case "fretOffset":
+            fretOffset = Int(iinput)!
+            FretRefText.text = returnCurrentFretText()
         default:
             clickTone = iinput
         }
@@ -782,7 +787,12 @@ class MainViewController: UIViewController {
             var str = buttonDict[idx]
             var note = ""
             if ishowAlphabeticalNote {
-                note = str!.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789_"))
+//
+                note = sCollection?.returnOffsetFretNote(str!, fretOffset) as! String
+                note = note.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789_"))
+                if sCollection?.fretPositionAccidentalInheritence[5+fretOffset] == ScaleCollection.PositionType.Flat {
+                    note = sCollection?.flatEquivalent[note] as! String
+                }
             } else if ishowNumericDegree {
                 str = str!.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
                 note = sCollection!.returnNoteDistance(iinput: String(str!.dropLast()), icomparedNote: "A")
@@ -1225,6 +1235,7 @@ class MainViewController: UIViewController {
         if validState {
             var str = buttonDict[inputNumb]!
 //            str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
+            str = sCollection?.returnOffsetFretNote(str,fretOffset) as! String
             sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
 
             displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
@@ -1510,11 +1521,45 @@ class MainViewController: UIViewController {
         }
     }
 
-    func displaySelectionDots(inoteSelection: [String], ialphaAmount: Double) {
-        return
-        for (_, item) in inoteSelection.enumerated() {
-            dotDict[item]?.alpha = CGFloat(ialphaAmount)
-        }
+//    func displaySelectionDots(inoteSelection: [String], ialphaAmount: Double) {
+//        return
+//        for (_, item) in inoteSelection.enumerated() {
+//            dotDict[item]?.alpha = CGFloat(ialphaAmount)
+//        }
+//    }
+    
+//    func stripNoteQualifier(_ iinput: String) -> String {
+//        return iinput.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
+//    }
+//
+//    func returnOffsetFretNote(_ iinput: String) -> String {
+//        if fretOffset == 0 {
+//            return iinput
+//        }
+//        var octave = sCollection?.parseNoteOctave(stripNoteQualifier(iinput))
+//        let convertedNote = sCollection?.parseCoreNote(stripNoteQualifier(iinput))
+//        var idx = sCollection?.refScale.firstIndex(of: convertedNote!)
+//        let qualifier = iinput.contains("_") ? iinput.contains("0") ? "_0" : "_1" : ""
+//        idx = (idx! + fretOffset)
+//        if idx! < 0 {
+//            idx = sCollection!.refScale.count + idx!
+//            octave! -= 1
+//        } else if idx! > sCollection!.refScale.count {
+//            idx = idx!%sCollection!.refScale.count
+//            octave! += 1
+//        }
+//
+//        if let octave = octave {
+//            return "\(sCollection!.refScale[idx!])\(octave)\(qualifier)"
+//        }
+//
+//        return "A1"
+//    }
+    
+    func handleFretOffsetChange() {
+        setDynamicAudioVisualVars(iinputType: "fretDot", iinput: dotType)
+        UserDefaults.standard.set(String(fretOffset), forKey: "fretOffset")
+        FretRefText.text = returnCurrentFretText()
     }
 
     func setResultButton(istr: String? = "") {
@@ -1845,7 +1890,7 @@ class MainViewController: UIViewController {
         fretButtonDict["A1"]?.layer.zPosition = 1000
         fretButtonDict["A2"]?.layer.zPosition = 1000
 
-        setupFretReferenceText() //TODO: do if/when necessary
+        initializeFretReferenceText() //TODO: do if/when necessary
     }
 
     // Helper functions
@@ -1894,8 +1939,9 @@ class MainViewController: UIViewController {
     }
 
     @objc func onTestButtonDown() {
+        //iterate through note label and update notes
         fretOffset -= 2
-        print("fretOffset",fretOffset)
+        handleFretOffsetChange()
     }
 
     // Testing
@@ -1924,24 +1970,28 @@ class MainViewController: UIViewController {
     }
 
     // Unused functions that will be employed when dev starts on other functionality
-    func setupFretReferenceText() {
-        let fretRefText = UILabel()
-        fretRefText.text = "5th Fret"
+    func initializeFretReferenceText() {
+        FretRefText = UILabel()
+        FretRefText.text = returnCurrentFretText()
         let a1ButtonFrame = fretButtonFrame["A1"]!
         let width: CGFloat = 100.0, height: CGFloat = 100.0
 //        let xPos = a1ButtonFrame.minX / 2 - width / 4
         let xPos = 0.0 //FretboardImage.frame.minX/2
-        fretRefText.textAlignment = NSTextAlignment.center
+        FretRefText.textAlignment = NSTextAlignment.center
         
 //        fretRefText.frame = CGRect(x: xPos, y: a1ButtonFrame.minY - height / 2 + a1ButtonFrame.height / 2, width: width, height: height)
         
         print("dotDict[].frame.height",dotDict["A1"]?.frame.height)
-        fretRefText.frame = CGRect(x: 0, y: (dotDict["A1"]?.frame.minY)!, width: FretboardImage.frame.minX, height: 30)
+        FretRefText.frame = CGRect(x: 0, y: (dotDict["A1"]?.frame.minY)!, width: FretboardImage.frame.minX, height: 30)
         
-        fretRefText.textColor = defaultColor.FretMarkerStandard
+        FretRefText.textColor = defaultColor.FretMarkerStandard
 //        fretRefText.backgroundColor = defaultColor.FretPositionLabelBackground
-        
-        view.addSubview(fretRefText)
+        view.addSubview(FretRefText)
+    }
+    
+    func returnCurrentFretText() -> String {
+        let fret = 5+fretOffset
+        return "\(fret)\(sCollection!.returnLinguisticNumberEquivalent(String(5-fretOffset)))\(" Fret")"
     }
 
     @IBAction func record(_: Any) {
@@ -2017,24 +2067,24 @@ class MainViewController: UIViewController {
     }
 
     @IBAction func earTrainingPressed(_: Any) {
-        let numbNotes = 5
-        for _ in 0 ..< numbNotes {
-            earTrainCallArr.append(tempScale[rand(max: tempScale.count)])
-        }
-        currentState = State.EarTrainingCall
-        met?.currentClick = 0
-        let displayT = 1.0
-
-        wt.waitThen(itime: displayT, itarget: self, imethod: #selector(beginEarTrainingHelper) as Selector, irepeats: false, idict: ["NoteSelection": tempScale as AnyObject, "AlphaVal": 0.0 as AnyObject])
-
-        displaySelectionDots(inoteSelection: tempScale, ialphaAmount: 0.5)
-        dotDict[earTrainCallArr[0]]?.alpha = 1
+//        let numbNotes = 5
+//        for _ in 0 ..< numbNotes {
+//            earTrainCallArr.append(tempScale[rand(max: tempScale.count)])
+//        }
+//        currentState = State.EarTrainingCall
+//        met?.currentClick = 0
+//        let displayT = 1.0
+//
+//        wt.waitThen(itime: displayT, itarget: self, imethod: #selector(beginEarTrainingHelper) as Selector, irepeats: false, idict: ["NoteSelection": tempScale as AnyObject, "AlphaVal": 0.0 as AnyObject])
+//
+//        displaySelectionDots(inoteSelection: tempScale, ialphaAmount: 0.5)
+//        dotDict[earTrainCallArr[0]]?.alpha = 1
     }
 
     @objc func beginEarTrainingHelper(timer: Timer) {
-        let argDict = timer.userInfo as! [String: AnyObject]
-        displaySelectionDots(inoteSelection: argDict["NoteSelection"] as! [String], ialphaAmount: argDict["AlphaVal"] as! Double)
-        met?.startMetro()
+//        let argDict = timer.userInfo as! [String: AnyObject]
+//        displaySelectionDots(inoteSelection: argDict["NoteSelection"] as! [String], ialphaAmount: argDict["AlphaVal"] as! Double)
+//        met?.startMetro()
     }
 
     func presentEarTrainResults() {

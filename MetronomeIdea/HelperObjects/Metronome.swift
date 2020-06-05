@@ -66,7 +66,9 @@ class Metronome {
 //        print("in metronome \(MainViewController.currentState)")
         if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003) {
             if vc!.currentState == MainViewController.State.PlayingNotesCollection {
-                vc!.sc.playSound(isoundName: vc!.specifiedNoteCollection[currentClick] + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
+                var str = vc!.specifiedNoteCollection[currentClick]
+                str = vc!.sCollection?.returnOffsetFretNote(str,vc!.fretOffset) as! String
+                vc!.sc.playSound(isoundName: str + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
                 vc!.displaySingleFretMarker(iinputStr: vc!.specifiedNoteCollection[currentClick],cascadeFretMarkers: false,fretAnim: "displayFret")
                 if currentClick == vc!.specifiedNoteCollection.count - 1 {
                     endMetronome()
@@ -75,8 +77,9 @@ class Metronome {
                     vc!.setPeriphButtonsToDefault(idefaultIcons: vc!.defaultPeripheralIcon)
                 }
             } else if vc!.currentState == MainViewController.State.EarTrainingCall {
-                print("in metronome 2")
-                vc!.sc.playSound(isoundName: vc!.earTrainCallArr[currentClick] + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
+                var str = vc!.earTrainCallArr[currentClick]
+                str = vc!.sCollection?.returnOffsetFretNote(str,vc!.fretOffset) as! String
+                vc!.sc.playSound(isoundName: str + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
                 if currentClick == vc!.earTrainCallArr.count - 1 {
                     endMetronome()
                     vc!.currentState = MainViewController.State.EarTrainingResponse
