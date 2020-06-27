@@ -98,6 +98,21 @@ class ScaleCollection {
         "Chromatic": ["1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "b7", "7"],
     ]
     
+    let fretOffsetToImage : [String] = [
+        "FretBoardNut",
+        "FretBoardOffDot",
+        "FretBoardOnDot",
+        "FretBoardOffDot",
+        "FretBoardOnDot",
+        "FretBoardOffDot",
+        "FretBoardOnDot",
+        "FretBoard8thPos",
+        "FretBoard9thPos",
+        "FretBoard10thPos",
+        "FretBoard11thPos",
+        "FretBoard12thPos",
+    ]
+    
     let fretPositionAccidentalInheritence: [PositionType] = [
         PositionType.Sharp,
         PositionType.Flat,
@@ -277,9 +292,11 @@ class ScaleCollection {
     }
     
     func returnLinguisticNumberEquivalent(_ iinput:String) -> String {
-        if iinput.contains("2") {
+        if iinput == "1" {
+            return "st"
+        } else if iinput == "2" {
             return "nd"
-        } else if iinput.contains("3") {
+        } else if iinput == "3" {
             return "rd"
         } else if iinput.contains("Unison") || iinput.contains("Octave") {
             return ""

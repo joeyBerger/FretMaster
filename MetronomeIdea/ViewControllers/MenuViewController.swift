@@ -52,7 +52,7 @@ class MenuViewController: UIViewController {
         
         globalDataController.load()
         
-//        setupHiddenButtons()
+        setupHiddenButtons()
 //        resetData()
 
         let styler = ViewStyler(ivc: self)
@@ -267,7 +267,7 @@ class MenuViewController: UIViewController {
     func setupDevButton() {
         devToggleButton = UIButton()
         devToggleButton.frame = returnDevButtonFrame("Dev")
-        devToggleButton.backgroundColor = UIColor.red
+//        devToggleButton.backgroundColor = UIColor.red
         devToggleButton.addTarget(self, action: #selector(toggleDevMode), for: .touchDown)
         view.addSubview(devToggleButton)
     }

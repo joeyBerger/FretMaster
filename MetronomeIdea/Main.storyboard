@@ -564,7 +564,7 @@
                                 </connections>
                             </button>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="dfx-bc-ZJb">
-                                <rect key="frame" x="13" y="63" width="50" height="168"/>
+                                <rect key="frame" x="13" y="63" width="50" height="227"/>
                                 <subviews>
                                     <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="817-bu-dhS">
                                         <rect key="frame" x="0.0" y="0.0" width="50" height="50"/>
@@ -599,9 +599,20 @@
                                             <action selector="scrollTempo:" destination="enO-xU-PLA" eventType="touchUpInside" id="SGf-vo-q1D"/>
                                         </connections>
                                     </button>
+                                    <button opaque="NO" tag="1" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="KMg-nE-NgC">
+                                        <rect key="frame" x="0.0" y="177" width="50" height="50"/>
+                                        <color key="backgroundColor" systemColor="systemPinkColor" red="1" green="0.1764705882" blue="0.33333333329999998" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
+                                        <constraints>
+                                            <constraint firstAttribute="height" constant="50" id="aEZ-cH-iBA"/>
+                                            <constraint firstAttribute="width" constant="50" id="wkm-4k-lff"/>
+                                        </constraints>
+                                        <connections>
+                                            <action selector="handleFretOffsetButtonDown:" destination="enO-xU-PLA" eventType="touchUpInside" id="qKZ-CP-vSm"/>
+                                        </connections>
+                                    </button>
                                 </subviews>
                                 <constraints>
-                                    <constraint firstAttribute="height" constant="168" id="JXE-f4-vr8"/>
+                                    <constraint firstAttribute="height" constant="227" id="JXE-f4-vr8"/>
                                 </constraints>
                             </stackView>
                             <stackView opaque="NO" contentMode="scaleToFill" axis="vertical" spacing="9" translatesAutoresizingMaskIntoConstraints="NO" id="Fnc-Kn-a9n">
@@ -710,6 +721,7 @@
                         </rightBarButtonItems>
                     </navigationItem>
                     <connections>
+                        <outlet property="FretOffsetButton" destination="KMg-nE-NgC" id="COp-iT-h7c"/>
                         <outlet property="FretboardDummy" destination="mtX-I4-btC" id="OAb-jK-4sS"/>
                         <outlet property="PeriphButton0" destination="Li6-hf-dve" id="Q9N-G5-50Z"/>
                         <outlet property="PeriphButton1" destination="Jrj-Z7-dNg" id="4bK-0g-oA9"/>
@@ -822,7 +834,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Qxi-7Z-PL0"/>
+        <segue reference="FIG-8u-KQM"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="Fretboard4.png" width="355" height="979"/>

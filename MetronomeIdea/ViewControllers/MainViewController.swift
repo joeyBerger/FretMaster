@@ -18,7 +18,8 @@ class MainViewController: UIViewController {
     @IBOutlet var TempoButton: UIButton!
     @IBOutlet var TempoDownButton: UIButton!
     @IBOutlet var TempoUpButton: UIButton!
-
+    @IBOutlet weak var FretOffsetButton: UIButton!
+    
     @IBOutlet var mainPopover: UIView!
     @IBOutlet var mainPopoverCloseButton: UIButton!
     @IBOutlet var mainPopoverBodyText: UILabel!
@@ -60,11 +61,13 @@ class MainViewController: UIViewController {
     var settingsMenu = SettingsViewController()
     var wt = waitThen()
     var popover: Popover?
+    var fretOffsetPickerPopover: FretOffsetPickerPopover?
 
     class InputData {
         var time: CFAbsoluteTime = 0
         var note = ""
         var timeDelta = 0.0
+        var fretOffset = 5
     }
 
     var recordData: [InputData] = []
@@ -152,7 +155,7 @@ class MainViewController: UIViewController {
 
     enum State: String {
         case Idle
-        case RecordingIdle
+//        case RecordingIdle
         case Recording
         case RecordingPlayback
         
@@ -191,6 +194,11 @@ class MainViewController: UIViewController {
     var dotType = ""
     var clickTone = ""
     var fretOffset = 0
+    var defaultFretOffset = 5
+    var fretOffsetList: [String] = []
+    
+    
+    
 
     var bgImage = UIImageView()
 
@@ -199,6 +207,8 @@ class MainViewController: UIViewController {
         self.extendedLayoutIncludesOpaqueBars = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
+        
+        
         
         
 //        var alertViewResponder: SCLAlertViewResponder = SCLAlertView().showSuccess("Hello World", subTitle: "This is a more descriptive text.")
@@ -216,6 +226,11 @@ class MainViewController: UIViewController {
         styler = ViewStyler(ivc: self)
         popover = Popover(ivc: self)
         popover?.setupPopover(navigationController!)
+        
+        fretOffsetPickerPopover = FretOffsetPickerPopover(ivc: self)
+        fretOffsetPickerPopover?.setupPopover(navigationController!)
+        
+//        met!.deployInitialMet()
         
         if developmentMode > 1 {
             met?.bpm = 350.0
@@ -240,18 +255,7 @@ class MainViewController: UIViewController {
         ResultButton.titleLabel?.font = UIFont(name: ResultsLabel.font.fontName, size: 20)
         ResultButton.layer.cornerRadius = 20
         giveButtonBackgroundShadow(ibutton: ResultButton)
-
-//        mainPopover.backgroundColor = defaultColor.MenuButtonColor
-//        mainPopover.layer.cornerRadius = 10
-//        mainPopoverCloseButton.tintColor = defaultColor.MenuButtonTextColor
-//        mainPopoverBodyText.textColor = defaultColor.MenuButtonTextColor
-//        mainPopoverBodyText.contentMode = .scaleToFill
-//        mainPopoverBodyText.numberOfLines = 0
-//        mainPopover.layer.zPosition = getLayer(ilayer: "PopOverLayer")
-//        mainPopoverTitle.textColor = defaultColor.MenuButtonTextColor
-//        mainPopoverButton.setTitleColor(.white, for: .normal)
-//        mainPopoverButton.backgroundColor = UIColor.red
-        
+       
         leftBarButtonItem?.isEnabled = false
         leftBarButtonItem?.tintColor = UIColor.clear
 
@@ -282,7 +286,7 @@ class MainViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-
+        met!.deployInitialMet()
         if !sceneHasBeenSetup {
             // Add overlays
             DimOverlay = setupScreenOverlay()
@@ -313,13 +317,11 @@ class MainViewController: UIViewController {
                 let screenHeight = screenRect.size.height
                 let height: CGFloat = screenHeight * 0.1
                 testButton.frame = CGRect(x: FretboardImage.frame.maxX, y: screenHeight - height, width: screenWidth * 0.5, height: height)
-                testButton.backgroundColor = UIColor.red
+//                testButton.backgroundColor = UIColor.red
                 testButton.addTarget(self, action: #selector(onTestButtonDown), for: .touchDown)
                 view.addSubview(testButton)
             }
         }
-        
-//        setupTempoButtons()
         
         setAlphaOnDefualtImages(1.0)
         setupToSpecificState()
@@ -353,7 +355,7 @@ class MainViewController: UIViewController {
     @objc func tempoButtonLongPressed(sender: UILongPressGestureRecognizer) {
         if developmentMode > 0 { print("tempoButtonLongPressed, state: \(currentState)") }
         if !checkForValidTempoInput() { return }
-        if popover!.mainPopoverVisible {return}
+        if popover!.popoverVisible {return}
         if sender.state == .ended {
             wt.stopWaitThenOfType(iselector: #selector(tempoButtonUpdater) as Selector)
             tempoUpdaterCycle = 0.0
@@ -644,7 +646,6 @@ class MainViewController: UIViewController {
                     "fretOffset": "0",
                     "fretDot": "Scale Degree",
                 ]
-                print("have nil data")
                 UserDefaults.standard.set(defaultVal[dataStr], forKey: dataStr)
                 setDynamicAudioVisualVars(iinputType: dataStr, iinput: defaultVal[dataStr]!)
             } else {
@@ -666,9 +667,16 @@ class MainViewController: UIViewController {
         case "fretOffset":
             fretOffset = Int(iinput)!
             FretRefText.text = returnCurrentFretText()
+            setFretBoardImage()
         default:
             clickTone = iinput
         }
+    }
+    
+    func setFretBoardImage() {
+        let imageName = sCollection!.fretOffsetToImage[(defaultFretOffset-1)+fretOffset]
+        let image: UIImage = UIImage(named: imageName)!
+        FretboardImage.image = image
     }
 
     func setupBackgroundImage() {
@@ -678,7 +686,7 @@ class MainViewController: UIViewController {
 //        bgImage.frame = CGRect(x: 0, y: 0, width: view.bounds.size.width, height: view.bounds.size.height)
 //        bgImage.contentMode = UIView.ContentMode.scaleAspectFill
 //        view.insertSubview(bgImage, at: 0)
-        backgroundImage = Int.random(in: 0 ..< 5)
+        backgroundImage = Int.random(in: 0 ..< 4)
         styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(backgroundImage).jpg")
     }
 
@@ -780,6 +788,16 @@ class MainViewController: UIViewController {
         TempoUpButton.layer.masksToBounds = true
         TempoUpButton.layer.cornerRadius = 25
         TempoUpButton.imageView?.alpha = 1.0
+        
+        setButtonImage(ibutton: FretOffsetButton, iimageStr: "icons8-music-notation-50")
+        FretOffsetButton.contentVerticalAlignment = .fill
+        FretOffsetButton.contentHorizontalAlignment = .fill
+        FretOffsetButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
+        FretOffsetButton.backgroundColor = defaultColor.MenuButtonColor
+        FretOffsetButton.imageView?.tintColor = defaultColor.MenuButtonTextColor
+        FretOffsetButton.layer.masksToBounds = true
+        FretOffsetButton.layer.cornerRadius = 25
+        FretOffsetButton.imageView?.alpha = 1.0
     }
 
     func setupFretMarkerText(ishowAlphabeticalNote: Bool, ishowNumericDegree: Bool, inumericDefaults: [String] = ["b5", "b6"]) {
@@ -840,9 +858,10 @@ class MainViewController: UIViewController {
             } else {
                 let timeDelta = abs(userInputTime - met!.clickTime)
                 if timeDelta < 0.05 {
-                    //                    print("good")
+                    print("good")
                 } else {
-                    //                    print("late")
+                    print("late")
+                    print(timeDelta)
                 }
                 noteCollectionTestData[noteCollectionTestData.count - 1].time = userInputTime
                 noteCollectionTestData[noteCollectionTestData.count - 1].timeDelta = timeDelta
@@ -858,7 +877,7 @@ class MainViewController: UIViewController {
     @IBAction func scrollTempo(_ sender: UIButton) {
         if developmentMode > 0 { print("scroll tempo, state: \(currentState)") }
         if !checkForValidTempoInput() { return }
-        if popover!.mainPopoverVisible {return}
+        if popover!.popoverVisible || tutorialActive {return}
         pc!.resultButtonPopup.hide()
         let dir = sender.tag == 0 ? 1.0 : -1.0
         if met!.bpm + dir >= met!.minBPM, met!.bpm + dir <= met!.maxBPM {
@@ -872,7 +891,7 @@ class MainViewController: UIViewController {
     @IBAction func tempoTapped(_: Any) {
         if developmentMode > 0 { print("tempoTapped, state: \(currentState)") }
         if !checkForValidTempoInput() { return }
-        if popover!.mainPopoverVisible {return}
+        if popover!.popoverVisible || tutorialActive {return}
         currentButtonLayer = TempoButton!.pulsate(ilayer: currentButtonLayer)
         wt.stopWaitThenOfType(iselector: #selector(timeoutTapTempo) as Selector)
         // this caps the low tempo at 40 bpm
@@ -900,9 +919,29 @@ class MainViewController: UIViewController {
     @IBAction func startMetronome(_: Any) {
         met?.startMetro()
     }
-
+    
+    @IBAction func handleFretOffsetButtonDown(_ sender: Any) {
+        if popover!.popoverVisible || tutorialActive {return}
+        if returnValidState(iinputState: currentState, istateArr: [
+            State.NotesTestIdle_NoTempo,
+            State.NotesTestShowNotes,
+            State.NotesTestIdle_Tempo,
+            State.NotesTestShowNotes,
+            State.EarTrainingIdle,
+            State.PlaygroundIdle,
+            State.PlaygroundShowNotes
+        ]) {
+            fretOffsetPickerPopover?.addToView()
+            popover?.popoverVisible = true
+            for button in fretButtonDict {
+                button.value.isEnabled = false
+            }
+            resetSideButtonLayers()
+        }
+    }
+    
     func handleTutorialInput(iwchButton: Int) -> Bool {
-        if popover!.mainPopoverVisible {
+        if popover!.popoverVisible {
             return false
         }
 
@@ -910,7 +949,8 @@ class MainViewController: UIViewController {
             progressTutorial()
             return false
         }
-        return true
+//        return true
+        return !tutorialActive
     }
     
     @IBAction func FreePlayChooseNoteCollection(_ sender: Any) {
@@ -938,8 +978,8 @@ class MainViewController: UIViewController {
 
     @IBAction func PeripheralButtonDown(_ sender: UIButton) {
         pc!.resultButtonPopup.hide()
-        if popover!.mainPopoverVisible {return}
-        currentButtonLayer = periphButtonArr[sender.tag].pulsate(ilayer: currentButtonLayer)
+        if popover!.popoverVisible {return}
+        if !tutorialActive {currentButtonLayer = periphButtonArr[sender.tag].pulsate(ilayer: currentButtonLayer)}
         if !returnValidState(iinputState: currentState, istateArr: [
             State.NotesTestCountIn_Tempo,
         ]) {
@@ -1170,7 +1210,7 @@ class MainViewController: UIViewController {
     
     @IBAction func ResultButtonDown(_: Any) {
         if developmentMode > 0 { print("currentState \(currentState)") }
-        if popover!.mainPopoverVisible {return}
+        if popover!.popoverVisible {return}
         pc!.showResultButtonPopup()
     }
 
@@ -1204,7 +1244,7 @@ class MainViewController: UIViewController {
             tutorialDisplayed = true
         }
 
-        if tutorialActive || popover!.mainPopoverVisible {
+        if tutorialActive || popover!.popoverVisible {
             if currentTutorialPopup < 4, !tutorialDisplayed {
                 return
             } else if !tutorialDisplayed {
@@ -1215,7 +1255,7 @@ class MainViewController: UIViewController {
             }
         }
         
-        if popover!.mainPopoverVisible {return}
+        if popover!.popoverVisible {return}
         
         if developmentMode > 0 { print("in fret pressed state \(currentState)") }
 
@@ -1267,12 +1307,13 @@ class MainViewController: UIViewController {
             }
             
             if currentState == State.Recording {
-                if recordStartTime == 0 {
-                    recordStartTime = CFAbsoluteTimeGetCurrent()
-                }
                 let r = InputData()
                 r.time = CFAbsoluteTimeGetCurrent()
                 r.note = buttonDict[inputNumb]!
+                if recordStartTime == 0 {
+                    recordStartTime = CFAbsoluteTimeGetCurrent()
+//                    r.fretOffset = fretOffset  //dont need this
+                }
                 recordData.append(r)
             } else if currentState == State.EarTrainingResponse {
                 earTrainResponseArr.append(buttonDict[inputNumb]!)
@@ -1450,7 +1491,8 @@ class MainViewController: UIViewController {
 
     @objc func playSoundHelper(timer: Timer) {
         let objDict = timer.userInfo as! [String: AnyObject]
-        sc.playSound(isoundName: objDict["Note"] as! String + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
+        let str = sCollection?.returnOffsetFretNote(objDict["Note"] as! String,fretOffset) as! String
+        sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
         displaySingleFretMarker(iinputStr: objDict["Note"] as! String)
         if objDict["LastNote"] as! Bool && currentState == State.RecordingPlayback {
             currentState = State.NotesTestIdle_NoTempo
@@ -1560,6 +1602,11 @@ class MainViewController: UIViewController {
         setDynamicAudioVisualVars(iinputType: "fretDot", iinput: dotType)
         UserDefaults.standard.set(String(fretOffset), forKey: "fretOffset")
         FretRefText.text = returnCurrentFretText()
+        popover?.popoverVisible = false
+        setFretBoardImage()
+        for button in fretButtonDict {
+            button.value.isEnabled = true
+        }
     }
 
     func setResultButton(istr: String? = "") {
@@ -1589,7 +1636,7 @@ class MainViewController: UIViewController {
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
             setupCurrentTaskHelper()
         }
-        popover?.mainPopoverVisible = false
+        popover?.popoverVisible = false
     }
 
     func flashActionOverlay(isuccess: Bool) {
@@ -1616,7 +1663,8 @@ class MainViewController: UIViewController {
         
         if type == "Tutorial" {
             pc!.tutorialPopup.hide()
-            tutorialActive = !tutorialActive
+            tutorialActive = true
+            setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
             popover?.setupPopoverText(isubtitle: "Welcome To Fret Master™!", isubText: ["✅ Learn and sharpen valuable skills!", "🎸 Level up to become a great guitarist!","👍 Let get started with a simple tutorial!"])
         } else if type == "LevelComplete" {
             let key = (lc.currentLevelKey?.replacingOccurrences(of: "Level", with: ""))! + "s" //this is a bit hacky!!
@@ -1629,10 +1677,21 @@ class MainViewController: UIViewController {
         }
         
         popover?.addToView()
-        swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
         
+        
+        swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
 
         // reset tempo/peripheral button layer orders
+        resetSideButtonLayers()
+//        for button in tempoButtonArr! {
+//            button.layer.zPosition = getLayer(ilayer: "Default")
+//        }
+//        for button in periphButtonArr {
+//            button.layer.zPosition = getLayer(ilayer: "Default")
+//        }
+    }
+    
+    func resetSideButtonLayers() {
         for button in tempoButtonArr! {
             button.layer.zPosition = getLayer(ilayer: "Default")
         }
@@ -1748,14 +1807,16 @@ class MainViewController: UIViewController {
     }
     
     func setAlphaOnDefualtImages(_ alpha: CGFloat) {
-        tempoButtonArr = [TempoUpButton, TempoDownButton]
+        tempoButtonArr = [TempoUpButton, TempoDownButton, FretOffsetButton]
         for btn in periphButtonArr {
             btn.alpha = alpha
         }
         TempoUpButton.alpha = alpha
         TempoDownButton.alpha = alpha
         TempoButton.alpha = alpha
+        FretOffsetButton.alpha = alpha
         FretboardDummy.alpha = 0.0
+        ResultButton.alpha = alpha
     }
 
     func setupFretBoardImage() {
@@ -1795,7 +1856,7 @@ class MainViewController: UIViewController {
             "C4": 0.8,
         ]
 
-        let image: UIImage = UIImage(named: "Fretboard5")!
+        let image: UIImage = UIImage(named: "FretBoardOffDot")!
         FretboardImage = UIImageView()
         FretboardImage.image = image
 //        setLayer(iobject: FretboardImage, ilayer: "Default")
@@ -1817,7 +1878,7 @@ class MainViewController: UIViewController {
                                       width: fretboardWidth,
                                       height: fretboardHeight)
         FretboardImage.alpha = 1.0
-
+        
         fretboardXLoc *= FretboardDummy.frame.width / fretboardAspectFit.width
 
         view.addSubview(FretboardImage)
@@ -1828,7 +1889,7 @@ class MainViewController: UIViewController {
 
         let color = [UIColor.blue, UIColor.yellow, UIColor.red, UIColor.green, UIColor.black, UIColor.cyan]
         var buttonTag = 0
-
+        
         for string in 0 ... 5 {
             var xOffset: CGFloat = 0
             for k in 0 ..< string {
@@ -1940,8 +2001,6 @@ class MainViewController: UIViewController {
 
     @objc func onTestButtonDown() {
         //iterate through note label and update notes
-        fretOffset -= 2
-        handleFretOffsetChange()
     }
 
     // Testing
@@ -1991,7 +2050,8 @@ class MainViewController: UIViewController {
     
     func returnCurrentFretText() -> String {
         let fret = 5+fretOffset
-        return "\(fret)\(sCollection!.returnLinguisticNumberEquivalent(String(5-fretOffset)))\(" Fret")"
+//        return "\(fret)\(sCollection!.returnLinguisticNumberEquivalent(String(defaultFretOffset-fretOffset)))\(" Fret")"
+        return "\(fret)\(sCollection!.returnLinguisticNumberEquivalent(String(fret)))\(" Fret")"
     }
 
     @IBAction func record(_: Any) {
@@ -2013,12 +2073,14 @@ class MainViewController: UIViewController {
         var recordedData: [InputData] = []
         let fetchRequest: NSFetchRequest<RecordingData> = RecordingData.fetchRequest()
         if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
+            print("result",results)
             for result in results {
                 if result.id == currentRecordingId {
                     for (i,_) in result.notes!.enumerated() {
                         let input = InputData()
                         input.note = result.notes![i]
                         input.time = Double(result.time![i])!
+                        input.fretOffset = Int(result.fretOffset)
                         recordedData.append(input)
                     }
                 }
@@ -2027,10 +2089,14 @@ class MainViewController: UIViewController {
         return recordedData
     }
     
-    func playRecording() {
+    func playRecording(_ iforceFretOffsetUpdate: Bool = false) {
         currentState = State.RecordingPlayback
         recordData = setupPlayRecordingData()
         recordStartTime = recordData[0].time
+        if iforceFretOffsetUpdate {
+            print("recordData[0].fretOffset recordData[0].fretOffset ", recordData[0].fretOffset)
+            fretOffset = recordData[0].fretOffset
+        }
         for (i, data) in recordData.enumerated() {
             let lastNote = i == recordData.count - 1
             wt.waitThen(itime: data.time - recordStartTime, itarget: self, imethod: #selector(playSoundHelper) as Selector, irepeats: false, idict: ["Note": data.note as AnyObject,"LastNote": lastNote as AnyObject])
@@ -2051,6 +2117,7 @@ class MainViewController: UIViewController {
         recordingInstance.id = currentTime
         recordingInstance.notes = notes
         recordingInstance.time = time
+        recordingInstance.fretOffset = Int16(fretOffset)
         do {
             try globalDataController.viewContext.save()
         } catch {

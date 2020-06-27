@@ -2,34 +2,24 @@ import AVFoundation
 
 class Metronome {
     var vc: MainViewController?
-
-    init(ivc: MainViewController) {
-        vc = ivc
-    }
+    var metCore = MetronomeCore()
 
     var previousClick = CFAbsoluteTimeGetCurrent()
-
     var clickTime = CFAbsoluteTimeGetCurrent()
     var userInputTime = CFAbsoluteTimeGetCurrent()
-    var recordStartTime: CFAbsoluteTime = 0
-    var recordStopTime: CFAbsoluteTime = 0
-
     var countInClick = 4
-    var numbTestClicks = 4
     var currentClick = 0
-
-    // timers
-    var metroTimer: Timer?
-    var nextTimer: Timer?
-
-    var isOn = false
     var bpm = 120.0
     var minBPM = 40.0
     var maxBPM = 350.0
-
-    var barNoteValue = 4
-    var noteInBar = 0
-    var subdivision = 1
+    var initialMetDeployed = true
+    
+    init(ivc: MainViewController) {
+        vc = ivc
+        metCore.onTick = { (nextTick) in
+            self.tick()
+        }
+    }
 
     let timeThreshold: [String: Double] = [
         "Easy": 0.1,
@@ -39,32 +29,23 @@ class Metronome {
 
     func startMetro() {
         endMetronome()
-        MetronomeCount()
-
         currentClick = 0
-        barNoteValue = 4
-        noteInBar = 0
-        isOn = true
+        metCore.bpm = bpm
+        metCore.enabled = true
+        initialMetDeployed = true
     }
-
-    // Main Metro Pulse Timer
-    func MetronomeCount() {
-        previousClick = CFAbsoluteTimeGetCurrent()
-
-        metroTimer = Timer.scheduledTimer(timeInterval: (60.0 / Double(bpm)) * 0.01, target: self, selector: #selector(MetroClick), userInfo: ["bpm": bpm], repeats: true)
-
-        nextTimer = Timer.scheduledTimer(timeInterval: (60.0 / Double(bpm)) * 0.01, target: self, selector: #selector(tick), userInfo: ["bpm": bpm], repeats: true)
+    
+    func deployInitialMet() {
+        initialMetDeployed = false
+        metCore.enabled = true
+        metCore.bpm = 300.0
     }
-
-    @objc func MetroClick(timer _: Timer) {
-        tick(timer: nextTimer!)
-    }
-
-    @objc func tick(timer _: Timer) {
-        let elapsedTime: CFAbsoluteTime = CFAbsoluteTimeGetCurrent() - previousClick
-        let targetTime: Double = 60 / bpm
-//        print("in metronome \(MainViewController.currentState)")
-        if (elapsedTime > targetTime) || (abs(elapsedTime - targetTime) < 0.0003) {
+    
+    func tick() {
+        
+        if !initialMetDeployed {
+            return
+        } else {
             if vc!.currentState == MainViewController.State.PlayingNotesCollection {
                 var str = vc!.specifiedNoteCollection[currentClick]
                 str = vc!.sCollection?.returnOffsetFretNote(str,vc!.fretOffset) as! String
@@ -99,7 +80,6 @@ class Metronome {
                 }
                 if currentClick >= countInClick {
                     if clickTime - userInputTime > 0.5 {
-                        // print ("late")
                     } else {
                         let timeDelta = clickTime - userInputTime
                         if timeDelta < 0.05 {
@@ -122,14 +102,7 @@ class Metronome {
     }
 
     func endMetronome() {
-        if nextTimer != nil {
-            nextTimer?.invalidate()
-            nextTimer = nil
-        }
-        if metroTimer != nil {
-            metroTimer?.invalidate()
-            metroTimer = nil
-        }
+        metCore.enabled = false
         if vc!.currentState == MainViewController.State.NotesTestCountIn_Tempo || vc!.currentState == MainViewController.State.NotesTestActive_Tempo {
             vc!.ResultsLabel.text = vc!.resultsLabelDefaultText
         }
@@ -158,87 +131,59 @@ class Metronome {
         vc!.onTestComplete(itestPassed: notesCorrect, iflashRed: true)
         vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
     }
+}
 
-//    private let audioPlayerNode: AVAudioPlayerNode
-//    private let audioFileMainClick: AVAudioFile
-//    private let audioFileAccentedClick: AVAudioFile
-//    private let audioEngine: AVAudioEngine
-//
-//    init (mainClickFile: URL, accentedClickFile: URL? = nil) {
-//
-//        audioFileMainClick = try! AVAudioFile(forReading: mainClickFile)
-//        audioFileAccentedClick = try! AVAudioFile(forReading: accentedClickFile ?? mainClickFile)
-//
-//        audioPlayerNode = AVAudioPlayerNode()
-//
-//        audioEngine = AVAudioEngine()
-//        audioEngine.attach(self.audioPlayerNode)
-//
-//        audioEngine.connect(audioPlayerNode, to: audioEngine.mainMixerNode, format: audioFileMainClick.processingFormat)
-//        try! audioEngine.start()
-//    }
-//
-//    private func generateBuffer(bpm: Double) -> AVAudioPCMBuffer {
-//
-//        audioFileMainClick.framePosition = 0
-//        audioFileAccentedClick.framePosition = 0
-//
-//        let beatLength = AVAudioFrameCount(audioFileMainClick.processingFormat.sampleRate * 60 / bpm)
-//        let bufferMainClick = AVAudioPCMBuffer(pcmFormat: audioFileMainClick.processingFormat,
-//                                               frameCapacity: beatLength)!
-//        try! audioFileMainClick.read(into: bufferMainClick)
-//        bufferMainClick.frameLength = beatLength
-//
-//        let bufferAccentedClick = AVAudioPCMBuffer(pcmFormat: audioFileMainClick.processingFormat,
-//                                                   frameCapacity: beatLength)!
-//        try! audioFileAccentedClick.read(into: bufferAccentedClick)
-//        bufferAccentedClick.frameLength = beatLength
-//
-//        let bufferBar = AVAudioPCMBuffer(pcmFormat: audioFileMainClick.processingFormat,
-//                                         frameCapacity: 4 * beatLength)!
-//        bufferBar.frameLength = 4 * beatLength
-//
-//        // don't forget if we have two or more channels then we have to multiply memory pointee at channels count
-//        let channelCount = Int(audioFileMainClick.processingFormat.channelCount)
-//        let accentedClickArray = Array(
-//            UnsafeBufferPointer(start: bufferAccentedClick.floatChannelData![0],
-//                                count: channelCount * Int(beatLength))
-//        )
-//        let mainClickArray = Array(
-//            UnsafeBufferPointer(start: bufferMainClick.floatChannelData![0],
-//                                count: channelCount * Int(beatLength))
-//        )
-//
-//        var barArray = [Float]()
-//        // one time for first beat
-//        barArray.append(contentsOf: accentedClickArray)
-//        // three times for regular clicks
-//        for _ in 1...3 {
-//            barArray.append(contentsOf: mainClickArray)
-//        }
-//        bufferBar.floatChannelData!.pointee.assign(from: barArray,
-//                                                   count: channelCount * Int(bufferBar.frameLength))
-//        return bufferBar
-//    }
-//
-//    func play(bpm: Double) {
-//        print("playing")
-//        let buffer = generateBuffer(bpm: bpm)
-//
-//        if audioPlayerNode.isPlaying {
-//            audioPlayerNode.scheduleBuffer(buffer, at: nil, options: .interruptsAtLoop, completionHandler: nil)
-//        } else {
-//            self.audioPlayerNode.play()
-//        }
-//
-//        self.audioPlayerNode.scheduleBuffer(buffer, at: nil, options: .loops, completionHandler: nil)
-//    }
-//
-//    func stop() {
-//        audioPlayerNode.stop()
-//    }
-//
-//    var isPlaying: Bool {
-//        return audioPlayerNode.isPlaying
-//    }
+
+class MetronomeCore {
+    var bpm = 120.0
+    var enabled: Bool = false { didSet {
+        if enabled {
+            start()
+        } else {
+            stop()
+        }
+        }}
+    var onTick: ((_ nextTick: DispatchTime) -> Void)?
+    var nextTick: DispatchTime = DispatchTime.distantFuture
+
+    let player: AVAudioPlayer = {
+        do {
+            let soundURL = Bundle.main.url(forResource: "Click_Digital", withExtension: "wav")!
+            let soundFile = try AVAudioFile(forReading: soundURL)
+            let player = try AVAudioPlayer(contentsOf: soundURL)
+            return player
+        } catch {
+            print("Oops, unable to initialize metronome audio buffer: \(error)")
+            return AVAudioPlayer()
+        }
+    }()
+
+    private func start() {
+        print("Starting metronome, BPM: \(bpm)")
+        nextTick = DispatchTime.now()
+        player.prepareToPlay()
+        nextTick = DispatchTime.now()
+        tick()
+    }
+
+    private func stop() {
+        player.stop()
+        print("Stoping metronome")
+    }
+
+    private func tick() {
+        guard
+            enabled,
+            nextTick <= DispatchTime.now()
+            else { return }
+
+        let interval: TimeInterval = 60.0 / TimeInterval(bpm)
+        nextTick = nextTick + interval
+        DispatchQueue.main.asyncAfter(deadline: nextTick) { [weak self] in
+            self?.tick()
+        }
+
+        player.play(atTime: interval)
+        onTick?(nextTick)
+    }
 }

@@ -10,7 +10,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     var cellReuseIdentifier = "ScalePickerViewCell"
     var pickerList:[String] = []
     var selectedCell = -1
-    var backgroundImageID = 0
+    var backgroundImageID = 4
     var recordingInfo: [String] = []
     var vc: MainViewController?
     
@@ -89,6 +89,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         if navigationController?.viewControllers.index(of: self) == nil && selectedCell > -1 && !self.restorationIdentifier!.contains("record") {
             UserDefaults.standard.set(pickerList[selectedCell], forKey: "freePlayNoteCollection")
         } else if self.restorationIdentifier!.contains("record") && selectedCell > -1 {
+            vc!.handleFretOffsetChange()
         }
         switch self.restorationIdentifier! {
         case "scalePicker":
@@ -146,7 +147,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         } else {
             vc?.currentRecordingId = pickerList[selectedCell]
             if vc?.currentRecordingId != "" {
-                vc?.playRecording()
+                vc?.playRecording(true)
             }
         }
     }

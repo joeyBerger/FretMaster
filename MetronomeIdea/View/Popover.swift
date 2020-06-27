@@ -19,7 +19,7 @@ class Popover: UIViewController {
     var subText = [SpringLabel()]
     var xButton = SpringButton()
     
-    var mainPopoverVisible = false
+    var popoverVisible = false
     var mainPopoverState = ""
     
     convenience init() {
@@ -133,7 +133,7 @@ class Popover: UIViewController {
     }
     
     func addToView() {
-        mainPopoverVisible = true
+        popoverVisible = true
         vc!.view.addSubview(background)
         vc!.view.addSubview(mainButton)
         mainButton.isHidden = true
