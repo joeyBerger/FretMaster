@@ -1,8 +1,11 @@
 import AVFoundation
+import AudioKitUI
+import AudioKit
+
+var metronome2 = AKMetronome()
 
 class Metronome {
     var vc: MainViewController?
-    var metCore = MetronomeCore()
 
     var previousClick = CFAbsoluteTimeGetCurrent()
     var clickTime = CFAbsoluteTimeGetCurrent()
@@ -12,12 +15,31 @@ class Metronome {
     var bpm = 120.0
     var minBPM = 40.0
     var maxBPM = 350.0
-    var initialMetDeployed = true
+    
+    var metronome1 = AKSamplerMetronome()
+    var mixer = AKMixer()
     
     init(ivc: MainViewController) {
         vc = ivc
-        metCore.onTick = { (nextTick) in
-            self.tick()
+        
+        currentClick = 0
+        if !audioKitStarted {
+            metronome2.subdivision = 4
+            metronome2.tempo = 250
+            metronome2.frequency1 = 0
+            metronome2.frequency2 = 0
+            AudioKit.output = metronome2
+            audioKitStarted = true
+        }
+        do {
+            try AudioKit.start()
+        } catch {
+            AKLog("AudioKit did not start!")
+        }
+        metronome2.callback = {
+            DispatchQueue.main.async {
+                self.tick()
+            }
         }
     }
 
@@ -30,22 +52,13 @@ class Metronome {
     func startMetro() {
         endMetronome()
         currentClick = 0
-        metCore.bpm = bpm
-        metCore.enabled = true
-        initialMetDeployed = true
-    }
-    
-    func deployInitialMet() {
-        initialMetDeployed = false
-        metCore.enabled = true
-        metCore.bpm = 300.0
+        metronome2.tempo = bpm
+        metronome2.reset()
+        metronome2.restart()
     }
     
     func tick() {
-        
-        if !initialMetDeployed {
-            return
-        } else {
+        if true {
             if vc!.currentState == MainViewController.State.PlayingNotesCollection {
                 var str = vc!.specifiedNoteCollection[currentClick]
                 str = vc!.sCollection?.returnOffsetFretNote(str,vc!.fretOffset) as! String
@@ -102,10 +115,11 @@ class Metronome {
     }
 
     func endMetronome() {
-        metCore.enabled = false
         if vc!.currentState == MainViewController.State.NotesTestCountIn_Tempo || vc!.currentState == MainViewController.State.NotesTestActive_Tempo {
             vc!.ResultsLabel.text = vc!.resultsLabelDefaultText
         }
+        metronome2.stop()
+        metronome2.reset()
     }
 
     @objc func analyzeNotesInTempoTest() {
@@ -130,60 +144,5 @@ class Metronome {
         let notesCorrect = notesMatch && timeAcurracyMet
         vc!.onTestComplete(itestPassed: notesCorrect, iflashRed: true)
         vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
-    }
-}
-
-
-class MetronomeCore {
-    var bpm = 120.0
-    var enabled: Bool = false { didSet {
-        if enabled {
-            start()
-        } else {
-            stop()
-        }
-        }}
-    var onTick: ((_ nextTick: DispatchTime) -> Void)?
-    var nextTick: DispatchTime = DispatchTime.distantFuture
-
-    let player: AVAudioPlayer = {
-        do {
-            let soundURL = Bundle.main.url(forResource: "Click_Digital", withExtension: "wav")!
-            let soundFile = try AVAudioFile(forReading: soundURL)
-            let player = try AVAudioPlayer(contentsOf: soundURL)
-            return player
-        } catch {
-            print("Oops, unable to initialize metronome audio buffer: \(error)")
-            return AVAudioPlayer()
-        }
-    }()
-
-    private func start() {
-        print("Starting metronome, BPM: \(bpm)")
-        nextTick = DispatchTime.now()
-        player.prepareToPlay()
-        nextTick = DispatchTime.now()
-        tick()
-    }
-
-    private func stop() {
-        player.stop()
-        print("Stoping metronome")
-    }
-
-    private func tick() {
-        guard
-            enabled,
-            nextTick <= DispatchTime.now()
-            else { return }
-
-        let interval: TimeInterval = 60.0 / TimeInterval(bpm)
-        nextTick = nextTick + interval
-        DispatchQueue.main.asyncAfter(deadline: nextTick) { [weak self] in
-            self?.tick()
-        }
-
-        player.play(atTime: interval)
-        onTick?(nextTick)
     }
 }

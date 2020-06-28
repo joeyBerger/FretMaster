@@ -207,16 +207,6 @@ class MainViewController: UIViewController {
         self.extendedLayoutIncludesOpaqueBars = true
         
         NotificationCenter.default.addObserver(self, selector: #selector(willEnterForeground), name: UIApplication.willEnterForegroundNotification, object: nil)
-        
-        
-        
-        
-//        var alertViewResponder: SCLAlertViewResponder = SCLAlertView().showSuccess("Hello World", subTitle: "This is a more descriptive text.")
-//
-//            // Upon displaying, change/close view
-//        alertViewResponder.setTitle("New Title") // Rename title
-//        alertViewResponder.setSubTitle("New description") // Rename subtitle
-        
 
         // initialize objects
         met = Metronome(ivc: self)
@@ -286,7 +276,6 @@ class MainViewController: UIViewController {
 
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
-        met!.deployInitialMet()
         if !sceneHasBeenSetup {
             // Add overlays
             DimOverlay = setupScreenOverlay()

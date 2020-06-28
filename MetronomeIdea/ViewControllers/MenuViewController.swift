@@ -15,6 +15,8 @@ let defaultColor = DefaultColor()
 let backgroundImage = BackgroundImage()
 var globalDataController = DataController(modelName: "ImageModel")
 var volume = Volume()
+var audioKitStarted = false
+
 //var currentRecordingId = ""
 
 class MenuViewController: UIViewController {
