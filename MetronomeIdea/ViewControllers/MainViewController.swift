@@ -331,6 +331,7 @@ class MainViewController: UIViewController {
 
     override func willMove(toParent parent: UIViewController?) {
         super.willMove(toParent: parent)
+        wt.stopWaitThenOfType(iselector: #selector(setupCurrentTask) as Selector)
         UIView.setAnimationsEnabled(false)
         if let met = met {
             met.endMetronome()
@@ -460,7 +461,6 @@ class MainViewController: UIViewController {
         var additionalData : [String:Any] = [:]  //this is a little hacky
         
         if (lc.currentLevelKey?.contains("interval"))! {
-            
             let data = lc.parseEarTrainingData(task)
             startingNote = data["StartingNote"] as! String
             startingEarTrainingNote = startingNote
@@ -504,6 +504,10 @@ class MainViewController: UIViewController {
         } else if lc.currentLevelKey!.contains("scale") || lc.currentLevelKey!.contains("arpeggio") {
             resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
             tempoActive = parseTempoStatus(iinput: task)
+            if tempoActive {
+                met!.bpm = Double(parseTempo(iinput: task))!
+                TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
+            }
             tempoButtonsActive = !tempoActive
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
@@ -633,7 +637,8 @@ class MainViewController: UIViewController {
                     "guitarTone": "Acoustic",
                     "clickTone": "Digital",
                     "fretOffset": "0",
-                    "fretDot": "Scale Degree",
+//                    "fretDot": "Scale Degree",
+                    "fretDot": "Note Name",
                 ]
                 UserDefaults.standard.set(defaultVal[dataStr], forKey: dataStr)
                 setDynamicAudioVisualVars(iinputType: dataStr, iinput: defaultVal[dataStr]!)
@@ -707,6 +712,11 @@ class MainViewController: UIViewController {
     func parseTempoStatus(iinput: String) -> Bool {
         return iinput.contains("Tempo") && !(lc.currentLevelKey?.contains("interval"))!
     }
+    
+    func parseTempo(iinput: String) -> String {
+        let tempoArr = iinput.components(separatedBy: "Tempo:")
+        return tempoArr[1]
+    }
 
     func setupPeripheralButtons(iiconArr: [String]) {
         for (i, button) in periphButtonArr.enumerated() {
@@ -778,12 +788,21 @@ class MainViewController: UIViewController {
         TempoUpButton.layer.cornerRadius = 25
         TempoUpButton.imageView?.alpha = 1.0
         
+        
+        if !currentState.rawValue.contains("EarTraining") {
+            buttonColor = defaultColor.MenuButtonColor
+            inlayColor = defaultColor.MenuButtonTextColor
+        } else {
+            buttonColor = defaultColor.InactiveButton
+            inlayColor = defaultColor.InactiveInlay
+        }
+        
         setButtonImage(ibutton: FretOffsetButton, iimageStr: "icons8-music-notation-50")
         FretOffsetButton.contentVerticalAlignment = .fill
         FretOffsetButton.contentHorizontalAlignment = .fill
         FretOffsetButton.imageEdgeInsets = UIEdgeInsets(top: insets, left: insets, bottom: insets, right: insets)
-        FretOffsetButton.backgroundColor = defaultColor.MenuButtonColor
-        FretOffsetButton.imageView?.tintColor = defaultColor.MenuButtonTextColor
+        FretOffsetButton.backgroundColor = buttonColor
+        FretOffsetButton.imageView?.tintColor = inlayColor
         FretOffsetButton.layer.masksToBounds = true
         FretOffsetButton.layer.cornerRadius = 25
         FretOffsetButton.imageView?.alpha = 1.0
@@ -1072,6 +1091,9 @@ class MainViewController: UIViewController {
             hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             et!.earTrainingSetup(earTrainingLevelData[earTrainingIdx])
+            fretOffset = -4 + rand(max: 7)
+            handleFretOffsetChange()
+            print("button pressed here")
             return
         }
         // Ear Training - disable test
@@ -1083,6 +1105,7 @@ class MainViewController: UIViewController {
             setNavBarColor()
             earTrainingLevelData = randomizeEarTrainingData()
             setupCurrentTask()
+            
         }
     }
 

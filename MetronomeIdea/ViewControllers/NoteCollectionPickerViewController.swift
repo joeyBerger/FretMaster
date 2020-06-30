@@ -56,12 +56,14 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                     pickerList.append(exercise)
                 }
             }
-            let stringsToRemove = ["_","Up","Both","Tempo"]
+            let stringsToRemove = ["_","Up","Both","Tempo",":"]
             for (i,_) in pickerList.enumerated() {
                 for str in stringsToRemove {
                     pickerList[i] = pickerList[i].replacingOccurrences(of: str, with: "")
                 }
+                pickerList[i] = pickerList[i].trimmingCharacters(in: CharacterSet(charactersIn: "0123456789:"))
             }
+            
             pickerList = pickerList.uniques
             
             let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")

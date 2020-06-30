@@ -59,7 +59,7 @@ class SettingsViewController: UIViewController {
             iheader: "Fretboard Dot".uppercased(),
             isubtext: "Manage Your Dot Display",
             iid: "fretDot",
-            iavailableSettings: ["Scale Degree", "Note Name", "None"],
+            iavailableSettings: ["Note Name", "Scale Degree", "None"],
             isettingsType: "dotValue"
         ),
         buttonText(

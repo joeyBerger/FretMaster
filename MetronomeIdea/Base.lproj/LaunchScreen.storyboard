@@ -16,35 +16,26 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MenuImage0.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="vIg-vu-QwN">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="7vv-1y-Dat">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                             </imageView>
-                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Guitar Boss" textAlignment="center" lineBreakMode="characterWrap" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="HCf-Et-N6m">
-                                <rect key="frame" x="0.0" y="101" width="414" height="50.666666666666657"/>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="43"/>
-                                <nil key="textColor"/>
-                                <nil key="highlightedColor"/>
-                            </label>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="HCf-Et-N6m" secondAttribute="trailing" id="7sY-5x-Jpe"/>
-                            <constraint firstItem="vIg-vu-QwN" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="KfH-YU-ZoM"/>
-                            <constraint firstItem="HCf-Et-N6m" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="57" id="O7A-uw-6Ba"/>
-                            <constraint firstItem="HCf-Et-N6m" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="OLU-L9-fJJ"/>
-                            <constraint firstItem="vIg-vu-QwN" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="TtL-sL-Od6"/>
-                            <constraint firstItem="vIg-vu-QwN" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="XTJ-5i-ISh"/>
-                            <constraint firstAttribute="bottom" secondItem="vIg-vu-QwN" secondAttribute="bottom" id="yUd-Xk-3CM"/>
+                            <constraint firstItem="7vv-1y-Dat" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="AX0-TK-gWP"/>
+                            <constraint firstItem="7vv-1y-Dat" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Gpz-dw-XPq"/>
+                            <constraint firstItem="7vv-1y-Dat" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="XTm-wd-un0"/>
+                            <constraint firstAttribute="bottom" secondItem="7vv-1y-Dat" secondAttribute="bottom" id="elT-fx-VAK"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="52" y="374.66266866566718"/>
+            <point key="canvasLocation" x="50.724637681159422" y="374.33035714285711"/>
         </scene>
     </scenes>
     <resources>
-        <image name="MenuImage0.jpg" width="4770" height="7905"/>
+        <image name="SplashImage.png" width="4770" height="7905"/>
     </resources>
 </document>

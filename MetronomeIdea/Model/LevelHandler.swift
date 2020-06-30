@@ -174,15 +174,15 @@ class LevelConstruct: UIViewController {
         ["Ionian_Up", "Aeolian_Up"],
         ["MinorPentatonic_Up", "MajorPentatonic_Up", "Ionian_Up", "Aeolian_Up"],
         ["MinorPentatonic_Both", "MajorPentatonic_Both", "Ionian_Both", "Aeolian_Both"],
-        ["MinorPentatonic_Both_Tempo", "MajorPentatonic_Both_Tempo", "Ionian_Both_Tempo", "Aeolian_Both_Tempo"],
+        ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "Ionian_Both_Tempo:120", "Aeolian_Both_Tempo:120"],
     ]
     let arpeggio = [
         ["MajorArp_Up", "MinorArp_Up"],
         ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
         ["MajorArp_Up", "MinorArp_Up", "MajorSeventhArp_Up", "MinorSeventhArp_Up"],
         ["MajorArp_Both", "MinorArp_Both", "MajorSeventhArp_Both", "MinorSeventhArp_Both"],
-        ["MajorArp_Up_Tempo", "MinorArp_Up_Tempo", "MajorSeventhArp_Up_Tempo", "MinorSeventhArp_Up_Tempo"],
-        ["MajorArp_Both_Tempo", "MinorArp_Both_Tempo", "MajorSeventhArp_Both_Tempo", "MinorSeventhArp_Both_Tempo"],
+        ["MajorArp_Up_Tempo:120", "MinorArp_Up_Tempo:120", "MajorSeventhArp_Up_Tempo:120", "MinorSeventhArp_Up_Tempo:120"],
+        ["MajorArp_Both_Tempo:120", "MinorArp_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120"],
 //        ["DiminishedArp_Up", "AugmentedArp_Up"],
     ]
     let interval = [

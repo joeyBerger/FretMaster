@@ -195,6 +195,7 @@ class ScaleCollection {
     }
 
     func setupSpecifiedNoteCollection(iinput: String, idirection: String, istartingNote: String = "A", itype: String = "standard", idata: [String:Any] = [:]) -> [String] {
+        let parsedInput = iinput.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789:"))
         let startingNote = istartingNote.rangeOfCharacter(from: .decimalDigits) == nil ? istartingNote : parseCoreNote(istartingNote)
         var noteIndex = 0
         var notePos = 1
@@ -216,7 +217,7 @@ class ScaleCollection {
         
         // find note index
         else if itype == "standard" {
-            let desiredNoteCollection = availableScales[iinput]
+            let desiredNoteCollection = availableScales[parsedInput]
             
             for (i, _) in desiredNoteCollection!.enumerated() {
                 let note = scaleDegreeDict[desiredNoteCollection![i]]
@@ -276,7 +277,8 @@ class ScaleCollection {
     }
 
     func returnReadableScaleName(iinput: String) -> String {
-        return scaleNameDict[iinput]!
+        let parsedInput = iinput.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789:"))
+        return scaleNameDict[parsedInput]!
     }
 
     func analyzeNotes(iscaleTestData: [MainViewController.InputData]) -> Bool {

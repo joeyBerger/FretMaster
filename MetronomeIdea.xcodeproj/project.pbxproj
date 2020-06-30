@@ -26,6 +26,7 @@
 		9E57E05C247D624100DA4F4F /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E57E05B247D624100DA4F4F /* Popover.swift */; };
 		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
 		9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E69398D23A7DDB800C57B11 /* WaitThen.swift */; };
+		9E75ACC824AAF7A0000CFB91 /* SplashImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E75ACC724AAF7A0000CFB91 /* SplashImage.png */; };
 		9E7C2ECB248A0FB0006F4C85 /* FretOffsetPickerPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */; };
 		9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E919EEF244EBB4C008027EF /* Vibration.swift */; };
 		9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C46E622C483C000B133A9 /* SoundController.swift */; };
@@ -260,11 +261,11 @@
 		9E57E05B247D624100DA4F4F /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		9E69398D23A7DDB800C57B11 /* WaitThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitThen.swift; sourceTree = "<group>"; };
+		9E75ACC724AAF7A0000CFB91 /* SplashImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SplashImage.png; sourceTree = "<group>"; };
 		9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FretOffsetPickerPopover.swift; sourceTree = "<group>"; };
 		9E919EEF244EBB4C008027EF /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		9E9C46E622C483C000B133A9 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
 		9EA49F9424330B8800BF9398 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
-		9EA604CA24A911D900900821 /* SplashScreen.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SplashScreen.png; sourceTree = "<group>"; };
 		9EA604CC24A950D200900821 /* LoadingViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LoadingViewController.swift; sourceTree = "<group>"; };
 		9EA604D024A95EBB00900821 /* A1_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = A1_Acoustic.wav; sourceTree = "<group>"; };
 		9EA604D124A95EBF00900821 /* C3_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = C3_Acoustic.wav; sourceTree = "<group>"; };
@@ -496,6 +497,14 @@
 			path = MenuSelection;
 			sourceTree = "<group>";
 		};
+		9E75ACC624AAF794000CFB91 /* SplashImage */ = {
+			isa = PBXGroup;
+			children = (
+				9E75ACC724AAF7A0000CFB91 /* SplashImage.png */,
+			);
+			path = SplashImage;
+			sourceTree = "<group>";
+		};
 		9EA604CE24A95E9900900821 /* GuitarTones */ = {
 			isa = PBXGroup;
 			children = (
@@ -709,8 +718,8 @@
 		9ED22C7C23CD8C840051D8A4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9E75ACC624AAF794000CFB91 /* SplashImage */,
 				9EA6051324A95FDE00900821 /* FretboardImages */,
-				9EA604CA24A911D900900821 /* SplashScreen.png */,
 				9EDC0FAC247B2A0400257CFE /* MainInterfaceImage */,
 				9EDC0F8D247B283700257CFE /* MenuImage */,
 				9EDC0F89247B27A900257CFE /* SettingsImage */,
@@ -998,6 +1007,7 @@
 				9EA6059D24A960BA00900821 /* D2_Jazz.wav in Resources */,
 				9EA6057824A960BA00900821 /* F#4_Jazz.wav in Resources */,
 				9EA6053124A9602D00900821 /* B2_Acoustic.wav in Resources */,
+				9E75ACC824AAF7A0000CFB91 /* SplashImage.png in Resources */,
 				9EA6052624A9602D00900821 /* A1_Acoustic.wav in Resources */,
 				9EA6052824A9602D00900821 /* G#2_Acoustic.wav in Resources */,
 				9EA605F024A9627800900821 /* MenuImage4.jpg in Resources */,
