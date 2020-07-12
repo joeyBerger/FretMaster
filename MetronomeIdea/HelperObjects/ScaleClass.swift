@@ -68,9 +68,9 @@ class ScaleCollection {
         "Aeolian": "Aeolian",
         "Locrian": "Locrian",
         
-        "PentatonicModeIII": "Mode III",
-        "PentatonicModeIV": "Mode IV",
-        "PentatonicModeV": "Mode V",
+        "PentatonicModeIII": "Pent. Mode III",
+        "PentatonicModeIV": "Pent. Mode IV",
+        "PentatonicModeV": "Pent. Mode V",
         "DiminishedWholeHalf": "Dim. Whole Half",
         "DiminishedHalfWhole": "Dim. Half Whole",
         "WholeTone": "Whole Tone",
@@ -126,7 +126,7 @@ class ScaleCollection {
         "DiminishedHalfWhole" : ["1","b2","b3","3","b5","5","6","b7"],
         "WholeTone" : ["1","2","3","b5","b6","b7"],
         
-        "HarmonicMinor" : ["1","2","b3","4","5","b6","b7"],
+        "HarmonicMinor" : ["1","2","b3","4","5","b6","7"],
         "Locrian6" : ["1","b2","b3","4","b5","6","b7"],
         "Ionian#5" : ["1","2","3","4","b6","6","7"],
         "Dorian#4" : ["1","2","b3","#4","5","6","b7"],
@@ -353,7 +353,25 @@ class ScaleCollection {
             newNoteCollection = sequenceArr
         }
         
+        newNoteCollection = covertDSharpThreeToValidNote(newNoteCollection, iinput)
+        
         return newNoteCollection
+    }
+    
+    func covertDSharpThreeToValidNote(_ inoteCollection: [String], _ inoteCollectionHeader : String) -> [String] {
+        var modifiedArr = inoteCollection
+        let convertToSharpFourCollections = ["DiminishedWholeHalf"]
+        for (i,note) in modifiedArr.enumerated() {
+            if note == "D#3" {
+                modifiedArr[i] = (availableScales[inoteCollectionHeader]?.contains("b5"))! ? "D#3_0" : "D#3_1"
+                for noteCollection in convertToSharpFourCollections {
+                    if inoteCollectionHeader == noteCollection {
+                        modifiedArr[i] = "D#3_1"
+                    }
+                }
+            }
+        }
+        return modifiedArr
     }
 
     func returnNoteDistance(iinput: String, icomparedNote: String) -> String {

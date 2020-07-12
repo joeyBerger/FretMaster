@@ -163,9 +163,26 @@ class LevelConstruct: UIViewController {
     }
 
     let currentLevelName: [String: [String]] = [
-        "scales": ["Intro", "Major Pentatonic", "Major/Minor Modes", "Pentatonic And Major/Minor", "Previous Up/Down", "Previous Up/Down In Time"],
-        "arpeggios": ["Major/Minor", "Major/Minor Seventh", "Previous Up", "Previous Up/Down", "Previous Up In Time", "Previous Up/Down In Time"],
-        "intervals": ["Maj 2, Perfect 5th","2","3","4"]
+        "scales": [
+            "Intro",
+            "Major Pentatonic",
+            "Major/Minor Modes",
+            "Pentatonic And Major/Minor",
+            "Previous Up/Down",
+            "Previous - Random",
+            "Previous Up/Down At 120 BPM"
+        ],
+        "arpeggios": [
+            "Major/Minor",
+            "Major/Minor Seventh",
+            "Previous Up",
+            "Previous Up/Down",
+            "Previous Up At 120 BPM",
+            "Previous Up/Down At 120 BPM"
+        ],
+        "intervals": [
+            "Maj 2, Perfect 5th","2","3","4"
+        ]
     ]
 
     let scale = [
@@ -174,7 +191,58 @@ class LevelConstruct: UIViewController {
         ["Ionian_Up", "Aeolian_Up"],
         ["MinorPentatonic_Up", "MajorPentatonic_Up", "Ionian_Up", "Aeolian_Up"],
         ["MinorPentatonic_Both", "MajorPentatonic_Both", "Ionian_Both", "Aeolian_Both"],
+        ["Ionian_Both", "MajorPentatonic_Both", "MinorPentatonic_Both", "Aeolian_Both"],
+        ["Ionian_Both", "MajorPentatonic_Both", "MinorPentatonic_Both", "Aeolian_Both"],
         ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "Ionian_Both_Tempo:120", "Aeolian_Both_Tempo:120"],
+        ["MinorPentatonic_Up", "MajorPentatonic_Up","PentatonicModeIII_Up","PentatonicModeIV_Up","PentatonicModeV_Up"],
+        ["MinorPentatonic_Both", "MajorPentatonic_Both","PentatonicModeIII_Both","PentatonicModeIV_Both","PentatonicModeV_Both"],
+        ["PentatonicModeIV_Both", "PentatonicModeIII_Both","MinorPentatonic_Both","PentatonicModeV_Both","MajorPentatonic_Both"], //random
+        ["PentatonicModeV_Both", "MajorPentatonic_Both","PentatonicModeIV_Both","MinorPentatonic_Both","PentatonicModeIII_Both"], //random
+        ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120","PentatonicModeIII_Both_Tempo:120","PentatonicModeIV_Both_Tempo:120","PentatonicModeV_Both_Tempo:120"],
+        ["PentatonicModeIV_Both_Tempo:120", "PentatonicModeIII_Both_Tempo:120","MajorPentatonic_Both_Tempo:120","PentatonicModeV_Both_Tempo:120","MinorPentatonic_Both_Tempo:120"], //random
+        ["Ionian_Up", "Dorian_Up", "Phyrgian_Up", "Lydian_Up", "Mixolydian_Up", "Aeolian_Up", "Locrian_Up"],
+        ["Ionian_Both", "Dorian_Both", "Phyrgian_Both", "Lydian_Both", "Mixolydian_Both", "Aeolian_Both", "Locrian_Both"],
+        ["Phyrgian_Both", "Locrian_Both", "Lydian_Both", "Aeolian_Both", "Dorian_Both", "Ionian_Both", "Mixolydian_Both"], //random
+        ["Dorian_Both", "Mixolydian_Both", "Ionian_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "Lydian_Both"], //random
+        ["Mixolydian_Both", "Ionian_Both", "Aeolian_Both", "Dorian_Both", "Locrian_Both", "Lydian_Both", "Phyrgian_Both"], //random
+        ["Ionian_Both_Tempo:120", "Dorian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Lydian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Locrian_Both_Tempo:120"],
+        ["Lydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Ionian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Locrian_Both_Tempo:120", "Dorian_Both_Tempo:120"], //random
+        ["Locrian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Dorian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Lydian_Both_Tempo:120", "Ionian_Both_Tempo:120"], //random
+        ["Locrian_Both_Tempo:150", "Mixolydian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Dorian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Lydian_Both_Tempo:150", "Ionian_Both_Tempo:150"], //random
+        ["Mixolydian_Both_Tempo:150", "Dorian_Both_Tempo:150", "Locrian_Both_Tempo:150", "Ionian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Lydian_Both_Tempo:150"], //random
+        ["Dorian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Lydian_Both_Tempo:180", "Ionian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Locrian_Both_Tempo:180", "Mixolydian_Both_Tempo:180"], //random
+        
+        ["PentatonicModeV_Both", "Locrian_Both", "PentatonicModeIII_Both", "MajorPentatonic_Both", "Dorian_Both", "Ionian_Both", "Lydian_Both", "PentatonicModeIV_Both", "Aeolian_Both", "MinorPentatonic_Both", "Phyrgian_Both", "Mixolydian_Both"], //random
+        ["MajorPentatonic_Both", "Mixolydian_Both", "PentatonicModeIII_Both", "PentatonicModeIV_Both", "Phyrgian_Both", "Locrian_Both", "Lydian_Both", "PentatonicModeV_Both", "MinorPentatonic_Both", "Ionian_Both", "Aeolian_Both", "Dorian_Both"], //random
+        
+        ["Mixolydian_Both_Tempo:120", "Ionian_Both_Tempo:120", "Lydian_Both_Tempo:120", "PentatonicModeV_Both_Tempo:120", "Aeolian_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "PentatonicModeIII_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "PentatonicModeIV_Both_Tempo:120", "Locrian_Both_Tempo:120", "Dorian_Both_Tempo:120", "MinorPentatonic_Both_Tempo:120"],   //random
+        ["Lydian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Ionian_Both_Tempo:150", "PentatonicModeIII_Both_Tempo:150", "MinorPentatonic_Both_Tempo:150", "Mixolydian_Both_Tempo:150", "MajorPentatonic_Both_Tempo:150", "PentatonicModeV_Both_Tempo:150", "Dorian_Both_Tempo:150", "PentatonicModeIV_Both_Tempo:150", "Locrian_Both_Tempo:150"],    //random
+        ["MinorPentatonic_Both_Tempo:180", "PentatonicModeIV_Both_Tempo:180", "Mixolydian_Both_Tempo:180", "PentatonicModeIII_Both_Tempo:180", "MajorPentatonic_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Lydian_Both_Tempo:180", "Dorian_Both_Tempo:180", "Ionian_Both_Tempo:180", "PentatonicModeV_Both_Tempo:180", "Locrian_Both_Tempo:180", "Aeolian_Both_Tempo:180"],  //random
+                
+
+        
+        
+        
+        ["HarmonicMinor_Up","MelodicMinor_Up"],
+        ["HarmonicMinor_Both","MelodicMinor_Both"],
+        ["MelodicMinor_Both_Tempo:120","HarmonicMinor_Both_Tempo:120"],
+        ["Aeolian_Both", "Phyrgian_Both", "HarmonicMinor_Both", "MelodicMinor_Both", "Locrian_Both"],   //random
+        ["HarmonicMinor_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "MelodicMinor_Both"],   //random
+        ["Aeolian_Both", "Phyrgian_Both", "HarmonicMinor_Both", "MelodicMinor_Both", "Locrian_Both"],   //random
+        ["HarmonicMinor_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "MelodicMinor_Both"],   //random
+        ["MelodicMinor_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Locrian_Both_Tempo:120", "HarmonicMinor_Both_Tempo:120"], //random
+        ["Phyrgian_Both_Tempo:150", "Locrian_Both_Tempo:150", "HarmonicMinor_Both_Tempo:150", "MelodicMinor_Both_Tempo:150", "Aeolian_Both_Tempo:150"], //random
+        ["Locrian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "MelodicMinor_Both_Tempo:180"], //random
+        
+        ["DiminishedWholeHalf_Up","DiminishedHalfWhole_Up"],
+        ["DiminishedWholeHalf_Both","DiminishedHalfWhole_Both"],
+        ["DiminishedHalfWhole_Both_Tempo:120","DiminishedWholeHalf_Both_Tempo:120"],   //random
+        ["DiminishedHalfWhole_Both_Tempo:150","DiminishedWholeHalf_Both_Tempo:150"],   //random
+        ["DiminishedWholeHalf_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:180"],   //random
+        
+        
+        
+        
     ]
     let arpeggio = [
         ["Ionian_Up_Sequence:Thirds"],

@@ -7,6 +7,8 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     @IBOutlet weak var arpeggioTableView: UITableView!
     @IBOutlet weak var recordingTableView: UITableView!
     
+    var currentTableView: UITableView!
+    
     var cellReuseIdentifier = "ScalePickerViewCell"
     var pickerList:[String] = []
     var selectedCell = -1
@@ -24,7 +26,6 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
         
-        
         var tableView = scaleTableView
         if self.restorationIdentifier == "arpeggioPicker" {
             tableView = arpeggioTableView
@@ -36,7 +37,6 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                     pickerList.append(result.id!)
                 }
                 pickerList.reverse()
-                print("id",vc?.currentRecordingId)
                 for (i,id) in pickerList.enumerated() {
                     if id == vc?.currentRecordingId {
                         selectedCell = i
@@ -45,6 +45,8 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                 }
             }
         }
+        
+        currentTableView = tableView!
         
         UITabBar.appearance().tintColor = UIColor.white
         tableView!.backgroundColor = UIColor.clear
@@ -74,14 +76,14 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
             
             pickerList = pickerList.uniques
             
-            let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
-            selectedCell = -1
-            for (i,item) in pickerList.enumerated() {
-                if item == freePlayUserDefault as! String {
-                    selectedCell = i
-                    break
-                }
-            }
+//            let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
+//            selectedCell = -1
+//            for (i,item) in pickerList.enumerated() {
+//                if item == freePlayUserDefault as! String {
+//                    selectedCell = i
+//                    break
+//                }
+//            }
         } else {
             //sort time list?
         }
@@ -91,10 +93,29 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(backgroundImageID).jpg")
         
         self.tabBarController?.title = titleTextDict[self.restorationIdentifier!]
+        
+        let screenHeight = UIScreen.main.bounds.size.height
+
+        if screenHeight <= 736 {
+            UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: -15)
+        } else {
+            UITabBarItem.appearance().titlePositionAdjustment = UIOffset(horizontal: 0, vertical: 0)
+        }
     }
     
-    override func viewWillAppear(_ animated: Bool) {
-        super.viewWillAppear(animated)
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        if !self.restorationIdentifier!.contains("record") {
+            let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
+            selectedCell = -1
+            for (i,item) in pickerList.enumerated() {
+                if item == freePlayUserDefault as! String {
+                    selectedCell = i
+                    break
+                }
+            }
+            currentTableView.reloadData()
+        }
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -138,11 +159,15 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         tableView.tableFooterView = UIView(frame: .zero)
         cell.tintColor = UIColor.black
 
-        print("indexPath.row",indexPath.row)
-        if selectedCell > -1 && pickerList[indexPath.row] == pickerList[selectedCell] {
-            print(pickerList[selectedCell])
-            cell.accessoryType = .checkmark
-        }
+//        print("indexPath.row",indexPath.row)
+//        if selectedCell > -1 && pickerList[indexPath.row] == pickerList[selectedCell] {
+//            print(pickerList[selectedCell])
+//            cell.accessoryType = .checkmark
+//        }
+        
+        
+        cell.accessoryType = indexPath.row == selectedCell ? .checkmark : .none
+        
         return cell
     }
     
@@ -153,9 +178,13 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                 cell.accessoryType = .none
             }
         }
-        tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
-        selectedCell = indexPath.row
+//        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
+//        cell.accessoryType = .checkmark
         
+        tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
+        
+        selectedCell = indexPath.row
+
         //play sound upon press
         vc?.wt.stopWaitThenOfType(iselector: #selector(vc?.playSoundHelper) as Selector)
         if self.restorationIdentifier == "scalePicker" || self.restorationIdentifier == "arpeggioPicker"  {
@@ -168,11 +197,30 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         }
     }
     
+    func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
+//        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:indexPath) as MyCell
+        print("in here !")
+        let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
+        // no "if" - the cell is guaranteed to exist
+        // ... do stuff to the cell here ...
+        cell.textLabel!.text = "butt"// ... whatever
+        // ...
+        return cell
+    }
+    
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 60
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
 //        cell.contentView.backgroundColor = UIColor(red: 1, green: 1, blue: 1, alpha: 0.5)
+    }
+    
+//    func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+//        tableView.cellForRow(at: indexPath)?.accessoryType = .checkmark
+//    }
+//
+    func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
+        tableView.cellForRow(at: indexPath)?.accessoryType = .none
     }
 }

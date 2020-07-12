@@ -1529,7 +1529,7 @@ class MainViewController: UIViewController {
     @objc func playSoundHelper(timer: Timer) {
         let objDict = timer.userInfo as! [String: AnyObject]
         let str = sCollection?.returnOffsetFretNote(objDict["Note"] as! String,fretOffset) as! String
-        sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!)
+        sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!,ioneShot: true, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
         displaySingleFretMarker(iinputStr: objDict["Note"] as! String)
         if objDict["LastNote"] as! Bool && currentState == State.RecordingPlayback {
             currentState = State.NotesTestIdle_NoTempo
@@ -1550,6 +1550,7 @@ class MainViewController: UIViewController {
             if ikillAllFretMarkers {
                 dotDict[str]!.alpha = 0.0
             }
+            print(dotDict)
             if iinputArr.contains(str) {
                 swoopAlpha(iobject: dotDict[str]!, ialpha: Float(ialphaAmount), iduration: 0.1)
                 swoopScale(iobject: dotDict[str]!, iscaleX: 0, iscaleY: 0, iduration: 0)
