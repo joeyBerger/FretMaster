@@ -15,6 +15,12 @@ class VolumeSettingsViewController: UIViewController {
         volume.volumeTypes[volumeTypes[sender.tag]] = sender.value
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let styler = ViewStyler(ivc: self)
+        styler.displayTitle(self,navigationController!,"Volume")
+    }
+    
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
@@ -24,6 +30,7 @@ class VolumeSettingsViewController: UIViewController {
         let sliders = [masterVolSlider, guitarVolSlider, clickVolSlider]
         let text = [masterVolumeText,guitarVolumeText,clickVolumeText]
         styler!.setupVolumeControls(sliders, text, volumeTypes, navigationController!)
+//        guitarVolumeText.font = UIFont(name: "MrsSheppards-Regular", size: 35)
     }
 
     override func viewWillDisappear(_ animated: Bool) {

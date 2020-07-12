@@ -67,6 +67,37 @@ class ScaleCollection {
         "Mixolydian": "Mixolydian",
         "Aeolian": "Aeolian",
         "Locrian": "Locrian",
+        
+        "PentatonicModeIII": "Mode III",
+        "PentatonicModeIV": "Mode IV",
+        "PentatonicModeV": "Mode V",
+        "DiminishedWholeHalf": "Dim. Whole Half",
+        "DiminishedHalfWhole": "Dim. Half Whole",
+        "WholeTone": "Whole Tone",
+        "HarmonicMinor": "Harmonic Minor",
+        "Locrian6": "Locrian 6",
+        "Ionian#5": "Ionian #5",
+        "Dorian#4": "Dorian #4",
+        "PhrygianDominant": "Phrygian Dominant",
+        "Lydian#2": "Lydian #2",
+        "SuperLocrianbb7": "Super Locrian bb7",
+        "MelodicMinor": "Melodic Minor",
+        "Dorianb2": "Dorian b2",
+        "LydianAugmented": "Lydian Augmented",
+        "LydianDominant": "Lydian Dominant",
+        "Mixoldianb6": "Mixoldian b6",
+        "SuperLocrian": "Super Locrian",
+        "DiminishedWholeTone": "Dim. Whole Tone",
+        "Arabian": "Arabian",
+        "Persian": "Persian",
+        "Byzantine": "Byzantine",
+        "Japanese": "Japanese",
+        "Hirajoshi": "Hirajoshi",
+        "RagaAsavari": "Raga Asavari",
+        "Hungarian": "Hungarian",
+        "Romanian": "Romanian",
+        "Hijaz": "Hijaz",
+        
         "Chromatic": "Chromatic",
         "MajorArp": "Major Arpeggio",
         "MinorArp": "Minor Arpeggio",
@@ -84,8 +115,42 @@ class ScaleCollection {
         "Mixolydian": ["1", "2", "3", "4", "5", "6", "b7"],
         "Aeolian": ["1", "2", "b3", "4", "5", "b6", "b7"],
         "Locrian": ["1", "b2", "b3", "4", "b5", "b6", "b7"],
+        
         "MinorPentatonic": ["1", "b3", "4", "5", "b7"],
         "MajorPentatonic": ["1", "2", "3", "5", "6"],
+        "PentatonicModeIII": ["1","2","4","5","b7"],
+        "PentatonicModeIV": ["1","b3","4","b6","b7"],
+        "PentatonicModeV": ["1","2","4","5","6"],
+        
+        "DiminishedWholeHalf" : ["1","2","b3","4","b5","b6","6","7"],
+        "DiminishedHalfWhole" : ["1","b2","b3","3","b5","5","6","b7"],
+        "WholeTone" : ["1","2","3","b5","b6","b7"],
+        
+        "HarmonicMinor" : ["1","2","b3","4","5","b6","b7"],
+        "Locrian6" : ["1","b2","b3","4","b5","6","b7"],
+        "Ionian#5" : ["1","2","3","4","b6","6","7"],
+        "Dorian#4" : ["1","2","b3","#4","5","6","b7"],
+        "PhrygianDominant" : ["1","b2","3","4","5","b6","b7"],
+        "Lydian#2" : ["1","b3","3","#4","5","6","7"],
+        "SuperLocrianbb7" : ["1","b2","b3","b4","b5","b6","6"],
+
+        "MelodicMinor" : ["1","2","b3","4","5","6","7"],
+        "Dorianb2" : ["1","b2","b3","4","5","6","b7"],
+        "LydianAugmented" : ["1","2","3","#4","b6","6","7"],
+        "LydianDominant" : ["1","2","3","#4","5","6","b7"],
+        "Mixoldianb6" : ["1","2","3","4","5","b6","b7"],
+        "SuperLocrian" : ["1","2","b3","4","b5","b6","b7"],
+        "DiminishedWholeTone" : ["1","b2","b3","3","b5","b6","b7"],
+
+        "Arabian" : ["1","2","b3","4","#4","#5","6","7"],
+        "Persian" : ["1","b2","3","4","b5","b6","7"],
+        "Byzantine" : ["1","b2","3","4","5","b6","7"],
+        "Japanese" : ["1","2","4","5","b6"],
+        "Hirajoshi" : ["1","2","b3","5","b6"],
+        "RagaAsavari" : ["1","b2","4","5","b6"],
+        "Hungarian" : ["1","2","b3","#4","5","b6","7"],
+        "Romanian" : ["1","2","b3","#4","5","6","b7"],
+        "Hijaz" : ["1","b2","3","4","5","b6","b7"],
 
         "MajorArp": ["1", "3", "5"],
         "MinorArp": ["1", "b3", "5"],
@@ -93,7 +158,11 @@ class ScaleCollection {
         "AugmentedArp": ["1", "3", "#5"],
 
         "MajorSeventhArp": ["1", "3", "5", "7"],
+        "DominantSeventh": ["1", "3", "5", "b7"],
         "MinorSeventhArp": ["1", "b3", "5", "b7"],
+        "MinorMajorSeventhArp": ["1", "b3", "5", "7"],
+        "HalfDiminishedArp": ["1", "b3", "b5", "b7"],
+        "FullyDiminishedArp": ["1", "b3", "b5", "6"],
 
         "Chromatic": ["1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "b7", "7"],
     ]
@@ -263,6 +332,27 @@ class ScaleCollection {
                 }
             }
         }
+        
+        if idata["sequence"] != nil {
+            var sequenceArr: [String] = []
+            for (i,_) in newNoteCollection.enumerated() {
+                sequenceArr.append(newNoteCollection[i])
+                if newNoteCollection.indices.contains(i+2) {
+                    sequenceArr.append(newNoteCollection[i+2])
+                } else if (scaleDegreeDict[availableScales[iinput]![1]]! < 4) {
+                    
+                    let note = refScale[(refScale.index(of: "A")!+scaleDegreeDict[availableScales[iinput]![1]]!) % refScale.count]
+                    let octave = note == "C" ? "4" : "3"
+                    sequenceArr.append(note+octave)
+                    if (idata["sequence"] as! String).contains("Thirds") {
+                        sequenceArr.append("A3")
+                    }
+                    break
+                }
+            }
+            newNoteCollection = sequenceArr
+        }
+        
         return newNoteCollection
     }
 

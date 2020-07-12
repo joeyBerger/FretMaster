@@ -27,6 +27,7 @@
 		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
 		9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E69398D23A7DDB800C57B11 /* WaitThen.swift */; };
 		9E75ACC824AAF7A0000CFB91 /* SplashImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E75ACC724AAF7A0000CFB91 /* SplashImage.png */; };
+		9E75ACCB24AB0060000CFB91 /* MrsSheppards-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */; };
 		9E7C2ECB248A0FB0006F4C85 /* FretOffsetPickerPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */; };
 		9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E919EEF244EBB4C008027EF /* Vibration.swift */; };
 		9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C46E622C483C000B133A9 /* SoundController.swift */; };
@@ -262,6 +263,7 @@
 		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		9E69398D23A7DDB800C57B11 /* WaitThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitThen.swift; sourceTree = "<group>"; };
 		9E75ACC724AAF7A0000CFB91 /* SplashImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SplashImage.png; sourceTree = "<group>"; };
+		9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MrsSheppards-Regular.ttf"; sourceTree = "<group>"; };
 		9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FretOffsetPickerPopover.swift; sourceTree = "<group>"; };
 		9E919EEF244EBB4C008027EF /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		9E9C46E622C483C000B133A9 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
@@ -503,6 +505,14 @@
 				9E75ACC724AAF7A0000CFB91 /* SplashImage.png */,
 			);
 			path = SplashImage;
+			sourceTree = "<group>";
+		};
+		9E75ACC924AAFC12000CFB91 /* CustomFonts */ = {
+			isa = PBXGroup;
+			children = (
+				9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */,
+			);
+			path = CustomFonts;
 			sourceTree = "<group>";
 		};
 		9EA604CE24A95E9900900821 /* GuitarTones */ = {
@@ -860,9 +870,10 @@
 				9EB5733F244FF42000322305 /* Model */,
 				9EB5733E244FF3D700322305 /* ViewControllers */,
 				9EB5733D244FF29300322305 /* View */,
+				9EF8A89C23D54EC20079BE8D /* HelperObjects */,
 				9EDC27CE22C980E000387143 /* Sounds */,
 				9ED22C7C23CD8C840051D8A4 /* Images */,
-				9EF8A89C23D54EC20079BE8D /* HelperObjects */,
+				9E75ACC924AAFC12000CFB91 /* CustomFonts */,
 				B8A6186120DB9E7500AF33C5 /* Main.storyboard */,
 				B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */,
 				B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */,
@@ -1064,6 +1075,7 @@
 				9EA605BD24A960FB00900821 /* A#1_Rock.wav in Resources */,
 				9EA6057724A960BA00900821 /* F#2_Jazz.wav in Resources */,
 				9EA605FB24A9636600900821 /* Selection_Rock.wav in Resources */,
+				9E75ACCB24AB0060000CFB91 /* MrsSheppards-Regular.ttf in Resources */,
 				9EA6054C24A9602D00900821 /* C#3_Acoustic.wav in Resources */,
 				9EA605CE24A960FB00900821 /* F3_Rock.wav in Resources */,
 				9EA6054124A9602D00900821 /* F3_Acoustic.wav in Resources */,

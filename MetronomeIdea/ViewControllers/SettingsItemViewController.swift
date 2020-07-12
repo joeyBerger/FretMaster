@@ -18,8 +18,20 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         "guitarTone_Rock": "Selection_Rock",
         "guitarTone_Jazz": "Selection_Jazz",
     ]
+    let titleTextDict : [String : String] = [
+        "fretDot" : "Fretboard Dot",
+        "guitarTone" : "Guitar Sound",
+        "clickTone" : "Click Sound",
+        "freePlay" : "Free Play"
+    ]
     var changeButton = UIButton()
     var backgroundImageID = 0
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        let styler = ViewStyler(ivc: self)
+        styler.displayTitle(self,navigationController!,titleTextDict[settingsType!]!)
+    }
     
     override func viewDidLoad() {
         super.viewDidLoad()

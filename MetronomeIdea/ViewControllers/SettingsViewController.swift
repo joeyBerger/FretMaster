@@ -115,6 +115,11 @@ class SettingsViewController: UIViewController {
         
         Button3.isHidden = true
     }
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated)
+        styler!.displayTitle(self,navigationController!,"Settings")
+    }
 
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
         buttonId = sender.tag

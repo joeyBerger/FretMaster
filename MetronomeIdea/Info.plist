@@ -39,5 +39,11 @@
 		<string>UIInterfaceOrientationLandscapeLeft</string>
 		<string>UIInterfaceOrientationLandscapeRight</string>
 	</array>
+	<key>UIAppFonts</key>
+	<array>
+		<string>MrsSheppards-Regular.ttf</string>
+		<string></string>
+		<string></string>
+	</array>
 </dict>
 </plist>

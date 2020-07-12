@@ -103,20 +103,18 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <navigationItem key="navigationItem" id="r7I-vH-J5p">
+                    <navigationItem key="navigationItem" title="Guitar Boss™" id="r7I-vH-J5p">
                         <barButtonItem key="backBarButtonItem" title="Back" id="syC-Xw-fpv"/>
-                        <rightBarButtonItems>
-                            <barButtonItem tag="10" image="outline_settings_black_18dp-scaled" id="fRg-aU-yVs">
-                                <connections>
-                                    <action selector="HandleSettingsButtonDwon:" destination="PUF-EH-UAq" id="BIp-77-gf5"/>
-                                </connections>
-                            </barButtonItem>
-                            <barButtonItem image="icons8-guitar-strings-50" id="CCm-rx-QBx">
-                                <connections>
-                                    <action selector="PlaygroundButton:" destination="PUF-EH-UAq" id="V7g-Ih-eaD"/>
-                                </connections>
-                            </barButtonItem>
-                        </rightBarButtonItems>
+                        <barButtonItem key="leftBarButtonItem" image="icons8-guitar-strings-50" id="CCm-rx-QBx">
+                            <connections>
+                                <action selector="PlaygroundButton:" destination="PUF-EH-UAq" id="V7g-Ih-eaD"/>
+                            </connections>
+                        </barButtonItem>
+                        <barButtonItem key="rightBarButtonItem" tag="10" image="outline_settings_black_18dp-scaled" id="fRg-aU-yVs">
+                            <connections>
+                                <action selector="HandleSettingsButtonDwon:" destination="PUF-EH-UAq" id="BIp-77-gf5"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="Button0" destination="zQH-vp-XLQ" id="mn5-3c-wFG"/>
@@ -155,6 +153,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.95693010930610733" green="1" blue="0.98912729028462698" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -178,7 +177,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ysr-oY-Sud" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="716" y="-1603"/>
+            <point key="canvasLocation" x="715.94202898550725" y="-1603.125"/>
         </scene>
         <!--Recordings-->
         <scene sceneID="Bff-gf-5NQ">
@@ -203,6 +202,7 @@
                                             <rect key="frame" x="0.0" y="0.0" width="414" height="43.5"/>
                                             <autoresizingMask key="autoresizingMask"/>
                                         </tableViewCellContentView>
+                                        <color key="backgroundColor" red="0.95693010930610733" green="1" blue="0.98912729028462698" alpha="0.5" colorSpace="custom" customColorSpace="sRGB"/>
                                     </tableViewCell>
                                 </prototypes>
                                 <connections>
@@ -226,7 +226,7 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="c02-RW-NS4" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="688.40579710144937" y="-849.45652173913049"/>
+            <point key="canvasLocation" x="688.40579710144937" y="-849.77678571428567"/>
         </scene>
         <!--Scales-->
         <scene sceneID="QxP-aW-gJa">
@@ -277,13 +277,13 @@
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="VMg-c0-jKP" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="716" y="-2270"/>
+            <point key="canvasLocation" x="715.94202898550725" y="-2270.0892857142858"/>
         </scene>
-        <!--Tab Bar Controller-->
+        <!--Guitar Boss™-->
         <scene sceneID="Tah-zq-EsB">
             <objects>
                 <tabBarController id="xL7-hD-R2g" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" id="zH1-t0-QBp"/>
+                    <navigationItem key="navigationItem" title="Guitar Boss™" id="zH1-t0-QBp"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Mwu-Tw-xqP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -379,7 +379,9 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <navigationItem key="navigationItem" id="J5p-Rq-E6f"/>
+                    <navigationItem key="navigationItem" title="Guitar Boss™" id="J5p-Rq-E6f">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="nAH-O7-1ve"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="Button0" destination="Xcu-V4-TKE" id="X7X-0U-g44"/>
                         <outlet property="Button1" destination="caZ-3j-IXB" id="7e6-JH-adz"/>
@@ -394,7 +396,7 @@
             </objects>
             <point key="canvasLocation" x="717" y="63"/>
         </scene>
-        <!--Settings Item View Controller-->
+        <!--Guitar Boss™-->
         <scene sceneID="z7r-4E-jji">
             <objects>
                 <viewController storyboardIdentifier="SettingsItemViewController" id="fWq-hg-1S0" customClass="SettingsItemViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
@@ -434,7 +436,9 @@
                             <constraint firstAttribute="bottom" secondItem="48q-k1-vIZ" secondAttribute="bottom" id="NfS-tr-EES"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="Uvo-hl-mce"/>
+                    <navigationItem key="navigationItem" title="Guitar Boss™" id="Uvo-hl-mce">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="ezF-J7-Tej"/>
+                    </navigationItem>
                     <connections>
                         <outlet property="tableView" destination="48q-k1-vIZ" id="Mtn-BS-0jJ"/>
                         <segue destination="csi-0A-RXZ" kind="show" identifier="ImageChooserViewController" id="9ub-It-Wa5"/>
@@ -457,7 +461,9 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     </view>
-                    <navigationItem key="navigationItem" id="q13-8U-RXJ"/>
+                    <navigationItem key="navigationItem" title="Guitar Boss™" id="q13-8U-RXJ">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="vFm-uG-1Sb"/>
+                    </navigationItem>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="ohi-Bq-mOf" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
             </objects>
@@ -534,7 +540,7 @@
             </objects>
             <point key="canvasLocation" x="1660.8695652173915" y="789.13043478260875"/>
         </scene>
-        <!--Main View Controller-->
+        <!--Guitar Boss™-->
         <scene sceneID="NkS-dF-SfY">
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="enO-xU-PLA" customClass="MainViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
@@ -552,7 +558,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="Rxq-83-9t3"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="HelveticaNeue" family="Helvetica Neue" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="Zapfino" family="Zapfino" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -707,7 +713,8 @@
                             <constraint firstAttribute="trailing" secondItem="Fnc-Kn-a9n" secondAttribute="trailing" constant="16" id="y9r-ml-mO6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" id="WbH-SB-Dkq">
+                    <navigationItem key="navigationItem" title="Guitar Boss™" id="WbH-SB-Dkq">
+                        <barButtonItem key="backBarButtonItem" title="Back" id="r34-6B-4mX"/>
                         <rightBarButtonItems>
                             <barButtonItem image="outline_settings_black_18dp-scaled" id="Kjp-Xs-Fjq">
                                 <connections>

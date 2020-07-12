@@ -104,16 +104,43 @@ class ViewStyler: UIViewController {
                 itext[i]?.frame = CGRect(x: (screenWidth-screenWidth*0.8)/2, y: startY + CGFloat(i) * containerBuffer, width: screenWidth*0.8, height: 100)
                 slider?.frame = CGRect(x: (screenWidth-screenWidth*0.9)/2, y: (itext[i]?.frame.minY)!+sliderHeightBuffer, width: screenWidth*0.9, height: (100))
                 
-                itext[i]?.font = UIFont(name: "Helvetica Neue", size: 23)
+                itext[i]?.font = UIFont(name: "System - System", size: 85)
+                itext[i]?.font = itext[i]?.font.withSize(30)
                 itext[i]?.text = itext[i]?.text!.uppercased()
-                itext[i]?.textColor = defaultColor.MenuButtonTextColor
+                itext[i]?.textColor = defaultColor.FretMarkerStandard
                 
                 itext[i]?.layer.shadowColor = UIColor.black.cgColor
                 itext[i]?.layer.shadowRadius = 3.0
-                itext[i]?.layer.shadowOpacity = 1.0
-                itext[i]?.layer.shadowOffset = CGSize(width: 4, height: 10)
+                itext[i]?.layer.shadowOpacity = 0.5
+                itext[i]?.layer.shadowOffset = CGSize(width: 4, height: 5)
                 itext[i]?.layer.masksToBounds = false
             }
+    }
+    
+    func displayTitle(_ iview: UIViewController,_ inavigationConroller: UINavigationController,_ itext: String) {
+        
+        let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = NSTextAlignment.center
+        
+        let fontSize: CGFloat = 21
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "System - System", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
+        
+        inavigationConroller.navigationBar.titleTextAttributes = textAttributes
+        inavigationConroller.navigationBar.tintColor = .white
+        
+        iview.title = itext
+    }
+    
+    func displayStyledTitle(_ inavigationConroller: UINavigationController,_ ifontSize: CGFloat) {
+        
+        let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
+        paragraphStyle.alignment = NSTextAlignment.center
+        
+        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
+        
+        inavigationConroller.navigationBar.titleTextAttributes = textAttributes
+        inavigationConroller.navigationBar.tintColor = .white
     }
     
     func spaceButtons(_ ibuttonArr: [UIButton],_ inavigationConroller: UINavigationController) {

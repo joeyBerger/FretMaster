@@ -197,8 +197,12 @@ class MainViewController: UIViewController {
     var defaultFretOffset = 5
     var fretOffsetList: [String] = []
     
-    
-    
+    let titleTextDict : [String : String] = [
+        "scaleLevel" : "Scales",
+        "arpeggioLevel" : "Arpeggios",
+        "intervalLevel" : "Ear Training",
+        "freePlay" : "Free Play"
+    ]
 
     var bgImage = UIImageView()
 
@@ -219,6 +223,7 @@ class MainViewController: UIViewController {
         
         fretOffsetPickerPopover = FretOffsetPickerPopover(ivc: self)
         fretOffsetPickerPopover?.setupPopover(navigationController!)
+        
         
 //        met!.deployInitialMet()
         
@@ -272,6 +277,7 @@ class MainViewController: UIViewController {
     override func viewWillAppear(_ animated: Bool) {
         super.viewWillAppear(animated)
         setAlphaOnDefualtImages(0.0)
+        styler!.displayTitle(self,navigationController!,titleTextDict[lc.currentLevelKey!]!)
     }
 
     override func viewDidAppear(_ animated: Bool) {
@@ -458,7 +464,7 @@ class MainViewController: UIViewController {
         let dir = parseTaskDirection(iinput: task)
         var startingNote = "A"
         var type = "standard"
-        var additionalData : [String:Any] = [:]  //this is a little hacky
+        var additionalData : [String:Any] = [:]
         
         if (lc.currentLevelKey?.contains("interval"))! {
             let data = lc.parseEarTrainingData(task)
@@ -510,6 +516,11 @@ class MainViewController: UIViewController {
             }
             tempoButtonsActive = !tempoActive
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
+            
+            if task.contains("Sequence") {
+                let sequence = parseSequence(task)
+                additionalData["sequence"] = sequence
+            }
             specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
             
             hideAllFretMarkers(true)
@@ -685,7 +696,7 @@ class MainViewController: UIViewController {
     }
 
     func trimCurrentTask(iinput: String) -> String {
-        let signifiers = ["Up", "Tempo", "Both"]
+        let signifiers = ["Up", "Tempo", "Both", "Sequence:Thirds"]
         var modifiedStr = iinput
         if modifiedStr.contains("_") {
             for (_, str) in signifiers.enumerated() {
@@ -707,6 +718,20 @@ class MainViewController: UIViewController {
             }
         }
         return dir
+    }
+    
+    func parseSequence(_ iinput: String) -> String {
+        let signifiers = ["Up", "Tempo", "Both", "Sequence:"]
+        var modifiedStr = iinput
+        if modifiedStr.contains("_") {
+            for (_, str) in signifiers.enumerated() {
+                if modifiedStr.contains(str) {
+                    modifiedStr = modifiedStr.replacingOccurrences(of: "_" + str, with: "")
+                }
+            }
+        }
+        modifiedStr = modifiedStr.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789_"))
+        return modifiedStr
     }
 
     func parseTempoStatus(iinput: String) -> Bool {
@@ -1677,7 +1702,7 @@ class MainViewController: UIViewController {
             pc!.tutorialPopup.hide()
             tutorialActive = true
             setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
-            popover?.setupPopoverText(isubtitle: "Welcome To Fret Master™!", isubText: ["✅ Learn and sharpen valuable skills!", "🎸 Level up to become a great guitarist!","👍 Let get started with a simple tutorial!"])
+            popover?.setupPopoverText(isubtitle: "Welcome To Guitar Boss™!", isubText: ["✅ Learn and sharpen valuable skills!", "🎸 Level up to become a great guitarist!","👍 Let get started with a simple tutorial!"])
         } else if type == "LevelComplete" {
             let key = (lc.currentLevelKey?.replacingOccurrences(of: "Level", with: ""))! + "s" //this is a bit hacky!!
             let nextLevelContents = lc.currentLevelName[key]![lc.returnConvertedLevel(iinput: lc.currentLevel!)]            

@@ -45,17 +45,9 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
         
-        for (volumeType, _) in volume.volumeTypes {
-            let vol = UserDefaults.standard.object(forKey: volumeType)
-            if vol != nil {
-                volume.volumeTypes[volumeType] = vol as? Float
-            }
-        }
-        
         globalDataController.load()
         
         setupHiddenButtons()
-//        resetData()
 
         let styler = ViewStyler(ivc: self)
         buttonArr = [Button0, Button1, Button2, Button3, Button4]
@@ -64,13 +56,12 @@ class MenuViewController: UIViewController {
             menuButtonProgress.append(UIProgressView())
             styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
         }
-        
         styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(Int.random(in: 0 ..< 7)).jpg")
-
-        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor]
-        navigationController?.navigationBar.titleTextAttributes = textAttributes
-        navigationController?.navigationBar.tintColor = .white
         
+//        let fontSize: CGFloat = 40
+//        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)]
+//        navigationController?.navigationBar.titleTextAttributes = textAttributes
+//        navigationController?.navigationBar.tintColor = .white
         styler.spaceButtons(buttonArr,navigationController!)
     }
     
@@ -79,8 +70,6 @@ class MenuViewController: UIViewController {
         navigationController?.navigationBar.barTintColor = defaultColor.MenuButtonColor
         navigationController?.navigationBar.barStyle = UIBarStyle.blackOpaque
         navigationController?.navigationBar.isTranslucent = false
-        
-        //        bgImage.image = backgroundImage.returnImage("menu")
 
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
         if scaleLevel != nil {
@@ -118,7 +107,9 @@ class MenuViewController: UIViewController {
         // update button info
         let lc = LevelConstruct()
         let styler = ViewStyler(ivc: self)
-
+        
+        styler.displayStyledTitle(navigationController!,35)
+        
         struct buttonText {
             var header: String
             var subtext: String

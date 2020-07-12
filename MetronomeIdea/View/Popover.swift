@@ -72,12 +72,11 @@ class Popover: UIViewController {
         
 //        titleText = UILabel()
         titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+10,width: background.frame.width, height: 65)
-        titleText.text = "FRET MASTER™"
+        titleText.text = "Guitar Boss™"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
-        titleText.font = buttonText.font.withSize(35)
-        titleText.textColor = defaultColor.FretMarkerStandard
-        
+        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
+        titleText.textColor = defaultColor.FretMarkerStandard        
         
 //        subTitleText = UILabel()
         subTitleText.frame = CGRect(x: background.frame.minX,y: titleText.frame.maxY,width: background.frame.width, height: 100)

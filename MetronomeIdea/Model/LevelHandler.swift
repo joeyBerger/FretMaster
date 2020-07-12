@@ -177,6 +177,7 @@ class LevelConstruct: UIViewController {
         ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "Ionian_Both_Tempo:120", "Aeolian_Both_Tempo:120"],
     ]
     let arpeggio = [
+        ["Ionian_Up_Sequence:Thirds"],
         ["MajorArp_Up", "MinorArp_Up"],
         ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
         ["MajorArp_Up", "MinorArp_Up", "MajorSeventhArp_Up", "MinorSeventhArp_Up"],

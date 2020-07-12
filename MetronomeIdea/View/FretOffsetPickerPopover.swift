@@ -60,10 +60,10 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
         background.layer.cornerRadius = 20
         
         titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+10,width: background.frame.width, height: 65)
-        titleText.text = "FRET MASTER™"
+        titleText.text = "Guitar Boss™"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
-        titleText.font = buttonText.font.withSize(35)
+        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
         titleText.textColor = defaultColor.FretMarkerStandard
         
         subTitleText.frame = CGRect(x: background.frame.minX,y: titleText.frame.maxY-30,width: background.frame.width, height: 100)

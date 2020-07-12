@@ -14,9 +14,16 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     var recordingInfo: [String] = []
     var vc: MainViewController?
     
+    let titleTextDict : [String : String] = [
+        "recordingPicker" : "Recordings",
+        "arpeggioPicker" : "Arpeggios",
+        "scalePicker" : "Scales",
+    ]
+      
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
+        
         
         var tableView = scaleTableView
         if self.restorationIdentifier == "arpeggioPicker" {
@@ -29,6 +36,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                     pickerList.append(result.id!)
                 }
                 pickerList.reverse()
+                print("id",vc?.currentRecordingId)
                 for (i,id) in pickerList.enumerated() {
                     if id == vc?.currentRecordingId {
                         selectedCell = i
@@ -56,7 +64,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                     pickerList.append(exercise)
                 }
             }
-            let stringsToRemove = ["_","Up","Both","Tempo",":"]
+            let stringsToRemove = ["_","Up","Both","Tempo",":","Thirds","Sequence"]
             for (i,_) in pickerList.enumerated() {
                 for str in stringsToRemove {
                     pickerList[i] = pickerList[i].replacingOccurrences(of: str, with: "")
@@ -78,9 +86,11 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
             //sort time list?
         }
 
-        var styler: ViewStyler?
+        let styler: ViewStyler?
         styler = ViewStyler(ivc: self)
         styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(backgroundImageID).jpg")
+        
+        self.tabBarController?.title = titleTextDict[self.restorationIdentifier!]
     }
     
     override func viewWillAppear(_ animated: Bool) {
@@ -127,7 +137,10 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
 //        cell.textLabel?.textColor = defaultColor.MenuButtonTextColor
         tableView.tableFooterView = UIView(frame: .zero)
         cell.tintColor = UIColor.black
-        if indexPath.row == selectedCell {
+
+        print("indexPath.row",indexPath.row)
+        if selectedCell > -1 && pickerList[indexPath.row] == pickerList[selectedCell] {
+            print(pickerList[selectedCell])
             cell.accessoryType = .checkmark
         }
         return cell
@@ -136,7 +149,8 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         for row in 0 ..< tableView.numberOfRows(inSection: indexPath.section) {
             if let cell = tableView.cellForRow(at: IndexPath(row: row, section: indexPath.section)) {
-                cell.accessoryType = row == indexPath.row ? .checkmark : .none
+//                cell.accessoryType = row == indexPath.row ? .checkmark : .none
+                cell.accessoryType = .none
             }
         }
         tableView.cellForRow(at: indexPath)?.accessoryType = UITableViewCell.AccessoryType.checkmark
@@ -152,6 +166,10 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                 vc?.playRecording(true)
             }
         }
+    }
+    
+    func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        return 60
     }
     
     func tableView(_ tableView: UITableView, willDisplay cell: UITableViewCell, forRowAt indexPath: IndexPath) {
