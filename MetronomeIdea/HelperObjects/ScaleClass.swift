@@ -339,9 +339,9 @@ class ScaleCollection {
                 sequenceArr.append(newNoteCollection[i])
                 if newNoteCollection.indices.contains(i+2) {
                     sequenceArr.append(newNoteCollection[i+2])
-                } else if (scaleDegreeDict[availableScales[iinput]![1]]! < 4) {
+                } else if (scaleDegreeDict[availableScales[parsedInput]![1]]! < 4) {
                     
-                    let note = refScale[(refScale.index(of: "A")!+scaleDegreeDict[availableScales[iinput]![1]]!) % refScale.count]
+                    let note = refScale[(refScale.index(of: "A")!+scaleDegreeDict[availableScales[parsedInput]![1]]!) % refScale.count]
                     let octave = note == "C" ? "4" : "3"
                     sequenceArr.append(note+octave)
                     if (idata["sequence"] as! String).contains("Thirds") {
@@ -353,9 +353,52 @@ class ScaleCollection {
             newNoteCollection = sequenceArr
         }
         
-        newNoteCollection = covertDSharpThreeToValidNote(newNoteCollection, iinput)
+        newNoteCollection = covertDSharpThreeToValidNote(newNoteCollection, parsedInput)
+        
+        newNoteCollection = tryToAddNoteAboveRoot(newNoteCollection,parsedInput,idirection)
         
         return newNoteCollection
+    }
+    
+    func tryToAddNoteAboveRoot(_ inoteCollection: [String], _ inoteCollectionHeader : String, _ idirection: String) -> [String] {
+        var newNotes : [String] = []
+        let extensions = ["b2","2","b3"]
+        
+        for (i,degree) in availableScales[inoteCollectionHeader]!.enumerated() {
+            for (j,_) in extensions.enumerated() {
+                if degree == extensions[j] {
+                    var note = refScale[(9+scaleDegreeDict[degree]!)%refScale.count]
+                    note += note == "C" ? "4" : "3"
+                    print("note",note)
+                    newNotes.append(note)
+                }
+            }
+        }
+        if newNotes.count == 0 {
+            return inoteCollection
+        }
+        var modifiedArr = inoteCollection
+        var lastModifiedIdx = 0
+        for (i,_) in inoteCollection.enumerated() {
+            if (inoteCollection[i] == "A3") {
+                for (j,additionalNote) in newNotes.enumerated() {
+                    lastModifiedIdx = i+1+j
+                    modifiedArr.insert(additionalNote, at: i+1+j)
+                }
+            }
+        }
+        if idirection == "Both" {
+            if newNotes.count > 1 {
+                newNotes.remove(at: newNotes.count-1)
+                newNotes.reverse()
+                for (i,note) in newNotes.enumerated() {
+                    lastModifiedIdx = lastModifiedIdx+1+i
+                    modifiedArr.insert(note, at: lastModifiedIdx)
+                }
+            }
+            modifiedArr.insert("A3", at: lastModifiedIdx+1)
+        }
+        return modifiedArr
     }
     
     func covertDSharpThreeToValidNote(_ inoteCollection: [String], _ inoteCollectionHeader : String) -> [String] {

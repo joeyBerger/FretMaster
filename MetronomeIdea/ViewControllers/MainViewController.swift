@@ -68,6 +68,7 @@ class MainViewController: UIViewController {
         var note = ""
         var timeDelta = 0.0
         var fretOffset = 5
+//        var metronomeClickTime: CFAbsoluteTime = 0
     }
 
     var recordData: [InputData] = []
@@ -99,7 +100,7 @@ class MainViewController: UIViewController {
 
     let testResultStrDict: [String: String] = [
         "incorrect_notes": "Notes Played Were Incorrect",
-        "incorrect_time": "Time Was Inaccurate",
+        "incorrect_time": "Time Was Inaccurate:",
     ]
     
     var freePlayNoteCollection = ""
@@ -883,23 +884,9 @@ class MainViewController: UIViewController {
         }
     }
 
-    func recordTimeAccuracy() {
-        if met!.currentClick >= met!.countInClick || true {
-            userInputTime = CFAbsoluteTimeGetCurrent()
-
-            if userInputTime - met!.clickTime > 0.5 {
-            } else {
-                let timeDelta = abs(userInputTime - met!.clickTime)
-                if timeDelta < 0.05 {
-                    print("good")
-                } else {
-                    print("late")
-                    print(timeDelta)
-                }
-                noteCollectionTestData[noteCollectionTestData.count - 1].time = userInputTime
-                noteCollectionTestData[noteCollectionTestData.count - 1].timeDelta = timeDelta
-            }
-        }
+    func recordUserFretDownTime() {
+        noteCollectionTestData[noteCollectionTestData.count - 1].time = CFAbsoluteTimeGetCurrent()
+        noteCollectionTestData[noteCollectionTestData.count - 1].timeDelta = 0
     }
 
     func checkForValidTempoInput() -> Bool {
@@ -1365,7 +1352,7 @@ class MainViewController: UIViewController {
                 st.note = buttonDict[inputNumb]!
                 st.time = 0
                 noteCollectionTestData.append(st)
-                recordTimeAccuracy()
+                recordUserFretDownTime()
             }
 
             if currentState == State.NotesTestActive_NoTempo, noteCollectionTestData.count < specifiedNoteCollection.count {
@@ -1746,11 +1733,9 @@ class MainViewController: UIViewController {
             swoopAlpha(iobject: DimOverlay, ialpha: 0.0, iduration: 0.15)
             tutorialActive = false
             periphButtonArr[defaultPeripheralIcon.count - 1].layer.zPosition = getLayer(ilayer: "Default")
-//            pc!.startTestReminder(itime: 1)
             return
         }
         for i in 0 ..< peripheralButtonTutorialNumb {
-//            setLayer(iobject: periphButtonArr[i], ilayer: "Default")
             periphButtonArr[i].layer.zPosition = getLayer(ilayer: "Default")
         }
 
@@ -1780,14 +1765,10 @@ class MainViewController: UIViewController {
                 pc!.tutorialPopup.hide()
             }
             for (_, dot) in specifiedNoteCollection.enumerated() {
-//                setLayer(iobject: dotDict[dot]!, ilayer: "Default")
                 dotDict[dot]!.layer.zPosition = getLayer(ilayer: "Default")
             }
-//            setLayer(iobject: FretboardImage, ilayer: "Default")
             FretboardImage.layer.zPosition = getLayer(ilayer: "Default")
             pc!.tutorialPopup.hide()
-            //            mainPopoverBodyText.font = mainPopoverBodyText.font.withSize(20)
-            //            mainPopoverBodyText.text = tutorialPopupText[tutorialPopupText.count - 1]
             wt.waitThen(itime: 0.4, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "TutorialComplete" as AnyObject, "arg2": 0 as AnyObject])
             return
         }
@@ -1811,6 +1792,7 @@ class MainViewController: UIViewController {
                              "This Is The Next Note",
                              "This Is The Next Note",
                              "This Is The Next Note",
+                             "This Is The Last Note",
                              "This Is The Last Note",
                              "Tutorial Complete!"]
     }
