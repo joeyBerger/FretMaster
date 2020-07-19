@@ -16,7 +16,8 @@ let backgroundImage = BackgroundImage()
 var globalDataController = DataController(modelName: "ImageModel")
 var volume = Volume()
 var audioKitStarted = false
-
+var appVersion = ""
+var currentAppVersion = "1.0"
 //var currentRecordingId = ""
 
 class MenuViewController: UIViewController {
@@ -45,6 +46,13 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
         
+        let data = UserDefaults.standard.object(forKey: "appVersion")
+        if data == nil {
+            UserDefaults.standard.set(currentAppVersion, forKey: "appVersion")
+        } else {
+            appVersion = data as! String
+        }
+        
         globalDataController.load()
         
         setupHiddenButtons()
@@ -57,11 +65,6 @@ class MenuViewController: UIViewController {
             styler.setupMenuButton(ibutton: Button, isubText: menuButtonSubtext[i], iprogressBar: menuButtonProgress[i])
         }
         styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(Int.random(in: 0 ..< 7)).jpg")
-        
-//        let fontSize: CGFloat = 40
-//        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: fontSize) ?? UIFont.systemFont(ofSize: fontSize)]
-//        navigationController?.navigationBar.titleTextAttributes = textAttributes
-//        navigationController?.navigationBar.tintColor = .white
         styler.spaceButtons(buttonArr,navigationController!)
     }
     
@@ -245,11 +248,15 @@ class MenuViewController: UIViewController {
         for (_, str) in userLevelData.stringEquivs.enumerated() {
             UserDefaults.standard.removeObject(forKey: str)
         }
+        UserDefaults.standard.removeObject(forKey: "guitarTone")
+        UserDefaults.standard.removeObject(forKey: "clickTone")
+        UserDefaults.standard.removeObject(forKey: "rhythmicAccuracy")
+        UserDefaults.standard.removeObject(forKey: "fretOffset")
+        UserDefaults.standard.removeObject(forKey: "fretDot")
     }
 
     func setHiddenButtonText(itext: String, ibutton: UIButton) {
         ibutton.setTitle(itext, for: .normal)
-        print(itext)
         UIView.setAnimationsEnabled(true)
         ibutton.titleLabel?.alpha = 1.0
         UIView.animate(withDuration: 3.5, animations: {

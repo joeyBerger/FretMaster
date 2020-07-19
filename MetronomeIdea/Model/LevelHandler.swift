@@ -9,7 +9,8 @@ class LevelConstruct: UIViewController {
         var returnDict: [String: Bool] = [
             "SubLevelIncremented": false,
             "LevelIncremented": false,
-            "SubLevelMaxReached" : false
+            "SubLevelMaxReached" : false,
+            "LevelComplete" : false
         ]
         
         if !itestPassed, idevelopmentMode < 2 {
@@ -31,16 +32,22 @@ class LevelConstruct: UIViewController {
         if subLevel == subLevelMax {
             returnDict["LevelIncremented"] = true
             // upgrade level
-            let levelLength = currentLevelKey!.contains("scale") ? scale.count : arpeggio.count
+            let levelLength = currentLevelKey!.contains("scale") ? scale.count : currentLevelKey!.contains("interval") ? interval.count :  arpeggio.count
             if level < levelLength - 1 {
                 level = level + 1
                 subLevel = 0
             } else {
-                // subLevel = subLevel - 1
+                returnDict["LevelComplete"] = true
+                returnDict["LevelIncremented"] = false
             }
+        }
+        
+        if currentLevelKey!.contains("interval") && level == interval.count {
+            print("here")
         }
 
         currentLevel = "\(level).\(subLevel)"
+        print("currentLevel",currentLevel)
         UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
         returnDict["SubLevelIncremented"] = true
         return returnDict
@@ -58,6 +65,33 @@ class LevelConstruct: UIViewController {
             maxSubLevels += Int(parseEarTrainingData(currentLevelConstruct[ilevel][i])["Total"] as! String)!
         }
         return maxSubLevels
+    }
+    
+    func resetOnEarTrainingTestFail() {
+        let level = returnConvertedLevel(iinput: currentLevel!)
+        let sublevel = returnConvertedSubLevel(iinput: currentLevel!)
+        var total = 0
+        if sublevel > 0 {
+            for i in 0 ..< interval[level].count-1 {
+                let currentSubLevelTotal =  Int(parseEarTrainingData(interval[level][i])["Total"] as! String)!
+                let subLevelTotal = total + currentSubLevelTotal
+                if subLevelTotal > sublevel {
+                    break
+                } else {
+                    if total < sublevel {
+                        total += currentSubLevelTotal
+                    }
+                }
+            }
+        }
+        currentLevel = "\(level).\(total)"
+        print("\(level).\(total)")
+        UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
+    }
+    
+    func setEarTrainingLevelHelper() {
+        currentLevel = "\(2).\(8)"
+        UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
     }
     
     func returnCurrentTask() -> String {
@@ -158,7 +192,6 @@ class LevelConstruct: UIViewController {
                 }
             }
         }
-        
         return returnArr
     }
 
@@ -182,7 +215,10 @@ class LevelConstruct: UIViewController {
             "Previous Up/Down At 120 BPM"
         ],
         "intervals": [
-            "Maj 2, Perfect 5th","2","3","4"
+            "Intervals: M2, M3, P5",
+            "M2, M3, P5, Level 2 Got",
+            "3",
+            "4"
         ]
     ]
 
@@ -254,10 +290,6 @@ class LevelConstruct: UIViewController {
         ["DiminishedHalfWhole_Both_Tempo:120","DiminishedWholeHalf_Both_Tempo:120"],   //random
         ["DiminishedHalfWhole_Both_Tempo:150","DiminishedWholeHalf_Both_Tempo:150"],   //random
         ["DiminishedWholeHalf_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:180"],   //random
-        
-        
-        
-        
     ]
     let arpeggio = [
 //        ["Ionian_Up_Tempo:120_Sequence:Thirds"],
@@ -313,7 +345,6 @@ class LevelConstruct: UIViewController {
                 returnArr = strArr
             }
         }
-        
         return returnArr
     }
 }

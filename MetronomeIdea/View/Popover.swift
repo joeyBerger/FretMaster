@@ -76,7 +76,12 @@ class Popover: UIViewController {
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
         titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
-        titleText.textColor = defaultColor.FretMarkerStandard        
+        titleText.textColor = defaultColor.FretMarkerStandard
+        titleText.layer.shadowColor = UIColor.black.cgColor
+        titleText.layer.shadowRadius = 3.0
+        titleText.layer.shadowOpacity = 1.0
+        titleText.layer.shadowOffset = CGSize(width: 4, height: 4)
+        titleText.layer.masksToBounds = false
         
 //        subTitleText = UILabel()
         subTitleText.frame = CGRect(x: background.frame.minX,y: titleText.frame.maxY,width: background.frame.width, height: 100)
@@ -92,7 +97,7 @@ class Popover: UIViewController {
             subText.append(SpringLabel())
             subText[i].frame = CGRect(x: (background.frame.width-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: background.frame.width, height: subTextHeight)
             subText[i].adjustsFontSizeToFitWidth = true
-            subText[i].text = "TUTORIAL COMPLETE! adsfdf"
+            subText[i].text = "TUTORIAL COMPLETE!"
             subText[i].layer.zPosition = 502
             subText[i].textAlignment = .center
             subText[i].font = subText[i].font.withSize(20)
@@ -215,5 +220,4 @@ class Popover: UIViewController {
             subText[i].text = subtext
         }
     }
-    
 }

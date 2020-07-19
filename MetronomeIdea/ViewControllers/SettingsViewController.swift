@@ -69,13 +69,13 @@ class SettingsViewController: UIViewController {
             iavailableSettings: ["Digital", "Woodblock1", "Woodblock2"],
             isettingsType: "clickTone"
         ),
-//        buttonText(
-//            iheader: "Background Picture".uppercased(),
-//            isubtext: "Manage Your Backgrounds",
-//            iid: "backgroundPick",
-//            iavailableSettings: ["Menu", "Scales", "Arpeggios"],
-//            isettingsType: "backgroundPicker"
-//        ),
+        buttonText(
+            iheader: "Rhythmic Accuracy".uppercased(),
+            isubtext: "Manage Your Rythmic Accuracy Level",
+            iid: "rhythmicAccuracy",
+            iavailableSettings: ["Easy", "Medium", "Hard"],
+            isettingsType: "rhythmicAccuracy"
+        ),
         buttonText(
             iheader: "Volume".uppercased(),
             isubtext: "Change Volume",
@@ -93,8 +93,8 @@ class SettingsViewController: UIViewController {
         backgroundImageID = Int.random(in: 0 ..< 3)
         styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
         
-//        buttonArr = [Button0, Button1, Button2, Button3, Button4]
-        buttonArr = [Button0, Button1, Button2, Button4]
+        buttonArr = [Button0, Button1, Button2, Button3, Button4]
+//        buttonArr = [Button0, Button1, Button2, Button4]
         styler!.spaceButtons(buttonArr,navigationController!)
         for (i, button) in buttonArr.enumerated() {
             let subText = UILabel()
@@ -113,7 +113,7 @@ class SettingsViewController: UIViewController {
             )
         }
         
-        Button3.isHidden = true
+//        Button3.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {

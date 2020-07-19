@@ -62,6 +62,7 @@ class MainViewController: UIViewController {
     var wt = waitThen()
     var popover: Popover?
     var fretOffsetPickerPopover: FretOffsetPickerPopover?
+    var purchasePopover: PurchasePopover?
 
     class InputData {
         var time: CFAbsoluteTime = 0
@@ -194,6 +195,7 @@ class MainViewController: UIViewController {
     var guitarTone = ""
     var dotType = ""
     var clickTone = ""
+    var rhythmicAccuracy = ""
     var fretOffset = 0
     var defaultFretOffset = 5
     var fretOffsetList: [String] = []
@@ -224,6 +226,9 @@ class MainViewController: UIViewController {
         
         fretOffsetPickerPopover = FretOffsetPickerPopover(ivc: self)
         fretOffsetPickerPopover?.setupPopover(navigationController!)
+        
+        purchasePopover = PurchasePopover(ivc: self)
+        purchasePopover?.setupPopover(navigationController!)
         
         
 //        met!.deployInitialMet()
@@ -452,6 +457,7 @@ class MainViewController: UIViewController {
     }
 
     @objc func setupCurrentTask(_ timer: Timer? = nil) {
+        print("in setup current task")
         var automaticallyStartTest = false
         if timer != nil {
             let resultObj = timer?.userInfo as! [String: AnyObject]
@@ -639,6 +645,7 @@ class MainViewController: UIViewController {
         let dataStrTypes = [
             "guitarTone",
             "clickTone",
+            "rhythmicAccuracy",
             "fretOffset",
             "fretDot",
         ]
@@ -648,6 +655,7 @@ class MainViewController: UIViewController {
                 let defaultVal = [
                     "guitarTone": "Acoustic",
                     "clickTone": "Digital",
+                    "rhythmicAccuracy": "Easy",
                     "fretOffset": "0",
 //                    "fretDot": "Scale Degree",
                     "fretDot": "Note Name",
@@ -674,6 +682,8 @@ class MainViewController: UIViewController {
             fretOffset = Int(iinput)!
             FretRefText.text = returnCurrentFretText()
             setFretBoardImage()
+        case "rhythmicAccuracy":
+            rhythmicAccuracy = iinput
         default:
             clickTone = iinput
         }
@@ -941,7 +951,7 @@ class MainViewController: UIViewController {
     }
     
     @IBAction func handleFretOffsetButtonDown(_ sender: Any) {
-        if popover!.popoverVisible || tutorialActive {return}
+        if popover!.popoverVisible || tutorialActive || (lc.currentLevelKey?.contains("interval"))! {return}
         if returnValidState(iinputState: currentState, istateArr: [
             State.NotesTestIdle_NoTempo,
             State.NotesTestShowNotes,
@@ -1103,9 +1113,8 @@ class MainViewController: UIViewController {
             hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             et!.earTrainingSetup(earTrainingLevelData[earTrainingIdx])
-            fretOffset = -4 + rand(max: 7)
-            handleFretOffsetChange()
-            print("button pressed here")
+            fretOffset = -3 + rand(max: 7) // -4 + rand(max: 7)
+            handleFretOffsetChange(false)
             return
         }
         // Ear Training - disable test
@@ -1298,29 +1307,25 @@ class MainViewController: UIViewController {
         ])
         if validState {
             var str = buttonDict[inputNumb]!
-//            str = str.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
             str = sCollection?.returnOffsetFretNote(str,fretOffset) as! String
             sc.playSound(isoundName: str + "_" + guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: !tutorialActive, ifadeAllOtherSoundsDuration: defaultSoundFadeTime)
-
-            displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
             
             if currentState != State.EarTrainingIdle {
                 hideAllFretMarkers()
-                if !tutorialDisplayed {
-                    displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
-                }
+                displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
             } else {
+                displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
                 for note in specifiedNoteCollection {
-                    if str == note {
+                    if str == sCollection?.returnOffsetFretNote(note,fretOffset) as! String {
                         killCurrentDotFade()
-                        let alpha = str as AnyObject === String(startingEarTrainingNote) as AnyObject ? 1.0 : 0.5
-                        dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": str, "Alpha": alpha], repeats: false)
+                        let alpha = buttonDict[inputNumb]! as AnyObject === String(startingEarTrainingNote) as AnyObject ? 1.0 : 0.5
+                        dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": buttonDict[inputNumb]!, "Alpha": alpha], repeats: false)
                         previousNote = nil
                         break
                     }
                 }
                 for (i,otherNotes) in specifiedNoteCollection.enumerated() {
-                    if otherNotes != str {
+                    if sCollection?.returnOffsetFretNote(otherNotes,fretOffset) as! String != str {
                         dotDict[otherNotes]!.alpha = i == 0 ? 1.0 : 0.5
                     }
                 }
@@ -1456,7 +1461,6 @@ class MainViewController: UIViewController {
             if let testResultStrs = resultObj["testResultStrs"] {
                 pc!.setResultButtonPopupText(itextArr: testResultStrs as! [String])
             }
-
         } else {
             if newLevel["LevelIncremented"]! {
                 let level = lc.returnConvertedLevel(iinput: lc.currentLevel!)
@@ -1465,7 +1469,15 @@ class MainViewController: UIViewController {
             if newLevel["SubLevelMaxReached"]! {
                 earTrainingLevelData = []
             }
+            if newLevel["LevelComplete"]! {
+                let level = lc.returnConvertedLevel(iinput: lc.currentLevel!)
+                wt.waitThen(itime: 0.1, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "LevelFullyComplete" as AnyObject, "arg2": level as AnyObject])
+            }
             wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["automaticallyStartTest": (earTrainingLevelData != []) as AnyObject])
+        }
+        if !testPassed && lc.currentLevelKey!.contains("interval") {
+            lc.resetOnEarTrainingTestFail()
+            setupCurrentTask()
         }
         currentState = toggleTestState(icurrentState: currentState)
     }
@@ -1478,7 +1490,6 @@ class MainViewController: UIViewController {
             if !testPassed {
                 displayMultipleFretMarkers(iinputArr: earTrainResponseArr, ialphaAmount: 0.5)
                 setColorOnFretMarkers(earTrainResponseArr, defaultColor.FretMarkerStandard)
-                
                 //if wrong answer, mix up available test objects
                 earTrainingLevelData = randomizeEarTrainingData()
             }
@@ -1537,7 +1548,6 @@ class MainViewController: UIViewController {
             if ikillAllFretMarkers {
                 dotDict[str]!.alpha = 0.0
             }
-            print(dotDict)
             if iinputArr.contains(str) {
                 swoopAlpha(iobject: dotDict[str]!, ialpha: Float(ialphaAmount), iduration: 0.1)
                 swoopScale(iobject: dotDict[str]!, iscaleX: 0, iscaleY: 0, iduration: 0)
@@ -1563,22 +1573,22 @@ class MainViewController: UIViewController {
         }
     }
 
-    func displaySingleFretMarker(iinputStr: String, cascadeFretMarkers: Bool = false, fretAnim: String = "userFretPress") {
+    func displaySingleFretMarker(iinputStr: String, cascadeFretMarkers: Bool = false, fretAnim: String = "userFretPress", specificTimer: Timer? = nil) {
         if previousNote != nil, !cascadeFretMarkers {
             dotDict[previousNote!]?.alpha = 0.0
             swoopAlpha(iobject: dotDict[previousNote!]!, ialpha: Float(0.0), iduration: 0.3)
         }
         previousNote = iinputStr
-        
-//        dotDict[iinputStr]!.alpha = 0.0
-//        swoopAlpha(iobject: dotDict[iinputStr]!, ialpha: Float(1.0), iduration: 0.1)
         killCurrentDotFade()
-//        swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 0, iscaleY: 0, iduration: 0)
-//        swoopScale(iobject: dotDict[iinputStr]!, iscaleX: 1, iscaleY: 1, iduration: 0.1)
         dotDict[iinputStr]!.setAndPlayAnim(fretAnim)
 
         if !cascadeFretMarkers {
-            dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": iinputStr], repeats: false)
+            if let timer = specificTimer {
+                dotFadeTime = timer
+            } else {
+                dotFadeTime = Timer.scheduledTimer(timeInterval: 1, target: self, selector: #selector(alphaSwoopImage), userInfo: ["ImageId": iinputStr], repeats: false)
+            }
+
         }
     }
     
@@ -1623,9 +1633,9 @@ class MainViewController: UIViewController {
 //        return "A1"
 //    }
     
-    func handleFretOffsetChange() {
+    func handleFretOffsetChange(_ ipersistData : Bool = true) {
         setDynamicAudioVisualVars(iinputType: "fretDot", iinput: dotType)
-        UserDefaults.standard.set(String(fretOffset), forKey: "fretOffset")
+        if ipersistData {UserDefaults.standard.set(String(fretOffset), forKey: "fretOffset")}
         FretRefText.text = returnCurrentFretText()
         popover?.popoverVisible = false
         setFretBoardImage()
@@ -1657,9 +1667,12 @@ class MainViewController: UIViewController {
             tutorialComplete = tutorialComplete as! String == "0.0" ? "1.0" : "2.0"
             UserDefaults.standard.set(tutorialComplete, forKey: "tutorialComplete")
             UserDefaults.standard.set("1.0", forKey: "scaleLevel")
-        } else if popover?.mainPopoverState == "LevelComplete" {
+        } else if popover?.mainPopoverState == "LevelComplete" || popover?.mainPopoverState == "LevelFullyComplete" || popover?.mainPopoverState == "PurchasePopover"  {
             swoopAlpha(iobject: DimOverlay, ialpha: 0, iduration: 0.3)
             setupCurrentTaskHelper()
+            if popover?.mainPopoverState == "PurchasePopover" {
+                purchasePopover?.removeFromView()
+            }
         }
         popover?.popoverVisible = false
     }
@@ -1699,21 +1712,21 @@ class MainViewController: UIViewController {
             tutorialActive = false
             popover?.setupPopoverText(isubtitle: "Tutorial Complete!", isubText: ["✅ Complete levels to advance", "🕹 Levels will increase in difficulty!","🎵 Let's try Minor Pentatonic by yourself!"])
             pc!.tutorialPopup.hide()
+        } else if type == "LevelFullyComplete" {
+//            let key = (lc.currentLevelKey?.replacingOccurrences(of: "Level", with: ""))! + "s"
+            popover?.setupPopoverText(isubtitle: "Level Complete!", isubText: ["✅ All Levels Passed!", "🎸 Fantastic Job!", "🎵 Keep Practing Hard!"])
         }
         
-        popover?.addToView()
-        
+        if type == "PurchasePopover" {
+            purchasePopover?.addToView()
+        } else {
+            popover?.addToView()
+        }
         
         swoopAlpha(iobject: DimOverlay, ialpha: 0.8, iduration: 0.3)
 
         // reset tempo/peripheral button layer orders
         resetSideButtonLayers()
-//        for button in tempoButtonArr! {
-//            button.layer.zPosition = getLayer(ilayer: "Default")
-//        }
-//        for button in periphButtonArr {
-//            button.layer.zPosition = getLayer(ilayer: "Default")
-//        }
     }
     
     func resetSideButtonLayers() {
@@ -1844,36 +1857,36 @@ class MainViewController: UIViewController {
         let noteInputStrs = ["G#1", "A1", "A#1", "B1", "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2", "C3", "C#3", "D3", "D#3_0", "D#3_1", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3", "C4"]
 
         let fretMarkerImageOffset: [String: CGFloat] = [
-            "G#1": 1.2,
+            "G#1": 1.3,
             "A1": 1.2,
             "A#1": 1.2,
-            "B1": 1.2,
-            "C2": 1.2,
-            "C#2": 1.0,
+            "B1": 1.1,
+            "C2": 1.1,
+            "C#2": 1.1,
             "D2": 1.0,
             "D#2": 1.0,
             "E2": 1.0,
             "F2": 1.0,
             "F#2": 1.0,
-            "G2": 0.9,
+            "G2": 0.95,
             "G#2": 1.0,
             "A2": 1.0,
             "A#2": 1.0,
-            "B2": 1.0,
-            "C3": 1.0,
-            "C#3": 1.0,
-            "D3": 1.0,
+            "B2": 0.9,
+            "C3": 0.9,
+            "C#3": 0.9,
+            "D3": 0.95,
             "D#3_0": 1.0,
-            "D#3_1": 1.0,
-            "E3": 1.0,
-            "F3": 1.0,
-            "F#3": 1.0,
+            "D#3_1": 0.7,
+            "E3": 0.8,
+            "F3": 0.8,
+            "F#3": 0.9,
             "G3": 1.0,
-            "G#3": 0.8,
-            "A3": 0.8,
-            "A#3": 0.8,
-            "B3": 0.8,
-            "C4": 0.8,
+            "G#3": 0.5,
+            "A3": 0.55,
+            "A#3": 0.55,
+            "B3": 0.7,
+            "C4": 0.85,
         ]
 
         let image: UIImage = UIImage(named: "FretBoardOffDot")!
@@ -2021,6 +2034,9 @@ class MainViewController: UIViewController {
 
     @objc func onTestButtonDown() {
         //iterate through note label and update notes
+//        lc.setEarTrainingLevelHelper()
+//        purchasePopover!.addToView()
+            wt.waitThen(itime: 0.05, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "PurchasePopover" as AnyObject, "arg2": 0 as AnyObject])
     }
 
     // Testing
@@ -2183,9 +2199,11 @@ class MainViewController: UIViewController {
     }
     
     func setupUpDelayedNoteCollectionView(_ inoteCollection: [String], _ itype: String) {
+        var modifiedNoteCollection = inoteCollection
+        modifiedNoteCollection.remove(at: modifiedNoteCollection.count-1)
         let waitTime = 0.03
-        for (i,_) in inoteCollection.enumerated() {
-            wt.waitThen(itime: Double(i)*waitTime, itarget: self, imethod: #selector(displaySingleFretMarkerWrapper) as Selector, irepeats: false, idict: ["arg1": inoteCollection[i] as AnyObject,"arg2": true as AnyObject, "arg3": itype as AnyObject])
+        for (i,_) in modifiedNoteCollection.enumerated() {
+            wt.waitThen(itime: Double(i)*waitTime, itarget: self, imethod: #selector(displaySingleFretMarkerWrapper) as Selector, irepeats: false, idict: ["arg1": modifiedNoteCollection[i] as AnyObject,"arg2": true as AnyObject, "arg3": itype as AnyObject])
         }
     }
     

@@ -33,7 +33,7 @@ class EarTraining {
         if vc!.earTrainCallArr == vc!.earTrainResponseArr {
             testPassed = true
             let interval = vc!.sCollection!.returnInterval(vc!.earTrainCallArr[0],vc!.earTrainCallArr[1])
-            resultTextArr = ["Great! You Correctly Played a \(interval)."]
+            resultTextArr = ["Great! You Correctly Played A \(interval)."]
             print(resultTextArr)
         } else {
             if vc!.earTrainResponseArr[0] != vc!.earTrainCallArr[0] {

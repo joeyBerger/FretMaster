@@ -168,8 +168,8 @@ class ScaleCollection {
     ]
     
     let fretOffsetToImage : [String] = [
-        "FretBoardNut",
-        "FretBoardOffDot",
+        "FretBoardOpenPos",
+        "FretBoard1stPos",
         "FretBoardOnDot",
         "FretBoardOffDot",
         "FretBoardOnDot",
@@ -355,7 +355,9 @@ class ScaleCollection {
         
         newNoteCollection = covertDSharpThreeToValidNote(newNoteCollection, parsedInput)
         
-        newNoteCollection = tryToAddNoteAboveRoot(newNoteCollection,parsedInput,idirection)
+        if vc!.lc.currentLevelKey!.contains("scale") || vc!.lc.currentLevelKey!.contains("arpeggio") {
+            newNoteCollection = tryToAddNoteAboveRoot(newNoteCollection,parsedInput,idirection)
+        }
         
         return newNoteCollection
     }
@@ -364,12 +366,11 @@ class ScaleCollection {
         var newNotes : [String] = []
         let extensions = ["b2","2","b3"]
         
-        for (i,degree) in availableScales[inoteCollectionHeader]!.enumerated() {
+        for (_,degree) in availableScales[inoteCollectionHeader]!.enumerated() {
             for (j,_) in extensions.enumerated() {
                 if degree == extensions[j] {
                     var note = refScale[(9+scaleDegreeDict[degree]!)%refScale.count]
                     note += note == "C" ? "4" : "3"
-                    print("note",note)
                     newNotes.append(note)
                 }
             }
@@ -478,7 +479,6 @@ class ScaleCollection {
             octave += 1
         }
         if idx == 12 {
-            print("")
         }
         return "\(refScale[idx!])\(octave)\(qualifier)"
     }

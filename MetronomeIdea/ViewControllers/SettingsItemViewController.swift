@@ -22,7 +22,8 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         "fretDot" : "Fretboard Dot",
         "guitarTone" : "Guitar Sound",
         "clickTone" : "Click Sound",
-        "freePlay" : "Free Play"
+        "freePlay" : "Free Play",
+        "rhythmicAccuracy" : "Rhythmic Accuracy"
     ]
     var changeButton = UIButton()
     var backgroundImageID = 0
@@ -49,7 +50,6 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         
         var styler: ViewStyler?
         styler = ViewStyler(ivc: self)
-//        styler!.setupBackgroundImage(ibackgroundPic: "RecordingBoard.jpg")
         styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
     }
 
@@ -101,7 +101,7 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
     func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
         let labelStr = settingStrings[(indexPath as NSIndexPath).row]
-//        cell.setupCell(isettingLabelText: labelStr)
+
         cell.textLabel?.text = labelStr
         tableView.tableFooterView = UIView(frame: .zero)
         

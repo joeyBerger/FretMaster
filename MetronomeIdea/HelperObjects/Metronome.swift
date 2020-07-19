@@ -95,19 +95,6 @@ class Metronome {
                 print("recording active click here")
                 clickTime.append(CFAbsoluteTimeGetCurrent())
             }
-//                if currentClick >= countInClick {
-//                    if clickTime - userInputTime > 0.5 {
-//                    } else {
-//                        let timeDelta = clickTime - userInputTime
-//                        if timeDelta < 0.05 {
-//                            print("good0")
-//                        } else {
-//                            print("early0")
-//                        }
-//                        vc!.noteCollectionTestData[vc!.noteCollectionTestData.count - 1].time = userInputTime
-//                        vc!.noteCollectionTestData[vc!.noteCollectionTestData.count - 1].timeDelta = timeDelta
-//                    }
-//                }
             if currentClick == countInClick + vc!.specifiedNoteCollection.count - 1 {
                 endMetronome()
                 _ = Timer.scheduledTimer(timeInterval: 0.5, target: self, selector: #selector(analyzeNotesInTempoTest), userInfo: nil, repeats: false)
@@ -129,10 +116,11 @@ class Metronome {
         let notesMatch = vc!.sCollection!.analyzeNotes(iscaleTestData: vc!.noteCollectionTestData)
         var timeAcurracyMet = true
         var earlyNotesCounter = 0
-        var lateNotesCounter = 0        
+        var lateNotesCounter = 0
+        let timeThresholdStr = vc!.rhythmicAccuracy
         if clickTime.count == vc!.noteCollectionTestData.count {
             for (i, items) in vc!.noteCollectionTestData.enumerated() {
-                if abs(clickTime[i] - items.time) > (timeThreshold["Easy"])! {
+                if abs(clickTime[i] - items.time) > (timeThreshold[timeThresholdStr])! {
                     timeAcurracyMet = false
                     if clickTime[i] < items.time {
                         print(i,"note was late")
@@ -162,5 +150,8 @@ class Metronome {
         let notesCorrect = notesMatch && timeAcurracyMet
         vc!.onTestComplete(itestPassed: notesCorrect, iflashRed: true)
         vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
+        if notesCorrect {
+            vc!.setupUpDelayedNoteCollectionView(vc!.specifiedNoteCollection.uniques,"postSuccess");
+        }
     }
 }

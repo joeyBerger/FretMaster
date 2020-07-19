@@ -75,7 +75,6 @@
 		9EA6054D24A9602D00900821 /* F2_Acoustic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EA6052524A9602D00900821 /* F2_Acoustic.wav */; };
 		9EA6055B24A9606800900821 /* FretBoard8thPos.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EA6051A24A95FFC00900821 /* FretBoard8thPos.png */; };
 		9EA6055C24A9606800900821 /* FretBoardOffDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EA6051E24A9600E00900821 /* FretBoardOffDot.png */; };
-		9EA6055D24A9606800900821 /* FretBoardNut.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EA6052224A9602000900821 /* FretBoardNut.png */; };
 		9EA6055E24A9606800900821 /* FretBoard10thPos.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EA6054E24A9603100900821 /* FretBoard10thPos.png */; };
 		9EA6055F24A9606800900821 /* FretBoard11thPos.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EA6055124A9603F00900821 /* FretBoard11thPos.png */; };
 		9EA6056024A9606800900821 /* FretBoardOnDot.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EA6055424A9604C00900821 /* FretBoardOnDot.png */; };
@@ -184,6 +183,9 @@
 		9EA605FC24A9636600900821 /* Selection_Acoustic.wav in Resources */ = {isa = PBXBuildFile; fileRef = 9EA605F924A9636600900821 /* Selection_Acoustic.wav */; };
 		9EA722D42480D3A5003C7356 /* NoteCollectionPickerViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA722D32480D3A5003C7356 /* NoteCollectionPickerViewController.swift */; };
 		9EAD3C0E237E825F004467B1 /* EarTraining.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EAD3C0D237E825F004467B1 /* EarTraining.swift */; };
+		9EB463BF24C3E04F00530ABE /* FretBoard1stPos.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463BD24C3E04E00530ABE /* FretBoard1stPos.png */; };
+		9EB463C024C3E04F00530ABE /* FretBoardOpenPos.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463BE24C3E04F00530ABE /* FretBoardOpenPos.png */; };
+		9EB463C224C41EF800530ABE /* PurchasePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463C124C41EF800530ABE /* PurchasePopover.swift */; };
 		9EB573412450095C00322305 /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB573402450095C00322305 /* PopupController.swift */; };
 		9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBCF8AC2429D09400074C4C /* LevelHandler.swift */; };
 		9ED2BC692470FF6C00D409DD /* SCLAlertView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */; };
@@ -348,7 +350,6 @@
 		9EA6051F24A9601200900821 /* F1_Jazz.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = F1_Jazz.wav; sourceTree = "<group>"; };
 		9EA6052024A9601700900821 /* E1_Rock.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = E1_Rock.wav; sourceTree = "<group>"; };
 		9EA6052124A9601B00900821 /* C#3_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = "C#3_Acoustic.wav"; sourceTree = "<group>"; };
-		9EA6052224A9602000900821 /* FretBoardNut.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoardNut.png; sourceTree = "<group>"; };
 		9EA6052324A9602500900821 /* F4_Jazz.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = F4_Jazz.wav; sourceTree = "<group>"; };
 		9EA6052424A9602900900821 /* G1_Rock.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = G1_Rock.wav; sourceTree = "<group>"; };
 		9EA6052524A9602D00900821 /* F2_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = F2_Acoustic.wav; sourceTree = "<group>"; };
@@ -420,6 +421,9 @@
 		9EA605F924A9636600900821 /* Selection_Acoustic.wav */ = {isa = PBXFileReference; lastKnownFileType = audio.wav; path = Selection_Acoustic.wav; sourceTree = "<group>"; };
 		9EA722D32480D3A5003C7356 /* NoteCollectionPickerViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = NoteCollectionPickerViewController.swift; sourceTree = "<group>"; };
 		9EAD3C0D237E825F004467B1 /* EarTraining.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = EarTraining.swift; sourceTree = "<group>"; };
+		9EB463BD24C3E04E00530ABE /* FretBoard1stPos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoard1stPos.png; sourceTree = "<group>"; };
+		9EB463BE24C3E04F00530ABE /* FretBoardOpenPos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoardOpenPos.png; sourceTree = "<group>"; };
+		9EB463C124C41EF800530ABE /* PurchasePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasePopover.swift; sourceTree = "<group>"; };
 		9EB573402450095C00322305 /* PopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupController.swift; sourceTree = "<group>"; };
 		9EBCF8AC2429D09400074C4C /* LevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHandler.swift; sourceTree = "<group>"; };
 		9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SCLAlertView.framework; path = Carthage/Build/iOS/SCLAlertView.framework; sourceTree = "<group>"; };
@@ -670,12 +674,13 @@
 		9EA6051324A95FDE00900821 /* FretboardImages */ = {
 			isa = PBXGroup;
 			children = (
+				9EB463BD24C3E04E00530ABE /* FretBoard1stPos.png */,
+				9EB463BE24C3E04F00530ABE /* FretBoardOpenPos.png */,
 				9EA6051A24A95FFC00900821 /* FretBoard8thPos.png */,
 				9EA6055A24A9606800900821 /* FretBoard9thPos.png */,
 				9EA6054E24A9603100900821 /* FretBoard10thPos.png */,
 				9EA6055124A9603F00900821 /* FretBoard11thPos.png */,
 				9EA6055724A9605A00900821 /* FretBoard12thPos.png */,
-				9EA6052224A9602000900821 /* FretBoardNut.png */,
 				9EA6051E24A9600E00900821 /* FretBoardOffDot.png */,
 				9EA6055424A9604C00900821 /* FretBoardOnDot.png */,
 			);
@@ -691,6 +696,7 @@
 				9EB573402450095C00322305 /* PopupController.swift */,
 				9E57E05B247D624100DA4F4F /* Popover.swift */,
 				9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */,
+				9EB463C124C41EF800530ABE /* PurchasePopover.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -968,7 +974,6 @@
 				B8A6185620DB9E2B00AF33C5 /* Assets.xcassets in Resources */,
 				9EA6058D24A960BA00900821 /* E4_Jazz.wav in Resources */,
 				9EA6052A24A9602D00900821 /* G#3_Acoustic.wav in Resources */,
-				9EA6055D24A9606800900821 /* FretBoardNut.png in Resources */,
 				9EA6057F24A960BA00900821 /* F3_Jazz.wav in Resources */,
 				9EA605B324A960FB00900821 /* D4_Rock.wav in Resources */,
 				9EA6058724A960BA00900821 /* G2_Jazz.wav in Resources */,
@@ -978,6 +983,7 @@
 				9EA6052C24A9602D00900821 /* F#3_Acoustic.wav in Resources */,
 				9EA6058E24A960BA00900821 /* F1_Jazz.wav in Resources */,
 				9EA6053224A9602D00900821 /* C2_Acoustic.wav in Resources */,
+				9EB463C024C3E04F00530ABE /* FretBoardOpenPos.png in Resources */,
 				9EA605B524A960FB00900821 /* C#4_Rock.wav in Resources */,
 				9EA605ED24A9627800900821 /* MenuImage0.jpg in Resources */,
 				9EA6054524A9602D00900821 /* F#4_Acoustic.wav in Resources */,
@@ -1035,6 +1041,7 @@
 				9EA6053E24A9602D00900821 /* C#4_Acoustic.wav in Resources */,
 				9EA605C224A960FB00900821 /* G#1_Rock.wav in Resources */,
 				9EA6054224A9602D00900821 /* A2_Acoustic.wav in Resources */,
+				9EB463BF24C3E04F00530ABE /* FretBoard1stPos.png in Resources */,
 				9EA6057924A960BA00900821 /* G1_Jazz.wav in Resources */,
 				9EA6054424A9602D00900821 /* E4_Acoustic.wav in Resources */,
 				9EA6054924A9602D00900821 /* A#2_Acoustic.wav in Resources */,
@@ -1137,6 +1144,7 @@
 				9E18282223CA65650001E46F /* MainViewController.swift in Sources */,
 				9EDC0F552479D2D900257CFE /* TransitionManager.swift in Sources */,
 				9EDC0F4A2479D2D900257CFE /* LoadingView.swift in Sources */,
+				9EB463C224C41EF800530ABE /* PurchasePopover.swift in Sources */,
 				9EDC0F582479D2D900257CFE /* Spring.swift in Sources */,
 				9EB573412450095C00322305 /* PopupController.swift in Sources */,
 				9EDC0F542479D2D900257CFE /* BlurView.swift in Sources */,

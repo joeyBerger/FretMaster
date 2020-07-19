@@ -30,7 +30,7 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
 
     init(ivc: UIViewController?) {
         vc = ivc as? MainViewController
-        for i in 0..<12 {
+        for i in 1..<12 {
             pickerList.append("\(i+1)\(vc!.sCollection!.returnLinguisticNumberEquivalent(String(i+1))) Fret")
         }
         super.init(nibName: nil, bundle: nil)
@@ -39,11 +39,6 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
     required init?(coder aDecoder: NSCoder) {
         super.init(coder: aDecoder)
     }
-    
-//    override func viewDidLoad() {
-//        super.viewDidLoad()
-//
-//    }
     
     func setupPopover(_ inavigationController: UINavigationController) {
         
@@ -65,6 +60,11 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
         titleText.textAlignment = .center
         titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
         titleText.textColor = defaultColor.FretMarkerStandard
+        titleText.layer.shadowColor = UIColor.black.cgColor
+        titleText.layer.shadowRadius = 3.0
+        titleText.layer.shadowOpacity = 1.0
+        titleText.layer.shadowOffset = CGSize(width: 4, height: 4)
+        titleText.layer.masksToBounds = false
         
         subTitleText.frame = CGRect(x: background.frame.minX,y: titleText.frame.maxY-30,width: background.frame.width, height: 100)
         subTitleText.text = "CHOOSE A FRET POSITION"
@@ -93,7 +93,9 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
     }
     
     @objc func handleButtonPress() {
-        vc!.fretOffset = (picker.selectedRow(inComponent: 0)+1) - vc!.defaultFretOffset
+//        vc!.fretOffset = (picker.selectedRow(inComponent: 0)+1) - vc!.defaultFretOffset
+        vc!.fretOffset = (picker.selectedRow(inComponent: 0)+2) - vc!.defaultFretOffset
+        print("vc!.fretOffset ",vc!.fretOffset)
         vc!.handleFretOffsetChange()
         removeFromView()
     }
@@ -116,7 +118,8 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
         vc!.view.addSubview(xButton)
         vc!.view.addSubview(subTitleText)
         vc!.view.addSubview(picker)
-        picker.selectRow((vc!.defaultFretOffset-1) + vc!.fretOffset, inComponent: 0, animated: true)
+//        picker.selectRow((vc!.defaultFretOffset-1) + vc!.fretOffset, inComponent: 0, animated: true)
+        picker.selectRow((vc!.defaultFretOffset-2) + vc!.fretOffset, inComponent: 0, animated: true)
         vc!.swoopAlpha(iobject: vc!.DimOverlay, ialpha: 0.8, iduration: 0.3)
     }
     
