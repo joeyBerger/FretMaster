@@ -79,9 +79,9 @@ class SettingsViewController: UIViewController {
         buttonText(
             iheader: "Volume".uppercased(),
             isubtext: "Change Volume",
-            iid: "volume",
-            iavailableSettings: [],
-            isettingsType: ""
+            iid: "volumeControl",
+            iavailableSettings: ["Master Volume","Guitar Volume","Click Volume"],
+            isettingsType: "volumeControl"
         ),
     ]
 
@@ -124,12 +124,12 @@ class SettingsViewController: UIViewController {
     @IBAction func settingsCategoryButtonDown(_ sender: UIButton) {
         buttonId = sender.tag
         UIView.setAnimationsEnabled(false)
-        let view = buttonId < 4 ? "SettingsItem" : "VolumeSettingsViewController"
+        let view = buttonId < 4 || true ? "SettingsItem" : "VolumeSettingsViewController"
         performSegue(withIdentifier: view, sender: nil)
     }
 
     override func prepare(for segue: UIStoryboardSegue, sender _: Any?) {
-        if buttonId < 4 {
+        if buttonId < 4 || true {
             let sItem = segue.destination as! SettingsItemViewController
             sItem.setupSettingsCellData(isettingsType: buttonInfo[buttonId].id, isettingStrings: buttonInfo[buttonId].availableSettings)
             sItem.backgroundImageID = backgroundImageID

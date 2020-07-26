@@ -2,8 +2,8 @@ import Foundation
 import UIKit
 
 class SettingsItemViewController: UIViewController, UITableViewDataSource, UITableViewDelegate {
-    @IBOutlet var tableView: UITableView!
     
+    @IBOutlet var tableView: UITableView!
     var settingStrings: [String] = []
     var settingsType: String?
     var initialCheckmarkIdx = 0
@@ -23,15 +23,31 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         "guitarTone" : "Guitar Sound",
         "clickTone" : "Click Sound",
         "freePlay" : "Free Play",
-        "rhythmicAccuracy" : "Rhythmic Accuracy"
+        "rhythmicAccuracy" : "Rhythmic Accuracy",
+        "volumeControl" : "Control Volume"
     ]
     var changeButton = UIButton()
     var backgroundImageID = 0
+    var volumeSlider = UISlider()
+    let volumeTypes = ["masterVol", "guitarVol", "clickVol"]
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
         let styler = ViewStyler(ivc: self)
         styler.displayTitle(self,navigationController!,titleTextDict[settingsType!]!)
+        if settingsType! == "volumeControl" {
+            let width = UIScreen.main.bounds.size.width*0.8
+            volumeSlider = UISlider(frame:CGRect(x: 0, y: 0, width: width, height: 20))
+            volumeSlider.center = self.view.center
+            volumeSlider.addTarget(self, action: #selector(onSliderChange(_:)), for: .valueChanged)
+            volumeSlider.tintColor = UIColor.green
+            for volStr in volume.volumeTypes.keys {
+                if UserDefaults.standard.object(forKey: volStr) != nil {
+                    volume.volumeTypes[volStr] = (UserDefaults.standard.object(forKey: volStr) as! Float)
+                }
+            }
+            view.addSubview(volumeSlider)
+        }
     }
     
     override func viewDidLoad() {
@@ -41,6 +57,9 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
 
         if let defaultKey = UserDefaults.standard.object(forKey: settingsType!) {
             initialCheckmarkIdx = settingStrings.firstIndex(of: defaultKey as! String)!
+            if settingsType! == "volumeControl" {
+                volumeSlider.setValue(volume.volumeTypes[volumeTypes[initialCheckmarkIdx]]!, animated: true)
+            }
         }
         if settingsType == "backgroundPick" {
             setupBackgroundPickButton()
@@ -51,6 +70,19 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         var styler: ViewStyler?
         styler = ViewStyler(ivc: self)
         styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
+    }
+    
+    @objc func onSliderChange(_ sender:UISlider!) {
+        volume.volumeTypes[volumeTypes[selectedCell]] = sender.value
+    }
+    
+    override func viewWillDisappear(_ animated: Bool) {
+        if navigationController?.viewControllers.index(of: self) == nil && settingsType! == "volumeControl" {
+            for volStr in volumeTypes {
+                UserDefaults.standard.set(volume.volumeTypes[volStr], forKey: volStr)
+            }
+        }
+        super.viewWillDisappear(animated)
     }
 
     func setupBackgroundPickButton() {
@@ -131,7 +163,12 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
         if soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]] != nil {
             playSound(isoundName: soundStringDict[settingsType! + "_" + settingStrings[indexPath.row]]!)
         }
-
+        
+        if settingsType! == "volumeControl" {
+            UIView.animate(withDuration: 0.8) {
+                self.volumeSlider.setValue(volume.volumeTypes[self.volumeTypes[indexPath.row]]!, animated: true)
+            }
+        }
         selectedCell = indexPath.row
     }
 }

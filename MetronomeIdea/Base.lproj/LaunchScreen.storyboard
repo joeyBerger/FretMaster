@@ -16,26 +16,33 @@
                         <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <subviews>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleToFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="SplashImage.png" translatesAutoresizingMaskIntoConstraints="NO" id="7vv-1y-Dat">
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFill" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="MenuImage0.jpg" translatesAutoresizingMaskIntoConstraints="NO" id="7vv-1y-Dat">
                                 <rect key="frame" x="0.0" y="0.0" width="414" height="896"/>
+                            </imageView>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="TitleSmaller.png" translatesAutoresizingMaskIntoConstraints="NO" id="KbW-EO-Syx">
+                                <rect key="frame" x="60" y="64" width="334" height="105"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" red="1" green="1" blue="1" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                         <constraints>
-                            <constraint firstItem="7vv-1y-Dat" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="AX0-TK-gWP"/>
-                            <constraint firstItem="7vv-1y-Dat" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="Gpz-dw-XPq"/>
-                            <constraint firstItem="7vv-1y-Dat" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="XTm-wd-un0"/>
-                            <constraint firstAttribute="bottom" secondItem="7vv-1y-Dat" secondAttribute="bottom" id="elT-fx-VAK"/>
+                            <constraint firstItem="7vv-1y-Dat" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" id="3d5-hr-Yzu"/>
+                            <constraint firstItem="KbW-EO-Syx" firstAttribute="top" secondItem="6Tk-OE-BBY" secondAttribute="top" constant="20" id="DrN-Cr-Nz0"/>
+                            <constraint firstAttribute="bottom" secondItem="7vv-1y-Dat" secondAttribute="bottom" id="Fx9-2E-rQk"/>
+                            <constraint firstItem="7vv-1y-Dat" firstAttribute="top" secondItem="Ze5-6b-2t3" secondAttribute="top" id="MTP-4e-P4P"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KbW-EO-Syx" secondAttribute="trailing" constant="20" id="VQZ-6Q-AaR"/>
+                            <constraint firstItem="KbW-EO-Syx" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="60" id="g7A-b6-DEh"/>
+                            <constraint firstItem="7vv-1y-Dat" firstAttribute="trailing" secondItem="6Tk-OE-BBY" secondAttribute="trailing" id="ywL-OD-taR"/>
                         </constraints>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
                     </view>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="iYj-Kq-Ea1" userLabel="First Responder" sceneMemberID="firstResponder"/>
             </objects>
-            <point key="canvasLocation" x="50.724637681159422" y="374.33035714285711"/>
+            <point key="canvasLocation" x="47.826086956521742" y="372.32142857142856"/>
         </scene>
     </scenes>
     <resources>
-        <image name="SplashImage.png" width="4770" height="7905"/>
+        <image name="MenuImage0.jpg" width="4770" height="7905"/>
+        <image name="TitleSmaller.png" width="500" height="105"/>
     </resources>
 </document>

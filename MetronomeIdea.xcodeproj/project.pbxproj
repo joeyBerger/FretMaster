@@ -29,6 +29,8 @@
 		9E75ACC824AAF7A0000CFB91 /* SplashImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E75ACC724AAF7A0000CFB91 /* SplashImage.png */; };
 		9E75ACCB24AB0060000CFB91 /* MrsSheppards-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */; };
 		9E7C2ECB248A0FB0006F4C85 /* FretOffsetPickerPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */; };
+		9E8E9E3724CD3670007A9551 /* Title.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8E9E3624CD3670007A9551 /* Title.png */; };
+		9E8E9E3924CD3BED007A9551 /* TitleSmaller.png in Resources */ = {isa = PBXBuildFile; fileRef = 9E8E9E3824CD3BEC007A9551 /* TitleSmaller.png */; };
 		9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E919EEF244EBB4C008027EF /* Vibration.swift */; };
 		9E9C46E722C483C000B133A9 /* SoundController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E9C46E622C483C000B133A9 /* SoundController.swift */; };
 		9EA49F9524330B8800BF9398 /* SettingsViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EA49F9424330B8800BF9398 /* SettingsViewController.swift */; };
@@ -267,6 +269,8 @@
 		9E75ACC724AAF7A0000CFB91 /* SplashImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = SplashImage.png; sourceTree = "<group>"; };
 		9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MrsSheppards-Regular.ttf"; sourceTree = "<group>"; };
 		9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = FretOffsetPickerPopover.swift; sourceTree = "<group>"; };
+		9E8E9E3624CD3670007A9551 /* Title.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = Title.png; sourceTree = "<group>"; };
+		9E8E9E3824CD3BEC007A9551 /* TitleSmaller.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = TitleSmaller.png; sourceTree = "<group>"; };
 		9E919EEF244EBB4C008027EF /* Vibration.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Vibration.swift; sourceTree = "<group>"; };
 		9E9C46E622C483C000B133A9 /* SoundController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SoundController.swift; sourceTree = "<group>"; };
 		9EA49F9424330B8800BF9398 /* SettingsViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingsViewController.swift; sourceTree = "<group>"; };
@@ -734,6 +738,8 @@
 		9ED22C7C23CD8C840051D8A4 /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				9E8E9E3624CD3670007A9551 /* Title.png */,
+				9E8E9E3824CD3BEC007A9551 /* TitleSmaller.png */,
 				9E75ACC624AAF794000CFB91 /* SplashImage */,
 				9EA6051324A95FDE00900821 /* FretboardImages */,
 				9EDC0FAC247B2A0400257CFE /* MainInterfaceImage */,
@@ -963,6 +969,7 @@
 				9EA605CC24A960FB00900821 /* F1_Rock.wav in Resources */,
 				9EA6058024A960BA00900821 /* D#3_Jazz.wav in Resources */,
 				9EA605BA24A960FB00900821 /* D2_Rock.wav in Resources */,
+				9E8E9E3924CD3BED007A9551 /* TitleSmaller.png in Resources */,
 				9EA605DB24A9616800900821 /* MainImage2.jpg in Resources */,
 				9EA605B224A960FB00900821 /* G2_Rock.wav in Resources */,
 				9EA6058C24A960BA00900821 /* A#2_Jazz.wav in Resources */,
@@ -1032,6 +1039,7 @@
 				9EA605D824A9616800900821 /* MainImage4.jpg in Resources */,
 				9EA6053D24A9602D00900821 /* D#3_Acoustic.wav in Resources */,
 				9EA6052E24A9602D00900821 /* F1_Acoustic.wav in Resources */,
+				9E8E9E3724CD3670007A9551 /* Title.png in Resources */,
 				9EA6053824A9602D00900821 /* D4_Acoustic.wav in Resources */,
 				9EA6059524A960BA00900821 /* D3_Jazz.wav in Resources */,
 				9EA6052B24A9602D00900821 /* E2_Acoustic.wav in Resources */,

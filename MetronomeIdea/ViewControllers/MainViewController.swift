@@ -1676,6 +1676,10 @@ class MainViewController: UIViewController {
         }
         popover?.popoverVisible = false
     }
+    
+    func presentPaywallPopover() {
+        wt.waitThen(itime: 0.05, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "PurchasePopover" as AnyObject, "arg2": 0 as AnyObject])
+    }
 
     func flashActionOverlay(isuccess: Bool) {
         if #available(iOS 13.0, *) {}
@@ -1983,8 +1987,22 @@ class MainViewController: UIViewController {
         }
         fretButtonDict["A1"]?.layer.zPosition = 1000
         fretButtonDict["A2"]?.layer.zPosition = 1000
-
-        initializeFretReferenceText() //TODO: do if/when necessary
+        
+        applyShadowOnImage(FretboardImage)
+        initializeFretReferenceText()
+    }
+    
+    func applyShadowOnImage(_ view: UIView) {
+//        view.layer.cornerRadius = 800
+//        view.layer.shadowColor = UIColor.darkGray.cgColor
+//        view.layer.shadowOpacity = 1
+//        view.layer.shadowOffset = .zero
+//        view.layer.shadowRadius = 50
+        view.layer.cornerRadius = 50
+        view.layer.shadowColor = UIColor.white.cgColor
+        view.layer.shadowOpacity = 0.5
+        view.layer.shadowOffset = .zero
+        view.layer.shadowRadius = 30
     }
 
     // Helper functions
@@ -2031,6 +2049,7 @@ class MainViewController: UIViewController {
         print("layer does not exist")
         return 0
     }
+    
 
     @objc func onTestButtonDown() {
         //iterate through note label and update notes
@@ -2363,6 +2382,11 @@ extension SpringImageView {
             self.curve = "easeIn"
             self.force = 1.0
             self.duration = 0.4
+        case "paywallFadeIn" :
+            self.animation = "fadeIn"
+            self.curve = "easeIn"
+            self.force = 1.0
+            self.duration = 1.0
         default:
             return
         }
@@ -2397,6 +2421,11 @@ extension SpringLabel {
             self.curve = "easeIn"
             self.force = 1.0
             self.duration = 1.6
+        case "paywallFadeIn" :
+            self.animation = "fadeIn"
+            self.curve = "easeIn"
+            self.force = 1.0
+            self.duration = 1.0
         default:
             return
         }
@@ -2419,6 +2448,11 @@ extension SpringButton {
             self.curve = "easeIn"
             self.force = 1.0
             self.duration = 1.6
+        case "paywallFadeIn" :
+            self.animation = "fadeIn"
+            self.curve = "easeIn"
+            self.force = 1.0
+            self.duration = 1.0
         default:
             return
         }

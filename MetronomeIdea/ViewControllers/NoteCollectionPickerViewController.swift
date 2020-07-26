@@ -21,6 +21,12 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         "arpeggioPicker" : "Arpeggios",
         "scalePicker" : "Scales",
     ]
+    
+    let paywallThreshold : [String : Int] = [
+        "recordingPicker" : 10,
+        "arpeggioPicker" : 4,
+        "scalePicker" : 5,
+    ]
       
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -75,15 +81,6 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
             }
             
             pickerList = pickerList.uniques
-            
-//            let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
-//            selectedCell = -1
-//            for (i,item) in pickerList.enumerated() {
-//                if item == freePlayUserDefault as! String {
-//                    selectedCell = i
-//                    break
-//                }
-//            }
         } else {
             //sort time list?
         }
@@ -155,16 +152,8 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
         let labelStr = !cellReuseIdentifier.contains("Record") ? ScaleCollection(ivc: MainViewController()).returnReadableScaleName(iinput: pickerList[(indexPath as NSIndexPath).row]) : pickerList[(indexPath as NSIndexPath).row]
         cell.textLabel?.text = labelStr
-//        cell.textLabel?.textColor = defaultColor.MenuButtonTextColor
         tableView.tableFooterView = UIView(frame: .zero)
         cell.tintColor = UIColor.black
-
-//        print("indexPath.row",indexPath.row)
-//        if selectedCell > -1 && pickerList[indexPath.row] == pickerList[selectedCell] {
-//            print(pickerList[selectedCell])
-//            cell.accessoryType = .checkmark
-//        }
-        
         
         cell.accessoryType = indexPath.row == selectedCell ? .checkmark : .none
         
@@ -172,6 +161,14 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        print(indexPath.row)
+        print(paywallThreshold[self.restorationIdentifier!]!)
+        if (indexPath.row > paywallThreshold[self.restorationIdentifier!]!) {
+            navigationController?.popViewController(animated: false)
+            vc?.presentPaywallPopover();
+            return
+        }
+        
         for row in 0 ..< tableView.numberOfRows(inSection: indexPath.section) {
             if let cell = tableView.cellForRow(at: IndexPath(row: row, section: indexPath.section)) {
 //                cell.accessoryType = row == indexPath.row ? .checkmark : .none
@@ -222,5 +219,9 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
 //
     func tableView(_ tableView: UITableView, didDeselectRowAt indexPath: IndexPath) {
         tableView.cellForRow(at: indexPath)?.accessoryType = .none
+    }
+    
+    func scrollViewDidEndDragging(_ scrollView: UIScrollView, willDecelerate decelerate: Bool) {
+        vc!.wt.stopWaitThenOfType(iselector: #selector(vc!.playSoundHelper) as Selector)
     }
 }

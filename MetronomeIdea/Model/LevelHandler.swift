@@ -226,15 +226,15 @@ class LevelConstruct: UIViewController {
         ["MinorPentatonic_Up"],
         ["MajorPentatonic_Up"],
         ["Ionian_Up", "Aeolian_Up"],
-        ["MinorPentatonic_Up", "MajorPentatonic_Up", "Ionian_Up", "Aeolian_Up"],
+//        ["MinorPentatonic_Up", "MajorPentatonic_Up", "Ionian_Up", "Aeolian_Up"],
         ["MinorPentatonic_Both", "MajorPentatonic_Both", "Ionian_Both", "Aeolian_Both"],
-        ["Ionian_Both", "MajorPentatonic_Both", "MinorPentatonic_Both", "Aeolian_Both"],
-        ["Ionian_Both", "MajorPentatonic_Both", "MinorPentatonic_Both", "Aeolian_Both"],
+        ["Ionian_Both", "MajorPentatonic_Both", "Aeolian_Both", "MinorPentatonic_Both"],
+//        ["Ionian_Both", "MajorPentatonic_Both", "MinorPentatonic_Both", "Aeolian_Both"],
         ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "Ionian_Both_Tempo:120", "Aeolian_Both_Tempo:120"],
-        ["MinorPentatonic_Up", "MajorPentatonic_Up","PentatonicModeIII_Up","PentatonicModeIV_Up","PentatonicModeV_Up"],
+        ["PentatonicModeIII_Up","PentatonicModeIV_Up","PentatonicModeV_Up"],
         ["MinorPentatonic_Both", "MajorPentatonic_Both","PentatonicModeIII_Both","PentatonicModeIV_Both","PentatonicModeV_Both"],
         ["PentatonicModeIV_Both", "PentatonicModeIII_Both","MinorPentatonic_Both","PentatonicModeV_Both","MajorPentatonic_Both"], //random
-        ["PentatonicModeV_Both", "MajorPentatonic_Both","PentatonicModeIV_Both","MinorPentatonic_Both","PentatonicModeIII_Both"], //random
+//        ["PentatonicModeV_Both", "MajorPentatonic_Both","PentatonicModeIV_Both","MinorPentatonic_Both","PentatonicModeIII_Both"], //random
         ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120","PentatonicModeIII_Both_Tempo:120","PentatonicModeIV_Both_Tempo:120","PentatonicModeV_Both_Tempo:120"],
         ["PentatonicModeIV_Both_Tempo:120", "PentatonicModeIII_Both_Tempo:120","MajorPentatonic_Both_Tempo:120","PentatonicModeV_Both_Tempo:120","MinorPentatonic_Both_Tempo:120"], //random
         ["Ionian_Up", "Dorian_Up", "Phyrgian_Up", "Lydian_Up", "Mixolydian_Up", "Aeolian_Up", "Locrian_Up"],

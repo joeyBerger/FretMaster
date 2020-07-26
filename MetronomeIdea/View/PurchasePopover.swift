@@ -142,6 +142,15 @@ class PurchasePopover: UIViewController {
         for text in subText {
             vc!.view.addSubview(text)
         }
+        background.setAndPlayAnim("paywallFadeIn")
+        mainButton.setAndPlayAnim("paywallFadeIn")
+        titleText.setAndPlayAnim("paywallFadeIn")
+        subTitleText.setAndPlayAnim("paywallFadeIn")
+        xButton.setAndPlayAnim("paywallFadeIn")
+        buttonText.setAndPlayAnim("paywallFadeIn")
+        for (_,text) in subText.enumerated() {
+            text.setAndPlayAnim("paywallFadeIn")
+        }
     }
 
     func fadePopver() {
