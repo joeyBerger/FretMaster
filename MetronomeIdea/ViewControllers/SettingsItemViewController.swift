@@ -40,12 +40,24 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
             volumeSlider = UISlider(frame:CGRect(x: 0, y: 0, width: width, height: 20))
             volumeSlider.center = self.view.center
             volumeSlider.addTarget(self, action: #selector(onSliderChange(_:)), for: .valueChanged)
-            volumeSlider.tintColor = UIColor.green
+//            volumeSlider.tintColor = UIColor.green
+            //main color
+            volumeSlider.thumbTintColor = defaultColor.ProgressTrackColor
+            volumeSlider.minimumTrackTintColor = defaultColor.ProgressTrackColor
+            //other color
+            volumeSlider.maximumTrackTintColor = defaultColor.ProgressBarColor
+            //Inverted::
+            //main color
+//            volumeSlider.thumbTintColor = defaultColor.ProgressBarColor
+//            volumeSlider.minimumTrackTintColor = defaultColor.ProgressBarColor
+            //other color
+//            volumeSlider.maximumTrackTintColor = defaultColor.ProgressTrackColor
             for volStr in volume.volumeTypes.keys {
                 if UserDefaults.standard.object(forKey: volStr) != nil {
                     volume.volumeTypes[volStr] = (UserDefaults.standard.object(forKey: volStr) as! Float)
                 }
             }
+            volumeSlider.setValue(volume.volumeTypes[volumeTypes[initialCheckmarkIdx]]!, animated: true)
             view.addSubview(volumeSlider)
         }
     }

@@ -45,7 +45,7 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
-        
+       
         let data = UserDefaults.standard.object(forKey: "appVersion")
         if data == nil {
             UserDefaults.standard.set(currentAppVersion, forKey: "appVersion")

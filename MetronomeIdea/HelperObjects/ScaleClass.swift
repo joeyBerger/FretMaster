@@ -281,7 +281,15 @@ class ScaleCollection {
         
         if itype == "interval" {
             newNoteCollection = parseIntervalNotes(startingNote, parseNoteOctave(istartingNote), idata["intervalsToTest"] as! [String])
-            print("final specified notes \(newNoteCollection)")
+            if idata["randomStartNote"] != nil  {
+                newNoteCollection = findRandomStartingNoteForIntervalTest(idata["intervalsToTest"] as! [String])
+                vc!.startingEarTrainingNote = newNoteCollection[0]
+            }
+            for (i,n) in newNoteCollection.enumerated() {
+                if (n == "D#3") {
+                    newNoteCollection[i] = vc!.rand(max: 2) == 1 ? "D#3_0" : "D#3_1"
+                }
+            }
         }
         
         // find note index
@@ -333,6 +341,7 @@ class ScaleCollection {
             }
         }
         
+        //thirds
         if idata["sequence"] != nil {
             var sequenceArr: [String] = []
             for (i,_) in newNoteCollection.enumerated() {
@@ -353,12 +362,33 @@ class ScaleCollection {
             newNoteCollection = sequenceArr
         }
         
-        newNoteCollection = covertDSharpThreeToValidNote(newNoteCollection, parsedInput)
-        
-        if vc!.lc.currentLevelKey!.contains("scale") || vc!.lc.currentLevelKey!.contains("arpeggio") {
+        if vc!.lc.currentLevelKey!.contains("scale") || vc!.lc.currentLevelKey!.contains("arpeggio") || vc!.lc.currentLevelKey!.contains("freePlay")  {
+            newNoteCollection = covertDSharpThreeToValidNote(newNoteCollection, parsedInput)
             newNoteCollection = tryToAddNoteAboveRoot(newNoteCollection,parsedInput,idirection)
         }
         
+        return newNoteCollection
+    }
+    
+    func findRandomStartingNoteForIntervalTest(_ iintervals: [String] ) -> [String] {
+        let noteInputStrs = ["G#1", "A1", "A#1", "B1", "C2", "C#2", "D2", "D#2", "E2", "F2", "F#2", "G2", "G#2", "A2", "A#2", "B2", "C3", "C#3", "D3", "D#3", "E3", "F3", "F#3", "G3", "G#3", "A3", "A#3", "B3", "C4"]
+        var newNoteCollection = [""]
+        for _ in 0..<100 {
+            let randNote = noteInputStrs.randomElement()!
+            newNoteCollection = parseIntervalNotes(parseCoreNote(randNote), parseNoteOctave(randNote), iintervals)
+            var notesExist = true
+            for (i,note) in newNoteCollection.enumerated() {
+                if !noteInputStrs.contains(note) {
+                    notesExist = false
+                }
+//                if note == "D#3" {
+//                    newNoteCollection[i] = vc!.rand(max: 2) == 1 ? "D#3_0" : "D#3_1"
+//                }
+            }
+            if notesExist {
+                break
+            }
+        }
         return newNoteCollection
     }
     

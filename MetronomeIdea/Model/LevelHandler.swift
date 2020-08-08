@@ -302,7 +302,9 @@ class LevelConstruct: UIViewController {
 //        ["DiminishedArp_Up", "AugmentedArp_Up"],
     ]
     let interval = [
-        ["!Direction:Up_2,5!Total:3!StartingNote:A2!Tempo:120",
+//        ["!Direction:Up_2,5!Total:3!StartingNote:A2!Tempo:120",
+         ["!Direction:Up_2,5!Total:30!StartingNote:Random!Tempo:120",
+//         ["!Direction:Up_2,b5!Total:3!StartingNote:A2!Tempo:120",
          "!Direction:Up_2,3!Total:3!StartingNote:A2!Tempo:120",
          "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:120",],
         

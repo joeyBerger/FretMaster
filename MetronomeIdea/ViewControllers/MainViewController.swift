@@ -467,7 +467,7 @@ class MainViewController: UIViewController {
         }
 
         let task = lc.returnCurrentTask()
-        let trimmedTask = trimCurrentTask(iinput: task)
+        var trimmedTask = trimCurrentTask(iinput: task)
         let dir = parseTaskDirection(iinput: task)
         var startingNote = "A"
         var type = "standard"
@@ -476,6 +476,14 @@ class MainViewController: UIViewController {
         if (lc.currentLevelKey?.contains("interval"))! {
             let data = lc.parseEarTrainingData(task)
             startingNote = data["StartingNote"] as! String
+            
+            //this is where you could setup a note, if random, based on the bounds of all intervals taking place
+            if startingNote == "Random" {
+                additionalData["randomStartNote"] = true
+                startingNote = "A2"
+                trimmedTask = trimmedTask.replacingOccurrences(of: "Random", with: startingNote)
+            }
+            
             startingEarTrainingNote = startingNote
             let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
             
@@ -1105,12 +1113,12 @@ class MainViewController: UIViewController {
             
             if !automaticallyStartTest {
                 setupCurrentTaskHelper()
-            }//
+            }
             wt.stopWaitThenOfType(iselector: #selector(setResultButtonHelper) as Selector)
             wt.stopWaitThenOfType(iselector: #selector(setupCurrentTask) as Selector)
             currentState = toggleTestState(icurrentState: currentState)
             setButtonImage(ibutton: periphButtonArr[iwchButton], iimageStr: activePeripheralIcon[iwchButton])
-            hideAllFretMarkers()
+//            hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             et!.earTrainingSetup(earTrainingLevelData[earTrainingIdx])
             fretOffset = -3 + rand(max: 7) // -4 + rand(max: 7)
@@ -1126,7 +1134,6 @@ class MainViewController: UIViewController {
             setNavBarColor()
             earTrainingLevelData = randomizeEarTrainingData()
             setupCurrentTask()
-            
         }
     }
 
@@ -1315,6 +1322,7 @@ class MainViewController: UIViewController {
                 displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
             } else {
                 displaySingleFretMarker(iinputStr: buttonDict[inputNumb]!, cascadeFretMarkers: tutorialActive)
+                setColorOnFretMarkers(specifiedNoteCollection,defaultColor.FretMarkerSuccess)
                 for note in specifiedNoteCollection {
                     if str == sCollection?.returnOffsetFretNote(note,fretOffset) as! String {
                         killCurrentDotFade()
@@ -1477,7 +1485,9 @@ class MainViewController: UIViewController {
         }
         if !testPassed && lc.currentLevelKey!.contains("interval") {
             lc.resetOnEarTrainingTestFail()
-            setupCurrentTask()
+            if !lc.returnCurrentTask().contains("Random") {
+                setupCurrentTask()
+            }
         }
         currentState = toggleTestState(icurrentState: currentState)
     }
@@ -2209,13 +2219,13 @@ class MainViewController: UIViewController {
 //        met?.startMetro()
     }
 
-    func presentEarTrainResults() {
-        let resultText = earTrainCallArr == earTrainResponseArr ? "Good" : "Bad"
-        ResultsLabel.text = resultText
-        earTrainCallArr.removeAll()
-        earTrainResponseArr.removeAll()
-        currentState = State.Idle
-    }
+//    func presentEarTrainResults() {
+//        let resultText = earTrainCallArr == earTrainResponseArr ? "Good" : "Bad"
+//        ResultsLabel.text = resultText
+//        earTrainCallArr.removeAll()
+//        earTrainResponseArr.removeAll()
+//        currentState = State.Idle
+//    }
     
     func setupUpDelayedNoteCollectionView(_ inoteCollection: [String], _ itype: String) {
         var modifiedNoteCollection = inoteCollection

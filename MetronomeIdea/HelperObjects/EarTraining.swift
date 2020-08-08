@@ -30,7 +30,7 @@ class EarTraining {
         var testPassed = false
        
         var resultTextArr:[String] = []
-        if vc!.earTrainCallArr == vc!.earTrainResponseArr {
+        if vc!.earTrainCallArr == vc!.earTrainResponseArr || checkForDSharp() {
             testPassed = true
             let interval = vc!.sCollection!.returnInterval(vc!.earTrainCallArr[0],vc!.earTrainCallArr[1])
             resultTextArr = ["Great! You Correctly Played A \(interval)."]
@@ -49,6 +49,15 @@ class EarTraining {
         let waitTime = 0.5
         vc!.wt.waitThen(itime: waitTime, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": testPassed as AnyObject, "testResultStrs": resultTextArr as AnyObject])
         vc!.wt.waitThen(itime: waitTime, itarget: vc!, imethod: #selector(vc!.presentEarTrainingFretMarkers) as Selector, irepeats: false, idict: ["notesCorrect": testPassed as AnyObject])
+    }
+    
+    func checkForDSharp() -> Bool {
+        for (i,_) in vc!.earTrainCallArr.enumerated() {
+            if vc!.earTrainCallArr[i] == "D#3" && (vc!.earTrainResponseArr[i] == "D#3_0" || vc!.earTrainResponseArr[i] == "D#3_1")  {
+                return true
+            }
+        }
+        return false
     }
 
     @objc func beginEarTrainingHelper(timer: Timer) {
