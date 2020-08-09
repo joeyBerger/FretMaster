@@ -303,7 +303,9 @@ class MainViewController: UIViewController {
             ActionOverlay.layer.zPosition = getLayer(ilayer: "ActionOverlay")
 
             setupFretBoardImage()
-            setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
+            if !(lc.currentLevelKey?.contains("interval"))! {
+                setupFretMarkerText(ishowAlphabeticalNote: false, ishowNumericDegree: true)
+            }
 
             if !tutorialComplete! {
                 hideAllFretMarkers()
@@ -444,7 +446,12 @@ class MainViewController: UIViewController {
             defaultPeripheralIcon = ["outline_volume_up_black_18dp", "outline_info_black_18dp","icons8-microphone-50","outline_play_arrow_black_18dp"]
             activePeripheralIcon = ["outline_volume_off_black_18dp", "outline_undo_black_18dp","outline_stop_black_18dp","outline_stop_black_18dp"]
             setupCurrentTask()
-            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
+//            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
+            
+//            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 0.5)
+//            setColorOnFretMarkers(specifiedNoteCollection, defaultColor.FretMarkerSuccess)
+//            swoopAlpha(iobject: dotDict[specifiedNoteCollection[0]]!, ialpha: Float(1.0), iduration: 0.1)
+            
             leftBarButtonItem?.isEnabled = true
             leftBarButtonItem?.tintColor = defaultColor.MenuButtonTextColor
         }
@@ -458,6 +465,10 @@ class MainViewController: UIViewController {
 
     @objc func setupCurrentTask(_ timer: Timer? = nil) {
         print("in setup current task")
+        if appUnlocked == "0" && popover?.popoverVisible != true && lc.currentLevelKey! != "freePlay" && levelBarriersLimits[currentAppVersion]![lc.currentLevelKey!]! <= lc.returnConvertedLevel(iinput: lc.currentLevel!) {
+            presentPaywallPopover()
+        }
+
         var automaticallyStartTest = false
         if timer != nil {
             let resultObj = timer?.userInfo as! [String: AnyObject]
@@ -493,6 +504,9 @@ class MainViewController: UIViewController {
                 automaticallyStartTest = false
             }
             
+            met!.bpm = Double(Int(data["Tempo"] as! String)!)
+            TempoButton.setTitle(String(Int(met!.bpm)), for: .normal)
+            
             additionalData["intervalsToTest"] = intervalsToTest
             type = "interval"
             
@@ -504,8 +518,17 @@ class MainViewController: UIViewController {
             
             specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
             
+            print("interval test", sCollection?.returnInterval("A2", "C3", false))
+            setupFretMarkerTextInIntervalMode()
+//            let componentArray = Array(dotDict.keys)
+//            for (str, dot) in dotDict {
+////                print(button)
+//            }
+            
+            
+            
             displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 0.5)
-            setColorOnFretMarkers(specifiedNoteCollection, defaultColor.FretMarkerStandard)
+            setColorOnFretMarkers(specifiedNoteCollection, defaultColor.FretMarkerSuccess)
             swoopAlpha(iobject: dotDict[specifiedNoteCollection[0]]!, ialpha: Float(1.0), iduration: 0.1)
             
             var testedIntervals: [String] = []
@@ -598,6 +621,8 @@ class MainViewController: UIViewController {
             specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: freePlayNoteCollection, idirection: "Both", istartingNote: startingNote)
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             currentState = State.NotesTestIdle_NoTempo
+            
+            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0, ikillAllFretMarkers: true)
         }
         
 //        sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
@@ -645,7 +670,7 @@ class MainViewController: UIViewController {
 //        earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
         tempoActive = true
         tempoButtonsActive = !tempoActive
-        met!.bpm = Double(Int(data["Tempo"] as! String)!)
+//        met!.bpm = Double(Int(data["Tempo"] as! String)!)
         setupTempoButtons(ibuttonsActive: tempoButtonsActive)
     }
 
@@ -685,7 +710,9 @@ class MainViewController: UIViewController {
             // TODO: potentially add fingering to this
             let alphaNote = dotType == "Note Name"
             let degree = dotType == "Scale Degree"
-            setupFretMarkerText(ishowAlphabeticalNote: alphaNote, ishowNumericDegree: degree)
+            if !(lc.currentLevelKey?.contains("interval"))! {
+                setupFretMarkerText(ishowAlphabeticalNote: alphaNote, ishowNumericDegree: degree)
+            }
         case "fretOffset":
             fretOffset = Int(iinput)!
             FretRefText.text = returnCurrentFretText()
@@ -857,7 +884,7 @@ class MainViewController: UIViewController {
             var str = buttonDict[idx]
             var note = ""
             if ishowAlphabeticalNote {
-//
+
                 note = sCollection?.returnOffsetFretNote(str!, fretOffset) as! String
                 note = note.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789_"))
                 if sCollection?.fretPositionAccidentalInheritence[5+fretOffset] == ScaleCollection.PositionType.Flat {
@@ -873,6 +900,21 @@ class MainViewController: UIViewController {
                 }
             }
             dotText[idx].text = note
+        }
+    }
+    
+    func setupFretMarkerTextInIntervalMode(_ inumericDefaults: [String] = ["b5", "b6"]) {
+        for (idx, _) in buttonDict {
+            let str = buttonDict[idx]
+            var interval = sCollection?.returnInterval(startingEarTrainingNote, str!, false).replacingOccurrences(of: "Up", with: "").replacingOccurrences(of: "Down", with: "").replacingOccurrences(of: " ", with: "")
+            if interval == "Unison" || interval == "Octave" {
+                interval = "1"
+            } else if Int(interval!.replacingOccurrences(of: "b", with: ""))! > 8 {
+                let numb = Int(interval!.replacingOccurrences(of: "b", with: ""))! - 7
+                let flatSign = (interval?.contains("b"))! ? "b" : ""
+                interval = flatSign + String(numb)
+            }
+            dotText[idx].text = interval
         }
     }
 
@@ -1481,7 +1523,7 @@ class MainViewController: UIViewController {
                 let level = lc.returnConvertedLevel(iinput: lc.currentLevel!)
                 wt.waitThen(itime: 0.1, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "LevelFullyComplete" as AnyObject, "arg2": level as AnyObject])
             }
-            wt.waitThen(itime: 2, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["automaticallyStartTest": (earTrainingLevelData != []) as AnyObject])
+            wt.waitThen(itime: 1, itarget: self, imethod: #selector(setupCurrentTask) as Selector, irepeats: false, idict: ["automaticallyStartTest": (earTrainingLevelData != []) as AnyObject])
         }
         if !testPassed && lc.currentLevelKey!.contains("interval") {
             lc.resetOnEarTrainingTestFail()
@@ -1605,6 +1647,10 @@ class MainViewController: UIViewController {
     func setColorOnFretMarkers(_ inoteSelection: [String], _ icolor: UIColor) {
         for (_, item) in inoteSelection.enumerated() {
             dotDict[item]?.backgroundColor = icolor
+            if item.contains("D#3") {
+                dotDict["D#3_0"]?.backgroundColor = icolor
+                dotDict["D#3_1"]?.backgroundColor = icolor
+            }
         }
     }
 
@@ -1685,9 +1731,15 @@ class MainViewController: UIViewController {
             }
         }
         popover?.popoverVisible = false
+        setupCurrentTask()
     }
     
     func presentPaywallPopover() {
+        popover?.popoverVisible = true
+        for button in fretButtonDict {
+            button.value.isEnabled = false
+        }
+        resetSideButtonLayers()
         wt.waitThen(itime: 0.05, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "PurchasePopover" as AnyObject, "arg2": 0 as AnyObject])
     }
 

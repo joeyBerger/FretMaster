@@ -111,12 +111,21 @@ class PurchasePopover: UIViewController {
     @objc func handleButtonPress() {
         let t:Any = 0
         vc!.closeMainPopover(t)
+        onSucessfullPurchaseCompleted()
         print("purchase pressed!!")
+    }
+    
+    func onSucessfullPurchaseCompleted() {
+        appUnlocked = "1.0"
+        UserDefaults.standard.set(appUnlocked, forKey: "appUnlocked")
+//        UserDefaults.standard.set(volume.volumeTypes[volStr], forKey: volStr)
+        vc!.navigationController?.popViewController(animated: false)
     }
     
     @objc func handleXButtonPress() {
         let t:Any = 0
         vc!.closeMainPopover(t)
+        vc!.navigationController?.popViewController(animated: false)
     }
 
     func removeFromView() {

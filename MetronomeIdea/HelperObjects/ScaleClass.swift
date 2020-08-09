@@ -23,6 +23,7 @@ class ScaleCollection {
         "6": 9,
         "b7": 10,
         "7": 11,
+        "8": 12
     ]
     
     let intervals: [String] = [
@@ -478,9 +479,9 @@ class ScaleCollection {
     func returnLinguisticNumberEquivalent(_ iinput:String) -> String {
         if iinput == "1" {
             return "st"
-        } else if iinput == "2" {
+        } else if iinput == "2" || iinput == "b2"  {
             return "nd"
-        } else if iinput == "3" {
+        } else if iinput == "3" || iinput == "b3" {
             return "rd"
         } else if iinput.contains("Unison") || iinput.contains("Octave") {
             return ""

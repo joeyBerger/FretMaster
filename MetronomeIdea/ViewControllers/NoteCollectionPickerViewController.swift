@@ -22,7 +22,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         "scalePicker" : "Scales",
     ]
     
-    let paywallThreshold : [String : Int] = [
+    var paywallThreshold : [String : Int] = [
         "recordingPicker" : 10,
         "arpeggioPicker" : 4,
         "scalePicker" : 5,
@@ -49,6 +49,12 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
                         break
                     }
                 }
+            }
+        }
+        
+        if appUnlocked == "0" && currentAppVersion != "" {
+            for (key,_) in titleTextDict {
+                paywallThreshold[key] = levelBarriersLimits[currentAppVersion]?[key]
             }
         }
         
@@ -161,9 +167,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     }
     
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        print(indexPath.row)
-        print(paywallThreshold[self.restorationIdentifier!]!)
-        if (indexPath.row > paywallThreshold[self.restorationIdentifier!]!) {
+        if appUnlocked == "0" && indexPath.row > paywallThreshold[self.restorationIdentifier!]! {
             navigationController?.popViewController(animated: false)
             vc?.presentPaywallPopover();
             return

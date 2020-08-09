@@ -16,8 +16,22 @@ let backgroundImage = BackgroundImage()
 var globalDataController = DataController(modelName: "ImageModel")
 var volume = Volume()
 var audioKitStarted = false
-var appVersion = ""
-var currentAppVersion = "1.0"
+var appUnlocked = "0"
+var currentAppVersion = "0.0"
+var levelBarriersLimits : [String : [String:Int]] = [
+    "0.0" : [
+        "scaleLevel" : 1,
+        "arpeggioLevel" : 1,
+        "intervalLevel" : 1,
+        "recordingPicker" : 5,
+        "arpeggioPicker" : 4,
+        "scalePicker" : 5,
+    ],
+    "1.0" : [
+        "scales" : 1,
+        "arpeggios" : 1,
+    ]
+]
 //var currentRecordingId = ""
 
 class MenuViewController: UIViewController {
@@ -46,12 +60,12 @@ class MenuViewController: UIViewController {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
        
-        let data = UserDefaults.standard.object(forKey: "appVersion")
-        if data == nil {
-            UserDefaults.standard.set(currentAppVersion, forKey: "appVersion")
-        } else {
-            appVersion = data as! String
-        }
+//        let data = UserDefaults.standard.object(forKey: "appVersion")
+//        if data == nil {
+//            UserDefaults.standard.set(currentAppVersion, forKey: "appVersion")
+//        } else {
+//            appVersion = data as! String
+//        }
         
         globalDataController.load()
         
@@ -97,6 +111,13 @@ class MenuViewController: UIViewController {
                     print("bad data, ressetting")
                     resetData()
                 }
+                
+                if UserDefaults.standard.object(forKey: "appUnlocked") != nil {
+                    appUnlocked = UserDefaults.standard.object(forKey: "appUnlocked") as! String
+                }
+                if UserDefaults.standard.object(forKey: "currentAppVersion") != nil {
+                     appUnlocked = UserDefaults.standard.object(forKey: "currentAppVersion") as! String
+                }
             }
         } else {
             print("brand new data")
@@ -105,6 +126,8 @@ class MenuViewController: UIViewController {
                 UserDefaults.standard.removeObject(forKey: str)
                 UserDefaults.standard.set("0.0", forKey: str)
             }
+            UserDefaults.standard.set(currentAppVersion, forKey: "downloadedVersion")
+            UserDefaults.standard.set("0", forKey: "appUnlocked")
         }
 
         // update button info

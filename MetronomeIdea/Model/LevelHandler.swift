@@ -218,7 +218,8 @@ class LevelConstruct: UIViewController {
             "Intervals: M2, M3, P5",
             "M2, M3, P5, Level 2 Got",
             "3",
-            "4"
+            "4",
+            "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
         ]
     ]
 
@@ -302,19 +303,143 @@ class LevelConstruct: UIViewController {
 //        ["DiminishedArp_Up", "AugmentedArp_Up"],
     ]
     let interval = [
-//        ["!Direction:Up_2,5!Total:3!StartingNote:A2!Tempo:120",
-         ["!Direction:Up_2,5!Total:30!StartingNote:Random!Tempo:120",
-//         ["!Direction:Up_2,b5!Total:3!StartingNote:A2!Tempo:120",
-         "!Direction:Up_2,3!Total:3!StartingNote:A2!Tempo:120",
-         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:120",],
         
-        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
-         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
-         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
+        //         ["!Direction:Up_2,5!Total:30!StartingNote:Random!Tempo:120",
+        //         ["!Direction:Up_2,b5!Total:3!StartingNote:A2!Tempo:120",
         
-        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
-         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
-         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
+
+        ["!Direction:Up_2,5!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Up_2,3!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Up_2,3,5!Total:10!StartingNote:A2!Tempo:120",],
+        
+        ["!Direction:Down_2,5!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Down_2,3!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Down_2,3,5!Total:10!StartingNote:A2!Tempo:120",],
+        
+        ["!Direction:Both_2,5!Total:10!StartingNote:A2!Tempo:160",
+         "!Direction:Both_2,3!Total:10!StartingNote:A2!Tempo:160",
+         "!Direction:Both_2,3,5!Total:10!StartingNote:A2!Tempo:160",],
+        
+        [
+        "!Direction:Up_b3,3!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Down_b3,3!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Up_b2,2!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Down_b2,2!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Up_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Down_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Both_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Both_b2,2,b3,3,5!Total:10!StartingNote:A2!Tempo:120",],
+        
+        
+//        ["!Direction:Up_b2,2,5,6!Total:10!StartingNote:A2!Tempo:120",
+//        "!Direction:Down_b3,3,5!Total:10!StartingNote:A2!Tempo:120",
+//        "!Direction:Down_b2,2,5,6!Total:10!StartingNote:A2!Tempo:120",
+//        "!Direction:Both_b3,3,5!Total:10!StartingNote:A2!Tempo:120",
+//        "!Direction:Both_b2,2,5,6!Total:10!StartingNote:A2!Tempo:120",
+//        "!Direction:Both_b2,2,b3,3,5,6!Total:10!StartingNote:A2!Tempo:120",],
+        
+        ["!Direction:Up_4,5!Total:10!StartingNote:A1!Tempo:120",
+         "!Direction:Down_4,5!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Both_4,5!Total:10!StartingNote:A2!Tempo:160",
+         "!Direction:Both_4,5!Total:10!StartingNote:A2!Tempo:200",],
+         
+//        ["!Direction:Both_2,3,4,5,6!Total:10!StartingNote:A2!Tempo:160",
+//        "!Direction:Both_2,3,4,5,6!Total:10!StartingNote:C3!Tempo:160",
+//        "!Direction:Both_2,3,4,5,6!Total:10!StartingNote:Random!Tempo:160",],
+        
+        ["!Direction:Up_b2,2,b3,3,4,5!Total:10!StartingNote:A2!Tempo:160",
+        "!Direction:Down_b2,2,b3,3,4,5!Total:10!StartingNote:C3!Tempo:160",
+        "!Direction:Both_b2,2,b3,3,4,5!Total:10!StartingNote:Random!Tempo:160",
+        "!Direction:Both_b2,2,b3,3,4,5!Total:10!StartingNote:Random!Tempo:160",
+        "!Direction:Both_b2,2,b3,3,4,5!Total:10!StartingNote:Random!Tempo:160",
+        ],
+        
+        [
+        "!Direction:Up_b6,6!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Down_b6,6!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Up_b7,7!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Down_b7,7!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Up_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Down_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Both_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Both_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",],
+        
+        [
+        "!Direction:Up_b5,5!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Down_b5,5!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Both_b5,5!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Both_b5,5!Total:10!StartingNote:C2!Tempo:120",],
+        
+        ["!Direction:Up_5,b6!Total:10!StartingNote:A1!Tempo:120",
+         "!Direction:Up_5,b7!Total:10!StartingNote:A1!Tempo:120",
+         "!Direction:Up_5,7!Total:10!StartingNote:A1!Tempo:120",
+         "!Direction:Up_5,b5!Total:10!StartingNote:A1!Tempo:120",
+         "!Direction:Down_5,b6!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Down_5,b7!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Down_5,7!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Down_5,b5!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Both_5,b7!Total:10!StartingNote:A2!Tempo:160",
+         "!Direction:Both_5,b7!Total:10!StartingNote:A2!Tempo:200",
+         "!Direction:Both_5,7!Total:10!StartingNote:A2!Tempo:200",
+         "!Direction:Both_5,b5!Total:10!StartingNote:A2!Tempo:200",
+         "!Direction:Both_b5,5,b6,b7,7!Total:10!StartingNote:A2!Tempo:160",
+         "!Direction:Both_b5,5,b7,7!Total:10!StartingNote:C3!Tempo:200",
+         "!Direction:Both_b5,5,b7,7!Total:10!StartingNote:Random!Tempo:200",],
+        
+        ["!Direction:Up_2,3,4,5,6,7!Total:10!StartingNote:A2!Tempo:160",
+        "!Direction:Up_2,3,4,5,6,7!Total:10!StartingNote:A#2!Tempo:160",
+        "!Direction:Down_2,3,4,5,6,7!Total:10!StartingNote:B2!Tempo:200",
+        "!Direction:Down_2,3,4,5,6,7!Total:10!StartingNote:C2!Tempo:200",
+        "!Direction:Both_2,3,4,5,6,7!Total:20!StartingNote:Random!Tempo:250",],
+                        
+        ["!Direction:Up_2,b3,4,5,b6,b7!Total:10!StartingNote:A2!Tempo:160",
+        "!Direction:Up_2,b3,4,5,b6,b7!Total:10!StartingNote:A#2!Tempo:160",
+        "!Direction:Down_2,b3,4,5,b6,b7!Total:10!StartingNote:B2!Tempo:200",
+        "!Direction:Down_2,b3,4,5,b6,b7!Total:10!StartingNote:C2!Tempo:200",
+        "!Direction:Both_2,b3,4,5,b6,b7!Total:20!StartingNote:Random!Tempo:250",],
+                
+        ["!Direction:Up_4,5,8!Total:10!StartingNote:A1!Tempo:120",
+         "!Direction:Down_4,5,8!Total:10!StartingNote:A2!Tempo:120",
+         "!Direction:Down_4,5,8!Total:10!StartingNote:C4!Tempo:120",
+         "!Direction:Both_4,5,8!Total:10!StartingNote:A2!Tempo:160",
+         "!Direction:Both_4,5,8!Total:10!StartingNote:A2!Tempo:200",
+         "!Direction:Both_4,5,8!Total:10!StartingNote:C3!Tempo:200",],
+        
+        ["!Direction:Up_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:10!StartingNote:A2!Tempo:160",
+        "!Direction:Up_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:10!StartingNote:A2!Tempo:160",
+        "!Direction:Down_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:10!StartingNote:A2!Tempo:160",
+        "!Direction:Down_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:10!StartingNote:A2!Tempo:160",
+        "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:A2!Tempo:160",
+        "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:A2!Tempo:200",
+        "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:A2!Tempo:250",],
+        
+        ["!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:160",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:200",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:250",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:250",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:300",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:300",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:350",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:350",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:400",
+         "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:400",],
+        
+        
+//        ["!Direction:Up_b2,b3,b7!Total:10!StartingNote:A2!Tempo:120",
+//         "!Direction:Down_b2,b3,b7!Total:10!StartingNote:A2!Tempo:120",
+//         "!Direction:Both_b2,b3,b7!Total:10!StartingNote:A2!Tempo:120",
+//         "!Direction:Both_b2,b3,b7,2,3!Total:10!StartingNote:A2!Tempo:120",],
+//
+//        ["!Direction:Down_4,5,8!Total:10!StartingNote:A2!Tempo:120",
+//         "!Direction:Down_4,5,8!Total:10!StartingNote:A2!Tempo:120",],
+//
+//        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
+//         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
+//         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
+//
+//        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
+//         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
+//         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
     ]
     
     func returnRandomizedArray(_ ilength: Int,_ iArray: [String]) -> [String] {
