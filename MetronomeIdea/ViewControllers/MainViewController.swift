@@ -337,6 +337,7 @@ class MainViewController: UIViewController {
         prepareScene = ""
         getDynamicAudioVisualData()
         pc!.resultButtonPopup.hide()
+        setupSnowParticles()
     }
 
     override func didMove(toParent _: UIViewController?) {
@@ -562,6 +563,16 @@ class MainViewController: UIViewController {
             specifiedNoteCollection = sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
             
             hideAllFretMarkers(true)
+            
+            if arpeggioIsInversionWithScaleDegreeDot(task) {
+                print("got here")
+            } else {
+                let alphaNote = dotType == "Note Name"
+                let degree = dotType == "Scale Degree"
+                if !(lc.currentLevelKey?.contains("interval"))! {
+                    setupFretMarkerText(ishowAlphabeticalNote: alphaNote, ishowNumericDegree: degree)
+                }
+            }
             
             //set State for scales / arpeggios
             if lc.currentLevelKey!.contains("scale") {
@@ -917,6 +928,21 @@ class MainViewController: UIViewController {
             dotText[idx].text = interval
         }
     }
+    
+    func setupFretMarkerTextArpeggioInversionMode(_ inumericDefaults: [String] = ["b5", "b6"]) {
+        for (idx, _) in buttonDict {
+            let str = buttonDict[idx]
+            var interval = sCollection?.returnInterval(startingEarTrainingNote, str!, false).replacingOccurrences(of: "Up", with: "").replacingOccurrences(of: "Down", with: "").replacingOccurrences(of: " ", with: "")
+            if interval == "Unison" || interval == "Octave" {
+                interval = "1"
+            } else if Int(interval!.replacingOccurrences(of: "b", with: ""))! > 8 {
+                let numb = Int(interval!.replacingOccurrences(of: "b", with: ""))! - 7
+                let flatSign = (interval?.contains("b"))! ? "b" : ""
+                interval = flatSign + String(numb)
+            }
+            dotText[idx].text = interval
+        }
+    }
 
     func setButtonState(ibutton: UIButton, ibuttonState: Bool) {
         let alpha = ibuttonState ? 1.0 : 0.0
@@ -1163,7 +1189,7 @@ class MainViewController: UIViewController {
 //            hideAllFretMarkers()
             setNavBarColor(istate: "Testing")
             et!.earTrainingSetup(earTrainingLevelData[earTrainingIdx])
-            fretOffset = -3 + rand(max: 7) // -4 + rand(max: 7)
+            fretOffset = -3 + rand(max: 11) // -4 + rand(max: 7)
             handleFretOffsetChange(false)
             return
         }
@@ -2066,6 +2092,27 @@ class MainViewController: UIViewController {
         view.layer.shadowOffset = .zero
         view.layer.shadowRadius = 30
     }
+    
+    func setupSnowParticles() {
+        let snow = SnowParticleView()
+        snow.translatesAutoresizingMaskIntoConstraints = false
+        snow.particleImage = UIImage(named: "tspark")?.imageWithColor(color: UIColor.orange)
+//        view.addSubview(snow)
+        view.insertSubview(snow, at: 1)
+        NSLayoutConstraint.activate([
+            snow.leadingAnchor.constraint(equalTo: view.leadingAnchor),
+            snow.trailingAnchor.constraint(equalTo: view.trailingAnchor),
+            snow.topAnchor.constraint(equalTo: view.topAnchor),
+            snow.bottomAnchor.constraint(equalTo: view.bottomAnchor)])
+        snow.layer.zPosition = 0
+    }
+    
+    func arpeggioIsInversionWithScaleDegreeDot(_ itask: String) -> Bool {
+        if lc.currentLevelKey!.contains("arpeggio") && UserDefaults.standard.object(forKey: "fretDot") as! String == "Scale Degree" && (itask.contains("One") || itask.contains("Two") || itask.contains("Three")) {
+            return true
+        }
+        return false
+    }
 
     // Helper functions
     @objc func alphaSwoopImage(timer: Timer) {
@@ -2574,6 +2621,24 @@ extension UIImage {
         ctx.fill(rect)
 
         return UIGraphicsGetImageFromCurrentImageContext()
+    }
+    func imageWithColor(color: UIColor) -> UIImage {
+        UIGraphicsBeginImageContextWithOptions(self.size, false, self.scale)
+        color.setFill()
+
+        let context = UIGraphicsGetCurrentContext()
+        context?.translateBy(x: 0, y: self.size.height)
+        context?.scaleBy(x: 1.0, y: -1.0)
+        context?.setBlendMode(CGBlendMode.normal)
+
+        let rect = CGRect(origin: .zero, size: CGSize(width: self.size.width, height: self.size.height))
+        context?.clip(to: rect, mask: self.cgImage!)
+        context?.fill(rect)
+
+        let newImage = UIGraphicsGetImageFromCurrentImageContext()
+        UIGraphicsEndImageContext()
+
+        return newImage!
     }
 }
 

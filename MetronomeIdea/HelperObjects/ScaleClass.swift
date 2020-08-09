@@ -100,12 +100,17 @@ class ScaleCollection {
         "Hijaz": "Hijaz",
         
         "Chromatic": "Chromatic",
-        "MajorArp": "Major Arpeggio",
-        "MinorArp": "Minor Arpeggio",
-        "MajorSeventhArp": "Major7th Arpeggio",
-        "MinorSeventhArp": "Minor7th Arpeggio",
-        "DiminishedArp": "Diminished Arpeggio",
-        "AugmentedArp": "Augmented Arpeggio",
+        "MajorArp": "Major",// Arpeggio",
+        "MinorArp": "Minor",// Arpeggio",
+        "MajorSeventhArp": "Major7th",// Arpeggio",
+        "MinorSeventhArp": "Minor7th",// Arpeggio",
+        "DominantSeventhArp": "Dominant7th",// Arpeggio",
+        "MinorMajorSeventhArp": "Minor Major7th",// Arpeggio",
+        "HalfDiminishedArp": "Half Diminished",// Arpeggio",
+        "DiminishedArp": "Diminished",// Arpeggio",
+        "AugmentedArp": "Augmented",// Arpeggio",
+        
+        "MajorArp:InversionOne" : "Major 1st Inv.",
     ]
 
     let availableScales: [String: [String]] = [
@@ -157,6 +162,7 @@ class ScaleCollection {
         "MinorArp": ["1", "b3", "5"],
         "DiminishedArp": ["1", "b3", "b5"],
         "AugmentedArp": ["1", "3", "#5"],
+        "MajorArp:InversionOne": ["1","b3","b6"],
 
         "MajorSeventhArp": ["1", "3", "5", "7"],
         "DominantSeventh": ["1", "3", "5", "b7"],
