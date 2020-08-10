@@ -327,6 +327,7 @@ class MainViewController: UIViewController {
         }
         
         setAlphaOnDefualtImages(1.0)
+        getDynamicAudioVisualData()
         setupToSpecificState()
         
         if (!lc.currentLevelKey!.contains("interval")) {
@@ -335,7 +336,7 @@ class MainViewController: UIViewController {
             setButtonImage(ibutton: periphButtonArr[idx], iimageStr: activePeripheralIcon[idx])
         }
         prepareScene = ""
-        getDynamicAudioVisualData()
+        
         pc!.resultButtonPopup.hide()
         setupSnowParticles()
     }
@@ -564,15 +565,19 @@ class MainViewController: UIViewController {
             
             hideAllFretMarkers(true)
             
-            if arpeggioIsInversionWithScaleDegreeDot(task) {
-                print("got here")
-            } else {
-                let alphaNote = dotType == "Note Name"
-                let degree = dotType == "Scale Degree"
-                if !(lc.currentLevelKey?.contains("interval"))! {
-                    setupFretMarkerText(ishowAlphabeticalNote: alphaNote, ishowNumericDegree: degree)
+            if lc.currentLevelKey!.contains("arpeggio") {
+                let dotStr = UserDefaults.standard.object(forKey: "fretDot") as! String
+                if arpeggioIsInversionWithScaleDegreeDot(task,dotStr) {
+                    setupFretMarkerTextArpeggioInversionMode(task,trimmedTask)
+                } else {
+                    let alphaNote = dotStr == "Note Name"
+                    let degree = dotStr == "Scale Degree"
+                    if !(lc.currentLevelKey?.contains("interval"))! {
+                        setupFretMarkerText(ishowAlphabeticalNote: alphaNote, ishowNumericDegree: degree)
+                    }
                 }
             }
+
             
             //set State for scales / arpeggios
             if lc.currentLevelKey!.contains("scale") {
@@ -890,7 +895,12 @@ class MainViewController: UIViewController {
         FretOffsetButton.imageView?.alpha = 1.0
     }
 
-    func setupFretMarkerText(ishowAlphabeticalNote: Bool, ishowNumericDegree: Bool, inumericDefaults: [String] = ["b5", "b6"]) {
+    func setupFretMarkerText(ishowAlphabeticalNote: Bool, ishowNumericDegree: Bool, inumericDefaults: [String] = ["b5", "b6"], _ icompareNote : String = "A") {
+        print(inumericDefaults)
+        print(icompareNote)
+        if icompareNote != "F" {
+            print("fuck")
+        }
         for (idx, _) in buttonDict {
             var str = buttonDict[idx]
             var note = ""
@@ -903,7 +913,7 @@ class MainViewController: UIViewController {
                 }
             } else if ishowNumericDegree {
                 str = str!.replacingOccurrences(of: "_0", with: "").replacingOccurrences(of: "_1", with: "")
-                note = sCollection!.returnNoteDistance(iinput: String(str!.dropLast()), icomparedNote: "A")
+                note = sCollection!.returnNoteDistance(iinput: String(str!.dropLast()), icomparedNote: icompareNote)
                 if note == "#4", inumericDefaults[0] == "b5" {
                     note = "b5"
                 } else if note == "#5", inumericDefaults[1] == "b6" {
@@ -929,19 +939,12 @@ class MainViewController: UIViewController {
         }
     }
     
-    func setupFretMarkerTextArpeggioInversionMode(_ inumericDefaults: [String] = ["b5", "b6"]) {
-        for (idx, _) in buttonDict {
-            let str = buttonDict[idx]
-            var interval = sCollection?.returnInterval(startingEarTrainingNote, str!, false).replacingOccurrences(of: "Up", with: "").replacingOccurrences(of: "Down", with: "").replacingOccurrences(of: " ", with: "")
-            if interval == "Unison" || interval == "Octave" {
-                interval = "1"
-            } else if Int(interval!.replacingOccurrences(of: "b", with: ""))! > 8 {
-                let numb = Int(interval!.replacingOccurrences(of: "b", with: ""))! - 7
-                let flatSign = (interval?.contains("b"))! ? "b" : ""
-                interval = flatSign + String(numb)
-            }
-            dotText[idx].text = interval
-        }
+    func setupFretMarkerTextArpeggioInversionMode(_ itask : String, _ itrimmedTask : String) {
+        let offsetIdx = itask.contains("One") ? 1 : itask.contains("Two") ? 2 : 3
+        let baseArpeggio = itrimmedTask.split(separator: ":")[0]
+        let noteDifference = sCollection!.scaleDegreeDict[sCollection!.availableScales[String(baseArpeggio)]![offsetIdx]]
+        let startingNote = sCollection!.returnNoteOffsetByGivenNumb("A",noteDifference!)
+        setupFretMarkerText(ishowAlphabeticalNote: false,ishowNumericDegree: true,inumericDefaults: ["b5","b6"],startingNote)
     }
 
     func setButtonState(ibutton: UIButton, ibuttonState: Bool) {
@@ -2107,8 +2110,8 @@ class MainViewController: UIViewController {
         snow.layer.zPosition = 0
     }
     
-    func arpeggioIsInversionWithScaleDegreeDot(_ itask: String) -> Bool {
-        if lc.currentLevelKey!.contains("arpeggio") && UserDefaults.standard.object(forKey: "fretDot") as! String == "Scale Degree" && (itask.contains("One") || itask.contains("Two") || itask.contains("Three")) {
+    func arpeggioIsInversionWithScaleDegreeDot(_ itask: String, _ ifretDot : String) -> Bool {
+        if ifretDot == "Scale Degree" && (itask.contains("One") || itask.contains("Two") || itask.contains("Three")) {
             return true
         }
         return false

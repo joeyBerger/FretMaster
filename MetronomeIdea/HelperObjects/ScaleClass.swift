@@ -107,10 +107,36 @@ class ScaleCollection {
         "DominantSeventhArp": "Dominant7th",// Arpeggio",
         "MinorMajorSeventhArp": "Minor Major7th",// Arpeggio",
         "HalfDiminishedArp": "Half Diminished",// Arpeggio",
+        "FullDiminishedArp": "Fully Diminished",// Arpeggio",
         "DiminishedArp": "Diminished",// Arpeggio",
         "AugmentedArp": "Augmented",// Arpeggio",
         
+        
         "MajorArp:InversionOne" : "Major 1st Inv.",
+        "MajorArp:InversionTwo" : "Major 2nd Inv.",
+        
+        "MinorArp:InversionOne" : "Minor 1st Inv.",
+        "MinorArp:InversionTwo" : "Minor 2nd Inv.",
+        
+        "MajorSeventhArp:InversionOne": "Major7th 1st Inv.",
+        "MajorSeventhArp:InversionTwo": "Major7th 2nd Inv.",
+        "MajorSeventhArp:InversionThree": "Major7th 3rd Inv.",
+        
+        "MinorSeventhArp:InversionOne": "Minor7th 1st Inv.",
+        "MinorSeventhArp:InversionTwo": "Minor7th 2nd Inv.",
+        "MinorSeventhArp:InversionThree": "Minor7th 3rd Inv.",
+        
+        "DominantSeventhArp:InversionOne": "Dominant7th 1st Inv.",
+        "DominantSeventhArp:InversionTwo": "Dominant7th 2nd Inv.",
+        "DominantSeventhArp:InversionThree": "Dominant7th 3rd Inv.",
+        
+        "MinorMajorSeventhArp:InversionOne": "Minor Major7th 1st Inv.",
+        "MinorMajorSeventhArp:InversionTwo": "Minor Major7th 2nd Inv.",
+        "MinorMajorSeventhArp:InversionThree": "Minor Major7th 3rd Inv.",
+        
+        "HalfDiminishedArp:InversionOne": "Half Diminished 1st Inv.",
+        "HalfDiminishedArp:InversionTwo": "Half Diminished 2nd Inv.",
+        "HalfDiminishedArp:InversionThree": "Half Diminished 3rd Inv.",
     ]
 
     let availableScales: [String: [String]] = [
@@ -163,10 +189,33 @@ class ScaleCollection {
         "DiminishedArp": ["1", "b3", "b5"],
         "AugmentedArp": ["1", "3", "#5"],
         "MajorArp:InversionOne": ["1","b3","b6"],
+        "MajorArp:InversionTwo": ["1","4","6"],
+        "MinorArp:InversionOne" : ["1","3","6"],
+        "MinorArp:InversionTwo" : ["1","4","b6"],
+        "MajorSeventhArp:InversionOne": ["1","b3","5","b6"],
+        "MajorSeventhArp:InversionTwo": ["1","3","4","6"],
+        "MajorSeventhArp:InversionThree": ["1","b2","4","b6"],
+        
+        "MinorSeventhArp:InversionOne": ["1","3","5","6"],
+        "MinorSeventhArp:InversionTwo": ["1","b3","4","b6"],
+        "MinorSeventhArp:InversionThree": ["1","2","4","6"],
+        
+        "DominantSeventhArp:InversionOne": ["1","b3","b5","b6"],
+        "DominantSeventhArp:InversionTwo": ["1","b3","4","6"],
+        "DominantSeventhArp:InversionThree": ["1","2","b5","6"],
+        
+        "MinorMajorSeventhArp:InversionOne": ["1","3","b6","6"],
+        "MinorMajorSeventhArp:InversionTwo": ["1","3","4","b6"],
+        "MinorMajorSeventhArp:InversionThree": ["1","b2","3","b6"],
+        
+        "HalfDiminishedArp:InversionOne": ["1","b3","5","6"],
+        "HalfDiminishedArp:InversionTwo": ["1","3","b5","6"],
+        "HalfDiminishedArp:InversionThree": ["1","2","4","b6"],
 
         "MajorSeventhArp": ["1", "3", "5", "7"],
         "DominantSeventh": ["1", "3", "5", "b7"],
         "MinorSeventhArp": ["1", "b3", "5", "b7"],
+        "DominantSeventhArp": ["1", "3", "5", "b7"],
         "MinorMajorSeventhArp": ["1", "b3", "5", "7"],
         "HalfDiminishedArp": ["1", "b3", "b5", "b7"],
         "FullyDiminishedArp": ["1", "b3", "b5", "6"],
@@ -518,6 +567,13 @@ class ScaleCollection {
         if idx == 12 {
         }
         return "\(refScale[idx!])\(octave)\(qualifier)"
+    }
+    
+    func returnNoteOffsetByGivenNumb(_ irootNote : String, _ numbOffset : Int) -> String {
+        let rootNoteIdx = refScale.firstIndex(of: irootNote)
+        var distance = rootNoteIdx! - numbOffset
+        distance = distance < 0 ? refScale.count + distance : distance
+        return refScale[distance]
     }
     
     func parseCoreNote(_ iinput: String ) -> String {

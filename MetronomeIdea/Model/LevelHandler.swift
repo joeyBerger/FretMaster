@@ -295,7 +295,27 @@ class LevelConstruct: UIViewController {
     let arpeggio = [
 //        ["Ionian_Up_Tempo:120_Sequence:Thirds"],
         
-        ["MajorArp:InversionOne_Up","MajorArp:InversionOne_Up"],
+        ["MajorArp:InversionOne_Up","MajorArp:InversionTwo_Up"],
+        
+        ["MinorArp:InversionOne",
+        "MinorArp:InversionTwo",
+        "MajorSeventhArp:InversionOne",
+        "MajorSeventhArp:InversionTwo",
+        "MajorSeventhArp:InversionThree",
+        "MinorSeventhArp:InversionOne",
+        "MinorSeventhArp:InversionTwo",
+        "MinorSeventhArp:InversionThree",
+        "DominantSeventhArp:InversionOne",
+        "DominantSeventhArp:InversionTwo",
+        "DominantSeventhArp:InversionThree",
+        "MinorMajorSeventhArp:InversionOne",
+        "MinorMajorSeventhArp:InversionTwo",
+        "MinorMajorSeventhArp:InversionThree",
+        "HalfDiminishedArp:InversionOne",
+        "HalfDiminishedArp:InversionTwo",
+        "HalfDiminishedArp:InversionThree",
+        ],
+        
         ["MajorArp_Up", "MinorArp_Up"],
         ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
         ["MajorArp_Up", "MinorArp_Up", "MajorSeventhArp_Up", "MinorSeventhArp_Up"],
