@@ -227,10 +227,9 @@ class LevelConstruct: UIViewController {
         ["MinorPentatonic_Up"],
         ["MajorPentatonic_Up"],
         ["Ionian_Up", "Aeolian_Up"],
-//        ["MinorPentatonic_Up", "MajorPentatonic_Up", "Ionian_Up", "Aeolian_Up"],
         ["MinorPentatonic_Both", "MajorPentatonic_Both", "Ionian_Both", "Aeolian_Both"],
         ["Ionian_Both", "MajorPentatonic_Both", "Aeolian_Both", "MinorPentatonic_Both"],
-//        ["Ionian_Both", "MajorPentatonic_Both", "MinorPentatonic_Both", "Aeolian_Both"],
+        ["MinorPentatonic_Up_Tempo:120", "MajorPentatonic_Up_Tempo:120", "Ionian_Up_Tempo:120", "Aeolian_Up_Tempo:120"],
         ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "Ionian_Both_Tempo:120", "Aeolian_Both_Tempo:120"],
         ["PentatonicModeIII_Up","PentatonicModeIV_Up","PentatonicModeV_Up"],
         ["MinorPentatonic_Both", "MajorPentatonic_Both","PentatonicModeIII_Both","PentatonicModeIV_Both","PentatonicModeV_Both"],
@@ -245,9 +244,9 @@ class LevelConstruct: UIViewController {
         ["Mixolydian_Both", "Ionian_Both", "Aeolian_Both", "Dorian_Both", "Locrian_Both", "Lydian_Both", "Phyrgian_Both"], //random
         ["Ionian_Both_Tempo:120", "Dorian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Lydian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Locrian_Both_Tempo:120"],
         ["Lydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Ionian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Locrian_Both_Tempo:120", "Dorian_Both_Tempo:120"], //random
-        ["Locrian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Dorian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Lydian_Both_Tempo:120", "Ionian_Both_Tempo:120"], //random
+//        ["Locrian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Dorian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Lydian_Both_Tempo:120", "Ionian_Both_Tempo:120"], //random
         ["Locrian_Both_Tempo:150", "Mixolydian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Dorian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Lydian_Both_Tempo:150", "Ionian_Both_Tempo:150"], //random
-        ["Mixolydian_Both_Tempo:150", "Dorian_Both_Tempo:150", "Locrian_Both_Tempo:150", "Ionian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Lydian_Both_Tempo:150"], //random
+//        ["Mixolydian_Both_Tempo:150", "Dorian_Both_Tempo:150", "Locrian_Both_Tempo:150", "Ionian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Lydian_Both_Tempo:150"], //random
         ["Dorian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Lydian_Both_Tempo:180", "Ionian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Locrian_Both_Tempo:180", "Mixolydian_Both_Tempo:180"], //random
         
         ["PentatonicModeV_Both", "Locrian_Both", "PentatonicModeIII_Both", "MajorPentatonic_Both", "Dorian_Both", "Ionian_Both", "Lydian_Both", "PentatonicModeIV_Both", "Aeolian_Both", "MinorPentatonic_Both", "Phyrgian_Both", "Mixolydian_Both"], //random
@@ -295,26 +294,26 @@ class LevelConstruct: UIViewController {
     let arpeggio = [
 //        ["Ionian_Up_Tempo:120_Sequence:Thirds"],
         
-        ["MajorArp:InversionOne_Up","MajorArp:InversionTwo_Up"],
-        
-        ["MinorArp:InversionOne",
-        "MinorArp:InversionTwo",
-        "MajorSeventhArp:InversionOne",
-        "MajorSeventhArp:InversionTwo",
-        "MajorSeventhArp:InversionThree",
-        "MinorSeventhArp:InversionOne",
-        "MinorSeventhArp:InversionTwo",
-        "MinorSeventhArp:InversionThree",
-        "DominantSeventhArp:InversionOne",
-        "DominantSeventhArp:InversionTwo",
-        "DominantSeventhArp:InversionThree",
-        "MinorMajorSeventhArp:InversionOne",
-        "MinorMajorSeventhArp:InversionTwo",
-        "MinorMajorSeventhArp:InversionThree",
-        "HalfDiminishedArp:InversionOne",
-        "HalfDiminishedArp:InversionTwo",
-        "HalfDiminishedArp:InversionThree",
-        ],
+//        ["MajorArp^InversionnOne_Up","MajorArp^InversionnTwo_Up"],
+//
+//        ["MinorArp^InversionnOne",
+//        "MinorArp^InversionnTwo",
+//        "MajorSeventhArp^InversionnOne",
+//        "MajorSeventhArp^InversionnTwo",
+//        "MajorSeventhArp^InversionnThree",
+//        "MinorSeventhArp^InversionnOne",
+//        "MinorSeventhArp^InversionnTwo",
+//        "MinorSeventhArp^InversionnThree",
+//        "DominantSeventhArp^InversionnOne",
+//        "DominantSeventhArp^InversionnTwo",
+//        "DominantSeventhArp^InversionnThree",
+//        "MinorMajorSeventhArp^InversionnOne",
+//        "MinorMajorSeventhArp^InversionnTwo",
+//        "MinorMajorSeventhArp^InversionnThree",
+//        "HalfDiminishedArp^InversionnOne",
+//        "HalfDiminishedArp^InversionnTwo",
+//        "HalfDiminishedArp^InversionnThree",
+//        ],
         
         ["MajorArp_Up", "MinorArp_Up"],
         ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
@@ -351,7 +350,6 @@ class LevelConstruct: UIViewController {
         "!Direction:Down_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Both_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Both_b2,2,b3,3,5!Total:10!StartingNote:A2!Tempo:120",],
-        
         
 //        ["!Direction:Up_b2,2,5,6!Total:10!StartingNote:A2!Tempo:120",
 //        "!Direction:Down_b3,3,5!Total:10!StartingNote:A2!Tempo:120",
