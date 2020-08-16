@@ -212,7 +212,8 @@ class LevelConstruct: UIViewController {
             "Previous Up",
             "Previous Up/Down",
             "Previous Up At 120 BPM",
-            "Previous Up/Down At 120 BPM"
+            "Previous Up/Down At 120 BPM",
+            "","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","","",
         ],
         "intervals": [
             "Intervals: M2, M3, P5",
@@ -285,17 +286,104 @@ class LevelConstruct: UIViewController {
         ["Phyrgian_Both_Tempo:150", "Locrian_Both_Tempo:150", "HarmonicMinor_Both_Tempo:150", "MelodicMinor_Both_Tempo:150", "Aeolian_Both_Tempo:150"], //random
         ["Locrian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "MelodicMinor_Both_Tempo:180"], //random
         
-        ["DiminishedWholeHalf_Up","DiminishedHalfWhole_Up"],
-        ["DiminishedWholeHalf_Both","DiminishedHalfWhole_Both"],
-        ["DiminishedHalfWhole_Both_Tempo:120","DiminishedWholeHalf_Both_Tempo:120"],   //random
-        ["DiminishedHalfWhole_Both_Tempo:150","DiminishedWholeHalf_Both_Tempo:150"],   //random
-        ["DiminishedWholeHalf_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:180"],   //random
+        ["DiminishedWholeHalf_Up","DiminishedHalfWhole_Up","WholeTone_Up"],
+        ["DiminishedWholeHalf_Both","DiminishedHalfWhole_Both","WholeTone_Both"],
+        ["DiminishedHalfWhole_Both_Tempo:120","WholeTone_Both_Tempo:120","DiminishedWholeHalf_Both_Tempo:120"],   //random
+        ["WholeTone_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:150","DiminishedWholeHalf_Both_Tempo:150"],   //random
+        ["DiminishedWholeHalf_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:180","WholeTone_Both_Tempo:180"],   //random
+        
+        ["MelodicMinor_Up","DorianbTwo_Up","LydianAugmented_Up","LydianDominant_Up","MixoldianbSix_Up","SuperLocrian_Up","DiminishedWholeTone_Up"],
+        ["MelodicMinor_Both","DorianbTwo_Both","LydianAugmented_Both","LydianDominant_Both","MixoldianbSix_Both","SuperLocrian_Both","DiminishedWholeTone_Both"],
+        ["MelodicMinor_Both_Tempo:160","DorianbTwo_Both_Tempo:160","LydianAugmented_Both_Tempo:160","LydianDominant_Both_Tempo:160","MixoldianbSix_Both_Tempo:160","SuperLocrian_Both_Tempo:160","DiminishedWholeTone_Both_Tempo:160"],
+        ["SuperLocrian_Both_Tempo:160", "DiminishedWholeTone_Both_Tempo:160", "MelodicMinor_Both_Tempo:160", "LydianAugmented_Both_Tempo:160", "DorianbTwo_Both_Tempo:160", "MixoldianbSix_Both_Tempo:160", "LydianDominant_Both_Tempo:160"],   //random
+        
+        ["HarmonicMinor_Up","LocrianSix_Up","Ionian#Five_Up","Dorian#Four_Up","PhrygianDominant_Up","Lydian#Two_Up","SuperLocrianbbSeven_Up"],
+        ["HarmonicMinor_Both","LocrianSix_Both","Ionian#Five_Both","Dorian#Four_Both","PhrygianDominant_Both","Lydian#Two_Both","SuperLocrianbbSeven_Both"],
+        ["HarmonicMinor_Both_Tempo:160","LocrianSix_Both_Tempo:160","Ionian#Five_Both_Tempo:160","Dorian#Four_Both_Tempo:160","PhrygianDominant_Both_Tempo:160","Lydian#Two_Both_Tempo:160","SuperLocrianbbSeven_Both_Tempo:160"],
+        ["LocrianSix_Both_Tempo:160", "Ionian#Five_Both_Tempo:160", "Lydian#Two_Both_Tempo:160", "SuperLocrianbbSeven_Both_Tempo:160", "Dorian#Four_Both_Tempo:160", "HarmonicMinor_Both_Tempo:160", "PhrygianDominant_Both_Tempo:160"],   //random
+
+       
+        ["Arabian_Up","Persian_Up","Byzantine_Up","Japanese_Up","Hirajoshi_Up","RagaAsavari_Up","Hungarian_Up","Romanian_Up","Hijaz_Up"],
+        ["Arabian_Both","Persian_Both","Byzantine_Both","Japanese_Both","Hirajoshi_Both","RagaAsavari_Both","Hungarian_Both","Romanian_Both","Hijaz_Both"],
+        
+        ["LydianDominant_Both", "DiminishedHalfWhole_Both", "PhrygianDominant_Both", "DiminishedWholeTone_Both", "Ionian_Both", "PentatonicModeV_Both", "Dorian#Four_Both", "LydianAugmented_Both", "MinorPentatonic_Both", "MelodicMinor_Both", "PentatonicModeIII_Both", "DorianbTwo_Both", "Dorian_Both", "Aeolian_Both", "LocrianSix_Both", "WholeTone_Both", "Locrian_Both", "Phyrgian_Both", "Ionian#Five_Both", "Mixolydian_Both", "Lydian#Two_Both", "MajorPentatonic_Both", "Lydian_Both", "DiminishedWholeHalf_Both", "MixoldianbSix_Both", "SuperLocrianbbSeven_Both", "HarmonicMinor_Both", "SuperLocrian_Both", "PentatonicModeIV_Both"],
+        
+        ["MinorPentatonic_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Mixolydian_Both_Tempo:180", "Locrian_Both_Tempo:180", "LocrianSix_Both_Tempo:180", "PhrygianDominant_Both_Tempo:180", "MixoldianbSix_Both_Tempo:180", "DiminishedWholeTone_Both_Tempo:180", "LydianAugmented_Both_Tempo:180", "DiminishedWholeHalf_Both_Tempo:180", "PentatonicModeV_Both_Tempo:180", "Dorian#Four_Both_Tempo:180", "Lydian_Both_Tempo:180", "Lydian#Two_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "Dorian_Both_Tempo:180", "MelodicMinor_Both_Tempo:180", "WholeTone_Both_Tempo:180", "SuperLocrianbbSeven_Both_Tempo:180", "DiminishedHalfWhole_Both_Tempo:180", "MajorPentatonic_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "PentatonicModeIII_Both_Tempo:180", "Ionian_Both_Tempo:180", "PentatonicModeIV_Both_Tempo:180", "DorianbTwo_Both_Tempo:180", "Ionian#Five_Both_Tempo:180", "LydianDominant_Both_Tempo:180", "SuperLocrian_Both_Tempo:180"],
+        
+        ["Aeolian_Both_Tempo:230", "HarmonicMinor_Both_Tempo:230", "Lydian_Both_Tempo:230", "Dorian#Four_Both_Tempo:230", "Ionian_Both_Tempo:230", "Mixolydian_Both_Tempo:230", "MinorPentatonic_Both_Tempo:230", "PhrygianDominant_Both_Tempo:230", "SuperLocrian_Both_Tempo:230", "DiminishedWholeHalf_Both_Tempo:230", "MelodicMinor_Both_Tempo:230", "DiminishedWholeTone_Both_Tempo:230", "SuperLocrianbbSeven_Both_Tempo:230", "MixoldianbSix_Both_Tempo:230", "Ionian#Five_Both_Tempo:230", "PentatonicModeIV_Both_Tempo:230", "Lydian#Two_Both_Tempo:230", "LydianAugmented_Both_Tempo:230", "PentatonicModeV_Both_Tempo:230", "DorianbTwo_Both_Tempo:230", "DiminishedHalfWhole_Both_Tempo:230", "MajorPentatonic_Both_Tempo:230", "Dorian_Both_Tempo:230", "WholeTone_Both_Tempo:230", "Phyrgian_Both_Tempo:230", "LydianDominant_Both_Tempo:230", "LocrianSix_Both_Tempo:230", "Locrian_Both_Tempo:230", "PentatonicModeIII_Both_Tempo:230"]
+
     ]
     let arpeggio = [
 //        ["Ionian_Up_Tempo:120_Sequence:Thirds"],
+
+        ["HarmonicMinor_Up","LocrianSix_Up","Ionian#Five_Up","Dorian#Four_Up","PhrygianDominant_Up","Lydian#Two_Up","SuperLocrianbbSeven_Up"],
         
-//        ["MajorArp^InversionnOne_Up","MajorArp^InversionnTwo_Up"],
-//
+        ["MajorArp_Up", "MinorArp_Up"],
+        ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
+        ["MajorArp_Up", "MinorArp_Up", "MajorSeventhArp_Up", "MinorSeventhArp_Up"],
+        ["MajorArp_Both", "MinorArp_Both", "MajorSeventhArp_Both", "MinorSeventhArp_Both"],
+        
+        ["MajorArp_Up_Tempo:120", "MinorArp_Up_Tempo:120", "MajorSeventhArp_Up_Tempo:120", "MinorSeventhArp_Up_Tempo:120"],
+        ["MajorArp_Both_Tempo:120", "MinorArp_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120"],
+        
+        ["DominantSeventhArp_Up","MinorMajorSeventhArp_Up"],
+        ["DominantSeventhArp_Both","MinorMajorSeventhArp_Both"],
+        ["DominantSeventhArp_Up_Tempo:120", "MinorMajorSeventhArp_Up_Tempo:120"],
+        ["DominantSeventhArp_Both_Tempo:120", "MinorMajorSeventhArp_Both_Tempo:120"],
+        
+        ["MajorSeventhArp_Both", "MinorSeventhArp_Both","DominantSeventhArp_Both","MinorMajorSeventhArp_Both"],
+        
+        ["MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120","DominantSeventhArp_Both_Tempo:120","MinorMajorSeventhArp_Both_Tempo:120"],
+        
+        ["MinorMajorSeventhArp_Both_Tempo:160", "MinorSeventhArp_Both_Tempo:160", "MajorSeventhArp_Both_Tempo:160", "DominantSeventhArp_Both_Tempo:160"], //random
+        
+        ["HalfDiminishedArp_Up","FullDiminishedArp_Up"],
+        ["HalfDiminishedArp_Both","FullDiminishedArp_Both"],
+        ["HalfDiminishedArp_Up_Tempo:120", "FullDiminishedArp_Up_Tempo:120"],
+        ["HalfDiminishedArp_Both_Tempo:120", "FullDiminishedArp_Both_Tempo:120"],
+        
+        ["DominantSeventhArp_Both","MinorMajorSeventhArp_Both","HalfDiminishedArp_Both","FullDiminishedArp_Both"],
+        
+        ["DominantSeventhArp_Both_Tempo:120","MinorMajorSeventhArp_Both_Tempo:120","HalfDiminishedArp_Both_Tempo:120","FullDiminishedArp_Both_Tempo:120",],
+        
+        ["MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120","DominantSeventhArp_Both_Tempo:120","MinorMajorSeventhArp_Both_Tempo:120","HalfDiminishedArp_Both_Tempo:120","FullDiminishedArp_Both_Tempo:120",],
+        
+        ["DominantSeventhArp_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorMajorSeventhArp_Both_Tempo:120", "FullDiminishedArp_Both_Tempo:120", "HalfDiminishedArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120"], //random
+        
+        ["MajorArp_Up","MajorArp^InversionnOne_Up","MajorArp^InversionnTwo_Up"],
+        ["MinorArp_Up","MinorArp^InversionnOne_Up","MinorArp^InversionnTwo_Up"],
+        
+        ["MajorArp_Both","MajorArp^InversionnOne_Both","MajorArp^InversionnTwo_Both"],
+        ["MinorArp_Both","MinorArp^InversionnOne_Both","MinorArp^InversionnTwo_Both"],
+        
+        ["MinorArp^InversionnTwo_Both_Tempo:120", "MinorArp^InversionnOne_Both_Tempo:120", "MinorArp_Both_Tempo:120", "MajorArp^InversionnOne_Both_Tempo:120", "MajorArp^InversionnTwo_Both_Tempo:120", "MajorArp_Both_Tempo:120",], //random
+        
+        
+        ["MajorSeventhArp_Up","MajorSeventhArp^InversionnOne_Up","MajorSeventhArp^InversionnTwo_Up"],
+        ["MinorSeventhArp_Up","MinorSeventhArp^InversionnOne_Up","MinorSeventhArp^InversionnTwo_Up"],
+
+        ["MajorSeventhArp_Both","MajorSeventhArp^InversionnOne_Both","MajorSeventhArp^InversionnTwo_Both"],
+        ["MinorSeventhArp_Both","MinorSeventhArp^InversionnOne_Both","MinorSeventhArp^InversionnTwo_Both"],
+
+        ["MinorSeventhArp^InversionnTwo_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120", "MajorSeventhArp^InversionnTwo_Both_Tempo:120", "MinorSeventhArp^InversionnOne_Both_Tempo:120", "MajorSeventhArp^InversionnOne_Both_Tempo:120"], //random
+        
+        ["DominantSeventhArp_Up","DominantSeventhArp^InversionnOne_Up","DominantSeventhArp^InversionnTwo_Up"],
+        ["MinorMajorSeventhArp_Up","MinorMajorSeventhArp^InversionnOne_Up","MinorMajorSeventhArp^InversionnTwo_Up"],
+
+        ["DominantSeventhArp_Both","DominantSeventhArp^InversionnOne_Both","DominantSeventhArp^InversionnTwo_Both"],
+        ["MinorMajorSeventhArp_Both","MinorMajorSeventhArp^InversionnOne_Both","MinorMajorSeventhArp^InversionnTwo_Both"],
+        
+        ["MinorMajorSeventhArp^InversionnTwo_Both_Tempo:120", "DominantSeventhArp^InversionnOne_Both_Tempo:120", "MinorMajorSeventhArp^InversionnOne_Both_Tempo:120", "MinorMajorSeventhArp_Both_Tempo:120", "DominantSeventhArp^InversionnTwo_Both_Tempo:120", "DominantSeventhArp_Both_Tempo:120"], //random
+        
+        ["HalfDiminishedArp_Up","HalfDiminishedArp^InversionnOne_Up","HalfDiminishedArp^InversionnTwo_Up"],
+        ["HalfDiminishedArp_Both","HalfDiminishedArp^InversionnOne_Both","HalfDiminishedArp^InversionnTwo_Both"],
+        ["HalfDiminishedArp^InversionnTwo_Both_Tempo:120", "HalfDiminishedArp_Both_Tempo:120", "HalfDiminishedArp^InversionnOne_Both_Tempo:120"], //random
+        
+        ["MajorSeventhArp_Both_Tempo:160", "MajorSeventhArp^InversionnOne_Both_Tempo:160", "MajorArp_Both_Tempo:160", "MinorArp_Both_Tempo:160", "MinorMajorSeventhArp_Both_Tempo:160", "MajorArp^InversionnTwo_Both_Tempo:160", "HalfDiminishedArp^InversionnOne_Both_Tempo:160", "DominantSeventhArp^InversionnOne_Both_Tempo:160", "DominantSeventhArp^InversionnTwo_Both_Tempo:160", "MinorArp^InversionnOne_Both_Tempo:160", "MinorArp_Both_Tempo:160", "MajorArp^InversionnOne_Both_Tempo:160", "MinorMajorSeventhArp^InversionnOne_Both_Tempo:160", "MinorArp^InversionnTwo_Both_Tempo:160", "MinorSeventhArp^InversionnOne_Both_Tempo:160", "MinorMajorSeventhArp^InversionnTwo_Both_Tempo:160", "HalfDiminishedArp_Both_Tempo:160", "MinorArp^InversionnTwo_Both_Tempo:160", "MinorSeventhArp^InversionnTwo_Both_Tempo:160", "DominantSeventhArp_Both_Tempo:160", "MajorSeventhArp^InversionnTwo_Both_Tempo:160", "MajorArp^InversionnTwo_Both_Tempo:160", "MinorArp^InversionnOne_Both_Tempo:160", "MajorArp_Both_Tempo:160", "MinorSeventhArp_Both_Tempo:160", "MajorArp^InversionnOne_Both_Tempo:160", "HalfDiminishedArp^InversionnTwo_Both_Tempo:160"],
+        
+        
+        ["MinorArp^InversionnOne_Both_Tempo:200", "MinorArp^InversionnTwo_Both_Tempo:200", "MinorArp_Both_Tempo:200", "HalfDiminishedArp^InversionnTwo_Both_Tempo:200", "MinorArp^InversionnTwo_Both_Tempo:200", "MajorArp^InversionnTwo_Both_Tempo:200", "MinorArp^InversionnOne_Both_Tempo:200", "HalfDiminishedArp^InversionnOne_Both_Tempo:200", "MajorArp^InversionnOne_Both_Tempo:200", "DominantSeventhArp^InversionnOne_Both_Tempo:200", "MajorSeventhArp_Both_Tempo:200", "MajorArp_Both_Tempo:200", "DominantSeventhArp^InversionnTwo_Both_Tempo:200", "MajorArp^InversionnOne_Both_Tempo:200", "HalfDiminishedArp_Both_Tempo:200", "MajorSeventhArp^InversionnTwo_Both_Tempo:200", "MinorMajorSeventhArp^InversionnTwo_Both_Tempo:200", "MinorSeventhArp^InversionnOne_Both_Tempo:200", "MinorMajorSeventhArp^InversionnOne_Both_Tempo:200", "MajorSeventhArp^InversionnOne_Both_Tempo:200", "MajorArp^InversionnTwo_Both_Tempo:200", "MinorSeventhArp_Both_Tempo:200", "MinorMajorSeventhArp_Both_Tempo:200", "MinorArp_Both_Tempo:200", "MinorSeventhArp^InversionnTwo_Both_Tempo:200", "DominantSeventhArp_Both_Tempo:200", "MajorArp_Both_Tempo:200"],
+        
 //        ["MinorArp^InversionnOne",
 //        "MinorArp^InversionnTwo",
 //        "MajorSeventhArp^InversionnOne",
@@ -314,14 +402,6 @@ class LevelConstruct: UIViewController {
 //        "HalfDiminishedArp^InversionnTwo",
 //        "HalfDiminishedArp^InversionnThree",
 //        ],
-        
-        ["MajorArp_Up", "MinorArp_Up"],
-        ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
-        ["MajorArp_Up", "MinorArp_Up", "MajorSeventhArp_Up", "MinorSeventhArp_Up"],
-        ["MajorArp_Both", "MinorArp_Both", "MajorSeventhArp_Both", "MinorSeventhArp_Both"],
-        ["MajorArp_Up_Tempo:120", "MinorArp_Up_Tempo:120", "MajorSeventhArp_Up_Tempo:120", "MinorSeventhArp_Up_Tempo:120"],
-        ["MajorArp_Both_Tempo:120", "MinorArp_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120"],
-//        ["DiminishedArp_Up", "AugmentedArp_Up"],
     ]
     let interval = [
         

@@ -448,7 +448,7 @@ class MainViewController: UIViewController {
             defaultPeripheralIcon = ["outline_volume_up_black_18dp", "outline_info_black_18dp","icons8-microphone-50","outline_play_arrow_black_18dp"]
             activePeripheralIcon = ["outline_volume_off_black_18dp", "outline_undo_black_18dp","outline_stop_black_18dp","outline_stop_black_18dp"]
             setupCurrentTask()
-//            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
+            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0)
             
 //            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 0.5)
 //            setColorOnFretMarkers(specifiedNoteCollection, defaultColor.FretMarkerSuccess)
@@ -490,7 +490,7 @@ class MainViewController: UIViewController {
             let data = lc.parseEarTrainingData(task)
             startingNote = data["StartingNote"] as! String
             
-            //this is where you could setup a note, if random, based on the bounds of all intervals taking place
+
             if startingNote == "Random" {
                 additionalData["randomStartNote"] = true
                 startingNote = "A2"
@@ -619,7 +619,8 @@ class MainViewController: UIViewController {
             setupTempoButtons(ibuttonsActive: tempoButtonsActive)
             currentState = State.NotesTestIdle_NoTempo
             
-            displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0, ikillAllFretMarkers: true)
+	    //test for free play
+            //displayMultipleFretMarkers(iinputArr: specifiedNoteCollection, ialphaAmount: 1.0, ikillAllFretMarkers: true)
         }
         
 //        sCollection!.setupSpecifiedNoteCollection(iinput: trimmedTask, idirection: dir, istartingNote: startingNote, itype: type, idata: additionalData)
@@ -2177,23 +2178,13 @@ class MainViewController: UIViewController {
         wt.waitThen(itime: t, itarget: self, imethod: #selector(randomButtonTest) as Selector, irepeats: false, idict: ["arg1": "0" as AnyObject])
     }
 
-    // Unused functions that will be employed when dev starts on other functionality
     func initializeFretReferenceText() {
         FretRefText = UILabel()
         FretRefText.text = returnCurrentFretText()
-        let a1ButtonFrame = fretButtonFrame["A1"]!
-        let width: CGFloat = 100.0, height: CGFloat = 100.0
-//        let xPos = a1ButtonFrame.minX / 2 - width / 4
-        let xPos = 0.0 //FretboardImage.frame.minX/2
         FretRefText.textAlignment = NSTextAlignment.center
-        
-//        fretRefText.frame = CGRect(x: xPos, y: a1ButtonFrame.minY - height / 2 + a1ButtonFrame.height / 2, width: width, height: height)
-        
-        print("dotDict[].frame.height",dotDict["A1"]?.frame.height)
         FretRefText.frame = CGRect(x: 0, y: (dotDict["A1"]?.frame.minY)!, width: FretboardImage.frame.minX, height: 30)
-        
         FretRefText.textColor = defaultColor.FretMarkerStandard
-//        fretRefText.backgroundColor = defaultColor.FretPositionLabelBackground
+        FretRefText.backgroundColor = UIColor(red: 0 / 255, green: 0 / 255, blue: 0 / 255, alpha: 0.5)
         view.addSubview(FretRefText)
     }
     
@@ -2313,7 +2304,7 @@ class MainViewController: UIViewController {
     
     func setupUpDelayedNoteCollectionView(_ inoteCollection: [String], _ itype: String) {
         var modifiedNoteCollection = inoteCollection
-        modifiedNoteCollection.remove(at: modifiedNoteCollection.count-1)
+        if (!lc.returnCurrentTask().contains("Both")) {modifiedNoteCollection.remove(at: modifiedNoteCollection.count-1)}
         let waitTime = 0.03
         for (i,_) in modifiedNoteCollection.enumerated() {
             wt.waitThen(itime: Double(i)*waitTime, itarget: self, imethod: #selector(displaySingleFretMarkerWrapper) as Selector, irepeats: false, idict: ["arg1": modifiedNoteCollection[i] as AnyObject,"arg2": true as AnyObject, "arg3": itype as AnyObject])
