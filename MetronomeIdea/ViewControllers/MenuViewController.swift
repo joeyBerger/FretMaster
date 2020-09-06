@@ -20,9 +20,9 @@ var appUnlocked = "0"
 var currentAppVersion = "0.0"
 var levelBarriersLimits : [String : [String:Int]] = [
     "0.0" : [
-        "scaleLevel" : 1,
-        "arpeggioLevel" : 1,
-        "intervalLevel" : 1,
+        "scaleLevel" : 13,
+        "arpeggioLevel" : 12,
+        "intervalLevel" : 4,
         "recordingPicker" : 5,
         "arpeggioPicker" : 4,
         "scalePicker" : 5,

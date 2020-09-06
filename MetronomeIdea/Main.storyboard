@@ -103,7 +103,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Guitar Boss™" id="r7I-vH-J5p">
+                    <navigationItem key="navigationItem" title="Guitar Mult    " id="r7I-vH-J5p">
                         <barButtonItem key="backBarButtonItem" title="Back" id="syC-Xw-fpv"/>
                         <barButtonItem key="leftBarButtonItem" image="icons8-guitar-strings-50" id="CCm-rx-QBx">
                             <connections>
@@ -279,11 +279,11 @@
             </objects>
             <point key="canvasLocation" x="715.94202898550725" y="-2270.0892857142858"/>
         </scene>
-        <!--Guitar Boss™-->
+        <!--Guitar Mult-->
         <scene sceneID="Tah-zq-EsB">
             <objects>
                 <tabBarController id="xL7-hD-R2g" sceneMemberID="viewController">
-                    <navigationItem key="navigationItem" title="Guitar Boss™" id="zH1-t0-QBp"/>
+                    <navigationItem key="navigationItem" title="Guitar Mult" id="zH1-t0-QBp"/>
                     <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="Mwu-Tw-xqP">
                         <rect key="frame" x="0.0" y="0.0" width="414" height="49"/>
                         <autoresizingMask key="autoresizingMask"/>
@@ -379,7 +379,7 @@
                         </subviews>
                         <color key="backgroundColor" white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Guitar Boss™" id="J5p-Rq-E6f">
+                    <navigationItem key="navigationItem" title="Guitar Mult" id="J5p-Rq-E6f">
                         <barButtonItem key="backBarButtonItem" title="Back" id="nAH-O7-1ve"/>
                     </navigationItem>
                     <connections>
@@ -396,7 +396,7 @@
             </objects>
             <point key="canvasLocation" x="717" y="63"/>
         </scene>
-        <!--Guitar Boss™-->
+        <!--Guitar Mult-->
         <scene sceneID="z7r-4E-jji">
             <objects>
                 <viewController storyboardIdentifier="SettingsItemViewController" id="fWq-hg-1S0" customClass="SettingsItemViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
@@ -436,7 +436,7 @@
                             <constraint firstAttribute="bottom" secondItem="48q-k1-vIZ" secondAttribute="bottom" id="NfS-tr-EES"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Guitar Boss™" id="Uvo-hl-mce">
+                    <navigationItem key="navigationItem" title="Guitar Mult" id="Uvo-hl-mce">
                         <barButtonItem key="backBarButtonItem" title="Back" id="ezF-J7-Tej"/>
                     </navigationItem>
                     <connections>
@@ -461,7 +461,7 @@
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                     </view>
-                    <navigationItem key="navigationItem" title="Guitar Boss™" id="q13-8U-RXJ">
+                    <navigationItem key="navigationItem" title="Guitar Mult" id="q13-8U-RXJ">
                         <barButtonItem key="backBarButtonItem" title="Back" id="vFm-uG-1Sb"/>
                     </navigationItem>
                 </viewController>
@@ -540,7 +540,7 @@
             </objects>
             <point key="canvasLocation" x="1660.8695652173915" y="789.13043478260875"/>
         </scene>
-        <!--Guitar Boss™-->
+        <!--Guitar Mult-->
         <scene sceneID="NkS-dF-SfY">
             <objects>
                 <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="enO-xU-PLA" customClass="MainViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
@@ -713,7 +713,7 @@
                             <constraint firstAttribute="trailing" secondItem="Fnc-Kn-a9n" secondAttribute="trailing" constant="16" id="y9r-ml-mO6"/>
                         </constraints>
                     </view>
-                    <navigationItem key="navigationItem" title="Guitar Boss™" id="WbH-SB-Dkq">
+                    <navigationItem key="navigationItem" title="Guitar Mult" id="WbH-SB-Dkq">
                         <barButtonItem key="backBarButtonItem" title="Back" id="r34-6B-4mX"/>
                         <rightBarButtonItems>
                             <barButtonItem image="outline_settings_black_18dp-scaled" id="Kjp-Xs-Fjq">

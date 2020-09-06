@@ -1781,7 +1781,7 @@ class MainViewController: UIViewController {
             pc!.tutorialPopup.hide()
             tutorialActive = true
             setButtonImage(ibutton: periphButtonArr[2], iimageStr: defaultPeripheralIcon[2])
-            popover?.setupPopoverText(isubtitle: "Welcome To Guitar Boss™!", isubText: ["✅ Learn and sharpen valuable skills!", "🎸 Level up to become a great guitarist!","👍 Let get started with a simple tutorial!"])
+            popover?.setupPopoverText(isubtitle: "Welcome To Guitar Mult!", isubText: ["✅ Learn and sharpen valuable skills!", "🎸 Level up to become a great guitarist!","👍 Let get started with a simple tutorial!"])
         } else if type == "LevelComplete" {
             let key = (lc.currentLevelKey?.replacingOccurrences(of: "Level", with: ""))! + "s" //this is a bit hacky!!
             let nextLevelContents = lc.currentLevelName[key]![lc.returnConvertedLevel(iinput: lc.currentLevel!)]            

@@ -72,7 +72,7 @@ class Popover: UIViewController {
         
 //        titleText = UILabel()
         titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+10,width: background.frame.width, height: 65)
-        titleText.text = "Guitar Boss™"
+        titleText.text = "Guitar Mult"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
         titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
