@@ -95,7 +95,8 @@ class Popover: UIViewController {
         let subTextHeight:CGFloat = 50, subTextWidth:CGFloat = width * 0.95, subTextBuffer:CGFloat = 50
         for i in 0..<3 {
             subText.append(SpringLabel())
-            subText[i].frame = CGRect(x: (background.frame.width-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: background.frame.width, height: subTextHeight)
+//            subText[i].frame = CGRect(x: (background.frame.width-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: background.frame.width, height: subTextHeight)
+            subText[i].frame = CGRect(x: (screenWidth-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: subTextWidth, height: subTextHeight)
             subText[i].adjustsFontSizeToFitWidth = true
             subText[i].text = "TUTORIAL COMPLETE!"
             subText[i].layer.zPosition = 502

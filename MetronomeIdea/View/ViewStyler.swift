@@ -138,9 +138,9 @@ class ViewStyler: UIViewController {
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.center
         
-//        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
+        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
         
-        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "System-System", size: 25) ?? UIFont.systemFont(ofSize: 25),NSAttributedString.Key.paragraphStyle : paragraphStyle]
+//        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "System-System", size: 25) ?? UIFont.systemFont(ofSize: 25),NSAttributedString.Key.paragraphStyle : paragraphStyle]
         
         inavigationConroller.navigationBar.titleTextAttributes = textAttributes
         inavigationConroller.navigationBar.tintColor = .white
@@ -157,11 +157,9 @@ class ViewStyler: UIViewController {
          let availableScreenHeight = screenHeight - (inavigationConroller.navigationBar.frame.maxY) - (buffer*2)
          
          let spacing:CGFloat = availableScreenHeight/5
-        
-//         let
-        
+
          for (i,button) in ibuttonArr.enumerated() {
-             let y = (inavigationConroller.navigationBar.frame.maxY + buffer + button.frame.height/2 - 12) + (spacing) * CGFloat(i)
+              let y = (buffer + button.frame.height) + (spacing) * CGFloat(i)
              button.frame = CGRect(x: screenWidth/2-button.frame.width/2, y: y, width: button.frame.width, height: button.frame.height)
          }
     }
@@ -177,6 +175,8 @@ class ViewStyler: UIViewController {
     func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
         print("iscreenSpace",iscreenSpace)
         if iscreenSpace > 650 {
+            if iscreenSpace == 692 {return 50.0}
+            if iscreenSpace == 768 {return 85.0}
             return 110.0
         } else if iscreenSpace > 600 {
             return 30.0
