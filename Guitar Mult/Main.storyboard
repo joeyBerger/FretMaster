@@ -26,7 +26,7 @@
         <!--MainMenuViewController-->
         <scene sceneID="0tK-wS-SYB">
             <objects>
-                <viewController title="MainMenuViewController" id="PUF-EH-UAq" customClass="MenuViewController" customModule="MetronomeIdea" sceneMemberID="viewController">
+                <viewController title="MainMenuViewController" id="PUF-EH-UAq" customClass="MenuViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="XSY-xe-N64"/>
                         <viewControllerLayoutGuide type="bottom" id="q8a-7h-RlA"/>
@@ -133,7 +133,7 @@
         <!--Arpeggios-->
         <scene sceneID="RhW-1Y-Thg">
             <objects>
-                <viewController storyboardIdentifier="arpeggioPicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kdb-tQ-JfV" customClass="NoteCollectionPickerViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="arpeggioPicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="kdb-tQ-JfV" customClass="NoteCollectionPickerViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="3wL-np-JLY"/>
                         <viewControllerLayoutGuide type="bottom" id="BL0-cm-nUv"/>
@@ -146,7 +146,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ArpeggioPickerViewCell" id="ugC-jw-6cF" customClass="SettingViewCell" customModule="MetronomeIdea" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ArpeggioPickerViewCell" id="ugC-jw-6cF" customClass="SettingViewCell" customModule="Guitar_Mult" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ugC-jw-6cF" id="deP-73-OrS">
@@ -184,7 +184,7 @@
         <!--Recordings-->
         <scene sceneID="Bff-gf-5NQ">
             <objects>
-                <viewController storyboardIdentifier="recordingPicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5J6-lY-Xvr" customClass="NoteCollectionPickerViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="recordingPicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="5J6-lY-Xvr" customClass="NoteCollectionPickerViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="iai-vs-r7X"/>
                         <viewControllerLayoutGuide type="bottom" id="CHa-UZ-Nbq"/>
@@ -197,7 +197,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RecordingPickerViewCell" id="ShO-Qg-LMf" customClass="SettingViewCell" customModule="MetronomeIdea" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="RecordingPickerViewCell" id="ShO-Qg-LMf" customClass="SettingViewCell" customModule="Guitar_Mult" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="ShO-Qg-LMf" id="m0q-5c-CFd">
@@ -233,7 +233,7 @@
         <!--Scales-->
         <scene sceneID="QxP-aW-gJa">
             <objects>
-                <viewController storyboardIdentifier="scalePicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oCh-v3-kbN" customClass="NoteCollectionPickerViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="scalePicker" useStoryboardIdentifierAsRestorationIdentifier="YES" id="oCh-v3-kbN" customClass="NoteCollectionPickerViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="2Qp-5C-baz"/>
                         <viewControllerLayoutGuide type="bottom" id="Dto-zZ-tYO"/>
@@ -246,7 +246,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="725"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ScalePickerViewCell" id="KNm-8v-ihZ" customClass="SettingViewCell" customModule="MetronomeIdea" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="ScalePickerViewCell" id="KNm-8v-ihZ" customClass="SettingViewCell" customModule="Guitar_Mult" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="43.5"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="KNm-8v-ihZ" id="8h9-E1-tyo">
@@ -302,7 +302,7 @@
         <!--SettingsViewController-->
         <scene sceneID="Y5e-jA-XrR">
             <objects>
-                <viewController storyboardIdentifier="SettingsViewController" title="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="o4J-d1-JWA" customClass="SettingsViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsViewController" title="SettingsViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="o4J-d1-JWA" customClass="SettingsViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="APX-TT-rpf"/>
                         <viewControllerLayoutGuide type="bottom" id="Ucm-hq-d2I"/>
@@ -399,7 +399,7 @@
         <!--Guitar Mult-->
         <scene sceneID="z7r-4E-jji">
             <objects>
-                <viewController storyboardIdentifier="SettingsItemViewController" id="fWq-hg-1S0" customClass="SettingsItemViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="SettingsItemViewController" id="fWq-hg-1S0" customClass="SettingsItemViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="G1y-yw-REO"/>
                         <viewControllerLayoutGuide type="bottom" id="Pf3-oS-LrC"/>
@@ -412,7 +412,7 @@
                                 <rect key="frame" x="0.0" y="88" width="414" height="808"/>
                                 <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
                                 <prototypes>
-                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingViewCell" id="fdJ-jk-Mf8" customClass="SettingViewCell" customModule="MetronomeIdea" customModuleProvider="target">
+                                    <tableViewCell clipsSubviews="YES" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" selectionStyle="blue" hidesAccessoryWhenEditing="NO" indentationLevel="1" indentationWidth="0.0" reuseIdentifier="SettingViewCell" id="fdJ-jk-Mf8" customClass="SettingViewCell" customModule="Guitar_Mult" customModuleProvider="target">
                                         <rect key="frame" x="0.0" y="28" width="414" height="60"/>
                                         <autoresizingMask key="autoresizingMask"/>
                                         <tableViewCellContentView key="contentView" opaque="NO" clipsSubviews="YES" multipleTouchEnabled="YES" contentMode="center" insetsLayoutMarginsFromSafeArea="NO" tableViewCell="fdJ-jk-Mf8" id="mFh-mb-YKW">
@@ -451,7 +451,7 @@
         <!--ImageChooserViewController-->
         <scene sceneID="bYy-jA-3BK">
             <objects>
-                <viewController storyboardIdentifier="ImageChooserViewController" title="ImageChooserViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="csi-0A-RXZ" customClass="ImageChooserViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="ImageChooserViewController" title="ImageChooserViewController" useStoryboardIdentifierAsRestorationIdentifier="YES" id="csi-0A-RXZ" customClass="ImageChooserViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="aK0-JB-F3s"/>
                         <viewControllerLayoutGuide type="bottom" id="Ks1-GW-vas"/>
@@ -472,7 +472,7 @@
         <!--Volume Settings View Controller-->
         <scene sceneID="VbT-mp-kwa">
             <objects>
-                <viewController storyboardIdentifier="VolumeSettingsViewController" id="fGY-Rt-blO" customClass="VolumeSettingsViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController storyboardIdentifier="VolumeSettingsViewController" id="fGY-Rt-blO" customClass="VolumeSettingsViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="wbl-uu-A3S"/>
                         <viewControllerLayoutGuide type="bottom" id="75B-l3-dYl"/>
@@ -543,7 +543,7 @@
         <!--Guitar Mult-->
         <scene sceneID="NkS-dF-SfY">
             <objects>
-                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="enO-xU-PLA" customClass="MainViewController" customModule="MetronomeIdea" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController useStoryboardIdentifierAsRestorationIdentifier="YES" id="enO-xU-PLA" customClass="MainViewController" customModule="Guitar_Mult" customModuleProvider="target" sceneMemberID="viewController">
                     <layoutGuides>
                         <viewControllerLayoutGuide type="top" id="ka0-nP-hhM"/>
                         <viewControllerLayoutGuide type="bottom" id="aQH-pq-xBs"/>
@@ -842,7 +842,7 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="FIG-8u-KQM"/>
+        <segue reference="Qxi-7Z-PL0"/>
     </inferredMetricsTieBreakers>
     <resources>
         <image name="FretBoard12thPos.png" width="1024" height="2954"/>

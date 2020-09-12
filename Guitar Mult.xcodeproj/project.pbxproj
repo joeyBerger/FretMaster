@@ -460,7 +460,7 @@
 		9EE71F35238B8B5B00D87D24 /* UserData.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserData.swift; sourceTree = "<group>"; };
 		9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AMPopTip.framework; path = Carthage/Build/iOS/AMPopTip.framework; sourceTree = "<group>"; };
 		9EF769F424E0446500F6B238 /* SnowParticle.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SnowParticle.swift; sourceTree = "<group>"; };
-		B8A6184B20DB9E2A00AF33C5 /* MetronomeIdea.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = MetronomeIdea.app; sourceTree = BUILT_PRODUCTS_DIR; };
+		B8A6184B20DB9E2A00AF33C5 /* Guitar Mult.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = "Guitar Mult.app"; sourceTree = BUILT_PRODUCTS_DIR; };
 		B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		B8A6185820DB9E2B00AF33C5 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -850,7 +850,7 @@
 			isa = PBXGroup;
 			children = (
 				9EDC0F1E2479D2BA00257CFE /* Spring */,
-				B8A6184D20DB9E2A00AF33C5 /* MetronomeIdea */,
+				B8A6184D20DB9E2A00AF33C5 /* Guitar Mult */,
 				B8A6184C20DB9E2A00AF33C5 /* Products */,
 				9EEF76AA23AFE2FF00F00010 /* Frameworks */,
 			);
@@ -859,12 +859,12 @@
 		B8A6184C20DB9E2A00AF33C5 /* Products */ = {
 			isa = PBXGroup;
 			children = (
-				B8A6184B20DB9E2A00AF33C5 /* MetronomeIdea.app */,
+				B8A6184B20DB9E2A00AF33C5 /* Guitar Mult.app */,
 			);
 			name = Products;
 			sourceTree = "<group>";
 		};
-		B8A6184D20DB9E2A00AF33C5 /* MetronomeIdea */ = {
+		B8A6184D20DB9E2A00AF33C5 /* Guitar Mult */ = {
 			isa = PBXGroup;
 			children = (
 				B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */,
@@ -880,15 +880,15 @@
 				B8A6185720DB9E2B00AF33C5 /* LaunchScreen.storyboard */,
 				B8A6185A20DB9E2B00AF33C5 /* Info.plist */,
 			);
-			path = MetronomeIdea;
+			path = "Guitar Mult";
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
-		B8A6184A20DB9E2A00AF33C5 /* MetronomeIdea */ = {
+		B8A6184A20DB9E2A00AF33C5 /* Guitar Mult */ = {
 			isa = PBXNativeTarget;
-			buildConfigurationList = B8A6185D20DB9E2B00AF33C5 /* Build configuration list for PBXNativeTarget "MetronomeIdea" */;
+			buildConfigurationList = B8A6185D20DB9E2B00AF33C5 /* Build configuration list for PBXNativeTarget "Guitar Mult" */;
 			buildPhases = (
 				B8A6184720DB9E2A00AF33C5 /* Sources */,
 				B8A6184820DB9E2A00AF33C5 /* Frameworks */,
@@ -899,9 +899,9 @@
 			);
 			dependencies = (
 			);
-			name = MetronomeIdea;
+			name = "Guitar Mult";
 			productName = MetronomeIdea;
-			productReference = B8A6184B20DB9E2A00AF33C5 /* MetronomeIdea.app */;
+			productReference = B8A6184B20DB9E2A00AF33C5 /* Guitar Mult.app */;
 			productType = "com.apple.product-type.application";
 		};
 /* End PBXNativeTarget section */
@@ -912,7 +912,7 @@
 			attributes = {
 				LastSwiftUpdateCheck = 0940;
 				LastUpgradeCheck = 0940;
-				ORGANIZATIONNAME = ashubin.com;
+				ORGANIZATIONNAME = "";
 				TargetAttributes = {
 					B8A6184A20DB9E2A00AF33C5 = {
 						CreatedOnToolsVersion = 9.4;
@@ -920,7 +920,7 @@
 					};
 				};
 			};
-			buildConfigurationList = B8A6184620DB9E2900AF33C5 /* Build configuration list for PBXProject "MetronomeIdea" */;
+			buildConfigurationList = B8A6184620DB9E2900AF33C5 /* Build configuration list for PBXProject "Guitar Mult" */;
 			compatibilityVersion = "Xcode 9.3";
 			developmentRegion = en;
 			hasScannedForEncodings = 0;
@@ -933,7 +933,7 @@
 			projectDirPath = "";
 			projectRoot = "";
 			targets = (
-				B8A6184A20DB9E2A00AF33C5 /* MetronomeIdea */,
+				B8A6184A20DB9E2A00AF33C5 /* Guitar Mult */,
 			);
 		};
 /* End PBXProject section */
@@ -1309,7 +1309,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = MetronomeIdea/Info.plist;
+				INFOPLIST_FILE = "Guitar Mult/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1334,7 +1334,7 @@
 					"$(PROJECT_DIR)/Carthage/Build/iOS",
 					"$(PROJECT_DIR)",
 				);
-				INFOPLIST_FILE = MetronomeIdea/Info.plist;
+				INFOPLIST_FILE = "Guitar Mult/Info.plist";
 				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1350,7 +1350,7 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
-		B8A6184620DB9E2900AF33C5 /* Build configuration list for PBXProject "MetronomeIdea" */ = {
+		B8A6184620DB9E2900AF33C5 /* Build configuration list for PBXProject "Guitar Mult" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B8A6185B20DB9E2B00AF33C5 /* Debug */,
@@ -1359,7 +1359,7 @@
 			defaultConfigurationIsVisible = 0;
 			defaultConfigurationName = Release;
 		};
-		B8A6185D20DB9E2B00AF33C5 /* Build configuration list for PBXNativeTarget "MetronomeIdea" */ = {
+		B8A6185D20DB9E2B00AF33C5 /* Build configuration list for PBXNativeTarget "Guitar Mult" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (
 				B8A6185E20DB9E2B00AF33C5 /* Debug */,

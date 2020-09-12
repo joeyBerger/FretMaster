@@ -67,6 +67,8 @@ class MenuViewController: UIViewController {
 //            appVersion = data as! String
 //        }
         
+        print("in view did load")
+        
         globalDataController.load()
         
         setupHiddenButtons()

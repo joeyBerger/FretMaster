@@ -1,11 +1,3 @@
-//
-//  Popover.swift
-//  MetronomeIdea
-//
-//  Created by Joey Berger on 5/26/20.
-//  Copyright © 2020 ashubin.com. All rights reserved.
-//
-
 import Foundation
 import UIKit
 
