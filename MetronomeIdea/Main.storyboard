@@ -558,7 +558,7 @@
                                 <constraints>
                                     <constraint firstAttribute="height" constant="43" id="Rxq-83-9t3"/>
                                 </constraints>
-                                <fontDescription key="fontDescription" name="Zapfino" family="Zapfino" pointSize="17"/>
+                                <fontDescription key="fontDescription" name="MarkerFelt-Thin" family="Marker Felt" pointSize="17"/>
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
@@ -842,10 +842,10 @@
         </scene>
     </scenes>
     <inferredMetricsTieBreakers>
-        <segue reference="Qxi-7Z-PL0"/>
+        <segue reference="FIG-8u-KQM"/>
     </inferredMetricsTieBreakers>
     <resources>
-        <image name="FretBoard12thPos.png" width="24.576000213623047" height="70.896003723144531"/>
+        <image name="FretBoard12thPos.png" width="1024" height="2954"/>
         <image name="icons8-guitar-strings-50" width="33" height="33"/>
         <image name="outline_settings_black_18dp-scaled" width="29" height="29"/>
         <image name="xmark" catalog="system" width="128" height="113"/>

@@ -1,7 +1,8 @@
 import AMPopTip
 import Foundation
+import StoreKit
 
-class PurchasePopover: UIViewController {
+class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTransactionObserver {
     var vc: MainViewController?
     var background = SpringImageView()
     var mainButton = SpringButton()
@@ -13,6 +14,8 @@ class PurchasePopover: UIViewController {
 
     var popoverVisible = false
     var mainPopoverState = ""
+    
+    var myProduct: SKProduct?
 
     convenience init() {
         self.init(ivc: nil)
@@ -109,10 +112,24 @@ class PurchasePopover: UIViewController {
     }
 
     @objc func handleButtonPress() {
-        let t:Any = 0
-        vc!.closeMainPopover(t)
-        onSucessfullPurchaseCompleted()
-        print("purchase pressed!!")
+        
+        //handle purchase
+        guard let myProduct = myProduct else {
+            return
+        }
+        
+        if SKPaymentQueue.canMakePayments() {
+            let payment = SKPayment(product: myProduct)
+            SKPaymentQueue.default().add(self)
+            SKPaymentQueue.default().add(payment)
+        } else {
+            return
+        }
+        
+//        let t:Any = 0
+//        vc!.closeMainPopover(t)
+//        onSucessfullPurchaseCompleted()
+//        print("purchase pressed!!")
     }
     
     func onSucessfullPurchaseCompleted() {
@@ -173,6 +190,50 @@ class PurchasePopover: UIViewController {
         }
         for (i,subtext) in isubText.enumerated() {
             subText[i].text = subtext
+        }
+    }
+    
+    //In-app purchases: https://www.youtube.com/watch?v=qyKmpr9EjwU
+    func fetchProducts() {
+        let request = SKProductsRequest(productIdentifiers: ["get this"])
+        request.delegate = self
+        request.start()
+    }
+    
+    func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
+        if let product =   response.products.first {
+            myProduct = product
+            print(product.productIdentifier)
+            print(product.price)
+            print(product.localizedTitle)
+            print(product.localizedDescription)
+        }
+    }
+    
+    func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
+        for transaction in transactions {
+            switch transaction.transactionState {
+            case .purchasing:
+                //do nothing
+                break
+            case .purchased, .restored:
+                let t:Any = 0
+                vc!.closeMainPopover(t)
+                onSucessfullPurchaseCompleted()
+                print("purchase pressed!!")
+                
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                break
+            case .failed, .deferred:
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                break
+            default :
+                SKPaymentQueue.default().finishTransaction(transaction)
+                SKPaymentQueue.default().remove(self)
+                break
+            }
         }
     }
 }

@@ -140,6 +140,10 @@ class ViewStyler: UIViewController {
         
         let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
         
+//        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "Marker Felt Thin", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
+        
+        
+        
 //        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "System-System", size: 25) ?? UIFont.systemFont(ofSize: 25),NSAttributedString.Key.paragraphStyle : paragraphStyle]
         
         inavigationConroller.navigationBar.titleTextAttributes = textAttributes

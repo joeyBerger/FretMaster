@@ -109,6 +109,7 @@ class MainViewController: UIViewController {
     var currentRecordingId = ""
     var prepareScene = ""
     var lastPickedFreePlayMenuIndex = 0
+    
 
     var buttonDict: [Int: String] = [ // this could probably just be an array
         0: "G#1",
@@ -1883,7 +1884,7 @@ class MainViewController: UIViewController {
                              "This Is The Next Note",
                              "This Is The Next Note",
                              "This Is The Next Note",
-                             "This Is The Last Note",
+                             "This Is The Next Note",
                              "This Is The Last Note",
                              "Tutorial Complete!"]
     }
