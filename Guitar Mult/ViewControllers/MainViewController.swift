@@ -1436,6 +1436,7 @@ class MainViewController: UIViewController {
                     resetButtonFrames()
                 }
                 if noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode > 1 || noteMismatch {
+                    ResultButton.isEnabled = false
                     let notesCorrect = sCollection!.analyzeNotes(iscaleTestData: noteCollectionTestData)
                     onTestComplete(itestPassed: notesCorrect)
                     var testResultStrs: [String] = []

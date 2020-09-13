@@ -46,7 +46,7 @@ class Metronome {
     let timeThreshold: [String: Double] = [
         "Easy": 0.1,
         "Medium": 0.075,
-        "Hard": 0.05,
+        "Hard": 0.035,
     ]
 
     func startMetro() {

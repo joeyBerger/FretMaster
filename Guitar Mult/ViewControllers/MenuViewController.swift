@@ -67,7 +67,14 @@ class MenuViewController: UIViewController {
 //            appVersion = data as! String
 //        }
         
-        print("in view did load")
+        for family: String in UIFont.familyNames
+        {
+            print(family)
+            for names: String in UIFont.fontNames(forFamilyName: family)
+            {
+                print("== \(names)")
+            }
+        }
         
         globalDataController.load()
         

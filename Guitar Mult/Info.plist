@@ -42,8 +42,7 @@
 	<key>UIAppFonts</key>
 	<array>
 		<string>MrsSheppards-Regular.ttf</string>
-		<string></string>
-		<string></string>
+		<string>Arizonia-Regular.ttf</string>
 	</array>
 </dict>
 </plist>

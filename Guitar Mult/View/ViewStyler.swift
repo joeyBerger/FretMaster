@@ -138,9 +138,9 @@ class ViewStyler: UIViewController {
         let paragraphStyle: NSMutableParagraphStyle = NSMutableParagraphStyle()
         paragraphStyle.alignment = NSTextAlignment.center
         
-        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
+//        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "MrsSheppards-Regular", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
         
-//        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "Marker Felt Thin", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
+        let textAttributes = [NSAttributedString.Key.foregroundColor: defaultColor.NavBarTitleColor, NSAttributedString.Key.font: UIFont(name: "Arizonia-Regular", size: ifontSize) ?? UIFont.systemFont(ofSize: ifontSize),NSAttributedString.Key.paragraphStyle : paragraphStyle]
         
         
         
