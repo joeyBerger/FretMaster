@@ -562,8 +562,8 @@
                                 <nil key="textColor"/>
                                 <nil key="highlightedColor"/>
                             </label>
-                            <button opaque="NO" contentMode="scaleToFill" misplaced="YES" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Byc-uW-gtp">
-                                <rect key="frame" x="78" y="166" width="255" height="33"/>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" translatesAutoresizingMaskIntoConstraints="NO" id="Byc-uW-gtp">
+                                <rect key="frame" x="78" y="166" width="255" height="34"/>
                                 <color key="backgroundColor" systemColor="systemOrangeColor" red="1" green="0.58431372550000005" blue="0.0" alpha="1" colorSpace="custom" customColorSpace="sRGB"/>
                                 <state key="normal" title="Button"/>
                                 <connections>
@@ -690,8 +690,8 @@
                                     <constraint firstAttribute="height" constant="286" id="gDp-Zm-dtb"/>
                                 </constraints>
                             </stackView>
-                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" misplaced="YES" image="FretBoard12thPos.png" translatesAutoresizingMaskIntoConstraints="NO" id="mtX-I4-btC" userLabel="Tall">
-                                <rect key="frame" x="78" y="207" width="255" height="689"/>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" verticalCompressionResistancePriority="749" image="FretBoard12thPos.png" translatesAutoresizingMaskIntoConstraints="NO" id="mtX-I4-btC" userLabel="Tall">
+                                <rect key="frame" x="78" y="201" width="255" height="695"/>
                             </imageView>
                         </subviews>
                         <color key="backgroundColor" systemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
