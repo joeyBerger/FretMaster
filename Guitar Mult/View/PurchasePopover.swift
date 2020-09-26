@@ -64,11 +64,12 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
         buttonText.textColor = defaultColor.MenuButtonTextColor
         vc!.styler!.addStandardLabelShadow(buttonText)
         
-        titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+10,width: background.frame.width, height: 65)
+        titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+20,width: background.frame.width, height: 65)
         titleText.text = "Guitar Mult"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
-        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
+//        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
+        titleText.font = UIFont(name:"Arizonia-Regular",size:50)
         titleText.textColor = defaultColor.FretMarkerStandard
         titleText.layer.shadowColor = UIColor.black.cgColor
         titleText.layer.shadowRadius = 3.0
@@ -80,20 +81,21 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
         subTitleText.text = "UNLOCK MORE FEATURES!"
         subTitleText.layer.zPosition = 502
         subTitleText.textAlignment = .center
-        subTitleText.font = buttonText.font.withSize(30)
+        subTitleText.font = buttonText.font.withSize(30+0)
         subTitleText.textColor = defaultColor.MenuButtonTextColor
         vc!.styler!.addStandardLabelShadow(subTitleText)
 
-        let subTextText = ["👍 UNLOCK ALL LEVELS!","😃 COMPLETE ACCESS TO APP","❤️ ALL FUTURE UPDATES FREE!"]
+        let subTextText = ["👍 UNLOCK ALL LEVELS!","😃 COMPLETE ACCESS TO APP!","❤️ ALL FUTURE UPDATES FREE!"]
         let subTextHeight:CGFloat = 50, subTextWidth:CGFloat = width * 0.95, subTextBuffer:CGFloat = 50
         for i in 0..<3 {
             subText.append(SpringLabel())
-            subText[i].frame = CGRect(x: (background.frame.width-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: background.frame.width, height: subTextHeight)
+//            subText[i].frame = CGRect(x: (background.frame.width-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: background.frame.width, height: subTextHeight)
+            subText[i].frame = CGRect(x: (screenWidth-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: subTextWidth, height: subTextHeight)
             subText[i].adjustsFontSizeToFitWidth = true
             subText[i].text = subTextText[i]
             subText[i].layer.zPosition = 502
             subText[i].textAlignment = .center
-            subText[i].font = subText[i].font.withSize(20)
+            subText[i].font = subText[i].font.withSize(20+3)
             subText[i].textColor = defaultColor.MenuButtonTextColor
             vc!.styler!.addStandardLabelShadow(subText[i])
         }

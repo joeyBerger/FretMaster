@@ -46,6 +46,7 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
             volumeSlider.minimumTrackTintColor = defaultColor.ProgressTrackColor
             //other color
             volumeSlider.maximumTrackTintColor = defaultColor.ProgressBarColor
+//            volumeSlider.backgroundColor = UIColor.black
             //Inverted::
             //main color
 //            volumeSlider.thumbTintColor = defaultColor.ProgressBarColor
@@ -58,6 +59,13 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
                 }
             }
             volumeSlider.setValue(volume.volumeTypes[volumeTypes[initialCheckmarkIdx]]!, animated: true)
+            let sliderBackgroundImage = UIImageView()
+            let backgroundHeight : CGFloat = 80
+            sliderBackgroundImage.frame = CGRect(x: 0, y: volumeSlider.frame.minY-(backgroundHeight-volumeSlider.frame.height)/2, width: UIScreen.main.bounds.size.width, height: backgroundHeight)
+//            sliderBackgroundImage.frame = CGRect(x: 0, y: 300, width: 300, height: 300)
+            sliderBackgroundImage.backgroundColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 0.65)
+            print(volumeSlider.frame)
+            view.addSubview(sliderBackgroundImage)
             view.addSubview(volumeSlider)
         }
     }

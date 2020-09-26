@@ -53,7 +53,6 @@ class Popover: UIViewController {
         mainButton.layer.cornerRadius = 8
         mainButton.addTarget(self, action: #selector(handleButtonPress), for: .touchDown)
         
-//        buttonText = UILabel()
         buttonText.frame = mainButton.frame
         buttonText.text = "LET'S GO!"
         buttonText.layer.zPosition = 502
@@ -62,25 +61,24 @@ class Popover: UIViewController {
         buttonText.textColor = defaultColor.MenuButtonTextColor
         vc!.styler!.addStandardLabelShadow(buttonText)
         
-//        titleText = UILabel()
-        titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+10,width: background.frame.width, height: 65)
+        titleText.frame = CGRect(x: background.frame.minX,y: background.frame.minY+20,width: background.frame.width, height: 65)
         titleText.text = "Guitar Mult"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
-        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
+//        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
+        titleText.font = UIFont(name:"Arizonia-Regular",size:50)
         titleText.textColor = defaultColor.FretMarkerStandard
         titleText.layer.shadowColor = UIColor.black.cgColor
         titleText.layer.shadowRadius = 3.0
         titleText.layer.shadowOpacity = 1.0
         titleText.layer.shadowOffset = CGSize(width: 4, height: 4)
         titleText.layer.masksToBounds = false
-        
-//        subTitleText = UILabel()
+
         subTitleText.frame = CGRect(x: background.frame.minX,y: titleText.frame.maxY,width: background.frame.width, height: 100)
         subTitleText.text = "TUTORIAL COMPLETE!"
         subTitleText.layer.zPosition = 502
         subTitleText.textAlignment = .center
-        subTitleText.font = buttonText.font.withSize(30)
+        subTitleText.font = buttonText.font.withSize(30+4)
         subTitleText.textColor = defaultColor.MenuButtonTextColor
         vc!.styler!.addStandardLabelShadow(subTitleText)
         
@@ -93,12 +91,11 @@ class Popover: UIViewController {
             subText[i].text = "TUTORIAL COMPLETE!"
             subText[i].layer.zPosition = 502
             subText[i].textAlignment = .center
-            subText[i].font = subText[i].font.withSize(20)
+            subText[i].font = subText[i].font.withSize(20+7)
             subText[i].textColor = defaultColor.MenuButtonTextColor
             vc!.styler!.addStandardLabelShadow(subText[i])
         }
-        
-//        xButton = SpringButton()
+
         let buttonSize:CGFloat = 30
         xButton.frame = CGRect(x: background.frame.maxX-buttonSize*1.5, y: background.frame.minY+buttonSize/2, width: buttonSize, height: buttonSize)
         xButton.layer.zPosition = 502

@@ -50,7 +50,8 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
         titleText.text = "Guitar Mult"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
-        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
+//        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
+        titleText.font = UIFont(name:"Arizonia-Regular",size:50)
         titleText.textColor = defaultColor.FretMarkerStandard
         titleText.layer.shadowColor = UIColor.black.cgColor
         titleText.layer.shadowRadius = 3.0
