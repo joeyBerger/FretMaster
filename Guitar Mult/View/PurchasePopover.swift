@@ -24,6 +24,7 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     init(ivc: UIViewController?) {
         vc = ivc as? MainViewController
         super.init(nibName: nil, bundle: nil)
+        fetchProducts()
     }
 
     required init?(coder aDecoder: NSCoder) {
@@ -197,9 +198,10 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     
     //In-app purchases: https://www.youtube.com/watch?v=qyKmpr9EjwU
     func fetchProducts() {
-        let request = SKProductsRequest(productIdentifiers: ["get this"])
+        let request = SKProductsRequest(productIdentifiers: ["com.GuitarMult.unlockfeatures"])
         request.delegate = self
         request.start()
+        print("in fetch products")
     }
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {

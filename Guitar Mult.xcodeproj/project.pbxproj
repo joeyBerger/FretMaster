@@ -25,6 +25,7 @@
 		9E56839C2436FC5C007070C4 /* SettingViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E56839B2436FC5C007070C4 /* SettingViewCell.swift */; };
 		9E57E05C247D624100DA4F4F /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E57E05B247D624100DA4F4F /* Popover.swift */; };
 		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
+		9E64624D254D1C62004A20C4 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E64624C254D1C62004A20C4 /* UserAPI.swift */; };
 		9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E69398D23A7DDB800C57B11 /* WaitThen.swift */; };
 		9E75ACCB24AB0060000CFB91 /* MrsSheppards-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */; };
 		9E7810A4250DCAE900E16F09 /* Arizonia-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E7810A3250DCAD100E16F09 /* Arizonia-Regular.ttf */; };
@@ -188,9 +189,8 @@
 		9EB463BF24C3E04F00530ABE /* FretBoard1stPos.png in Resources */ = {isa = PBXBuildFile; fileRef = 9EB463BD24C3E04E00530ABE /* FretBoard1stPos.png */; };
 		9EB463C224C41EF800530ABE /* PurchasePopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB463C124C41EF800530ABE /* PurchasePopover.swift */; };
 		9EB573412450095C00322305 /* PopupController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EB573402450095C00322305 /* PopupController.swift */; };
+		9EBC4118251FBD3800A4D411 /* StoreKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EBC4117251FBD3800A4D411 /* StoreKit.framework */; };
 		9EBCF8AD2429D09400074C4C /* LevelHandler.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EBCF8AC2429D09400074C4C /* LevelHandler.swift */; };
-		9ED2BC692470FF6C00D409DD /* SCLAlertView.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */; };
-		9ED2BC6A2470FF6C00D409DD /* SCLAlertView.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
 		9EDC0F3D2479D2D900257CFE /* DesignableTextView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC0F1F2479D2D300257CFE /* DesignableTextView.swift */; };
 		9EDC0F3E2479D2D900257CFE /* DesignableTabBarController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC0F202479D2D300257CFE /* DesignableTabBarController.swift */; };
 		9EDC0F402479D2D900257CFE /* Misc.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC0F222479D2D300257CFE /* Misc.swift */; };
@@ -221,7 +221,7 @@
 		9EDC0F592479D2D900257CFE /* AsyncButton.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EDC0F3C2479D2D900257CFE /* AsyncButton.swift */; };
 		9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EE71F35238B8B5B00D87D24 /* UserData.swift */; };
 		9EEF76B223AFE4AB00F00010 /* AMPopTip.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; };
-		9EEF76B323AFE4AB00F00010 /* AMPopTip.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; settings = {ATTRIBUTES = (CodeSignOnCopy, RemoveHeadersOnCopy, ); }; };
+		9EEF76B323AFE4AB00F00010 /* AMPopTip.framework in Embed Frameworks */ = {isa = PBXBuildFile; fileRef = 9EEF76AB23AFE2FF00F00010 /* AMPopTip.framework */; settings = {ATTRIBUTES = (RemoveHeadersOnCopy, ); }; };
 		9EF769F524E0446500F6B238 /* SnowParticle.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9EF769F424E0446500F6B238 /* SnowParticle.swift */; };
 		B8A6184F20DB9E2A00AF33C5 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = B8A6184E20DB9E2A00AF33C5 /* AppDelegate.swift */; };
 		B8A6185620DB9E2B00AF33C5 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = B8A6185520DB9E2B00AF33C5 /* Assets.xcassets */; };
@@ -238,7 +238,6 @@
 			dstSubfolderSpec = 10;
 			files = (
 				9EEF76B323AFE4AB00F00010 /* AMPopTip.framework in Embed Frameworks */,
-				9ED2BC6A2470FF6C00D409DD /* SCLAlertView.framework in Embed Frameworks */,
 			);
 			name = "Embed Frameworks";
 			runOnlyForDeploymentPostprocessing = 0;
@@ -265,6 +264,7 @@
 		9E56839B2436FC5C007070C4 /* SettingViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SettingViewCell.swift; sourceTree = "<group>"; };
 		9E57E05B247D624100DA4F4F /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
+		9E64624C254D1C62004A20C4 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
 		9E69398D23A7DDB800C57B11 /* WaitThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitThen.swift; sourceTree = "<group>"; };
 		9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MrsSheppards-Regular.ttf"; sourceTree = "<group>"; };
 		9E7810A3250DCAD100E16F09 /* Arizonia-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arizonia-Regular.ttf"; sourceTree = "<group>"; };
@@ -428,6 +428,7 @@
 		9EB463BD24C3E04E00530ABE /* FretBoard1stPos.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = FretBoard1stPos.png; sourceTree = "<group>"; };
 		9EB463C124C41EF800530ABE /* PurchasePopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PurchasePopover.swift; sourceTree = "<group>"; };
 		9EB573402450095C00322305 /* PopupController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PopupController.swift; sourceTree = "<group>"; };
+		9EBC4117251FBD3800A4D411 /* StoreKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = StoreKit.framework; path = System/Library/Frameworks/StoreKit.framework; sourceTree = SDKROOT; };
 		9EBCF8AC2429D09400074C4C /* LevelHandler.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = LevelHandler.swift; sourceTree = "<group>"; };
 		9ED2BC682470FF6C00D409DD /* SCLAlertView.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = SCLAlertView.framework; path = Carthage/Build/iOS/SCLAlertView.framework; sourceTree = "<group>"; };
 		9EDC0F1F2479D2D300257CFE /* DesignableTextView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DesignableTextView.swift; sourceTree = "<group>"; };
@@ -478,9 +479,9 @@
 			files = (
 				9E470D8924A71F7700D35F8A /* libc++.tbd in Frameworks */,
 				9E470D8524A71D5F00D35F8A /* AudioKit.framework in Frameworks */,
+				9EBC4118251FBD3800A4D411 /* StoreKit.framework in Frameworks */,
 				9E470D8224A717DD00D35F8A /* AudioKitUI.framework in Frameworks */,
 				9EEF76B223AFE4AB00F00010 /* AMPopTip.framework in Frameworks */,
-				9ED2BC692470FF6C00D409DD /* SCLAlertView.framework in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -724,6 +725,7 @@
 				9E44D7BC2454C80200911515 /* DataController.swift */,
 				9E44D7C02454F05900911515 /* Volume.swift */,
 				9E44D7B92454AD6800911515 /* ImageModel.xcdatamodeld */,
+				9E64624C254D1C62004A20C4 /* UserAPI.swift */,
 			);
 			path = Model;
 			sourceTree = "<group>";
@@ -826,6 +828,7 @@
 		9EEF76AA23AFE2FF00F00010 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				9EBC4117251FBD3800A4D411 /* StoreKit.framework */,
 				9E470D8824A71F7700D35F8A /* libc++.tbd */,
 				9E470D8624A71F0E00D35F8A /* libAudioToolboxUtility.tbd */,
 				9E470D8424A71D5F00D35F8A /* AudioKit.framework */,
@@ -897,6 +900,7 @@
 				B8A6184820DB9E2A00AF33C5 /* Frameworks */,
 				B8A6184920DB9E2A00AF33C5 /* Resources */,
 				9EEF76B423AFE4AB00F00010 /* Embed Frameworks */,
+				9E93D40B251F0F42002DE412 /* ShellScript */,
 			);
 			buildRules = (
 			);
@@ -1108,6 +1112,27 @@
 		};
 /* End PBXResourcesBuildPhase section */
 
+/* Begin PBXShellScriptBuildPhase section */
+		9E93D40B251F0F42002DE412 /* ShellScript */ = {
+			isa = PBXShellScriptBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			inputFileListPaths = (
+			);
+			inputPaths = (
+				"$(SRCROOT)/Carthage/Build/iOS/AMPopTip.framework",
+			);
+			outputFileListPaths = (
+			);
+			outputPaths = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+			shellPath = /bin/sh;
+			shellScript = "/usr/local/bin/carthage copy-frameworks\n";
+		};
+/* End PBXShellScriptBuildPhase section */
+
 /* Begin PBXSourcesBuildPhase section */
 		B8A6184720DB9E2A00AF33C5 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
@@ -1116,6 +1141,7 @@
 				9E0D26C72435AF1B00595BC9 /* ViewStyler.swift in Sources */,
 				9E44D7BF2454EA0F00911515 /* VolumeSettingsViewController.swift in Sources */,
 				9EDC0F592479D2D900257CFE /* AsyncButton.swift in Sources */,
+				9E64624D254D1C62004A20C4 /* UserAPI.swift in Sources */,
 				9EF769F524E0446500F6B238 /* SnowParticle.swift in Sources */,
 				9EA604CD24A950D200900821 /* LoadingViewController.swift in Sources */,
 				9E44D7BB2454AD6800911515 /* ImageModel.xcdatamodeld in Sources */,
@@ -1307,6 +1333,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2AZ8JTZ3QU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1332,6 +1359,7 @@
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				BUILD_LIBRARY_FOR_DISTRIBUTION = YES;
 				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 4;
 				DEVELOPMENT_TEAM = 2AZ8JTZ3QU;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",

@@ -2,7 +2,7 @@
 import AVFoundation
 import Foundation
 import UIKit
-import SCLAlertView
+//import SCLAlertView
 import CoreData
 
 class MainViewController: UIViewController {

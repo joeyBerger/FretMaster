@@ -66,7 +66,7 @@ class MenuViewController: UIViewController {
 //        } else {
 //            appVersion = data as! String
 //        }
-
+        
         globalDataController.load()
         
         setupHiddenButtons()
@@ -118,6 +118,22 @@ class MenuViewController: UIViewController {
                 if UserDefaults.standard.object(forKey: "currentAppVersion") != nil {
                      appUnlocked = UserDefaults.standard.object(forKey: "currentAppVersion") as! String
                 }
+                
+                var id = "noID"
+                if UserDefaults.standard.object(forKey: "id") != nil {
+                      id = UserDefaults.standard.object(forKey: "id") as! String
+                  }
+                
+                let data : [String:Any] = [
+                    "scaleLevel" : userLevelData.scaleLevel,
+                    "arpeggioLevel" : userLevelData.arpeggioLevel,
+                    "intervalLevel" : userLevelData.intervalLevel,
+                    "et_scales" : userLevelData.et_scales,
+                    "et_chords" : userLevelData.et_chords,
+                    "appUnlocked" : appUnlocked,
+                    "id" : id,
+                ]
+                UserAPI.postAPIRequest("updateUserData",data)
             }
         } else {
             print("brand new data")
@@ -128,8 +144,21 @@ class MenuViewController: UIViewController {
             }
             UserDefaults.standard.set(currentAppVersion, forKey: "downloadedVersion")
             UserDefaults.standard.set("0", forKey: "appUnlocked")
+            let identifier = UUID()
+            UserDefaults.standard.set(identifier.uuidString, forKey: "id")
+            
+            let data : [String:Any] = [
+                 "scaleLevel" : "",
+                 "arpeggioLevel" : "",
+                 "intervalLevel" : "",
+                 "et_scales" : "",
+                 "et_chords" : "",
+                 "appUnlocked" : "",
+                 "id" : identifier.uuidString,
+            ]
+            UserAPI.postAPIRequest("postInitialData",data)
         }
-
+        
         // update button info
         let lc = LevelConstruct()
         let styler = ViewStyler(ivc: self)
