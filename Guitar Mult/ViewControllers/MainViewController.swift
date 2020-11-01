@@ -200,6 +200,8 @@ class MainViewController: UIViewController {
     var fretOffset = 0
     var defaultFretOffset = 5
     var fretOffsetList: [String] = []
+        
+    var viewingNoteCollection = false
     
     let titleTextDict : [String : String] = [
         "scaleLevel" : "Scales",
@@ -1318,6 +1320,7 @@ class MainViewController: UIViewController {
                 return
             }
         }
+        wt.stopWaitThenOfType(iselector: #selector(setupCurrentTask) as Selector)
         met!.endMetronome()
         setNavBarColor()
         wt.stopWaitThenOfType(iselector: #selector(et!.beginEarTrainingHelper) as Selector)
@@ -1793,7 +1796,6 @@ class MainViewController: UIViewController {
             popover?.setupPopoverText(isubtitle: "Tutorial Complete!", isubText: ["✅ Complete levels to advance", "🕹 Levels will increase in difficulty!","🎵 Let's try Minor Pentatonic by yourself!"])
             pc!.tutorialPopup.hide()
         } else if type == "LevelFullyComplete" {
-//            let key = (lc.currentLevelKey?.replacingOccurrences(of: "Level", with: ""))! + "s"
             popover?.setupPopoverText(isubtitle: "Level Complete!", isubText: ["✅ All Levels Passed!", "🎸 Fantastic Job!", "🎵 Keep Practing Hard!"])
         }
         
@@ -2311,6 +2313,9 @@ class MainViewController: UIViewController {
         for (i,_) in modifiedNoteCollection.enumerated() {
             wt.waitThen(itime: Double(i)*waitTime, itarget: self, imethod: #selector(displaySingleFretMarkerWrapper) as Selector, irepeats: false, idict: ["arg1": modifiedNoteCollection[i] as AnyObject,"arg2": true as AnyObject, "arg3": itype as AnyObject])
         }
+//        for button in fretButtonDict {
+//            button.value.isEnabled = true
+//        }
     }
     
     @objc func displaySingleFretMarkerWrapper(timer: Timer) {

@@ -94,7 +94,6 @@ class SettingsViewController: UIViewController {
         styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
         
         buttonArr = [Button0, Button1, Button2, Button3, Button4]
-//        buttonArr = [Button0, Button1, Button2, Button4]
         styler!.spaceButtons(buttonArr,navigationController!)
         for (i, button) in buttonArr.enumerated() {
             let subText = UILabel()
@@ -112,8 +111,6 @@ class SettingsViewController: UIViewController {
                 iprogressAmount: -1.0
             )
         }
-        
-//        Button3.isHidden = true
     }
     
     override func viewDidAppear(_ animated: Bool) {

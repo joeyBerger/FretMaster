@@ -45,7 +45,7 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
             volumeSlider.thumbTintColor = defaultColor.ProgressTrackColor
             volumeSlider.minimumTrackTintColor = defaultColor.ProgressTrackColor
             //other color
-            volumeSlider.maximumTrackTintColor = defaultColor.ProgressBarColor
+            volumeSlider.maximumTrackTintColor = UIColor.gray //defaultColor.ProgressBarColor
 //            volumeSlider.backgroundColor = UIColor.black
             //Inverted::
             //main color

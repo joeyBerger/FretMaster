@@ -47,4 +47,36 @@ class UserLevelData: NSObject, NSCoding {
         }
         self.init(scaleLevel: scaleLevel, arpeggioLevel: arpeggioLevel, intervalLevel: intervalLevel, et_scales: et_scales, et_chords: et_chords, tutorialComplete: tutorialComplete)
     }
+    
+    func updateValueOnAPIRequest(_ id : String, _ val : String ) {
+        switch id {
+            case "scaleLevel":
+                scaleLevel = val
+                break
+            case "arpeggioLevel":
+                scaleLevel = val
+                break
+            case "intervalLevel":
+                scaleLevel = val
+                break
+            case "et_scales":
+                scaleLevel = val
+                break
+            case "et_chords":
+                scaleLevel = val
+                break
+            case "tutorialComplete":
+                appUnlocked = val
+                break
+            case "appUnlocked":
+                appUnlocked = val
+                break
+            case "currentAppVersion":
+                appUnlocked = val
+                break
+            default:
+                break
+        }
+        UserDefaults.standard.set(val, forKey: id)
+    }
 }

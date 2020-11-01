@@ -47,7 +47,7 @@ class EarTraining {
         }
         
         vc!.onTestComplete(itestPassed: testPassed)
-        let waitTime = 0.5
+        let waitTime = 0.25
         vc!.wt.waitThen(itime: waitTime, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": testPassed as AnyObject, "testResultStrs": resultTextArr as AnyObject])
         vc!.wt.waitThen(itime: waitTime, itarget: vc!, imethod: #selector(vc!.presentEarTrainingFretMarkers) as Selector, irepeats: false, idict: ["notesCorrect": testPassed as AnyObject])
     }

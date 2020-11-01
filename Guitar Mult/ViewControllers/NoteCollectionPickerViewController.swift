@@ -15,6 +15,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     var backgroundImageID = 4
     var recordingInfo: [String] = []
     var vc: MainViewController?
+    var navigatingToPaywall = false
     
     let titleTextDict : [String : String] = [
         "recordingPicker" : "Recordings",
@@ -31,7 +32,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
-        
+                
         var tableView = scaleTableView
         if self.restorationIdentifier == "arpeggioPicker" {
             tableView = arpeggioTableView
@@ -108,6 +109,8 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated)
+        navigatingToPaywall = false
+        vc!.viewingNoteCollection = true
         if !self.restorationIdentifier!.contains("record") {
             let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
             selectedCell = -1
@@ -119,12 +122,13 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
             }
             currentTableView.reloadData()
         }
+        print(vc!.currentState)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
         if navigationController?.viewControllers.index(of: self) == nil && selectedCell > -1 && !self.restorationIdentifier!.contains("record") {
             UserDefaults.standard.set(pickerList[selectedCell], forKey: "freePlayNoteCollection")
-        } else if self.restorationIdentifier!.contains("record") && selectedCell > -1 {
+        } else if self.restorationIdentifier!.contains("record") && selectedCell > -1 && navigatingToPaywall == false {
             vc!.handleFretOffsetChange()
         }
         switch self.restorationIdentifier! {
@@ -135,6 +139,9 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         default:
             vc?.lastPickedFreePlayMenuIndex = 2
         }
+        metronome2.stop()
+        metronome2.reset()
+        vc!.viewingNoteCollection = false
         vc?.wt.stopWaitThenOfType(iselector: #selector(vc?.playSoundHelper) as Selector)
         UIView.setAnimationsEnabled(false)
         super.viewWillDisappear(animated)
@@ -169,6 +176,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if appUnlocked == "0" && indexPath.row > paywallThreshold[self.restorationIdentifier!]! {
             navigationController?.popViewController(animated: false)
+            navigatingToPaywall = true
             vc?.presentPaywallPopover();
             return
         }
@@ -189,7 +197,14 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         //play sound upon press
         vc?.wt.stopWaitThenOfType(iselector: #selector(vc?.playSoundHelper) as Selector)
         if self.restorationIdentifier == "scalePicker" || self.restorationIdentifier == "arpeggioPicker"  {
-            vc?.setupMenuNoteCollectionPlayback(iinput: pickerList[indexPath.row])
+            if appUnlocked == "0" && indexPath.row > paywallThreshold[self.restorationIdentifier!]! {
+                metronome2.stop()
+                metronome2.reset()
+            } else {
+                vc?.specifiedNoteCollection = vc?.sCollection!.setupSpecifiedNoteCollection(iinput: pickerList[indexPath.row], idirection: "up", istartingNote: "A1") as! [String]
+                vc?.met?.startMetro()
+                metronome2.tempo = 300
+            }
         } else {
             vc?.currentRecordingId = pickerList[selectedCell]
             if vc?.currentRecordingId != "" {

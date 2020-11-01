@@ -58,6 +58,16 @@ class Metronome {
     }
     
     func tick() {
+        if vc!.viewingNoteCollection {
+            var str = vc!.specifiedNoteCollection[currentClick]
+            str = vc!.sCollection?.returnOffsetFretNote(str,vc!.fretOffset) as! String
+            vc!.sc.playSound(isoundName: str + "_" + vc!.guitarTone, ivolume: volume.volumeTypes["masterVol"]! * volume.volumeTypes["guitarVol"]!, ioneShot: true, ifadeAllOtherSoundsDuration: 0.1)
+            if currentClick == vc!.specifiedNoteCollection.count - 1 {
+                endMetronome()
+            }
+            currentClick = currentClick + 1
+            return
+        }
         if vc!.currentState == MainViewController.State.PlayingNotesCollection {
             var str = vc!.specifiedNoteCollection[currentClick]
             str = vc!.sCollection?.returnOffsetFretNote(str,vc!.fretOffset) as! String
@@ -92,7 +102,6 @@ class Metronome {
                 vc!.ResultsLabel.text = "GO!"
             }
             if currentClick >= 4 {
-                print("recording active click here")
                 clickTime.append(CFAbsoluteTimeGetCurrent())
             }
             if currentClick == countInClick + vc!.specifiedNoteCollection.count - 1 {
@@ -148,6 +157,11 @@ class Metronome {
             }
         }
         let notesCorrect = notesMatch && timeAcurracyMet
+        if (notesCorrect) {
+//            for button in vc!.fretButtonDict {
+//                button.value.isEnabled = false
+//            }
+        }
         vc!.onTestComplete(itestPassed: notesCorrect, iflashRed: true)
         vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
         if notesCorrect {

@@ -59,13 +59,6 @@ class MenuViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
-       
-//        let data = UserDefaults.standard.object(forKey: "appVersion")
-//        if data == nil {
-//            UserDefaults.standard.set(currentAppVersion, forKey: "appVersion")
-//        } else {
-//            appVersion = data as! String
-//        }
         
         globalDataController.load()
         
@@ -80,6 +73,9 @@ class MenuViewController: UIViewController {
         }
         styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(Int.random(in: 0 ..< 7)).jpg")
         styler.spaceButtons(buttonArr,navigationController!)
+        
+        let data : [String:Any] = [:]
+        UserAPI.getAPIRequest("requestLevelUpdate",data)
     }
     
 
@@ -116,7 +112,7 @@ class MenuViewController: UIViewController {
                     appUnlocked = UserDefaults.standard.object(forKey: "appUnlocked") as! String
                 }
                 if UserDefaults.standard.object(forKey: "currentAppVersion") != nil {
-                     appUnlocked = UserDefaults.standard.object(forKey: "currentAppVersion") as! String
+                     currentAppVersion = UserDefaults.standard.object(forKey: "currentAppVersion") as! String
                 }
                 
                 var id = "noID"
@@ -281,7 +277,11 @@ class MenuViewController: UIViewController {
     }
 
     func returnLevelStr(ilc: LevelConstruct, ikey: String, ilevel: Int) -> String {
-        return "L\(ilevel + 1) - \(ilc.currentLevelName[ikey]![ilevel].uppercased())"
+        var levelText = ilc.currentLevelName[ikey]![ilevel].uppercased()
+        if (ikey == "intervals") {
+            levelText = levelText.replacingOccurrences(of: "B", with: "b")
+        }
+        return "L\(ilevel + 1) - \(levelText)"
     }
 
     func setupHiddenButtons() {
