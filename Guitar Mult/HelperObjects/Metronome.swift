@@ -1,12 +1,14 @@
 import AVFoundation
-import AudioKitUI
+//import AudioKitUI
 import AudioKit
 
 var metronome2 = AKMetronome()
 
+
 class Metronome {
     var vc: MainViewController?
-
+    
+    
     var previousClick = CFAbsoluteTimeGetCurrent()
     var clickTime : [Double] = []
     var userInputTime = CFAbsoluteTimeGetCurrent()
@@ -30,6 +32,7 @@ class Metronome {
             metronome2.frequency2 = 0
             AudioKit.output = metronome2
             audioKitStarted = true
+            AKSettings.bufferLength = .veryShort
         }
         do {
             try AudioKit.start()
@@ -159,13 +162,14 @@ class Metronome {
         let notesCorrect = notesMatch && timeAcurracyMet
         if (notesCorrect) {
 //            for button in vc!.fretButtonDict {
-//                button.value.isEnabled = false
+//                button.value.isEnabled = falsex
 //            }
+             vc!.setupUpDelayedNoteCollectionView(vc!.specifiedNoteCollection.uniques,"postSuccess");
         }
         vc!.onTestComplete(itestPassed: notesCorrect, iflashRed: true)
         vc!.wt.waitThen(itime: 0.5, itarget: vc!, imethod: #selector(vc!.presentTestResult) as Selector, irepeats: false, idict: ["notesCorrect": notesCorrect as AnyObject, "testResultStrs": testResultStrs as AnyObject])
         if notesCorrect {
-            vc!.setupUpDelayedNoteCollectionView(vc!.specifiedNoteCollection.uniques,"postSuccess");
+//            vc!.setupUpDelayedNoteCollectionView(vc!.specifiedNoteCollection.uniques,"postSuccess");
         }
     }
 }

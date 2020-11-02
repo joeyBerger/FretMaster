@@ -69,7 +69,7 @@ class ScaleCollection {
         "Mixolydian": "Mixolydian",
         "Aeolian": "Aeolian",
         "Locrian": "Locrian",
-        
+       
         "PentatonicModeIII": "Pent. Mode III",
         "PentatonicModeIV": "Pent. Mode IV",
         "PentatonicModeV": "Pent. Mode V",
@@ -218,7 +218,7 @@ class ScaleCollection {
         "DominantSeventhArp": ["1", "3", "5", "b7"],
         "MinorMajorSeventhArp": ["1", "b3", "5", "7"],
         "HalfDiminishedArp": ["1", "b3", "b5", "b7"],
-        "FullyDiminishedArp": ["1", "b3", "b5", "6"],
+        "FullDiminishedArp": ["1", "b3", "b5", "6"],
 
         "Chromatic": ["1", "b2", "2", "b3", "3", "4", "#4", "5", "#5", "6", "b7", "7"],
     ]
@@ -398,7 +398,9 @@ class ScaleCollection {
         }
         
         //thirds
+        var thirdsInUse = false
         if idata["sequence"] != nil {
+            thirdsInUse = true
             var sequenceArr: [String] = []
             for (i,_) in newNoteCollection.enumerated() {
                 sequenceArr.append(newNoteCollection[i])
@@ -418,7 +420,7 @@ class ScaleCollection {
             newNoteCollection = sequenceArr
         }
         
-        if vc!.lc.currentLevelKey!.contains("scale") || vc!.lc.currentLevelKey!.contains("arpeggio") || vc!.lc.currentLevelKey!.contains("freePlay")  {
+        if ((vc!.lc.currentLevelKey!.contains("scale") || vc!.lc.currentLevelKey!.contains("arpeggio") || vc!.lc.currentLevelKey!.contains("freePlay")) && !thirdsInUse) {
             newNoteCollection = covertDSharpThreeToValidNote(newNoteCollection, parsedInput)
             newNoteCollection = tryToAddNoteAboveRoot(newNoteCollection,parsedInput,idirection)
         }
@@ -525,7 +527,10 @@ class ScaleCollection {
         }
         for (i, item) in iscaleTestData.enumerated() {
             if item.note != vc!.specifiedNoteCollection[i] {
-                return false
+                if item.note.contains("D#3") && vc!.specifiedNoteCollection[i].contains("D#3") {
+                } else {
+                    return false
+                }
             }
         }
         return true

@@ -45,7 +45,7 @@ class MenuViewController: UIViewController {
     var menuButtonSubtext: [UILabel] = []
     var menuButtonProgress: [UIProgressView] = []
 
-    var developmentMode = 1
+    var developmentMode = 0//1
 
     var tutorialCompleteStatus = true
     var levelArr: [Int] = []
@@ -63,6 +63,7 @@ class MenuViewController: UIViewController {
         globalDataController.load()
         
         setupHiddenButtons()
+//        resetData()
 
         let styler = ViewStyler(ivc: self)
         buttonArr = [Button0, Button1, Button2, Button3, Button4]
@@ -100,6 +101,9 @@ class MenuViewController: UIViewController {
                 userLevelData.intervalLevel = intervalLevel as! String
                 userLevelData.et_scales = et_scales as! String
                 userLevelData.et_chords = et_chords as! String
+                
+//                print("temp! setting of level")
+//                userLevelData.intervalLevel = "0.0"
 
                 if tutorialComplete != nil {
                     userLevelData.tutorialComplete = tutorialComplete as! String
@@ -110,6 +114,10 @@ class MenuViewController: UIViewController {
                 
                 if UserDefaults.standard.object(forKey: "appUnlocked") != nil {
                     appUnlocked = UserDefaults.standard.object(forKey: "appUnlocked") as! String
+                    if developmentMode == 2 {
+                        print("temp! setting of appUnlocked")
+                        appUnlocked = "1.0"
+                    }
                 }
                 if UserDefaults.standard.object(forKey: "currentAppVersion") != nil {
                      currentAppVersion = UserDefaults.standard.object(forKey: "currentAppVersion") as! String

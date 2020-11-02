@@ -547,6 +547,9 @@ class MainViewController: UIViewController {
             }
         } else if lc.currentLevelKey!.contains("scale") || lc.currentLevelKey!.contains("arpeggio") {
             resultsLabelDefaultText = sCollection!.returnReadableScaleName(iinput: trimmedTask)
+            if task.contains("Thirds") {
+                resultsLabelDefaultText = resultsLabelDefaultText + " in Thirds"
+            }
             tempoActive = parseTempoStatus(iinput: task)
             if tempoActive {
                 met!.bpm = Double(parseTempo(iinput: task))!
@@ -1421,6 +1424,7 @@ class MainViewController: UIViewController {
             if currentState == State.NotesTestActive_Tempo, noteCollectionTestData.count < specifiedNoteCollection.count {
                 let st = InputData()
                 st.note = buttonDict[inputNumb]!
+                
                 st.time = 0
                 noteCollectionTestData.append(st)
                 recordUserFretDownTime()
@@ -1434,9 +1438,13 @@ class MainViewController: UIViewController {
 
                 var noteMismatch = false
                 if st.note != specifiedNoteCollection[noteCollectionTestData.count - 1] {
-                    noteMismatch = true
-                    flashActionOverlay(isuccess: false)
-                    resetButtonFrames()
+                    if st.note.contains("D#3") && specifiedNoteCollection[noteCollectionTestData.count - 1].contains("D#3") {
+                        noteCollectionTestData[noteCollectionTestData.count - 1].note = specifiedNoteCollection[noteCollectionTestData.count - 1]
+                    } else {
+                        noteMismatch = true
+                        flashActionOverlay(isuccess: false)
+                        resetButtonFrames()
+                    }
                 }
                 if noteCollectionTestData.count == specifiedNoteCollection.count || developmentMode > 1 || noteMismatch {
                     ResultButton.isEnabled = false
@@ -1514,6 +1522,7 @@ class MainViewController: UIViewController {
     }
 
     @objc func presentTestResult(timer: Timer) {
+        print("presentTestResult presentTestResult")
         ResultButton.isEnabled = true
         var testPassed = false
         let resultObj = timer.userInfo as! [String: AnyObject]

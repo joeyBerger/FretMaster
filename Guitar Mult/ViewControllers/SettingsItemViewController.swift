@@ -40,19 +40,9 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
             volumeSlider = UISlider(frame:CGRect(x: 0, y: 0, width: width, height: 20))
             volumeSlider.center = self.view.center
             volumeSlider.addTarget(self, action: #selector(onSliderChange(_:)), for: .valueChanged)
-//            volumeSlider.tintColor = UIColor.green
-            //main color
             volumeSlider.thumbTintColor = defaultColor.ProgressTrackColor
             volumeSlider.minimumTrackTintColor = defaultColor.ProgressTrackColor
-            //other color
             volumeSlider.maximumTrackTintColor = UIColor.gray //defaultColor.ProgressBarColor
-//            volumeSlider.backgroundColor = UIColor.black
-            //Inverted::
-            //main color
-//            volumeSlider.thumbTintColor = defaultColor.ProgressBarColor
-//            volumeSlider.minimumTrackTintColor = defaultColor.ProgressBarColor
-            //other color
-//            volumeSlider.maximumTrackTintColor = defaultColor.ProgressTrackColor
             for volStr in volume.volumeTypes.keys {
                 if UserDefaults.standard.object(forKey: volStr) != nil {
                     volume.volumeTypes[volStr] = (UserDefaults.standard.object(forKey: volStr) as! Float)
@@ -67,6 +57,21 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
             print(volumeSlider.frame)
             view.addSubview(sliderBackgroundImage)
             view.addSubview(volumeSlider)
+        } else if settingsType! == "rhythmicAccuracy" {
+            let screenRect = UIScreen.main.bounds
+            let screenWidth = screenRect.size.width
+            let screenHeight = screenRect.size.height
+            let idLabel = UILabel()
+            idLabel.text = ""
+            if UserDefaults.standard.object(forKey: "id") != nil {
+                  idLabel.text = UserDefaults.standard.object(forKey: "id") as! String
+              }
+            idLabel.font = UIFont(name: idLabel.font.fontName, size: 15)
+            idLabel.textColor = UIColor.red
+            idLabel.textAlignment = .center
+            let width:CGFloat = screenWidth, height:CGFloat = 50
+            idLabel.frame = CGRect(x: screenWidth/2 - width/2, y: (screenHeight-0)-height, width: width, height: height)
+            view.addSubview(idLabel)
         }
     }
     

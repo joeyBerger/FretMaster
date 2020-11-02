@@ -129,10 +129,11 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
             return
         }
         
-//        let t:Any = 0
-//        vc!.closeMainPopover(t)
-//        onSucessfullPurchaseCompleted()
-//        print("purchase pressed!!")
+        #if DEBUG
+            onSucessfullPurchaseCompleted()
+        #else
+        
+        #endif
     }
     
     func onSucessfullPurchaseCompleted() {
@@ -216,6 +217,7 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
+            print("paymentQueue",transaction.transactionState)
             switch transaction.transactionState {
             case .purchasing:
                 //do nothing

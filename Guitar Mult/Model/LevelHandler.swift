@@ -202,51 +202,31 @@ class LevelConstruct: UIViewController {
             "Maj/Min Scale",
             "Pentatonic And Maj/Min",
             "Previous Up/Down",
-            "Previous - Random",
             "Previous Up/Down, 120 BPM",
             "Pentatonic Modes Up",
             "Pent Modes Up/Down",
-            "Pent Modes Random",
             "Pent Modes Up/Down, 120 BPM",
-            "Pent Modes Random, 120 BOM",
-            "Pent Modes Random, 120 BOM",
-            "All Modes Up",
+            "Previous Random, 120 BPM",
             "All Modes Up/Down",
             "All Modes Random",
-            "All Modes Random",
-            "All Modes Random",
-            "All Modes, 120 BPM",
             "All Modes Random, 120 BPM",
             "All Modes Random, 150 BPM",
             "All Modes Random, 180 BPM",
-            "All Pent Modes And Modes Random",
-            "All Pent Modes And Modes Random",
-            "Previos, 120 BPM",
-            "Previos, 150 BPM",
-            "Previos, 180 BPM",
             "Maj/Min Scales In 3rds",
-            "Modes In 3rds",
-            "Modes In 3rds",
             "All Modes In 3rds",
             "All Modes In 3rds Random",
             "All Modes In 3rds Random",
             "Previous 120 BPM Random",
-            "Previous 120 BPM Random",
             "Previous 150 BPM Random",
-            "Previous 150 BPM Random",
-            "Previous 180 BPM Random",
             "Previous 180 BPM Random",
             "HarmonicM/Melodic Min Up",
             "HarmonicM/Melodic Min Up/Down",
             "Previous, 120 BPM",
             "Minor Scales Up/Down Random",
-            "Minor Scales Up/Down Random",
-            "Previous 120 BPM Random",
-            "Previous 150 BPM Random",
-            "Previous 180 BPM Random",
+            "Minor Scales Up/Down 150 BPM Random",
+            "Minor Scales Up/Down 180 BPM Random",
             "Dim And Whole Tone Up",
             "Previous, Up/Down",
-            "Dim And Whole Tone, 120 BPM Random",
             "Dim And Whole Tone, 150 BPM Random",
             "Dim And Whole Tone, 180 BPM Random",
             "Melodic Minor Modes Up",
@@ -259,6 +239,7 @@ class LevelConstruct: UIViewController {
             "Harmonic Minor Modes, 180 BPM Random",
             "World Music Scales Up",
             "World Music Scales Up/Down",
+            "All Scales Up/Down",
             "All Scales, 180 BPM",
             "All Scales, 230 BPM",
         ],
@@ -267,7 +248,6 @@ class LevelConstruct: UIViewController {
             "Maj/Min-7th",
             "Previous Up",
             "Previous Up/Down",
-            "Previous Up, 120 BPM",
             "Previous Up/Down, 120 BPM",
             "Dom,MinMaj7th Up",
             "Previous Up/Down",
@@ -281,8 +261,8 @@ class LevelConstruct: UIViewController {
             "Previous Up, 120 BPM",
             "Previous Up/Down, 120 BPM",
             "Dom,MinMaj,HalfDim,FullDim-7th Up/Down",
-            "Previous Up/Down, 120 BPM",
-            "All 7th Arpeggios Up/Down, 120 BPM",
+            "Previous Up/Down, 160 BPM",
+            "All 7th Arpeggios Up/Down, 180 BPM",
             "Maj Inversions Up",
             "Min Inversions Up",
             "Maj Inversions Up/Down",
@@ -324,105 +304,60 @@ class LevelConstruct: UIViewController {
     ]
 
     let scale = [
-        ["MinorPentatonic_Up"],
-        ["MajorPentatonic_Up"],
-        ["Ionian_Up", "Aeolian_Up"],
-        ["MinorPentatonic_Both", "MajorPentatonic_Both", "Ionian_Both", "Aeolian_Both"],
-        ["Ionian_Both", "MajorPentatonic_Both", "Aeolian_Both", "MinorPentatonic_Both"],
-        ["MinorPentatonic_Up_Tempo:120", "MajorPentatonic_Up_Tempo:120", "Ionian_Up_Tempo:120", "Aeolian_Up_Tempo:120"],
-        ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "Ionian_Both_Tempo:120", "Aeolian_Both_Tempo:120"],
-        ["PentatonicModeIII_Up","PentatonicModeIV_Up","PentatonicModeV_Up"],
-        ["MinorPentatonic_Both", "MajorPentatonic_Both","PentatonicModeIII_Both","PentatonicModeIV_Both","PentatonicModeV_Both"],
-        ["PentatonicModeIV_Both", "PentatonicModeIII_Both","MinorPentatonic_Both","PentatonicModeV_Both","MajorPentatonic_Both"], //random
-//        ["PentatonicModeV_Both", "MajorPentatonic_Both","PentatonicModeIV_Both","MinorPentatonic_Both","PentatonicModeIII_Both"], //random
-        ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120","PentatonicModeIII_Both_Tempo:120","PentatonicModeIV_Both_Tempo:120","PentatonicModeV_Both_Tempo:120"],
-        ["PentatonicModeIV_Both_Tempo:120", "PentatonicModeIII_Both_Tempo:120","MajorPentatonic_Both_Tempo:120","PentatonicModeV_Both_Tempo:120","MinorPentatonic_Both_Tempo:120"], //random
-        ["Ionian_Up", "Dorian_Up", "Phyrgian_Up", "Lydian_Up", "Mixolydian_Up", "Aeolian_Up", "Locrian_Up"],
-        ["Ionian_Both", "Dorian_Both", "Phyrgian_Both", "Lydian_Both", "Mixolydian_Both", "Aeolian_Both", "Locrian_Both"],
-        ["Phyrgian_Both", "Locrian_Both", "Lydian_Both", "Aeolian_Both", "Dorian_Both", "Ionian_Both", "Mixolydian_Both"], //random
-        ["Dorian_Both", "Mixolydian_Both", "Ionian_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "Lydian_Both"], //random
-        ["Mixolydian_Both", "Ionian_Both", "Aeolian_Both", "Dorian_Both", "Locrian_Both", "Lydian_Both", "Phyrgian_Both"], //random
-        ["Ionian_Both_Tempo:120", "Dorian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Lydian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Locrian_Both_Tempo:120"],
-        ["Lydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Ionian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Locrian_Both_Tempo:120", "Dorian_Both_Tempo:120"], //random
-//        ["Locrian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Dorian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Lydian_Both_Tempo:120", "Ionian_Both_Tempo:120"], //random
-        ["Locrian_Both_Tempo:150", "Mixolydian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Dorian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Lydian_Both_Tempo:150", "Ionian_Both_Tempo:150"], //random
-//        ["Mixolydian_Both_Tempo:150", "Dorian_Both_Tempo:150", "Locrian_Both_Tempo:150", "Ionian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Lydian_Both_Tempo:150"], //random
-        ["Dorian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Lydian_Both_Tempo:180", "Ionian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Locrian_Both_Tempo:180", "Mixolydian_Both_Tempo:180"], //random
-        
-        ["PentatonicModeV_Both", "Locrian_Both", "PentatonicModeIII_Both", "MajorPentatonic_Both", "Dorian_Both", "Ionian_Both", "Lydian_Both", "PentatonicModeIV_Both", "Aeolian_Both", "MinorPentatonic_Both", "Phyrgian_Both", "Mixolydian_Both"], //random
-        ["MajorPentatonic_Both", "Mixolydian_Both", "PentatonicModeIII_Both", "PentatonicModeIV_Both", "Phyrgian_Both", "Locrian_Both", "Lydian_Both", "PentatonicModeV_Both", "MinorPentatonic_Both", "Ionian_Both", "Aeolian_Both", "Dorian_Both"], //random
-        
-        ["Mixolydian_Both_Tempo:120", "Ionian_Both_Tempo:120", "Lydian_Both_Tempo:120", "PentatonicModeV_Both_Tempo:120", "Aeolian_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "PentatonicModeIII_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "PentatonicModeIV_Both_Tempo:120", "Locrian_Both_Tempo:120", "Dorian_Both_Tempo:120", "MinorPentatonic_Both_Tempo:120"],   //random
-        ["Lydian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Ionian_Both_Tempo:150", "PentatonicModeIII_Both_Tempo:150", "MinorPentatonic_Both_Tempo:150", "Mixolydian_Both_Tempo:150", "MajorPentatonic_Both_Tempo:150", "PentatonicModeV_Both_Tempo:150", "Dorian_Both_Tempo:150", "PentatonicModeIV_Both_Tempo:150", "Locrian_Both_Tempo:150"],    //random
-        ["MinorPentatonic_Both_Tempo:180", "PentatonicModeIV_Both_Tempo:180", "Mixolydian_Both_Tempo:180", "PentatonicModeIII_Both_Tempo:180", "MajorPentatonic_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Lydian_Both_Tempo:180", "Dorian_Both_Tempo:180", "Ionian_Both_Tempo:180", "PentatonicModeV_Both_Tempo:180", "Locrian_Both_Tempo:180", "Aeolian_Both_Tempo:180"],  //random
-                
-
-        ["Ionian_Up_Sequence:Thirds","Aeolian_Up_Sequence:Thirds"],
-        ["Ionian_Up_Sequence:Thirds","Aeolian_Up_Sequence:Thirds","Dorian_Up_Sequence:Thirds","Mixolydian_Up_Sequence:Thirds"],
-        ["Dorian_Up_Sequence:Thirds","Mixolydian_Up_Sequence:Thirds","Lydian_Up_Sequence:Thirds","Phyrgian_Up_Sequence:Thirds","Locrian_Up_Sequence:Thirds"],
-        ["Ionian_Up_Sequence:Thirds","Dorian_Up_Sequence:Thirds","Phyrgian_Up_Sequence:Thirds","Lydian_Up_Sequence:Thirds","Mixolydian_Up_Sequence:Thirds","Aeolian_Up_Sequence:Thirds","Locrian_Up_Sequence:Thirds"],
-
-        ["Lydian_Both_Sequence:Thirds", "Phyrgian_Both_Sequence:Thirds", "Mixolydian_Both_Sequence:Thirds", "Ionian_Both_Sequence:Thirds", "Dorian_Both_Sequence:Thirds", "Aeolian_Both_Sequence:Thirds", "Locrian_Both_Sequence:Thirds"],  //random
+         ["MinorPentatonic_Up"],
+         ["MajorPentatonic_Up"],
+         ["Ionian_Up", "Aeolian_Up"],
+         ["MinorPentatonic_Both", "MajorPentatonic_Both", "Ionian_Both", "Aeolian_Both"],
+         ["Ionian_Both", "MajorPentatonic_Both", "Aeolian_Both", "MinorPentatonic_Both"],
+         ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120", "Ionian_Both_Tempo:120", "Aeolian_Both_Tempo:120"],
+         ["PentatonicModeIII_Up","PentatonicModeIV_Up","PentatonicModeV_Up"],
+         ["MinorPentatonic_Both", "MajorPentatonic_Both","PentatonicModeIII_Both","PentatonicModeIV_Both","PentatonicModeV_Both"],
+         ["MinorPentatonic_Both_Tempo:120", "MajorPentatonic_Both_Tempo:120","PentatonicModeIII_Both_Tempo:120","PentatonicModeIV_Both_Tempo:120","PentatonicModeV_Both_Tempo:120"],
+         ["PentatonicModeIV_Both_Tempo:120", "PentatonicModeIII_Both_Tempo:120","MajorPentatonic_Both_Tempo:120","PentatonicModeV_Both_Tempo:120","MinorPentatonic_Both_Tempo:120"], //random
+         ["Ionian_Both", "Dorian_Both", "Phyrgian_Both", "Lydian_Both", "Mixolydian_Both", "Aeolian_Both", "Locrian_Both"],
+         ["Dorian_Both", "Mixolydian_Both", "Ionian_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "Lydian_Both"], //random
+         ["Lydian_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Ionian_Both_Tempo:120", "Mixolydian_Both_Tempo:120", "Locrian_Both_Tempo:120", "Dorian_Both_Tempo:120"], //random
+        ["Ionian_Both_Tempo:150", "Phyrgian_Both_Tempo:150", "Mixolydian_Both_Tempo:150",   "Dorian_Both_Tempo:150", "Aeolian_Both_Tempo:150", "Locrian_Both_Tempo:150", "Lydian_Both_Tempo:150"], //random
+         ["Dorian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Lydian_Both_Tempo:180", "Ionian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Locrian_Both_Tempo:180", "Mixolydian_Both_Tempo:180"], //random
+         ["Ionian_Up_Sequence:Thirds","Aeolian_Up_Sequence:Thirds"],
+         ["Ionian_Up_Sequence:Thirds","Dorian_Up_Sequence:Thirds","Phyrgian_Up_Sequence:Thirds","Lydian_Up_Sequence:Thirds","Mixolydian_Up_Sequence:Thirds","Aeolian_Up_Sequence:Thirds","Locrian_Up_Sequence:Thirds"],
+         ["Lydian_Both_Sequence:Thirds", "Phyrgian_Both_Sequence:Thirds", "Mixolydian_Both_Sequence:Thirds", "Ionian_Both_Sequence:Thirds", "Dorian_Both_Sequence:Thirds", "Aeolian_Both_Sequence:Thirds", "Locrian_Both_Sequence:Thirds"],  //random
         ["Ionian_Both_Sequence:Thirds", "Locrian_Both_Sequence:Thirds", "Mixolydian_Both_Sequence:Thirds", "Dorian_Both_Sequence:Thirds", "Aeolian_Both_Sequence:Thirds", "Lydian_Both_Sequence:Thirds", "Phyrgian_Both_Sequence:Thirds"],  //random
-        
-        ["Dorian_Up_Tempo:120_Sequence:Thirds", "Aeolian_Up_Tempo:120_Sequence:Thirds", "Locrian_Up_Tempo:120_Sequence:Thirds", "Phyrgian_Up_Tempo:120_Sequence:Thirds", "Ionian_Up_Tempo:120_Sequence:Thirds", "Lydian_Up_Tempo:120_Sequence:Thirds", "Mixolydian_Up_Tempo:120_Sequence:Thirds"],  //random
         ["Phyrgian_Up_Tempo:120_Sequence:Thirds", "Ionian_Up_Tempo:120_Sequence:Thirds", "Mixolydian_Up_Tempo:120_Sequence:Thirds", "Dorian_Up_Tempo:120_Sequence:Thirds", "Locrian_Up_Tempo:120_Sequence:Thirds", "Aeolian_Up_Tempo:120_Sequence:Thirds", "Lydian_Up_Tempo:120_Sequence:Thirds"],  //random
-        
-        ["Ionian_Up_Tempo:150:Sequence:Thirds", "Locrian_Up_Tempo:150:Sequence:Thirds", "Phyrgian_Up_Tempo:150:Sequence:Thirds", "Mixolydian_Up_Tempo:150:Sequence:Thirds", "Lydian_Up_Tempo:150:Sequence:Thirds", "Aeolian_Up_Tempo:150:Sequence:Thirds", "Dorian_Up_Tempo:150:Sequence:Thirds"],  //random
         ["Dorian_Up_Tempo:150:Sequence:Thirds", "Aeolian_Up_Tempo:150:Sequence:Thirds", "Ionian_Up_Tempo:150:Sequence:Thirds", "Phyrgian_Up_Tempo:150:Sequence:Thirds", "Mixolydian_Up_Tempo:150:Sequence:Thirds", "Locrian_Up_Tempo:150:Sequence:Thirds", "Lydian_Up_Tempo:150:Sequence:Thirds"],  //random
-        
-        ["Mixolydian_Up_Tempo:180:Sequence:Thirds", "Lydian_Up_Tempo:180:Sequence:Thirds", "Locrian_Up_Tempo:180:Sequence:Thirds", "Dorian_Up_Tempo:180:Sequence:Thirds", "Aeolian_Up_Tempo:180:Sequence:Thirds", "Phyrgian_Up_Tempo:180:Sequence:Thirds", "Ionian_Up_Tempo:180:Sequence:Thirds"],  //random
         ["Phyrgian_Up_Tempo:180:Sequence:Thirds", "Aeolian_Up_Tempo:180:Sequence:Thirds", "Lydian_Up_Tempo:180:Sequence:Thirds", "Dorian_Up_Tempo:180:Sequence:Thirds", "Locrian_Up_Tempo:180:Sequence:Thirds", "Ionian_Up_Tempo:180:Sequence:Thirds", "Mixolydian_Up_Tempo:180:Sequence:Thirds"],  //random
-        
-        ["HarmonicMinor_Up","MelodicMinor_Up"],
-        ["HarmonicMinor_Both","MelodicMinor_Both"],
-        ["MelodicMinor_Both_Tempo:120","HarmonicMinor_Both_Tempo:120"],
-        ["Aeolian_Both", "Phyrgian_Both", "HarmonicMinor_Both", "MelodicMinor_Both", "Locrian_Both"],   //random
-//        ["HarmonicMinor_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "MelodicMinor_Both"],   //random
-//        ["Aeolian_Both", "Phyrgian_Both", "HarmonicMinor_Both", "MelodicMinor_Both", "Locrian_Both"],   //random
-        ["HarmonicMinor_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "MelodicMinor_Both"],   //random
-        ["MelodicMinor_Both_Tempo:120", "Aeolian_Both_Tempo:120", "Phyrgian_Both_Tempo:120", "Locrian_Both_Tempo:120", "HarmonicMinor_Both_Tempo:120"], //random
-        ["Phyrgian_Both_Tempo:150", "Locrian_Both_Tempo:150", "HarmonicMinor_Both_Tempo:150", "MelodicMinor_Both_Tempo:150", "Aeolian_Both_Tempo:150"], //random
-        ["Locrian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "MelodicMinor_Both_Tempo:180"], //random
-        
-        ["DiminishedWholeHalf_Up","DiminishedHalfWhole_Up","WholeTone_Up"],
-        ["DiminishedWholeHalf_Both","DiminishedHalfWhole_Both","WholeTone_Both"],
-        ["DiminishedHalfWhole_Both_Tempo:120","WholeTone_Both_Tempo:120","DiminishedWholeHalf_Both_Tempo:120"],   //random
-        ["WholeTone_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:150","DiminishedWholeHalf_Both_Tempo:150"],   //random
+         ["HarmonicMinor_Up","MelodicMinor_Up"],
+         ["HarmonicMinor_Both","MelodicMinor_Both"],
+         ["MelodicMinor_Both_Tempo:120","HarmonicMinor_Both_Tempo:120"],
+         ["HarmonicMinor_Both", "Phyrgian_Both", "Locrian_Both", "Aeolian_Both", "MelodicMinor_Both"],   //random
+         ["Phyrgian_Both_Tempo:150", "Locrian_Both_Tempo:150", "HarmonicMinor_Both_Tempo:150", "MelodicMinor_Both_Tempo:150", "Aeolian_Both_Tempo:150"], //random
+         ["Locrian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "MelodicMinor_Both_Tempo:180"], //random
+         ["DiminishedWholeHalf_Up","DiminishedHalfWhole_Up","WholeTone_Up"],
+         ["DiminishedWholeHalf_Both","DiminishedHalfWhole_Both","WholeTone_Both"],
+         ["WholeTone_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:150","DiminishedWholeHalf_Both_Tempo:150"],   //random
         ["DiminishedWholeHalf_Both_Tempo:180","DiminishedHalfWhole_Both_Tempo:180","WholeTone_Both_Tempo:180"],   //random
-        
-        ["MelodicMinor_Up","DorianbTwo_Up","LydianAugmented_Up","LydianDominant_Up","MixoldianbSix_Up","SuperLocrian_Up","DiminishedWholeTone_Up"],
-        ["MelodicMinor_Both","DorianbTwo_Both","LydianAugmented_Both","LydianDominant_Both","MixoldianbSix_Both","SuperLocrian_Both","DiminishedWholeTone_Both"],
-        ["MelodicMinor_Both_Tempo:160","DorianbTwo_Both_Tempo:160","LydianAugmented_Both_Tempo:160","LydianDominant_Both_Tempo:160","MixoldianbSix_Both_Tempo:160","SuperLocrian_Both_Tempo:160","DiminishedWholeTone_Both_Tempo:160"],
-        ["SuperLocrian_Both_Tempo:180", "DiminishedWholeTone_Both_Tempo:180", "MelodicMinor_Both_Tempo:180", "LydianAugmented_Both_Tempo:180", "DorianbTwo_Both_Tempo:180", "MixoldianbSix_Both_Tempo:180", "LydianDominant_Both_Tempo:180"],   //random
-        
-        ["HarmonicMinor_Up","LocrianSix_Up","Ionian#Five_Up","Dorian#Four_Up","PhrygianDominant_Up","Lydian#Two_Up","SuperLocrianbbSeven_Up"],
-        ["HarmonicMinor_Both","LocrianSix_Both","Ionian#Five_Both","Dorian#Four_Both","PhrygianDominant_Both","Lydian#Two_Both","SuperLocrianbbSeven_Both"],
-        ["HarmonicMinor_Both_Tempo:160","LocrianSix_Both_Tempo:160","Ionian#Five_Both_Tempo:160","Dorian#Four_Both_Tempo:160","PhrygianDominant_Both_Tempo:160","Lydian#Two_Both_Tempo:160","SuperLocrianbbSeven_Both_Tempo:160"],
-        ["LocrianSix_Both_Tempo:180", "Ionian#Five_Both_Tempo:180", "Lydian#Two_Both_Tempo:180", "SuperLocrianbbSeven_Both_Tempo:180", "Dorian#Four_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "PhrygianDominant_Both_Tempo:180"],   //random
-
-       
-        ["Arabian_Up","Persian_Up","Byzantine_Up","Japanese_Up","Hirajoshi_Up","RagaAsavari_Up","Hungarian_Up","Romanian_Up","Hijaz_Up"],
-        ["Arabian_Both","Persian_Both","Byzantine_Both","Japanese_Both","Hirajoshi_Both","RagaAsavari_Both","Hungarian_Both","Romanian_Both","Hijaz_Both"],
-        
-        ["LydianDominant_Both", "DiminishedHalfWhole_Both", "PhrygianDominant_Both", "DiminishedWholeTone_Both", "Ionian_Both", "PentatonicModeV_Both", "Dorian#Four_Both", "LydianAugmented_Both", "MinorPentatonic_Both", "MelodicMinor_Both", "PentatonicModeIII_Both", "DorianbTwo_Both", "Dorian_Both", "Aeolian_Both", "LocrianSix_Both", "WholeTone_Both", "Locrian_Both", "Phyrgian_Both", "Ionian#Five_Both", "Mixolydian_Both", "Lydian#Two_Both", "MajorPentatonic_Both", "Lydian_Both", "DiminishedWholeHalf_Both", "MixoldianbSix_Both", "SuperLocrianbbSeven_Both", "HarmonicMinor_Both", "SuperLocrian_Both", "PentatonicModeIV_Both"],
-        
-        ["MinorPentatonic_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Mixolydian_Both_Tempo:180", "Locrian_Both_Tempo:180", "LocrianSix_Both_Tempo:180", "PhrygianDominant_Both_Tempo:180", "MixoldianbSix_Both_Tempo:180", "DiminishedWholeTone_Both_Tempo:180", "LydianAugmented_Both_Tempo:180", "DiminishedWholeHalf_Both_Tempo:180", "PentatonicModeV_Both_Tempo:180", "Dorian#Four_Both_Tempo:180", "Lydian_Both_Tempo:180", "Lydian#Two_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "Dorian_Both_Tempo:180", "MelodicMinor_Both_Tempo:180", "WholeTone_Both_Tempo:180", "SuperLocrianbbSeven_Both_Tempo:180", "DiminishedHalfWhole_Both_Tempo:180", "MajorPentatonic_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "PentatonicModeIII_Both_Tempo:180", "Ionian_Both_Tempo:180", "PentatonicModeIV_Both_Tempo:180", "DorianbTwo_Both_Tempo:180", "Ionian#Five_Both_Tempo:180", "LydianDominant_Both_Tempo:180", "SuperLocrian_Both_Tempo:180"],
-        
-        ["Aeolian_Both_Tempo:230", "HarmonicMinor_Both_Tempo:230", "Lydian_Both_Tempo:230", "Dorian#Four_Both_Tempo:230", "Ionian_Both_Tempo:230", "Mixolydian_Both_Tempo:230", "MinorPentatonic_Both_Tempo:230", "PhrygianDominant_Both_Tempo:230", "SuperLocrian_Both_Tempo:230", "DiminishedWholeHalf_Both_Tempo:230", "MelodicMinor_Both_Tempo:230", "DiminishedWholeTone_Both_Tempo:230", "SuperLocrianbbSeven_Both_Tempo:230", "MixoldianbSix_Both_Tempo:230", "Ionian#Five_Both_Tempo:230", "PentatonicModeIV_Both_Tempo:230", "Lydian#Two_Both_Tempo:230", "LydianAugmented_Both_Tempo:230", "PentatonicModeV_Both_Tempo:230", "DorianbTwo_Both_Tempo:230", "DiminishedHalfWhole_Both_Tempo:230", "MajorPentatonic_Both_Tempo:230", "Dorian_Both_Tempo:230", "WholeTone_Both_Tempo:230", "Phyrgian_Both_Tempo:230", "LydianDominant_Both_Tempo:230", "LocrianSix_Both_Tempo:230", "Locrian_Both_Tempo:230", "PentatonicModeIII_Both_Tempo:230"]
+         ["MelodicMinor_Up","DorianbTwo_Up","LydianAugmented_Up","LydianDominant_Up","MixoldianbSix_Up","SuperLocrian_Up","DiminishedWholeTone_Up"],
+         ["MelodicMinor_Both","DorianbTwo_Both","LydianAugmented_Both","LydianDominant_Both","MixoldianbSix_Both","SuperLocrian_Both","DiminishedWholeTone_Both"],
+         ["MelodicMinor_Both_Tempo:160","DorianbTwo_Both_Tempo:160","LydianAugmented_Both_Tempo:160","LydianDominant_Both_Tempo:160","MixoldianbSix_Both_Tempo:160","SuperLocrian_Both_Tempo:160","DiminishedWholeTone_Both_Tempo:160"],
+         ["SuperLocrian_Both_Tempo:180", "DiminishedWholeTone_Both_Tempo:180", "MelodicMinor_Both_Tempo:180", "LydianAugmented_Both_Tempo:180", "DorianbTwo_Both_Tempo:180", "MixoldianbSix_Both_Tempo:180", "LydianDominant_Both_Tempo:180"],   //random
+         ["HarmonicMinor_Up","LocrianSix_Up","Ionian#Five_Up","Dorian#Four_Up","PhrygianDominant_Up","Lydian#Two_Up","SuperLocrianbbSeven_Up"],
+         ["HarmonicMinor_Both","LocrianSix_Both","Ionian#Five_Both","Dorian#Four_Both","PhrygianDominant_Both","Lydian#Two_Both","SuperLocrianbbSeven_Both"],
+         ["HarmonicMinor_Both_Tempo:160","LocrianSix_Both_Tempo:160","Ionian#Five_Both_Tempo:160","Dorian#Four_Both_Tempo:160","PhrygianDominant_Both_Tempo:160","Lydian#Two_Both_Tempo:160","SuperLocrianbbSeven_Both_Tempo:160"],
+         ["LocrianSix_Both_Tempo:180", "Ionian#Five_Both_Tempo:180", "Lydian#Two_Both_Tempo:180", "SuperLocrianbbSeven_Both_Tempo:180", "Dorian#Four_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "PhrygianDominant_Both_Tempo:180"],   //random
+         ["Arabian_Up","Persian_Up","Byzantine_Up","Japanese_Up","Hirajoshi_Up","RagaAsavari_Up","Hungarian_Up","Romanian_Up","Hijaz_Up"],
+         ["Arabian_Both","Persian_Both","Byzantine_Both","Japanese_Both","Hirajoshi_Both","RagaAsavari_Both","Hungarian_Both","Romanian_Both","Hijaz_Both"],
+         ["LydianDominant_Both", "DiminishedHalfWhole_Both", "PhrygianDominant_Both", "DiminishedWholeTone_Both", "Ionian_Both", "PentatonicModeV_Both", "Dorian#Four_Both", "LydianAugmented_Both", "MinorPentatonic_Both", "MelodicMinor_Both", "PentatonicModeIII_Both", "DorianbTwo_Both", "Dorian_Both", "Aeolian_Both", "LocrianSix_Both", "WholeTone_Both", "Locrian_Both", "Phyrgian_Both", "Ionian#Five_Both", "Mixolydian_Both", "Lydian#Two_Both", "MajorPentatonic_Both", "Lydian_Both", "DiminishedWholeHalf_Both", "MixoldianbSix_Both", "SuperLocrianbbSeven_Both", "HarmonicMinor_Both", "SuperLocrian_Both", "PentatonicModeIV_Both"],
+         ["MinorPentatonic_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Mixolydian_Both_Tempo:180", "Locrian_Both_Tempo:180", "LocrianSix_Both_Tempo:180", "PhrygianDominant_Both_Tempo:180", "MixoldianbSix_Both_Tempo:180", "DiminishedWholeTone_Both_Tempo:180", "LydianAugmented_Both_Tempo:180", "DiminishedWholeHalf_Both_Tempo:180", "PentatonicModeV_Both_Tempo:180", "Dorian#Four_Both_Tempo:180", "Lydian_Both_Tempo:180", "Lydian#Two_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "Dorian_Both_Tempo:180", "MelodicMinor_Both_Tempo:180", "WholeTone_Both_Tempo:180", "SuperLocrianbbSeven_Both_Tempo:180", "DiminishedHalfWhole_Both_Tempo:180", "MajorPentatonic_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "PentatonicModeIII_Both_Tempo:180", "Ionian_Both_Tempo:180", "PentatonicModeIV_Both_Tempo:180", "DorianbTwo_Both_Tempo:180", "Ionian#Five_Both_Tempo:180", "LydianDominant_Both_Tempo:180", "SuperLocrian_Both_Tempo:180"],
+         ["Aeolian_Both_Tempo:230", "HarmonicMinor_Both_Tempo:230", "Lydian_Both_Tempo:230", "Dorian#Four_Both_Tempo:230", "Ionian_Both_Tempo:230", "Mixolydian_Both_Tempo:230", "MinorPentatonic_Both_Tempo:230", "PhrygianDominant_Both_Tempo:230", "SuperLocrian_Both_Tempo:230", "DiminishedWholeHalf_Both_Tempo:230", "MelodicMinor_Both_Tempo:230", "DiminishedWholeTone_Both_Tempo:230", "SuperLocrianbbSeven_Both_Tempo:230", "MixoldianbSix_Both_Tempo:230", "Ionian#Five_Both_Tempo:230", "PentatonicModeIV_Both_Tempo:230", "Lydian#Two_Both_Tempo:230", "LydianAugmented_Both_Tempo:230", "PentatonicModeV_Both_Tempo:230", "DorianbTwo_Both_Tempo:230", "DiminishedHalfWhole_Both_Tempo:230", "MajorPentatonic_Both_Tempo:230", "Dorian_Both_Tempo:230", "WholeTone_Both_Tempo:230", "Phyrgian_Both_Tempo:230", "LydianDominant_Both_Tempo:230", "LocrianSix_Both_Tempo:230", "Locrian_Both_Tempo:230", "PentatonicModeIII_Both_Tempo:230"]
 
     ]
     let arpeggio = [
-//        ["Ionian_Up_Tempo:120_Sequence:Thirds"],
-
-//        ["HarmonicMinor_Up","LocrianSix_Up","Ionian#Five_Up","Dorian#Four_Up","PhrygianDominant_Up","Lydian#Two_Up","SuperLocrianbbSeven_Up"],
         
         ["MajorArp_Up", "MinorArp_Up"],
         ["MajorSeventhArp_Up", "MinorSeventhArp_Up"],
         ["MajorArp_Up", "MinorArp_Up", "MajorSeventhArp_Up", "MinorSeventhArp_Up"],
         ["MajorArp_Both", "MinorArp_Both", "MajorSeventhArp_Both", "MinorSeventhArp_Both"],
-        
-        ["MajorArp_Up_Tempo:120", "MinorArp_Up_Tempo:120", "MajorSeventhArp_Up_Tempo:120", "MinorSeventhArp_Up_Tempo:120"],
+
         ["MajorArp_Both_Tempo:120", "MinorArp_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120"],
         
         ["DominantSeventhArp_Up","MinorMajorSeventhArp_Up"],
@@ -443,11 +378,11 @@ class LevelConstruct: UIViewController {
         
         ["DominantSeventhArp_Both","MinorMajorSeventhArp_Both","HalfDiminishedArp_Both","FullDiminishedArp_Both"],
         
-        ["DominantSeventhArp_Both_Tempo:120","MinorMajorSeventhArp_Both_Tempo:120","HalfDiminishedArp_Both_Tempo:120","FullDiminishedArp_Both_Tempo:120",],
+        ["DominantSeventhArp_Both_Tempo:160","MinorMajorSeventhArp_Both_Tempo:160","HalfDiminishedArp_Both_Tempo:160","FullDiminishedArp_Both_Tempo:160",],
         
-        ["MajorSeventhArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120","DominantSeventhArp_Both_Tempo:120","MinorMajorSeventhArp_Both_Tempo:120","HalfDiminishedArp_Both_Tempo:120","FullDiminishedArp_Both_Tempo:120",],
+        ["MajorSeventhArp_Both_Tempo:180", "MinorSeventhArp_Both_Tempo:180","DominantSeventhArp_Both_Tempo:180","MinorMajorSeventhArp_Both_Tempo:180","HalfDiminishedArp_Both_Tempo:180","FullDiminishedArp_Both_Tempo:180",],
         
-        ["DominantSeventhArp_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorMajorSeventhArp_Both_Tempo:120", "FullDiminishedArp_Both_Tempo:120", "HalfDiminishedArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120"], //random
+//        ["DominantSeventhArp_Both_Tempo:120", "MajorSeventhArp_Both_Tempo:120", "MinorMajorSeventhArp_Both_Tempo:120", "FullDiminishedArp_Both_Tempo:120", "HalfDiminishedArp_Both_Tempo:120", "MinorSeventhArp_Both_Tempo:120"], //random
         
         ["MajorArp_Up","MajorArp^InversionnOne_Up","MajorArp^InversionnTwo_Up"],
         ["MinorArp_Up","MinorArp^InversionnOne_Up","MinorArp^InversionnTwo_Up"],
@@ -482,31 +417,8 @@ class LevelConstruct: UIViewController {
         
         
         ["MinorArp^InversionnOne_Both_Tempo:200", "MinorArp^InversionnTwo_Both_Tempo:200", "MinorArp_Both_Tempo:200", "HalfDiminishedArp^InversionnTwo_Both_Tempo:200", "MinorArp^InversionnTwo_Both_Tempo:200", "MajorArp^InversionnTwo_Both_Tempo:200", "MinorArp^InversionnOne_Both_Tempo:200", "HalfDiminishedArp^InversionnOne_Both_Tempo:200", "MajorArp^InversionnOne_Both_Tempo:200", "DominantSeventhArp^InversionnOne_Both_Tempo:200", "MajorSeventhArp_Both_Tempo:200", "MajorArp_Both_Tempo:200", "DominantSeventhArp^InversionnTwo_Both_Tempo:200", "MajorArp^InversionnOne_Both_Tempo:200", "HalfDiminishedArp_Both_Tempo:200", "MajorSeventhArp^InversionnTwo_Both_Tempo:200", "MinorMajorSeventhArp^InversionnTwo_Both_Tempo:200", "MinorSeventhArp^InversionnOne_Both_Tempo:200", "MinorMajorSeventhArp^InversionnOne_Both_Tempo:200", "MajorSeventhArp^InversionnOne_Both_Tempo:200", "MajorArp^InversionnTwo_Both_Tempo:200", "MinorSeventhArp_Both_Tempo:200", "MinorMajorSeventhArp_Both_Tempo:200", "MinorArp_Both_Tempo:200", "MinorSeventhArp^InversionnTwo_Both_Tempo:200", "DominantSeventhArp_Both_Tempo:200", "MajorArp_Both_Tempo:200"],
-        
-//        ["MinorArp^InversionnOne",
-//        "MinorArp^InversionnTwo",
-//        "MajorSeventhArp^InversionnOne",
-//        "MajorSeventhArp^InversionnTwo",
-//        "MajorSeventhArp^InversionnThree",
-//        "MinorSeventhArp^InversionnOne",
-//        "MinorSeventhArp^InversionnTwo",
-//        "MinorSeventhArp^InversionnThree",
-//        "DominantSeventhArp^InversionnOne",
-//        "DominantSeventhArp^InversionnTwo",
-//        "DominantSeventhArp^InversionnThree",
-//        "MinorMajorSeventhArp^InversionnOne",
-//        "MinorMajorSeventhArp^InversionnTwo",
-//        "MinorMajorSeventhArp^InversionnThree",
-//        "HalfDiminishedArp^InversionnOne",
-//        "HalfDiminishedArp^InversionnTwo",
-//        "HalfDiminishedArp^InversionnThree",
-//        ],
     ]
     let interval = [
-        
-        //         ["!Direction:Up_2,5!Total:30!StartingNote:Random!Tempo:120",
-        //         ["!Direction:Up_2,b5!Total:3!StartingNote:A2!Tempo:120",
-        
 
         ["!Direction:Up_2,5!Total:10!StartingNote:A2!Tempo:120",
          "!Direction:Up_2,3!Total:10!StartingNote:A2!Tempo:120",
@@ -526,25 +438,13 @@ class LevelConstruct: UIViewController {
         "!Direction:Up_b2,2!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Down_b2,2!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Up_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
-        "!Direction:Down_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
-        "!Direction:Both_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
-        "!Direction:Both_b2,2,b3,3,5!Total:10!StartingNote:A2!Tempo:120",],
-        
-//        ["!Direction:Up_b2,2,5,6!Total:10!StartingNote:A2!Tempo:120",
-//        "!Direction:Down_b3,3,5!Total:10!StartingNote:A2!Tempo:120",
-//        "!Direction:Down_b2,2,5,6!Total:10!StartingNote:A2!Tempo:120",
-//        "!Direction:Both_b3,3,5!Total:10!StartingNote:A2!Tempo:120",
-//        "!Direction:Both_b2,2,5,6!Total:10!StartingNote:A2!Tempo:120",
-//        "!Direction:Both_b2,2,b3,3,5,6!Total:10!StartingNote:A2!Tempo:120",],
+//        "!Direction:Down_b2,2,b3,3!Total:10!StartingNote:A2!Tempo:120",
+        "!Direction:Both_b2,2,b3,3!Total:10!StartingNote:Random!Tempo:120",],
         
         ["!Direction:Up_4,5!Total:10!StartingNote:A1!Tempo:120",
          "!Direction:Down_4,5!Total:10!StartingNote:A2!Tempo:120",
-         "!Direction:Both_4,5!Total:10!StartingNote:A2!Tempo:160",
-         "!Direction:Both_4,5!Total:10!StartingNote:A2!Tempo:200",],
-         
-//        ["!Direction:Both_2,3,4,5,6!Total:10!StartingNote:A2!Tempo:160",
-//        "!Direction:Both_2,3,4,5,6!Total:10!StartingNote:C3!Tempo:160",
-//        "!Direction:Both_2,3,4,5,6!Total:10!StartingNote:Random!Tempo:160",],
+         "!Direction:Both_4,5!Total:10!StartingNote:Random!Tempo:160",
+         "!Direction:Both_4,5!Total:10!StartingNote:Random!Tempo:200",],
         
         ["!Direction:Up_b2,2,b3,3,4,5!Total:10!StartingNote:A2!Tempo:160",
         "!Direction:Down_b2,2,b3,3,4,5!Total:10!StartingNote:C3!Tempo:160",
@@ -561,13 +461,13 @@ class LevelConstruct: UIViewController {
         "!Direction:Up_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Down_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Both_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",
-        "!Direction:Both_b6,6,b7,7!Total:10!StartingNote:A2!Tempo:120",],
+        "!Direction:Both_b6,6,b7,7!Total:10!StartingNote:Random!Tempo:120",],
         
         [
         "!Direction:Up_b5,5!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Down_b5,5!Total:10!StartingNote:A2!Tempo:120",
         "!Direction:Both_b5,5!Total:10!StartingNote:A2!Tempo:120",
-        "!Direction:Both_b5,5!Total:10!StartingNote:C2!Tempo:120",],
+        "!Direction:Both_b5,5!Total:10!StartingNote:Random!Tempo:160",],
         
         ["!Direction:Up_5,b6!Total:10!StartingNote:A1!Tempo:120",
          "!Direction:Up_5,b7!Total:10!StartingNote:A1!Tempo:120",
@@ -622,23 +522,6 @@ class LevelConstruct: UIViewController {
          "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:350",
          "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:400",
          "!Direction:Both_b2,2,b3,3,4,b5,5,b6,6,b7,7,8!Total:20!StartingNote:Random!Tempo:400",],
-        
-        
-//        ["!Direction:Up_b2,b3,b7!Total:10!StartingNote:A2!Tempo:120",
-//         "!Direction:Down_b2,b3,b7!Total:10!StartingNote:A2!Tempo:120",
-//         "!Direction:Both_b2,b3,b7!Total:10!StartingNote:A2!Tempo:120",
-//         "!Direction:Both_b2,b3,b7,2,3!Total:10!StartingNote:A2!Tempo:120",],
-//
-//        ["!Direction:Down_4,5,8!Total:10!StartingNote:A2!Tempo:120",
-//         "!Direction:Down_4,5,8!Total:10!StartingNote:A2!Tempo:120",],
-//
-//        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
-//         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
-//         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
-//
-//        ["!Direction:Up_2,4,3,5!Total:3!StartingNote:A2!Tempo:150",
-//         "!Direction:Up_2,b3,3!Total:3!StartingNote:A2!Tempo:150",
-//         "!Direction:Up_2,3,5!Total:3!StartingNote:A2!Tempo:150",],
     ]
     
     func returnRandomizedArray(_ ilength: Int,_ iArray: [String]) -> [String] {

@@ -17,7 +17,6 @@ class SettingsViewController: UIViewController {
         super.init(coder: aDecoder)
     }
 
-//    @IBOutlet var Stack: UIStackView!
     @IBOutlet var Button0: UIButton!
     @IBOutlet var Button1: UIButton!
     @IBOutlet var Button2: UIButton!
