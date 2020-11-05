@@ -31,7 +31,7 @@ class EarTraining {
         var testPassed = false
        
         var resultTextArr:[String] = []
-        if vc!.earTrainCallArr == vc!.earTrainResponseArr || checkForDSharp() {
+        if vc!.earTrainCallArr == vc!.earTrainResponseArr || checkForDSharp() || vc!.developmentMode == 2 {
             testPassed = true
             let interval = vc!.sCollection!.returnInterval(vc!.earTrainCallArr[0],vc!.earTrainCallArr[1])
             resultTextArr = ["Great! You Correctly Played A \(interval)."]

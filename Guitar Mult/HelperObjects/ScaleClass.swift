@@ -417,6 +417,11 @@ class ScaleCollection {
                     break
                 }
             }
+            for (i,note) in sequenceArr.enumerated() {
+                if note == "D#3" {
+                    sequenceArr[i] = "D#3_0"
+                }
+            }
             newNoteCollection = sequenceArr
         }
         

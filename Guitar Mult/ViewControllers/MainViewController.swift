@@ -469,7 +469,6 @@ class MainViewController: UIViewController {
     }
 
     @objc func setupCurrentTask(_ timer: Timer? = nil) {
-        print("in setup current task")
         if appUnlocked == "0" && popover?.popoverVisible != true && lc.currentLevelKey! != "freePlay" && levelBarriersLimits[currentAppVersion]![lc.currentLevelKey!]! <= lc.returnConvertedLevel(iinput: lc.currentLevel!) {
             presentPaywallPopover()
         }
@@ -504,7 +503,6 @@ class MainViewController: UIViewController {
             let intervalsToTest = lc.parseIntervalDirection(data["Direction"] as! String)
             
             if earTrainingLevelData.count == 0 {
-                print("updating earTrainingLevelData")
                 earTrainingLevelData = lc.returnRandomizedArray(Int(data["Total"] as! String)!, intervalsToTest)
                 automaticallyStartTest = false
             }
@@ -790,6 +788,9 @@ class MainViewController: UIViewController {
     
     func parseTempo(iinput: String) -> String {
         let tempoArr = iinput.components(separatedBy: "Tempo:")
+        if tempoArr[1].contains("_Sequence:Thirds") {
+            return tempoArr[1].components(separatedBy: "_Sequence:Thirds")[0]
+        }
         return tempoArr[1]
     }
 
@@ -1522,7 +1523,6 @@ class MainViewController: UIViewController {
     }
 
     @objc func presentTestResult(timer: Timer) {
-        print("presentTestResult presentTestResult")
         ResultButton.isEnabled = true
         var testPassed = false
         let resultObj = timer.userInfo as! [String: AnyObject]
@@ -2069,7 +2069,8 @@ class MainViewController: UIViewController {
                     fretButtonDict[noteInputStrs[buttonTag]] = button
                     dotDict[noteInputStrs[buttonTag]] = image
                     fretButtonFrame[noteInputStrs[buttonTag]] = button.frame
-                    buttonTag += 1                }
+                    buttonTag += 1
+                }
             }
         }
         fretButtonDict["A1"]?.layer.zPosition = 1000
@@ -2163,31 +2164,55 @@ class MainViewController: UIViewController {
         //iterate through note label and update notes
 //        lc.setEarTrainingLevelHelper()
 //        purchasePopover!.addToView()
-            wt.waitThen(itime: 0.05, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "PurchasePopover" as AnyObject, "arg2": 0 as AnyObject])
+//            wt.waitThen(itime: 0.05, itarget: self, imethod: #selector(presentMainPopover) as Selector, irepeats: false, idict: ["arg1": "PurchasePopover" as AnyObject, "arg2": 0 as AnyObject])
+        randomButtonTest()
     }
 
     // Testing
     @objc func randomButtonTest() {
-        let randNumb = rand(max: 4)
+//        let randNumb = rand(max: 4)
+//        switch randNumb {
+//        case 0:
+//            let button = UIButton()
+//            button.tag = rand(max: 2)
+//            scrollTempo(button)
+//        case 1:
+//            let button = UIButton()
+//            button.tag = rand(max: defaultPeripheralIcon.count)
+//            PeripheralButtonDown(button)
+//        case 2:
+//            let button = UIButton()
+//            button.tag = rand(max: defaultPeripheralIcon.count)
+//            tempoTapped(button)
+//        case 3:
+//            let randomName = fretButtonDict.randomElement()!
+//            FretPressed(fretButtonDict[randomName.key]!)
+//        default: break
+//        }
+//        let t = Double(rand(max: 50)) / 100.0
+//        wt.waitThen(itime: t, itarget: self, imethod: #selector(randomButtonTest) as Selector, irepeats: false, idict: ["arg1": "0" as AnyObject])
+        
+        let randNumb = rand(max: 2)
+        if popover!.popoverVisible {
+            popover!.handleButtonPress()
+        }
         switch randNumb {
         case 0:
-            let button = UIButton()
-            button.tag = rand(max: 2)
-            scrollTempo(button)
-        case 1:
-            let button = UIButton()
-            button.tag = rand(max: defaultPeripheralIcon.count)
-            PeripheralButtonDown(button)
-        case 2:
-            let button = UIButton()
-            button.tag = rand(max: defaultPeripheralIcon.count)
-            tempoTapped(button)
-        case 3:
             let randomName = fretButtonDict.randomElement()!
             FretPressed(fretButtonDict[randomName.key]!)
+        case 1:
+            let button = UIButton()
+            button.tag = 0//rand(max: defaultPeripheralIcon.count)
+            if currentState == State.NotesTestIdle_NoTempo || currentState == State.NotesTestIdle_Tempo || currentState == State.EarTrainingIdle {
+                PeripheralButtonDown(button)
+            } else {
+                let randomName = fretButtonDict.randomElement()!
+                FretPressed(fretButtonDict[randomName.key]!)
+            }
+            
         default: break
         }
-        let t = Double(rand(max: 50)) / 100.0
+        let t = 0.1//Double(rand(max: 50)) / 100.0
         wt.waitThen(itime: t, itarget: self, imethod: #selector(randomButtonTest) as Selector, irepeats: false, idict: ["arg1": "0" as AnyObject])
     }
 
@@ -2226,7 +2251,6 @@ class MainViewController: UIViewController {
         var recordedData: [InputData] = []
         let fetchRequest: NSFetchRequest<RecordingData> = RecordingData.fetchRequest()
         if let results = try? globalDataController.viewContext.fetch(fetchRequest) {
-            print("result",results)
             for result in results {
                 if result.id == currentRecordingId {
                     for (i,_) in result.notes!.enumerated() {
@@ -2247,7 +2271,6 @@ class MainViewController: UIViewController {
         recordData = setupPlayRecordingData()
         recordStartTime = recordData[0].time
         if iforceFretOffsetUpdate {
-            print("recordData[0].fretOffset recordData[0].fretOffset ", recordData[0].fretOffset)
             fretOffset = recordData[0].fretOffset
         }
         for (i, data) in recordData.enumerated() {

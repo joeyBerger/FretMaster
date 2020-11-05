@@ -12,7 +12,6 @@ class waitThen {
     }
 
     public func waitThen(itime: Double, itarget: AnyObject, imethod: Selector, irepeats: Bool, idict: [String: AnyObject]) {
-        print("imethod",imethod)
         activeWT.append(Timer.scheduledTimer(timeInterval: itime, target: itarget, selector: imethod, userInfo: idict, repeats: irepeats))
         if !irepeats {
             selfDestroyingWT.append(Timer.scheduledTimer(timeInterval: itime, target: self, selector: #selector(nullifyNonRepeatWaitThen) as Selector, userInfo: ["index": activeWTIndex], repeats: irepeats))
