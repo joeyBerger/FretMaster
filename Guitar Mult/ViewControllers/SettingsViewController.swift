@@ -3,7 +3,8 @@ import UIKit
 
 class SettingsViewController: UIViewController {
     var vc: MainViewController?
-
+    var contactPopover : ContactPopover?
+    
     convenience init() {
         self.init(ivc: nil)
     }
@@ -87,10 +88,13 @@ class SettingsViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         self.extendedLayoutIncludesOpaqueBars = true
-        
+                
         styler = ViewStyler(ivc: self)
         backgroundImageID = Int.random(in: 0 ..< 3)
         styler!.setupBackgroundImage(ibackgroundPic: "SettingsImage\(backgroundImageID).jpg")
+        
+        contactPopover = ContactPopover()
+        contactPopover!.setupPopover(navigationController!, self)
         
         buttonArr = [Button0, Button1, Button2, Button3, Button4]
         styler!.spaceButtons(buttonArr,navigationController!)
@@ -133,5 +137,9 @@ class SettingsViewController: UIViewController {
             let sItem = segue.destination as! VolumeSettingsViewController
             sItem.backgroundImageID = backgroundImageID
         }
+    }
+    
+    @IBAction func onContactButtonDown(_ sender: Any) {
+        contactPopover!.addToView()
     }
 }

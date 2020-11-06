@@ -381,6 +381,11 @@
                     </view>
                     <navigationItem key="navigationItem" title="Guitar Mult" id="J5p-Rq-E6f">
                         <barButtonItem key="backBarButtonItem" title="Back" id="nAH-O7-1ve"/>
+                        <barButtonItem key="rightBarButtonItem" title="Contact" id="g77-yE-1Y6">
+                            <connections>
+                                <action selector="onContactButtonDown:" destination="o4J-d1-JWA" id="6fD-K7-xBz"/>
+                            </connections>
+                        </barButtonItem>
                     </navigationItem>
                     <connections>
                         <outlet property="Button0" destination="Xcu-V4-TKE" id="X7X-0U-g44"/>

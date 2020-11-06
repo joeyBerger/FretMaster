@@ -26,6 +26,7 @@
 		9E57E05C247D624100DA4F4F /* Popover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E57E05B247D624100DA4F4F /* Popover.swift */; };
 		9E5FB6EA2389F98C0078E980 /* MenuViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E5FB6E92389F98C0078E980 /* MenuViewController.swift */; };
 		9E64624D254D1C62004A20C4 /* UserAPI.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E64624C254D1C62004A20C4 /* UserAPI.swift */; };
+		9E6594BD255523FC00BE8955 /* ContactPopover.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E6594BC255523FC00BE8955 /* ContactPopover.swift */; };
 		9E69398E23A7DDB800C57B11 /* WaitThen.swift in Sources */ = {isa = PBXBuildFile; fileRef = 9E69398D23A7DDB800C57B11 /* WaitThen.swift */; };
 		9E75ACCB24AB0060000CFB91 /* MrsSheppards-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */; };
 		9E7810A4250DCAE900E16F09 /* Arizonia-Regular.ttf in Resources */ = {isa = PBXBuildFile; fileRef = 9E7810A3250DCAD100E16F09 /* Arizonia-Regular.ttf */; };
@@ -265,6 +266,7 @@
 		9E57E05B247D624100DA4F4F /* Popover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Popover.swift; sourceTree = "<group>"; };
 		9E5FB6E92389F98C0078E980 /* MenuViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MenuViewController.swift; sourceTree = "<group>"; };
 		9E64624C254D1C62004A20C4 /* UserAPI.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = UserAPI.swift; sourceTree = "<group>"; };
+		9E6594BC255523FC00BE8955 /* ContactPopover.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ContactPopover.swift; sourceTree = "<group>"; };
 		9E69398D23A7DDB800C57B11 /* WaitThen.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = WaitThen.swift; sourceTree = "<group>"; };
 		9E75ACCA24AAFC67000CFB91 /* MrsSheppards-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "MrsSheppards-Regular.ttf"; sourceTree = "<group>"; };
 		9E7810A3250DCAD100E16F09 /* Arizonia-Regular.ttf */ = {isa = PBXFileReference; lastKnownFileType = file; path = "Arizonia-Regular.ttf"; sourceTree = "<group>"; };
@@ -695,6 +697,7 @@
 				9E7C2ECA248A0FB0006F4C85 /* FretOffsetPickerPopover.swift */,
 				9EB463C124C41EF800530ABE /* PurchasePopover.swift */,
 				9EF769F424E0446500F6B238 /* SnowParticle.swift */,
+				9E6594BC255523FC00BE8955 /* ContactPopover.swift */,
 			);
 			path = View;
 			sourceTree = "<group>";
@@ -1155,6 +1158,7 @@
 				9E44D7BD2454C80200911515 /* DataController.swift in Sources */,
 				9E56839A2436F65E007070C4 /* SettingsItemViewController.swift in Sources */,
 				9EE71F36238B8B5B00D87D24 /* UserData.swift in Sources */,
+				9E6594BD255523FC00BE8955 /* ContactPopover.swift in Sources */,
 				9E919EF0244EBB4C008027EF /* Vibration.swift in Sources */,
 				9E7C2ECB248A0FB0006F4C85 /* FretOffsetPickerPopover.swift in Sources */,
 				9E44D7B82453F30300911515 /* BackgroundImages.swift in Sources */,
