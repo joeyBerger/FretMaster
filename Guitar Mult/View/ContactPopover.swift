@@ -1,7 +1,8 @@
 import Foundation
 import UIKit
+import MessageUI
 
-class ContactPopover: UIViewController {
+class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
     var vc: SettingsViewController?
     var background = SpringImageView()
     var mainButton = SpringButton()
@@ -131,11 +132,32 @@ class ContactPopover: UIViewController {
 //        vc!.closeMainPopover(t)
         DimOverlay.alpha = 0.0
         removeFromView()
+        sendEmail()
     }
     
      @objc func handleXButtonPress() {
         DimOverlay.alpha = 0.0
         removeFromView()
+    }
+    
+    func sendEmail() {
+        //TODO:  You should chack if we can send email or not
+        if MFMailComposeViewController.canSendMail() {
+            let mail = MFMailComposeViewController()
+            mail.mailComposeDelegate = self
+            mail.setToRecipients(["joeybergermusic@gmail.com"])
+            mail.setSubject("Guitar Mult Question/Issue")
+//            mail.setMessageBody("<p>You're so awesome!</p>", isHTML: true)
+//            present(mail, animated: true)
+            UIApplication.shared.keyWindow?.rootViewController?.present(mail, animated: true)
+        } else {
+            print("Application is not able to send an email")
+        }
+    }
+
+    //MARK: MFMail Compose ViewController Delegate method
+    func mailComposeController(_ controller: MFMailComposeViewController, didFinishWith result: MFMailComposeResult, error: Error?) {
+        controller.dismiss(animated: true)
     }
     
     func removeFromView() {

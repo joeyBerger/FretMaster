@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>JavaScript Array Sort</h2>
+
+<p>The sort() method sorts an array alphabetically.</p>
+
+<button onclick="myFunction()">Try it</button>
+
+<p id="demo"></p>
+
+<script>
+var fruits = [
+
+// "Ionian_Both", "Dorian_Both", "Phyrgian_Both", "Lydian_Both", "Mixolydian_Both", "Aeolian_Both", "Locrian_Both", "MinorPentatonic_Both", "MajorPentatonic_Both", "PentatonicModeIII_Both", "PentatonicModeIV_Both", "PentatonicModeV_Both", "DiminishedWholeHalf_Both", "DiminishedHalfWhole_Both", "WholeTone_Both", "HarmonicMinor_Both", "Locrian6_Both", "Ionian#5_Both", "Dorian#4_Both", "PhrygianDominant_Both", "Lydian#2_Both", "SuperLocrianbb7_Both", "MelodicMinor_Both", "Dorianb2_Both", "LydianAugmented_Both", "LydianDominant_Both", "Mixoldianb6_Both", "SuperLocrian_Both", "DiminishedWholeTone_Both",
+
+
+// "Ionian_Both_Tempo:180", "Dorian_Both_Tempo:180", "Phyrgian_Both_Tempo:180", "Lydian_Both_Tempo:180", "Mixolydian_Both_Tempo:180", "Aeolian_Both_Tempo:180", "Locrian_Both_Tempo:180", "MinorPentatonic_Both_Tempo:180", "MajorPentatonic_Both_Tempo:180", "PentatonicModeIII_Both_Tempo:180", "PentatonicModeIV_Both_Tempo:180", "PentatonicModeV_Both_Tempo:180", "DiminishedWholeHalf_Both_Tempo:180", "DiminishedHalfWhole_Both_Tempo:180", "WholeTone_Both_Tempo:180", "HarmonicMinor_Both_Tempo:180", "Locrian6_Both_Tempo:180", "Ionian#5_Both_Tempo:180", "Dorian#4_Both_Tempo:180", "PhrygianDominant_Both_Tempo:180", "Lydian#2_Both_Tempo:180", "SuperLocrianbb7_Both_Tempo:180", "MelodicMinor_Both_Tempo:180", "Dorianb2_Both_Tempo:180", "LydianAugmented_Both_Tempo:180", "LydianDominant_Both_Tempo:180", "Mixoldianb6_Both_Tempo:180", "SuperLocrian_Both_Tempo:180", "DiminishedWholeTone_Both_Tempo:180"
+
+
+// "Ionian_Both_Tempo:230", "Dorian_Both_Tempo:230", "Phyrgian_Both_Tempo:230", "Lydian_Both_Tempo:230", "Mixolydian_Both_Tempo:230", "Aeolian_Both_Tempo:230", "Locrian_Both_Tempo:230", "MinorPentatonic_Both_Tempo:230", "MajorPentatonic_Both_Tempo:230", "PentatonicModeIII_Both_Tempo:230", "PentatonicModeIV_Both_Tempo:230", "PentatonicModeV_Both_Tempo:230", "DiminishedWholeHalf_Both_Tempo:230", "DiminishedHalfWhole_Both_Tempo:230", "WholeTone_Both_Tempo:230", "HarmonicMinor_Both_Tempo:230", "Locrian6_Both_Tempo:230", "Ionian#5_Both_Tempo:230", "Dorian#4_Both_Tempo:230", "PhrygianDominant_Both_Tempo:230", "Lydian#2_Both_Tempo:230", "SuperLocrianbb7_Both_Tempo:230", "MelodicMinor_Both_Tempo:230", "Dorianb2_Both_Tempo:230", "LydianAugmented_Both_Tempo:230", "LydianDominant_Both_Tempo:230", "Mixoldianb6_Both_Tempo:230", "SuperLocrian_Both_Tempo:230", "DiminishedWholeTone_Both_Tempo:230"
+
+
+"HalfDiminishedArp^InversionnThree_Both_Tempo:200", "MajorSeventhArp^InversionnOne_Both_Tempo:200", "MajorArp_Both_Tempo:200", "MajorArp_Both_Tempo:200", "MinorArp^InversionnOne_Both_Tempo:200", "MinorMajorSeventhArp^InversionnThree_Both_Tempo:200", "DominantSeventhArp^InversionnOne_Both_Tempo:200", "MinorMajorSeventhArp_Both_Tempo:200", "DominantSeventhArp_Both_Tempo:200", "MinorSeventhArp^InversionnThree_Both_Tempo:200", "MajorArp^InversionnOne_Both_Tempo:200", "MinorArp^InversionnTwo_Both_Tempo:200", "MajorArp^InversionnTwo_Both_Tempo:200", "MinorSeventhArp^InversionnTwo_Both_Tempo:200", "MajorSeventhArp_Both_Tempo:200", "MinorMajorSeventhArp^InversionnTwo_Both_Tempo:200", "MinorArp_Both_Tempo:200", "DominantSeventhArp^InversionnTwo_Both_Tempo:200", "MinorArp^InversionnOne_Both_Tempo:200", "HalfDiminishedArp^InversionnOne_Both_Tempo:200", "MinorSeventhArp^InversionnOne_Both_Tempo:200", "MinorSeventhArp_Both_Tempo:200", "MajorArp^InversionnTwo_Both_Tempo:200", "DominantSeventhArp^InversionnThree_Both_Tempo:200", "MajorSeventhArp^InversionnTwo_Both_Tempo:200", "MinorMajorSeventhArp^InversionnOne_Both_Tempo:200", "HalfDiminishedArp_Both_Tempo:200", "MinorArp_Both_Tempo:200", "HalfDiminishedArp^InversionnTwo_Both_Tempo:200", "MajorArp^InversionnOne_Both_Tempo:200", "MinorArp^InversionnTwo_Both_Tempo:200"
+//MajorSeventhArp^InversionnThree
+
+
+
+]
+document.getElementById("demo").innerHTML = fruits;
+console.log(fruits)
+
+function myFunction() {
+  fruits = random(fruits)
+  var str = ""
+  for (var i = 0; i < fruits.length; i++)
+  {
+  		//console.log(fruits[i] + ",")
+        str += "\"" + fruits[i] + "\""
+        str += i !== fruits.length - 1 ? ", " : ""
+        
+  }
+  console.log(str)
+  //document.getElementById("demo").innerHTML = fruits;
+}
+
+function random(array) {
+	  var currentIndex = array.length, temporaryValue, randomIndex;              
+      while (0 !== currentIndex) {              
+        randomIndex = Math.floor(Math.random() * currentIndex);
+        currentIndex -= 1;
+        temporaryValue = array[currentIndex];
+        array[currentIndex] = array[randomIndex];
+        array[randomIndex] = temporaryValue;
+      }              
+      return array;
+}
+</script>
+
+</body>
+</html>
