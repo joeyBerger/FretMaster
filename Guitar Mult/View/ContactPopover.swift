@@ -8,7 +8,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
     var mainButton = SpringButton()
     var buttonText = SpringLabel()
     var titleText = SpringLabel()
-//    var subTitleText = SpringLabel()
     var subText = [SpringLabel()]
     var xButton = SpringButton()
     
@@ -16,19 +15,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
     var mainPopoverState = ""
     
     var DimOverlay = UIImageView();
-    
-//    convenience init() {
-//        self.init(ivc: nil)
-//    }
-
-//    init(ivc: UIViewController?) {
-//        vc = ivc as? MainViewController
-//        super.init(nibName: nil, bundle: nil)
-//    }
-//
-//    required init?(coder aDecoder: NSCoder) {
-//        super.init(coder: aDecoder)
-//    }
     
     func setupPopover(_ inavigationController: UINavigationController, _ ivc: SettingsViewController) {
         
@@ -43,7 +29,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
         DimOverlay.layer.zPosition = 400
         vc!.view.addSubview(DimOverlay)
 
-        
         let screenRect = UIScreen.main.bounds
         let screenWidth = screenRect.size.width
         let screenHeight = screenRect.size.height
@@ -80,7 +65,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
         titleText.text = "Guitar Mult"
         titleText.layer.zPosition = 502
         titleText.textAlignment = .center
-//        titleText.font = UIFont(name:"MrsSheppards-Regular",size:50)
         titleText.font = UIFont(name:"Arizonia-Regular",size:50)
         titleText.textColor = defaultColor.FretMarkerStandard
         titleText.layer.shadowColor = UIColor.black.cgColor
@@ -88,14 +72,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
         titleText.layer.shadowOpacity = 1.0
         titleText.layer.shadowOffset = CGSize(width: 4, height: 4)
         titleText.layer.masksToBounds = false
-
-//        subTitleText.frame = CGRect(x: background.frame.minX,y: titleText.frame.maxY,width: background.frame.width, height: 100)
-//        subTitleText.text = "CONTACT GUITAR MULT"
-//        subTitleText.layer.zPosition = 502
-//        subTitleText.textAlignment = .center
-//        subTitleText.font = buttonText.font.withSize(30+4)
-//        subTitleText.textColor = defaultColor.MenuButtonTextColor
-//        vc!.styler!.addStandardLabelShadow(subTitleText)
         
         let subTextHeight:CGFloat = 50, subTextWidth:CGFloat = width * 0.95, subTextBuffer:CGFloat = 50
         
@@ -103,7 +79,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
         
         for i in 0..<2 {
             subText.append(SpringLabel())
-//            subText[i].frame = CGRect(x: (background.frame.width-subTextWidth)/2, y: subTitleText.frame.maxY+CGFloat(i)*subTextBuffer, width: background.frame.width, height: subTextHeight)
             subText[i].frame = CGRect(x: (screenWidth-subTextWidth)/2, y: (titleText.frame.maxY+25+CGFloat(i)*subTextBuffer), width: subTextWidth, height: subTextHeight)
             subText[i].adjustsFontSizeToFitWidth = true
             subText[i].text = subTextText[i]
@@ -128,8 +103,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
     }
     
     @objc func handleButtonPress() {
-        let t:Any = 0
-//        vc!.closeMainPopover(t)
         DimOverlay.alpha = 0.0
         removeFromView()
         sendEmail()
@@ -141,7 +114,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
     }
     
     func sendEmail() {
-        //TODO:  You should chack if we can send email or not
         if MFMailComposeViewController.canSendMail() {
             let mail = MFMailComposeViewController()
             mail.mailComposeDelegate = self
@@ -179,17 +151,11 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
         popoverVisible = true
         vc!.view.addSubview(background)
         vc!.view.addSubview(mainButton)
-//        mainButton.isHidden = true
         vc!.view.addSubview(buttonText)
-//        buttonText.isHidden = true
         vc!.view.addSubview(titleText)
-//        vc!.view.addSubview(subTitleText)
-//        subTitleText.isHidden = true
         vc!.view.addSubview(xButton)
-//        xButton.isHidden = true
         for text in subText {
             vc!.view.addSubview(text)
-//            text.isHidden = true
         }
         DimOverlay.alpha = 0.85
         
@@ -198,29 +164,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
         for button in vc!.buttonArr {
             button.isEnabled = false
         }
-//
-//        background.setAndPlayAnim("tutorialSlideIn")
-//        titleText.setAndPlayAnim("titleTextIntro")
-//
-//        let subTitleTextWaitTime = 0.35
-//        vc!.wt.waitThen(itime: subTitleTextWaitTime, itarget: self, imethod: #selector(animationWaitThen) as Selector, irepeats: false, idict: ["arg1": "subTitleText" as AnyObject])
-//
-//        let subTextWaitTime = 0.5
-//        var numbTextVisible = 0
-//        for (i,text) in subText.enumerated() {
-//            let timeIncrement = 0.2
-//            if text.text != "" {
-//                numbTextVisible += 1
-//                vc!.wt.waitThen(itime: subTextWaitTime + timeIncrement * Double(i), itarget: self, imethod: #selector(animationWaitThen) as Selector, irepeats: false, idict: ["arg1": "subText" as AnyObject,"arg2": i as AnyObject])
-//            }
-//        }
-//
-//        let buttonWaitTime = subTextWaitTime + 0.2 * Double(numbTextVisible)
-//        vc!.wt.waitThen(itime: buttonWaitTime, itarget: self, imethod: #selector(animationWaitThen) as Selector, irepeats: false, idict: ["arg1": "mainButton" as AnyObject])
-//
-//        let buttonTextWaitTime = buttonWaitTime + 0.3
-//        vc!.wt.waitThen(itime: buttonTextWaitTime, itarget: self, imethod: #selector(animationWaitThen) as Selector, irepeats: false, idict: ["arg1": "buttonText" as AnyObject])
-//        vc!.wt.waitThen(itime: buttonTextWaitTime, itarget: self, imethod: #selector(animationWaitThen) as Selector, irepeats: false, idict: ["arg1": "xButton" as AnyObject])
     }
     
     @objc func animationWaitThen(_ timer: Timer) {
@@ -229,9 +172,6 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
         case "mainButton":
             mainButton.isHidden = false
             mainButton.setAndPlayAnim()
-//        case "subTitleText":
-//            subTitleText.isHidden = false
-//            subTitleText.setAndPlayAnim("subTitleTextIntro")
         case "subText":
             subText[parametersObj["arg2"] as! Int].isHidden = false
             subText[parametersObj["arg2"] as! Int].setAndPlayAnim("subTextIntro")
@@ -247,18 +187,10 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
     }
     
     func fadePopver() {
-        
         background.setAndPlayAnim("fadeOnPopoverDismiss")
-        
-//        mainButton.setAndPlayAnim()
-//        subTitleText.setAndPlayAnim("subTitleTextIntro")
-////        subText[parametersObj["arg2"] as! Int].setAndPlayAnim("subTextIntro")
-//        buttonText.setAndPlayAnim("buttonTextIntro")
-//        xButton.setAndPlayAnim("xButtonIntro")
     }
     
     func setupPopoverText(isubtitle: String, isubText: [String]) {
-//        subTitleText.text = isubtitle
         for text in subText {
             text.text = ""
         }

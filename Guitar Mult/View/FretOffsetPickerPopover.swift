@@ -88,7 +88,6 @@ class FretOffsetPickerPopover: UIViewController, UIPickerViewDataSource, UIPicke
     @objc func handleButtonPress() {
 //        vc!.fretOffset = (picker.selectedRow(inComponent: 0)+1) - vc!.defaultFretOffset
         vc!.fretOffset = (picker.selectedRow(inComponent: 0)+2) - vc!.defaultFretOffset
-        print("vc!.fretOffset ",vc!.fretOffset)
         vc!.handleFretOffsetChange()
         removeFromView()
     }

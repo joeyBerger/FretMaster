@@ -45,7 +45,7 @@ class MenuViewController: UIViewController {
     var menuButtonSubtext: [UILabel] = []
     var menuButtonProgress: [UIProgressView] = []
 
-    var developmentMode = 0//1
+    var developmentMode = 0
 
     var tutorialCompleteStatus = true
     var levelArr: [Int] = []
@@ -62,7 +62,7 @@ class MenuViewController: UIViewController {
         
         globalDataController.load()
         
-        setupHiddenButtons()
+//        setupHiddenButtons()
 //        resetData()
 
         let styler = ViewStyler(ivc: self)
@@ -87,7 +87,7 @@ class MenuViewController: UIViewController {
 
         let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
         if scaleLevel != nil {
-            print("restoring data")
+            if developmentMode > 0 {print("restoring data")}
             let scaleLevel = UserDefaults.standard.object(forKey: "scaleLevel")
             if let scaleLevel = scaleLevel {
                 let arpeggioLevel = UserDefaults.standard.object(forKey: "arpeggioLevel")
@@ -108,7 +108,7 @@ class MenuViewController: UIViewController {
                 if tutorialComplete != nil {
                     userLevelData.tutorialComplete = tutorialComplete as! String
                 } else {
-                    print("bad data, ressetting")
+                    if developmentMode > 0 {print("bad data, ressetting")}
                     resetData()
                 }
                 
@@ -140,7 +140,7 @@ class MenuViewController: UIViewController {
                 UserAPI.postAPIRequest("updateUserData",data)
             }
         } else {
-            print("brand new data")
+            if developmentMode > 0 {print("brand new data")}
             userLevelData.setDefaultValues()
             for (_, str) in userLevelData.stringEquivs.enumerated() {
                 UserDefaults.standard.removeObject(forKey: str)
@@ -230,7 +230,6 @@ class MenuViewController: UIViewController {
         }
     }
     @IBAction func PlaygroundButton(_ sender: Any) {
-        print("got playground")
         if !tutorialCompleteStatus {
             //maybe add popup
             return

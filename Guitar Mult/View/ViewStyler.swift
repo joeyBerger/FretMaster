@@ -177,7 +177,7 @@ class ViewStyler: UIViewController {
     }
     
     func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
-        print("iscreenSpace",iscreenSpace)
+//        print("iscreenSpace",iscreenSpace)
         if iscreenSpace > 650 {
             if iscreenSpace == 692 {return 50.0}
             if iscreenSpace == 768 {return 85.0}

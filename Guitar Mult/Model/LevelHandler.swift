@@ -41,13 +41,8 @@ class LevelConstruct: UIViewController {
                 returnDict["LevelIncremented"] = false
             }
         }
-        
-        if currentLevelKey!.contains("interval") && level == interval.count {
-            print("here")
-        }
 
         currentLevel = "\(level).\(subLevel)"
-        print("currentLevel",currentLevel)
         UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
         returnDict["SubLevelIncremented"] = true
         return returnDict
@@ -85,7 +80,6 @@ class LevelConstruct: UIViewController {
             }
         }
         currentLevel = "\(level).\(total)"
-        print("\(level).\(total)")
         UserDefaults.standard.set(currentLevel, forKey: currentLevelKey!)
     }
     

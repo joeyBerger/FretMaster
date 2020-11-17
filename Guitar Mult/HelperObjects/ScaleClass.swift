@@ -275,8 +275,7 @@ class ScaleCollection {
                 var newNoteIdx = noteInfo.contains("Up") ? inputIndex + scaleDegreeDict[distance]! : inputIndex - scaleDegreeDict[distance]!
                 let octave = newNoteIdx >= refScale.count ? istartingOctave + 1 : newNoteIdx < 0 ? istartingOctave - 1 : istartingOctave
                 if newNoteIdx < 0 {
-                    newNoteIdx = refScale.count + newNoteIdx                    
-                    print("newNoteIdx \(newNoteIdx) \(startingOctave)")
+                    newNoteIdx = refScale.count + newNoteIdx
                 }
                 returnArr.append(refScale[newNoteIdx%refScale.count]+String(octave))
             }

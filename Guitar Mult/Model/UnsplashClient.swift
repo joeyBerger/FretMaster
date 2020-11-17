@@ -4,7 +4,6 @@ let apiKey = "k9R4gpOPjBryyZP95PslV1W08oWP2W8B7Va8GxgG3bA"
 
 class Unsplash {
     func unsplashSearch(for searchCriteria: String, completion: @escaping (URLs?, Error?) -> Void) {
-        print("searchCriteria \(searchCriteria)")
         if let url = URL.with(string: "search/photos?query=\(searchCriteria)&per_page=100") {
             var urlRequest = URLRequest(url: url)
             urlRequest.setValue("Client-ID \(apiKey)", forHTTPHeaderField: "Authorization")

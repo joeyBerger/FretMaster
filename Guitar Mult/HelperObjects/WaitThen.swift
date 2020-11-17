@@ -32,7 +32,6 @@ class waitThen {
     }
 
     @objc public func stopWaitThenOfType(iselector: Selector) {
-        print("stopping wait then",iselector)
         for (i, _) in infoStruct.enumerated() {
             if infoStruct[i]?.method == iselector {
                 nullifyWaitThenAtIndex(iindex: i)

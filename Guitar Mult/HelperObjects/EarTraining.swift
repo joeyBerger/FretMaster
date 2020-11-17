@@ -35,7 +35,6 @@ class EarTraining {
             testPassed = true
             let interval = vc!.sCollection!.returnInterval(vc!.earTrainCallArr[0],vc!.earTrainCallArr[1])
             resultTextArr = ["Great! You Correctly Played A \(interval)."]
-            print(resultTextArr)
         } else {
             if vc!.earTrainResponseArr[0] != vc!.earTrainCallArr[0] {
                 resultTextArr = ["Wrong Starting Note Played", "Start On Highlighted Note"]

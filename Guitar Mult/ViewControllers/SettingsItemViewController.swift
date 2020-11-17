@@ -54,7 +54,6 @@ class SettingsItemViewController: UIViewController, UITableViewDataSource, UITab
             sliderBackgroundImage.frame = CGRect(x: 0, y: volumeSlider.frame.minY-(backgroundHeight-volumeSlider.frame.height)/2, width: UIScreen.main.bounds.size.width, height: backgroundHeight)
 //            sliderBackgroundImage.frame = CGRect(x: 0, y: 300, width: 300, height: 300)
             sliderBackgroundImage.backgroundColor = UIColor(red: 255 / 255, green: 255 / 255, blue: 255 / 255, alpha: 0.65)
-            print(volumeSlider.frame)
             view.addSubview(sliderBackgroundImage)
             view.addSubview(volumeSlider)
         } else if settingsType! == "rhythmicAccuracy" {

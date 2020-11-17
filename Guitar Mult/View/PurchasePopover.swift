@@ -202,22 +202,21 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
         let request = SKProductsRequest(productIdentifiers: ["com.GuitarMult.unlockfeatures"])
         request.delegate = self
         request.start()
-        print("in fetch products")
     }
     
     func productsRequest(_ request: SKProductsRequest, didReceive response: SKProductsResponse) {
         if let product =   response.products.first {
             myProduct = product
-            print(product.productIdentifier)
-            print(product.price)
-            print(product.localizedTitle)
-            print(product.localizedDescription)
+//            print(product.productIdentifier)
+//            print(product.price)
+//            print(product.localizedTitle)
+//            print(product.localizedDescription)
         }
     }
     
     func paymentQueue(_ queue: SKPaymentQueue, updatedTransactions transactions: [SKPaymentTransaction]) {
         for transaction in transactions {
-            print("paymentQueue",transaction.transactionState)
+//            print("paymentQueue",transaction.transactionState)
             switch transaction.transactionState {
             case .purchasing:
                 //do nothing
@@ -226,7 +225,7 @@ class PurchasePopover: UIViewController, SKProductsRequestDelegate, SKPaymentTra
                 let t:Any = 0
                 vc!.closeMainPopover(t)
                 onSucessfullPurchaseCompleted()
-                print("purchase pressed!!")
+//                print("purchase pressed!!")
                 
                 SKPaymentQueue.default().finishTransaction(transaction)
                 SKPaymentQueue.default().remove(self)

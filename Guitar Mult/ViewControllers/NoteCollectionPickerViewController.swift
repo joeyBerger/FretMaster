@@ -122,7 +122,6 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
             }
             currentTableView.reloadData()
         }
-        print(vc!.currentState)
     }
     
     override func viewWillDisappear(_ animated: Bool) {
@@ -215,7 +214,6 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
     
     func tableView(tableView: UITableView!, cellForRowAtIndexPath indexPath: NSIndexPath!) -> UITableViewCell! {
 //        let cell = tableView.dequeueReusableCellWithIdentifier("Cell", forIndexPath:indexPath) as MyCell
-        print("in here !")
         let cell = tableView.dequeueReusableCell(withIdentifier: cellReuseIdentifier)! as! SettingViewCell
         // no "if" - the cell is guaranteed to exist
         // ... do stuff to the cell here ...

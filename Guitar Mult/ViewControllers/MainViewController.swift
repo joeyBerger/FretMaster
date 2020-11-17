@@ -2155,7 +2155,6 @@ class MainViewController: UIViewController {
         if layer != nil {
             return CGFloat(layer!)
         }
-        print("layer does not exist")
         return 0
     }
     

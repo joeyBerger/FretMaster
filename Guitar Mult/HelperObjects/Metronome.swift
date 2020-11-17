@@ -135,11 +135,11 @@ class Metronome {
                 if abs(clickTime[i] - items.time) > (timeThreshold[timeThresholdStr])! {
                     timeAcurracyMet = false
                     if clickTime[i] < items.time {
-                        print(i,"note was late")
+//                        print(i,"note was late")
                         lateNotesCounter += 1
                     } else {
                         earlyNotesCounter += 1
-                        print(i,"note was early")
+//                        print(i,"note was early")
                     }
                 }
             }
