@@ -96,8 +96,6 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         styler = ViewStyler(ivc: self)
         styler!.setupBackgroundImage(ibackgroundPic: "MainImage\(backgroundImageID).jpg")
         
-        self.tabBarController?.title = titleTextDict[self.restorationIdentifier!]
-        
         let screenHeight = UIScreen.main.bounds.size.height
 
         if screenHeight <= 736 {
@@ -111,6 +109,7 @@ class NoteCollectionPickerViewController: UIViewController, UITabBarDelegate, UI
         super.viewDidAppear(animated)
         navigatingToPaywall = false
         vc!.viewingNoteCollection = true
+        self.tabBarController?.title = titleTextDict[self.restorationIdentifier!]
         if !self.restorationIdentifier!.contains("record") {
             let freePlayUserDefault = UserDefaults.standard.object(forKey: "freePlayNoteCollection")
             selectedCell = -1
