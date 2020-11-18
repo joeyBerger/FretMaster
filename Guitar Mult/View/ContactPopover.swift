@@ -122,7 +122,7 @@ class ContactPopover: UIViewController, MFMailComposeViewControllerDelegate {
             var id = "noID"
             if UserDefaults.standard.object(forKey: "id") != nil {
                   id = UserDefaults.standard.object(forKey: "id") as! String
-              }
+              } 
             mail.setMessageBody("<br><br><br><br><br><br><br><br><br><br><br><br><p>------------------------------------------------------------</p><p>ID :</p><p> \(id)</p>", isHTML: true)
             present(mail, animated: true)
             UIApplication.shared.keyWindow?.rootViewController?.present(mail, animated: true)
