@@ -49,30 +49,31 @@ class UserLevelData: NSObject, NSCoding {
     }
     
     func updateValueOnAPIRequest(_ id : String, _ val : String ) {
+        print(id,val)
         switch id {
             case "scaleLevel":
                 scaleLevel = val
                 break
             case "arpeggioLevel":
-                scaleLevel = val
+                arpeggioLevel = val
                 break
             case "intervalLevel":
-                scaleLevel = val
+                intervalLevel = val
                 break
             case "et_scales":
-                scaleLevel = val
+                et_scales = val
                 break
             case "et_chords":
-                scaleLevel = val
+                et_chords = val
                 break
             case "tutorialComplete":
-                appUnlocked = val
+                tutorialComplete = val
                 break
             case "appUnlocked":
                 appUnlocked = val
                 break
             case "currentAppVersion":
-                appUnlocked = val
+                currentAppVersion = val
                 break
             default:
                 break

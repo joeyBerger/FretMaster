@@ -75,8 +75,14 @@ class MenuViewController: UIViewController {
         styler.setupBackgroundImage(ibackgroundPic: "MenuImage\(Int.random(in: 0 ..< 7)).jpg")
         styler.spaceButtons(buttonArr,navigationController!)
         
-        let data : [String:Any] = [:]
-        UserAPI.getAPIRequest("requestLevelUpdate",data)
+        
+        var id = ""
+        if UserDefaults.standard.object(forKey: "id") != nil {
+              id = UserDefaults.standard.object(forKey: "id") as! String
+          }
+        if id != "" {
+            UserAPI.getAPIRequest("requestLevelUpdate",id)
+        }
     }
     
 
@@ -135,6 +141,7 @@ class MenuViewController: UIViewController {
                     "et_scales" : userLevelData.et_scales,
                     "et_chords" : userLevelData.et_chords,
                     "appUnlocked" : appUnlocked,
+                    "currentAppVersion" : currentAppVersion,
                     "id" : id,
                 ]
                 UserAPI.postAPIRequest("updateUserData",data)
