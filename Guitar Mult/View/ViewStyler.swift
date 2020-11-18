@@ -1,9 +1,12 @@
 import Foundation
 import UIKit
 
+//hacky fix to get around iphone bullshit
+var menuHeight:CGFloat = 0
+
 class ViewStyler: UIViewController {
     var currentVC: UIViewController?
-
+    
     convenience init() {
         self.init(ivc: nil)
     }
@@ -155,7 +158,11 @@ class ViewStyler: UIViewController {
          let screenWidth = screenRect.size.width
          let screenHeight = screenRect.size.height
         
-         let navigationHeight = inavigationConroller.navigationBar.frame.maxY
+        //hacky fix to get around iphone bullshit
+         if menuHeight == 0 {
+            menuHeight = inavigationConroller.navigationBar.frame.maxY
+         }
+         let navigationHeight = menuHeight
         
          let buffer:CGFloat = returnButtonBuffer(screenHeight - navigationHeight)
          let availableScreenHeight = screenHeight - (inavigationConroller.navigationBar.frame.maxY) - (buffer*2)
@@ -177,9 +184,9 @@ class ViewStyler: UIViewController {
     }
     
     func returnButtonBuffer(_ iscreenSpace: CGFloat) -> CGFloat {
-//        print("iscreenSpace",iscreenSpace)
         if iscreenSpace > 650 {
             if iscreenSpace == 692 {return 50.0}
+            if iscreenSpace == 672 {return 50.0}
             if iscreenSpace == 768 {return 85.0}
             return 110.0
         } else if iscreenSpace > 600 {

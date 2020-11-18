@@ -145,7 +145,7 @@ class MenuViewController: UIViewController {
                     "id" : id,
                 ]
                 UserAPI.postAPIRequest("updateUserData",data)
-            }
+            }   
         } else {
             if developmentMode > 0 {print("brand new data")}
             userLevelData.setDefaultValues()
