@@ -2585,8 +2585,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1812"
-            endingLineNumber = "1812"
+            startingLineNumber = "1814"
+            endingLineNumber = "1814"
             landmarkName = "presentMainPopover(timer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2595,22 +2595,6 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "1A9613CA-C455-4542-8E17-E8485673D9A9"
-            shouldBeEnabled = "No"
-            ignoreCount = "0"
-            continueAfterRunningActions = "No"
-            filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
-            startingColumnNumber = "9223372036854775807"
-            endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1080"
-            endingLineNumber = "1080"
-            landmarkName = "PeripheralButtonDown(_:)"
-            landmarkType = "7">
-         </BreakpointContent>
-      </BreakpointProxy>
-      <BreakpointProxy
-         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
-         <BreakpointContent
-            uuid = "EF72DA73-0BC1-418C-946F-81603448A9CF"
             shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
@@ -2626,6 +2610,22 @@
       <BreakpointProxy
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
+            uuid = "EF72DA73-0BC1-418C-946F-81603448A9CF"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "1084"
+            endingLineNumber = "1084"
+            landmarkName = "PeripheralButtonDown(_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
             uuid = "BB2E9F81-65B3-4BB1-850E-2D32A07EAA0C"
             shouldBeEnabled = "No"
             ignoreCount = "0"
@@ -2633,8 +2633,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1764"
-            endingLineNumber = "1764"
+            startingLineNumber = "1766"
+            endingLineNumber = "1766"
             landmarkName = "presentPaywallPopover()"
             landmarkType = "7">
          </BreakpointContent>
@@ -2649,8 +2649,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1722"
-            endingLineNumber = "1722"
+            startingLineNumber = "1724"
+            endingLineNumber = "1724"
             landmarkName = "handleFretOffsetChange(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2665,8 +2665,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1759"
-            endingLineNumber = "1759"
+            startingLineNumber = "1761"
+            endingLineNumber = "1761"
             landmarkName = "closeMainPopover(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2713,8 +2713,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1560"
-            endingLineNumber = "1560"
+            startingLineNumber = "1562"
+            endingLineNumber = "1562"
             landmarkName = "presentTestResult(timer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2729,8 +2729,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1533"
-            endingLineNumber = "1533"
+            startingLineNumber = "1535"
+            endingLineNumber = "1535"
             landmarkName = "presentTestResult(timer:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2745,8 +2745,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "2341"
-            endingLineNumber = "2341"
+            startingLineNumber = "2343"
+            endingLineNumber = "2343"
             landmarkName = "setupUpDelayedNoteCollectionView(_:_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -2857,8 +2857,8 @@
             filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
             startingColumnNumber = "9223372036854775807"
             endingColumnNumber = "9223372036854775807"
-            startingLineNumber = "1442"
-            endingLineNumber = "1442"
+            startingLineNumber = "1444"
+            endingLineNumber = "1444"
             landmarkName = "FretPressed(_:)"
             landmarkType = "7">
          </BreakpointContent>
@@ -3132,6 +3132,22 @@
             startingLineNumber = "128"
             endingLineNumber = "128"
             landmarkName = "getAPIRequest(_:_:)"
+            landmarkType = "7">
+         </BreakpointContent>
+      </BreakpointProxy>
+      <BreakpointProxy
+         BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
+         <BreakpointContent
+            uuid = "B4729B7A-9856-4A4C-8701-917FAFF5DCDB"
+            shouldBeEnabled = "No"
+            ignoreCount = "0"
+            continueAfterRunningActions = "No"
+            filePath = "Guitar Mult/ViewControllers/MainViewController.swift"
+            startingColumnNumber = "9223372036854775807"
+            endingColumnNumber = "9223372036854775807"
+            startingLineNumber = "913"
+            endingLineNumber = "913"
+            landmarkName = "setupFretMarkerText(ishowAlphabeticalNote:ishowNumericDegree:inumericDefaults:)"
             landmarkType = "7">
          </BreakpointContent>
       </BreakpointProxy>

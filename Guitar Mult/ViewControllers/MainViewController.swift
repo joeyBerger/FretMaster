@@ -896,7 +896,6 @@ class MainViewController: UIViewController {
             var str = buttonDict[idx]
             var note = ""
             if ishowAlphabeticalNote {
-
                 note = sCollection?.returnOffsetFretNote(str!, fretOffset) as! String
                 note = note.trimmingCharacters(in: CharacterSet(charactersIn: "0123456789_"))
                 if sCollection?.fretPositionAccidentalInheritence[5+fretOffset] == ScaleCollection.PositionType.Flat {
@@ -909,6 +908,9 @@ class MainViewController: UIViewController {
                     note = "b5"
                 } else if note == "#5", inumericDefaults[1] == "b6" {
                     note = "b6"
+                } else if note == "b4" && !lc.returnCurrentTask().contains("SuperLocrianbbSeven") {
+//                    print(lc.returnCurrentTask())
+                    note = "3"
                 }
             }
             dotText[idx].text = note

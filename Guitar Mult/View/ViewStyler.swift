@@ -188,7 +188,7 @@ class ViewStyler: UIViewController {
             if iscreenSpace == 692 {return 50.0}
             if iscreenSpace == 672 {return 50.0}
             if iscreenSpace == 768 {return 85.0}
-            return 110.0
+            return 110.0 
         } else if iscreenSpace > 600 {
             return 30.0
         }
