@@ -25,22 +25,5 @@ Download the provided .zip, install and run `carthage update --platform iOS` and
   * Click Sound: Change the sound of the click when an exercise using a click is employed.
   * Background Picture: Change the appearance of either the Menu, Scales or Arpeggio views.
   * Volume: Change the overall, guitar and click volume to the user's specification.
-## Persistence
-* There are varying uses of persistence in the app:
-    * All level data is persisted and displayed in the menu.
-    * Every setting choice made by the user is saved:
-        * Guitar Sound, Fretboard Dot, Click Sound and Volume are saved using UserDefaults.
-        * Background Picture is saved using Core Data.
-## Meeting Specifications
-* To the specifics of the Udacity project:
-    * The use of a navigation controller is used to access various features of the app.
-    * Multiple controls and interactivity are used.
-    * The Unsplash API is used to download and potentially save high quality photos. The API calls are encapsulated in its own class. While retrieving info from the API, an activity indicator is displayed and an alert is displayed if an error occurred in the process.
-    * The app has multiple uses of persistence and employs Core Data.
-## Improvements
-* There are a number of improvements that I wish to make to the app post-submission.
-    * There are some audio lagging issues.
-    * The fretboard image needs updating (might need an artist).
-    * All sounds have been generated from a DAW (Logic Pro). I need to actually record guitar.
-    * Some buttons and colors need revisiting.
-    * The level system needs to be fully implemented. The given construction is only a sample size.
+
+
