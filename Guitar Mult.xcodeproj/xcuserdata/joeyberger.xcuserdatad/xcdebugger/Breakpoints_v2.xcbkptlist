@@ -2675,7 +2675,7 @@
          BreakpointExtensionID = "Xcode.Breakpoint.FileBreakpoint">
          <BreakpointContent
             uuid = "5C02F754-8B64-41E9-829B-5DB1ACBC2022"
-            shouldBeEnabled = "Yes"
+            shouldBeEnabled = "No"
             ignoreCount = "0"
             continueAfterRunningActions = "No"
             filePath = "Guitar Mult/ViewControllers/NoteCollectionPickerViewController.swift"

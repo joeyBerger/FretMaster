@@ -17,7 +17,7 @@ var globalDataController = DataController(modelName: "ImageModel")
 var volume = Volume()
 var audioKitStarted = false
 var appUnlocked = "0"
-var currentAppVersion = "0.1"
+var currentAppVersion = "0.0"
 var levelBarriersLimits : [String : [String:Int]] = [
     "0.0" : [
         "scaleLevel" : 13,
