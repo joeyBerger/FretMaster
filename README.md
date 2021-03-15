@@ -1,4 +1,4 @@
-# Fret Master
+# Fret Master (Guitar Mult)
 
 This project is the culmination of my experience teaching music at the university level and to advanced students to address some of the needs of myself as a teacher and those of my pupils. This app has the groundwork to be an effective teaching tool to students of the guitar. The app aims to turn learning scales and arpeggios into a game that progresses through levels of difficulty. This app can be used with the guitar as a reference, or away (would be great for long flights).
 
